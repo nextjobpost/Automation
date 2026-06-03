@@ -1,0 +1,41 @@
+# ── Secrets & Credentials ──────────────────────────────────
+.env
+
+# ── Telegram session (contains your login token!) ──────────
+*.session
+session.session
+
+# ── Python cache ───────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# ── Virtual environment ────────────────────────────────────
+venv/
+env/
+.venv/
+
+# ── Runtime cache (auto-regenerated) ──────────────────────
+posted_cache.json
+job_queue.json
+
+# ── Temp files ─────────────────────────────────────────────
+*.jpg
+*.jpeg
+*.png
+temp_image*
+
+# ── IDE / Editor ───────────────────────────────────────────
+.vscode/
+.idea/
+.qodo/
+.sixth/
+
+# ── OS ─────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Dynamic assets ──────────────────────────────────────────
+fonts/
