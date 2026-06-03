@@ -93,33 +93,51 @@ client = TelegramClient(session, API_ID, API_HASH)
 # =========================
 CACHE_FILE = "posted_cache.json"
 
+# In-memory fallbacks for Railway (read-only filesystem)
+_MEMORY_QUEUE = []   # Used when job_queue.json can't be written
+_MEMORY_SEEN  = set()  # Used when posted_cache.json can't be written
+
 def load_cache():
-    if os.path.exists(CACHE_FILE):
-        combined_path = None
-        try:
+    try:
+        if os.path.exists(CACHE_FILE):
             with open(CACHE_FILE, "r", encoding="utf-8") as f:
                 return set(json.load(f))
-        except:
-            return set()
-    return set()
+    except Exception:
+        pass
+    return set(_MEMORY_SEEN)
 
 def save_cache(cache_set):
-    with open(CACHE_FILE, "w", encoding="utf-8") as f:
-        json.dump(list(cache_set)[-500:], f)
+    global _MEMORY_SEEN
+    _MEMORY_SEEN = set(cache_set)
+    try:
+        with open(CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(list(cache_set)[-500:], f)
+    except Exception:
+        pass  # Read-only filesystem (Railway) — use in-memory only
 
 # ── Queue Functions ──
 def load_queue():
-    if os.path.exists(QUEUE_FILE):
-        try:
+    """Load from file if available, otherwise use in-memory queue."""
+    try:
+        if os.path.exists(QUEUE_FILE):
             with open(QUEUE_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except:
-            return []
-    return []
+                disk_queue = json.load(f)
+                # Sync in-memory queue to disk contents
+                if disk_queue:
+                    return disk_queue
+    except Exception:
+        pass
+    return list(_MEMORY_QUEUE)  # Fallback to in-memory
 
 def save_queue(queue):
-    with open(QUEUE_FILE, "w", encoding="utf-8") as f:
-        json.dump(queue, f, indent=2)
+    """Save to file if writable, always sync to in-memory queue."""
+    global _MEMORY_QUEUE
+    _MEMORY_QUEUE = list(queue)
+    try:
+        with open(QUEUE_FILE, "w", encoding="utf-8") as f:
+            json.dump(queue, f, indent=2)
+    except Exception:
+        pass  # Read-only filesystem (Railway) — in-memory already updated above
 
 seen = load_cache()
 
@@ -1255,13 +1273,12 @@ async def process_and_post_job(job_data):
         job["image"] = uploaded_url
         print(f"📸 Image bound: {uploaded_url}")
 
-        # 2. Website Post
+        # 2. Website Post (non-blocking — social posts continue even if website fails)
         response = await send_to_api(session, job)
         print(f"🌐 Website status: {response}")
 
         if not isinstance(response, dict) or response.get("success") is not True:
-            print(f"⚠️ Website API rejected job or request failed (status: {response}). Aborting social posts.")
-            return
+            print(f"⚠️ Website API rejected or failed ({response}) — continuing with Telegram & LinkedIn anyway.")
 
 
         # Get final slug
@@ -1320,24 +1337,35 @@ async def process_and_post_job(job_data):
 
 
 async def scheduler_task():
-    """Background loop that posts one job every X minutes."""
-    print(f"🕒 Scheduler started. Interval: {POST_INTERVAL} seconds.")
+    """Background loop that posts one job every POST_INTERVAL seconds (default 30 min)."""
+    print(f"🕒 Scheduler started. Posting every {POST_INTERVAL}s ({POST_INTERVAL//60} min).")
+    last_post_time = 0  # Track when last post went out
     while True:
-        queue = load_queue()
-        if queue:
-            job_data = queue.pop(0) # Oldest first
-            save_queue(queue)
-            
-            try:
-                await process_and_post_job(job_data)
-            except Exception as e:
-                print(f"❌ Scheduler processing error: {e}")
-            
-            print(f"⏳ Waiting {POST_INTERVAL}s for next slot...")
-            await asyncio.sleep(POST_INTERVAL)
-        else:
-            # Check every 30s if something new arrived in queue
-            await asyncio.sleep(30)
+        now = time.time()
+        time_since_last = now - last_post_time
+
+        # Only post if enough time has passed since last post
+        if time_since_last >= POST_INTERVAL:
+            queue = load_queue()
+            if queue:
+                job_data = queue.pop(0)  # Oldest first (FIFO)
+                save_queue(queue)
+                print(f"\n📤 [SCHEDULER] Dequeued job. Remaining in queue: {len(queue)}")
+                try:
+                    await process_and_post_job(job_data)
+                    last_post_time = time.time()  # Reset timer only after successful processing
+                except Exception as e:
+                    print(f"❌ [SCHEDULER] Processing error: {e}")
+                    import traceback; traceback.print_exc()
+                    last_post_time = time.time()  # Still reset to avoid rapid-fire retries
+                
+                remaining = load_queue()
+                print(f"⏳ [SCHEDULER] Next post in {POST_INTERVAL//60} min. Queue size: {len(remaining)}")
+            else:
+                print(f"📭 [SCHEDULER] Queue empty. Waiting for new jobs... (checked at {time.strftime('%H:%M:%S')})")
+        
+        # Sleep 10 seconds then re-check — allows fast response when new jobs arrive
+        await asyncio.sleep(10)
 
 
 async def handler(event):
