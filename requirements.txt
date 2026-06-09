@@ -6,3 +6,4 @@ rapidfuzz
 python-slugify
 google-genai
 pillow
+beautifulsoup4
