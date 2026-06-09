@@ -110,7 +110,8 @@ async def run_manual_post():
                 peer=peer_entity,
                 message=msg_text,
                 entities=entities,
-                invert_media=True,
+                no_webpage=False if uploaded_url else True,
+                invert_media=True if uploaded_url else False,
                 random_id=random.randint(-2**63, 2**63 - 1)
             ))
             print("✔ Successfully posted to Telegram in a single unified message with the image at the TOP!")

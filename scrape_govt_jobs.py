@@ -1,0 +1,817 @@
+import os
+import re
+import json
+import sys
+import requests
+import hashlib
+import time
+from datetime import datetime, date
+from bs4 import BeautifulSoup
+from google import genai
+from google.genai import types
+from slugify import slugify
+from dotenv import load_dotenv
+
+# Force UTF-8 encoding for stdout and stderr to prevent UnicodeEncodeErrors on Windows
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+if sys.stderr.encoding != 'utf-8':
+    try:
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+
+# Load Environment
+load_dotenv(override=True)
+
+API_KEY = os.getenv("API_KEY")
+API_TOKEN = os.getenv("API_TOKEN")
+API_URL = os.getenv("API_URL", "http://localhost:4000/api/jobs")
+ADMIN_URL = os.getenv("ADMIN_URL", "http://localhost:4000/api/admin/login")
+GOVT_SCRAPER_BASE_URL = os.getenv("GOVT_SCRAPER_BASE_URL", "https://govtjobsalert.in")
+
+from urllib.parse import urlparse, urljoin
+parsed_base = urlparse(GOVT_SCRAPER_BASE_URL)
+GOVT_SCRAPER_DOMAIN = parsed_base.netloc or "govtjobsalert.in"
+
+CACHE_FILE = "scraped_urls.json"
+
+# Initialize Gemini
+if not API_KEY:
+    raise ValueError("API_KEY not found in environment. Please configure it in .env")
+client_gemini = genai.Client(api_key=API_KEY)
+
+def load_cache():
+    if os.path.exists(CACHE_FILE):
+        try:
+            with open(CACHE_FILE, "r", encoding="utf-8") as f:
+                return set(json.load(f))
+        except Exception as e:
+            print(f"Error loading cache: {e}")
+    return set()
+
+def save_cache(cache):
+    try:
+        with open(CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(list(cache), f, indent=2)
+    except Exception as e:
+        print(f"Error saving cache: {e}")
+
+def get_auth_token():
+    """Dynamically logs in to get a valid Bearer token."""
+    global API_TOKEN
+    
+    # Try using existing token first to verify it works
+    test_headers = {"Authorization": f"Bearer {API_TOKEN}"}
+    try:
+        # Check health or any dummy auth endpoint (or just proceed and login if needed)
+        # We'll just call login directly to ensure we have a valid, non-expired token
+        payload = {"username": "admin", "password": "admin123"}
+        response = requests.post(ADMIN_URL, json=payload, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            API_TOKEN = data.get("token")
+            print("🔑 Successfully authenticated as admin dynamically.")
+            return API_TOKEN
+    except Exception as e:
+        print(f"⚠️ Dynamic login failed: {e}. Falling back to API_TOKEN in environment.")
+    
+    return API_TOKEN
+
+def clean_detail_html(html_content):
+    """Parses detail page HTML, extracts .entry-content, and strips out ads/widgets."""
+    soup = BeautifulSoup(html_content, "html.parser")
+    entry_content = soup.find(class_="entry-content")
+    if not entry_content:
+        # Sarkari Result main content is inside div#content or div#primary
+        entry_content = soup.find(id="content") or soup.find(id="primary")
+    if not entry_content:
+        # Fallback to main body or article
+        entry_content = soup.find("article") or soup.find("body")
+    
+    if not entry_content:
+        return ""
+
+    # Elements to remove (ads, share buttons, follow us, dividers)
+    classes_to_remove = [
+        "code-block-default",
+        "code-block-center",
+        "gja-share-box",
+        "gja-divider",
+        "gja-btns",
+        "gja-label",
+        "gja-news-box",
+        "adsbygoogle",
+        "gja-grid-ad"
+    ]
+    for cls in classes_to_remove:
+        for tag in entry_content.find_all(class_=cls):
+            tag.decompose()
+            
+    # Also remove any script, style, or ins tags (AdSense placeholders)
+    for tag in entry_content.find_all(["script", "style", "ins"]):
+        tag.decompose()
+
+    # Get clean HTML string
+    return str(entry_content)
+
+def extract_govt_links(html_content):
+    """
+    Extracts the official website link, direct apply online link, and official notice PDF link 
+    from the entry HTML using BeautifulSoup.
+    """
+    soup = BeautifulSoup(html_content, "html.parser")
+    
+    official_website = ""
+    apply_link = ""
+    pdf_link = ""
+    
+    for a in soup.find_all("a"):
+        text = a.get_text(strip=True).lower()
+        href = a.get("href", "").strip()
+        if not href:
+            continue
+            
+        # Ignore sharing/social media links and competitor website links
+        if any(social in href for social in ["whatsapp.com", "t.me", "telegram.me", "facebook.com", "twitter.com", "api.whatsapp", "govtjobsalert.in", "sarkariresult.com"]):
+            continue
+            
+        # 1. Identify PDF link
+        if href.endswith(".pdf") or "pdf" in text or "notice" in text:
+            if not pdf_link:
+                pdf_link = href
+                
+        # 2. Identify Official Website link
+        if "official website" in text:
+            official_website = href
+            
+        # 3. Identify Direct Apply Link
+        if any(apply_term in text for apply_term in ["apply online", "online apply", "apply link", "registration", "click here to apply"]):
+            if not apply_link:
+                apply_link = href
+                
+    # Fallbacks:
+    if not apply_link:
+        for a in soup.find_all("a"):
+            text = a.get_text(strip=True).lower()
+            href = a.get("href", "").strip()
+            if not href or any(social in href for social in ["whatsapp.com", "t.me", "telegram.me"]):
+                continue
+            if any(term in text for term in ["download", "apply", "marks", "response", "sheet"]):
+                apply_link = href
+                break
+                
+    if not apply_link:
+        apply_link = official_website or pdf_link
+        
+    return {
+        "officialWebsite": official_website,
+        "applyLink": apply_link,
+        "pdfLink": pdf_link
+    }
+
+def enrich_content_with_ai(html_content, title):
+    """Sends html/text content to Gemini 2.5 Flash to extract metadata, summary, and FAQs."""
+    # Strip HTML tags to make the prompt smaller and save tokens
+    soup = BeautifulSoup(html_content, "html.parser")
+    text_content = soup.get_text(separator="\n")
+    # Clean whitespace
+    text_content = re.sub(r'\n+', '\n', text_content).strip()
+
+    prompt = f"""
+    Analyze the following government notification detail page for "{title}".
+    Extract key information and return ONLY a valid JSON object. Do not include any markdown format blocks or `json` text backticks.
+    
+    The JSON structure MUST match this exact schema:
+    {{
+      "organization": "Name of the government body (e.g. UPSC, SSC, DRDO, Railway, State PSC, etc.)",
+      "postName": "Refined short post/exam name",
+      "eligibility": "Required eligibility criteria/qualification (e.g., 10th Pass, B.Tech in CSE, Any Graduate, etc.)",
+      "vacancies": "Number of vacancies or posts available (e.g., 500 Posts, 12 Vacancies, etc. - leave empty string if not found)",
+      "lastDate": "Application deadline or objection closing date in YYYY-MM-DD format (leave as empty string if not found)",
+      "salary": "Salary or pay scale info if present (else 'As per notification')",
+      "summary": "A clean 2-3 sentence summary of the post, status, or announcement",
+      "seoTitle": "Optimized search engine title (60 chars max)",
+      "seoDescription": "Compelling search engine description (155 chars max)",
+      "faqs": [
+        {{
+          "q": "Question related to application, eligibility, or exam date",
+          "a": "Clear answer based on the notification"
+        }}
+      ]
+    }}
+    
+    Article Text:
+    {text_content[:6000]}
+    """
+    
+    candidate_models = [
+        "gemini-2.5-flash-lite",
+        "gemini-3.1-flash-lite",
+        "gemini-flash-lite-latest",
+        "gemini-3.5-flash",
+        "gemini-2.5-flash"
+    ]
+    
+    last_error = None
+    for model in candidate_models:
+        try:
+            print(f"🤖 Enriching with Gemini model: {model}...")
+            response = client_gemini.models.generate_content(
+                model=model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                ),
+            )
+            clean_json = response.text.strip()
+            if clean_json.startswith("```json"):
+                clean_json = clean_json[7:-3].strip()
+            elif clean_json.startswith("```"):
+                clean_json = clean_json[3:-3].strip()
+                
+            return json.loads(clean_json)
+        except Exception as e:
+            if "RESOURCE_EXHAUSTED" in str(e):
+                print(f"⚠️ Model {model} resource exhausted. Trying next fallback model...")
+                last_error = e
+                continue
+            else:
+                print(f"⚠️ Gemini processing failed with model {model}: {e}")
+                last_error = e
+                
+    print(f"❌ All Gemini candidate models failed. Last error: {last_error}")
+    return None
+
+def format_faq_html(faqs):
+    """Formats a list of FAQ dictionary items into beautiful HTML block."""
+    if not faqs:
+        return ""
+    faq_html = '<div class="gja-faq-section mt-5" style="border-top: 2px solid #e2e8f0; padding-top: 2rem;">'
+    faq_html += '<h2 style="font-size: 1.5rem; font-weight: bold; color: #1e3a8a; margin-bottom: 1.5rem;">📋 Frequently Asked Questions (FAQs)</h2>'
+    for faq in faqs:
+        q = faq.get("q", "").strip()
+        a = faq.get("a", "").strip()
+        if q and a:
+            faq_html += f"""
+            <div class="gja-faq-item" style="margin-bottom: 1.25rem; padding: 1rem; background-color: #f8fafc; border-left: 4px solid #2563eb; border-radius: 0 8px 8px 0;">
+                <h4 style="margin: 0 0 0.5rem 0; font-weight: bold; color: #1e293b; font-size: 1.05rem;">❓ {q}</h4>
+                <p style="margin: 0; color: #475569; font-size: 0.95rem; line-height: 1.6;">{a}</p>
+            </div>
+            """
+    faq_html += '</div>'
+    return faq_html
+
+def scrape_category(category_path, post_type_default):
+    """Scrapes a specific category listing page, processes new items, and uploads to NextJobPost."""
+    url = f"{GOVT_SCRAPER_BASE_URL.rstrip('/')}/{category_path.lstrip('/')}"
+    print(f"\n🔍 Scraping Category: {url} ...")
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    
+    try:
+        response = requests.get(url, headers=headers, timeout=15)
+        if response.status_code != 200:
+            print(f"❌ Failed to load category page: {url} (Status: {response.status_code})")
+            return
+    except Exception as e:
+        print(f"❌ Error fetching category page: {e}")
+        return
+
+    soup = BeautifulSoup(response.content, "html.parser")
+    cards = soup.find_all("a", class_="gja-grid-card")
+    print(f"Found {len(cards)} listings on listing page.")
+    
+    cache = load_cache()
+    token = get_auth_token()
+    
+    new_items_posted = 0
+    
+    for card in cards:
+        href = card.get("href")
+        if not href:
+            continue
+            
+        # Clean URL
+        href = href.strip()
+        if href in cache:
+            continue
+            
+        title_elem = card.find(class_="gja-card-title")
+        raw_title = title_elem.text.strip() if title_elem else "Notification Details"
+        
+        # Determine Post Type badge
+        badge_elem = card.find(class_="gja-badge")
+        post_type = badge_elem.text.strip() if badge_elem else post_type_default
+        
+        print(f"\n🚀 New Listing Found: {raw_title}")
+        print(f"🔗 Detail URL: {href}")
+        
+        # 1. Fetch detail page
+        try:
+            detail_resp = requests.get(href, headers=headers, timeout=15)
+            if detail_resp.status_code != 200:
+                print(f"⚠️ Failed to fetch detail page: {href} (Status: {detail_resp.status_code})")
+                continue
+        except Exception as e:
+            print(f"⚠️ Error fetching detail page: {e}")
+            continue
+            
+        # 2. Clean HTML content
+        detail_html = clean_detail_html(detail_resp.text)
+        if not detail_html:
+            print("⚠️ Entry content empty or not found. Skipping.")
+            continue
+            
+        # 3. Call Gemini to enrich
+        ai_data = enrich_content_with_ai(detail_html, raw_title)
+        if not ai_data:
+            print("⚠️ AI Enrichment failed. Skipping.")
+            continue
+            
+        # 4. Construct final structured content
+        org = ai_data.get("organization", "Govt Department")
+        post_name = ai_data.get("postName", raw_title)
+        eligibility = ai_data.get("eligibility", "As per notification")
+        vacancies = ai_data.get("vacancies", "Various Vacancies")
+        salary = ai_data.get("salary", "Best in Industry")
+        last_date = ai_data.get("lastDate", None)
+        
+        # Check if the extracted last date is in the past (expired)
+        if last_date:
+            last_date_str = str(last_date).strip()
+            if last_date_str.lower() not in ["not mentioned", "not specified", "not disclosed", "confidential", ""]:
+                parsed_date = None
+                for fmt in ('%Y-%m-%d', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%dT%H:%M:%S', '%d-%m-%Y', '%Y/%m/%d'):
+                    try:
+                        parsed_date = datetime.strptime(last_date_str, fmt).date()
+                        break
+                    except ValueError:
+                        continue
+                
+                if not parsed_date:
+                    match = re.search(r'(\d{4})[-/](\d{2})[-/](\d{2})', last_date_str)
+                    if match:
+                        try:
+                            y, m, d = map(int, match.groups())
+                            parsed_date = date(y, m, d)
+                        except ValueError:
+                            pass
+                
+                if parsed_date and parsed_date < date.today():
+                    print(f"⚠️ Skipping expired job: '{raw_title}'. Last date '{last_date_str}' is in the past (today is {date.today()}).")
+                    cache.add(href)
+                    save_cache(cache)
+                    continue
+
+        summary = ai_data.get("summary", raw_title)
+        seo_title = ai_data.get("seoTitle", raw_title)
+        seo_desc = ai_data.get("seoDescription", raw_title)
+        faqs = ai_data.get("faqs", [])
+        
+        # Append FAQs at the end of the jobDescription HTML
+        faq_html = format_faq_html(faqs)
+        full_description_html = detail_html + faq_html
+        
+        # Extract official links from detail HTML
+        govt_links = extract_govt_links(detail_html)
+        extracted_apply_link = govt_links["applyLink"]
+        if not extracted_apply_link or any(domain in extracted_apply_link for domain in ["govtjobsalert.in", "sarkariresult.com"]):
+            extracted_apply_link = govt_links["officialWebsite"] or ""
+            # If still invalid/empty, set to empty
+            if any(domain in extracted_apply_link for domain in ["govtjobsalert.in", "sarkariresult.com"]):
+                extracted_apply_link = ""
+                
+        extracted_pdf_link = govt_links["pdfLink"]
+        if not extracted_pdf_link or any(domain in extracted_pdf_link for domain in ["govtjobsalert.in", "sarkariresult.com"]):
+            extracted_pdf_link = ""
+        
+        # 5. Determine if we should auto-post (queue for bot1.py) or post direct draft
+        auto_post = os.getenv("AUTO_POST_GOVT_JOBS", "false").lower() == "true"
+        
+        if auto_post:
+            slug_base = slugify(raw_title)
+            url_hash = hashlib.md5(href.encode()).hexdigest()[:5]
+            slug = f"{slug_base}-{url_hash}"
+            
+            queue_job = {
+                "title": raw_title,
+                "slug": slug,
+                "company": org,
+                "location": "",
+                "type": "Full-Time",
+                "experience": "",
+                "eligibility": eligibility,
+                "vacancies": vacancies,
+                "salary": salary,
+                "applyLink": extracted_apply_link,
+                "education": "",
+                "batch": "",
+                "lastDate": last_date if last_date else None,
+                "jobDescription": full_description_html,
+                "description": summary,
+                "metaTitle": seo_title,
+                "metaDescription": seo_desc,
+                "isGovernment": True,
+                "postType": post_type,
+                "sourceWebsite": GOVT_SCRAPER_DOMAIN,
+                "sourceUrl": href,
+                "importantDates": "As per official notification",
+                "pdfLink": extracted_pdf_link,
+                "isActive": True
+            }
+            
+            # Load, append and save to queue
+            queue_file = "job_queue.json"
+            queue = []
+            if os.path.exists(queue_file):
+                try:
+                    with open(queue_file, "r", encoding="utf-8") as f:
+                        queue = json.load(f)
+                except Exception:
+                    queue = []
+            
+            queue.append({
+                "job": queue_job,
+                "image_path": "", # Triggers Pillow poster fallback in bot1.py
+                "hash": hashlib.md5(href.encode()).hexdigest(),
+                "timestamp": time.time()
+            })
+            
+            try:
+                with open(queue_file, "w", encoding="utf-8") as f:
+                    json.dump(queue, f, indent=2)
+                print(f"📥 Successfully queued government job for auto-posting: {raw_title}")
+                print(f"   └ Apply Link: {extracted_apply_link}")
+                print(f"   └ PDF Link: {extracted_pdf_link}")
+                cache.add(href)
+                save_cache(cache)
+                new_items_posted += 1
+            except Exception as e:
+                print(f"❌ Failed to write to job_queue.json: {e}")
+        else:
+            # 5. Create payload for local NextJobPost API as draft
+            payload = {
+                "title": raw_title,
+                "company": org,
+                "location": "",
+                "type": "Full-Time",
+                "experience": "",
+                "eligibility": eligibility,
+                "vacancies": vacancies,
+                "salary": salary,
+                "applyLink": extracted_apply_link,
+                "education": "",
+                "batch": "",
+                "lastDate": last_date if last_date else None,
+                "jobDescription": full_description_html,
+                "description": summary,
+                "metaTitle": seo_title,
+                "metaDescription": seo_desc,
+                "isActive": True,
+                "isGovernment": True,
+                "postType": post_type,
+                "sourceWebsite": GOVT_SCRAPER_DOMAIN,
+                "sourceUrl": href,
+                "importantDates": "As per official notification",
+                "pdfLink": extracted_pdf_link
+            }
+            
+            # 6. Post to API as draft
+            post_headers = {
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json"
+            }
+            
+            try:
+                post_resp = requests.post(API_URL, json=payload, headers=post_headers, timeout=15)
+                if post_resp.status_code in [200, 201]:
+                    print(f"✅ Successfully posted active job to backend: {raw_title}")
+                    print(f"   └ Apply Link: {extracted_apply_link}")
+                    print(f"   └ PDF Link: {extracted_pdf_link}")
+                    cache.add(href)
+                    save_cache(cache)
+                    new_items_posted += 1
+                else:
+                    print(f"❌ Failed to save active job. API returned status {post_resp.status_code}: {post_resp.text}")
+            except Exception as e:
+                print(f"❌ API post request failed: {e}")
+            
+    print(f"Finished category scraping. Posted {new_items_posted} new drafts.")
+
+def scrape_sarkari_result(source, headers, cache, token):
+    """
+    Scrapes sarkariresult.com homepage lists and processes new items.
+    """
+    url = source["base_url"].rstrip('/') + '/'
+    print(f"\n🔍 Scraping Sarkari Result Homepage: {url} ...")
+    
+    try:
+        response = requests.get(url, headers=headers, timeout=15)
+        if response.status_code != 200:
+            print(f"❌ Failed to load Sarkari Result homepage: {url} (Status: {response.status_code})")
+            return
+    except Exception as e:
+        print(f"❌ Error fetching Sarkari Result homepage: {e}")
+        return
+
+    soup = BeautifulSoup(response.content, "html.parser")
+    
+    # Locate column containers
+    containers = soup.find_all("div", class_="gb-inside-container")
+    
+    new_items_posted = 0
+    
+    for container in containers:
+        header = container.find(["h2", "h1", "h3", "strong"])
+        if not header:
+            continue
+            
+        header_text = header.get_text().strip().lower()
+        
+        # Determine category based on header text
+        post_type = None
+        if "latest job" in header_text:
+            post_type = "Government Job"
+        elif "admit card" in header_text:
+            post_type = "Admit Card"
+        elif "result" in header_text:
+            post_type = "Result"
+            
+        if not post_type:
+            continue
+            
+        print(f"\n📁 Found Column: '{header.get_text(strip=True)}' (Mapping to: {post_type})")
+        
+        links = container.find_all("a")
+        valid_links = []
+        for idx, a in enumerate(links):
+            href = a.get("href", "").strip()
+            text = a.get_text(strip=True)
+            if not href or not text:
+                continue
+            # Skip if it is the section link itself
+            if text.lower() in ["latest job", "admit card", "result"] or href.rstrip('/') in [url.rstrip('/'), url + "latestjob", url + "admitcard", url + "result"]:
+                continue
+            valid_links.append((text, href))
+            
+        print(f"Found {len(valid_links)} listings in '{post_type}' column.")
+        
+        # Process each listing (up to 5 per category to keep it fast/polite)
+        for raw_title, href in valid_links[:5]:
+            if href in cache:
+                continue
+                
+            print(f"\n🚀 New Listing Found (Sarkari Result): {raw_title}")
+            print(f"🔗 Detail URL: {href}")
+            
+            # 1. Fetch detail page
+            try:
+                detail_resp = requests.get(href, headers=headers, timeout=15)
+                if detail_resp.status_code != 200:
+                    print(f"⚠️ Failed to fetch detail page: {href} (Status: {detail_resp.status_code})")
+                    continue
+            except Exception as e:
+                print(f"⚠️ Error fetching detail page: {e}")
+                continue
+                
+            # 2. Clean HTML content
+            detail_html = clean_detail_html(detail_resp.text)
+            if not detail_html:
+                print("⚠️ Detail content empty or not found. Skipping.")
+                continue
+                
+            # 3. Call Gemini to enrich
+            ai_data = enrich_content_with_ai(detail_html, raw_title)
+            if not ai_data:
+                print("⚠️ AI Enrichment failed. Skipping.")
+                continue
+                
+            # 4. Construct final structured content
+            org = ai_data.get("organization", "Govt Department")
+            post_name = ai_data.get("postName", raw_title)
+            eligibility = ai_data.get("eligibility", "As per notification")
+            vacancies = ai_data.get("vacancies", "Various Vacancies")
+            salary = ai_data.get("salary", "Best in Industry")
+            last_date = ai_data.get("lastDate", None)
+            
+            # Check if the extracted last date is in the past (expired)
+            if last_date:
+                last_date_str = str(last_date).strip()
+                if last_date_str.lower() not in ["not mentioned", "not specified", "not disclosed", "confidential", ""]:
+                    parsed_date = None
+                    for fmt in ('%Y-%m-%d', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%dT%H:%M:%S', '%d-%m-%Y', '%Y/%m/%d'):
+                        try:
+                            parsed_date = datetime.strptime(last_date_str, fmt).date()
+                            break
+                        except ValueError:
+                            continue
+                    
+                    if not parsed_date:
+                        match = re.search(r'(\d{4})[-/](\d{2})[-/](\d{2})', last_date_str)
+                        if match:
+                            try:
+                                y, m, d = map(int, match.groups())
+                                parsed_date = date(y, m, d)
+                            except ValueError:
+                                pass
+                    
+                    if parsed_date and parsed_date < date.today():
+                        print(f"⚠️ Skipping expired job: '{raw_title}'. Last date '{last_date_str}' is in the past (today is {date.today()}).")
+                        cache.add(href)
+                        save_cache(cache)
+                        continue
+
+            summary = ai_data.get("summary", raw_title)
+            seo_title = ai_data.get("seoTitle", raw_title)
+            seo_desc = ai_data.get("seoDescription", raw_title)
+            faqs = ai_data.get("faqs", [])
+            
+            # Append FAQs
+            faq_html = format_faq_html(faqs)
+            full_description_html = detail_html + faq_html
+            
+            # Extract official links from detail HTML
+            govt_links = extract_govt_links(detail_html)
+            parsed_href = urlparse(href)
+            source_domain = parsed_href.netloc or "sarkariresult.com"
+            
+            extracted_apply_link = urljoin(href, govt_links["applyLink"]) if govt_links["applyLink"] else ""
+            if not extracted_apply_link or any(domain in extracted_apply_link for domain in ["govtjobsalert.in", "sarkariresult.com"]):
+                extracted_apply_link = urljoin(href, govt_links["officialWebsite"]) if govt_links["officialWebsite"] else ""
+                if any(domain in extracted_apply_link for domain in ["govtjobsalert.in", "sarkariresult.com"]):
+                    extracted_apply_link = ""
+                    
+            extracted_pdf_link = urljoin(href, govt_links["pdfLink"]) if govt_links["pdfLink"] else ""
+            if any(domain in extracted_pdf_link for domain in ["govtjobsalert.in", "sarkariresult.com"]):
+                extracted_pdf_link = ""
+            
+            # 5. Queue or Post Draft
+            auto_post = os.getenv("AUTO_POST_GOVT_JOBS", "false").lower() == "true"
+            
+            if auto_post:
+                slug_base = slugify(raw_title)
+                url_hash = hashlib.md5(href.encode()).hexdigest()[:5]
+                slug = f"{slug_base}-{url_hash}"
+                
+                queue_job = {
+                    "title": raw_title,
+                    "slug": slug,
+                    "company": org,
+                    "location": "",
+                    "type": "Full-Time",
+                    "experience": "",
+                    "eligibility": eligibility,
+                    "vacancies": vacancies,
+                    "salary": salary,
+                    "applyLink": extracted_apply_link,
+                    "education": "",
+                    "batch": "",
+                    "lastDate": last_date if last_date else None,
+                    "jobDescription": full_description_html,
+                    "description": summary,
+                    "metaTitle": seo_title,
+                    "metaDescription": seo_desc,
+                    "isGovernment": True,
+                    "postType": post_type,
+                    "sourceWebsite": source_domain,
+                    "sourceUrl": href,
+                    "importantDates": "As per official notification",
+                    "pdfLink": extracted_pdf_link,
+                    "isActive": True
+                }
+                
+                # Load, append and save to queue
+                queue_file = "job_queue.json"
+                q_list = []
+                if os.path.exists(queue_file):
+                    try:
+                        with open(queue_file, "r", encoding="utf-8") as f:
+                            q_list = json.load(f)
+                    except Exception:
+                        q_list = []
+                
+                q_list.append({
+                    "job": queue_job,
+                    "image_path": "", # Triggers Pillow poster fallback in bot1.py
+                    "hash": hashlib.md5(href.encode()).hexdigest(),
+                    "timestamp": time.time()
+                })
+                
+                try:
+                    with open(queue_file, "w", encoding="utf-8") as f:
+                        json.dump(q_list, f, indent=2)
+                    print(f"📥 Successfully queued government job for auto-posting: {raw_title}")
+                    print(f"   └ Apply Link: {extracted_apply_link}")
+                    print(f"   └ PDF Link: {extracted_pdf_link}")
+                    cache.add(href)
+                    save_cache(cache)
+                    new_items_posted += 1
+                except Exception as e:
+                    print(f"❌ Failed to write to job_queue.json: {e}")
+            else:
+                payload = {
+                    "title": raw_title,
+                    "company": org,
+                    "location": "",
+                    "type": "Full-Time",
+                    "experience": "",
+                    "eligibility": eligibility,
+                    "vacancies": vacancies,
+                    "salary": salary,
+                    "applyLink": extracted_apply_link,
+                    "education": "",
+                    "batch": "",
+                    "lastDate": last_date if last_date else None,
+                    "jobDescription": full_description_html,
+                    "description": summary,
+                    "metaTitle": seo_title,
+                    "metaDescription": seo_desc,
+                    "isActive": True,
+                    "isGovernment": True,
+                    "postType": post_type,
+                    "sourceWebsite": source_domain,
+                    "sourceUrl": href,
+                    "importantDates": "As per official notification",
+                    "pdfLink": extracted_pdf_link
+                }
+                
+                post_headers = {
+                    "Authorization": f"Bearer {token}",
+                    "Content-Type": "application/json"
+                }
+                
+                try:
+                    post_resp = requests.post(API_URL, json=payload, headers=post_headers, timeout=15)
+                    if post_resp.status_code in [200, 201]:
+                        print(f"✅ Successfully posted active job to backend: {raw_title}")
+                        print(f"   └ Apply Link: {extracted_apply_link}")
+                        print(f"   └ PDF Link: {extracted_pdf_link}")
+                        cache.add(href)
+                        save_cache(cache)
+                        new_items_posted += 1
+                    else:
+                        print(f"❌ Failed to save active job. Status {post_resp.status_code}: {post_resp.text}")
+                except Exception as e:
+                    print(f"❌ API post request failed: {e}")
+                    
+    print(f"Finished Sarkari Result scraping. Posted {new_items_posted} new jobs.")
+
+def main():
+    print("========================================")
+    print("🏛️ NextJobPost Government Jobs Scraper 🏛️")
+    print("========================================")
+    
+    # Load dynamic scraper sources from environment
+    govt_base = os.getenv("GOVT_SCRAPER_BASE_URL", "https://govtjobsalert.in")
+    sarkari_base = os.getenv("SARKARI_RESULT_BASE_URL", "https://www.sarkariresult.com")
+    
+    sources = [
+        {
+            "name": "Govt Jobs Alert",
+            "base_url": govt_base,
+            "categories": [
+                ("/govt-jobs/", "Government Job"),
+                ("/admit-cards/", "Admit Card"),
+                ("/results/", "Result"),
+                ("/answer-keys/", "Answer Key")
+            ],
+            "is_sarkari": False
+        },
+        {
+            "name": "Sarkari Result",
+            "base_url": sarkari_base,
+            "is_sarkari": True
+        }
+    ]
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    
+    cache = load_cache()
+    token = get_auth_token()
+    
+    for source in sources:
+        print(f"\n========================================\n🌐 Processing Source: {source['name']}\n========================================")
+        if source.get("is_sarkari"):
+            scrape_sarkari_result(source, headers, cache, token)
+        else:
+            # Temporarily override GOVT_SCRAPER_BASE_URL for category calls if needed
+            global GOVT_SCRAPER_BASE_URL, GOVT_SCRAPER_DOMAIN
+            GOVT_SCRAPER_BASE_URL = source["base_url"]
+            parsed_base = urlparse(GOVT_SCRAPER_BASE_URL)
+            GOVT_SCRAPER_DOMAIN = parsed_base.netloc or "govtjobsalert.in"
+            
+            for category_path, post_type in source["categories"]:
+                scrape_category(category_path, post_type)
+                
+    print("\n✅ All scraper sources successfully processed.")
+
+if __name__ == "__main__":
+    main()

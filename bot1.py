@@ -3,11 +3,27 @@ import re
 import asyncio
 import hashlib
 import aiohttp
+import sys
+from datetime import datetime, date
 from telethon import TelegramClient, events
+
 from telethon.sessions import StringSession
 from telethon.errors import FloodWaitError
 from dotenv import load_dotenv
 from slugify import slugify
+
+# Force UTF-8 encoding for stdout and stderr to prevent UnicodeEncodeErrors on Windows
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+if sys.stderr.encoding != 'utf-8':
+    try:
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+
 
 # =========================
 # ENV
@@ -70,8 +86,8 @@ SOURCE_CHANNELS = [
 
 TARGET_CHANNEL = "nextjobpost"
 
-API_URL = os.getenv("API_URL", "https://next-job-cfbh.onrender.com/api/jobs")
-SITE_BASE_URL = "https://nextjobpost.in"
+API_URL = os.getenv("API_URL", "http://localhost:4000/api/jobs")
+SITE_BASE_URL = os.getenv("SITE_BASE_URL", "https://nextjobpost.in")
 
 # ── Queue Setup ──
 QUEUE_FILE = "job_queue.json"
@@ -151,15 +167,15 @@ JOB_WORDS = ["job", "hiring", "apply", "vacancy", "intern", "opening", "recruitm
 JOB_EMOJIS = ["🔔", "🚀", "📍", "💼", "🎓", "⏳", "👉"]
 
 def normalize_text(text):
-    # Very basic normalization for common bold/italic unicode characters
-    # This is a bit complex to do perfectly without a library, but we can do a broad check
-    # Many telegram bots use Mathematical Bold characters.
-    # Alternatively, we can just check for emojis or 'http' presence.
-    return text.lower()
+    if not text:
+        return ""
+    import unicodedata
+    # Normalize unicode bold/italic mathematical alphanumeric chars to standard Latin
+    return unicodedata.normalize('NFKD', str(text)).lower()
 
 def is_job(text):
     if not text: return False
-    t = text.lower()
+    t = normalize_text(text)
     
     # Reject training/certification course advertisements
     course_keywords = ["certification course", "free certification", "enroll in course", "course registration", "bootcamp registration", "training program with certificate"]
@@ -334,49 +350,94 @@ def is_valid_job(job):
     # Reject training, certification, bootcamp, academy, and course postings
     title = job.get("title", "")
     if title:
-        title_lower = str(title).lower()
+        title_lower = normalize_text(title)
         forbidden_title_keywords = ["certification", "course", "bootcamp", "training", "academy", "certified"]
         if any(kw in title_lower for kw in forbidden_title_keywords):
             return False, f"Job title '{title}' contains training/certification keyword"
 
+    # Expiry Check (Skip if last date is in the past)
+    last_date = job.get("lastDate")
+    if last_date:
+        last_date_str = str(last_date).strip()
+        if last_date_str.lower() not in ["not mentioned", "not specified", "not disclosed", "confidential", ""]:
+            parsed_date = None
+            for fmt in ('%Y-%m-%d', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%dT%H:%M:%S', '%d-%m-%Y', '%Y/%m/%d'):
+                try:
+                    parsed_date = datetime.strptime(last_date_str, fmt).date()
+                    break
+                except ValueError:
+                    continue
+            
+            if not parsed_date:
+                match = re.search(r'(\d{4})[-/](\d{2})[-/](\d{2})', last_date_str)
+                if match:
+                    try:
+                        y, m, d = map(int, match.groups())
+                        parsed_date = date(y, m, d)
+                    except ValueError:
+                        pass
+            
+            if parsed_date and parsed_date < date.today():
+                return False, f"Job has expired. Last date '{last_date_str}' is in the past (today is {date.today()})."
+
     # Auto-default salary and batch if missing or containing forbidden placeholders
     forbidden_terms = ["not mentioned", "not specified", "not disclosed", "confidential", "hiring company"]
     
-    # 1. Auto-default salary
-    salary = job.get("salary")
-    if not salary or any(term in str(salary).lower() for term in forbidden_terms):
-        job["salary"] = "Best in Industry"
-        
-    # 2. Auto-default batch
-    batch = job.get("batch")
-    if not batch or any(term in str(batch).lower() for term in forbidden_terms):
-        job["batch"] = "2024 / 2025 / 2026"
-        
-    # 3. Auto-default company (guess from title or URL first, then fallback to Top Company)
-    company = job.get("company")
-    if not company or any(term in str(company).lower() for term in forbidden_terms):
-        guessed = guess_company_from_title(job.get("title"))
-        if not guessed:
-            guessed = get_company_from_link(job.get("applyLink"))
-        job["company"] = guessed or "Top Company"
-        
-    # 4. Auto-default location
-    location = job.get("location")
-    if not location or any(term in str(location).lower() for term in forbidden_terms):
-        job["location"] = "Pan India"
-        
-    # 5. Auto-default experience
-    experience = job.get("experience")
-    if not experience or any(term in str(experience).lower() for term in forbidden_terms):
-        job["experience"] = "Fresher / 0-2 Years"
-        
-    # 6. Auto-default education
-    education = job.get("education")
-    if not education or any(term in str(education).lower() for term in forbidden_terms):
-        job["education"] = "Any Graduate"
-        
-    # Key fields to check
-    check_keys = ["company", "location", "salary", "experience", "education", "batch"]
+    is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
+    
+    if is_govt:
+        # 1. Auto-default salary
+        salary = job.get("salary")
+        if not salary or any(term in str(salary).lower() for term in forbidden_terms):
+            job["salary"] = "Best in Industry"
+            
+        # 2. Auto-default vacancies
+        vacancies = job.get("vacancies")
+        if not vacancies or any(term in str(vacancies).lower() for term in forbidden_terms):
+            job["vacancies"] = "Various Vacancies"
+            
+        # 3. Auto-default eligibility
+        eligibility = job.get("eligibility")
+        if not eligibility or any(term in str(eligibility).lower() for term in forbidden_terms):
+            job["eligibility"] = "As per notification"
+            
+        check_keys = ["company", "salary", "eligibility", "vacancies"]
+    else:
+        # 1. Auto-default salary
+        salary = job.get("salary")
+        if not salary or any(term in str(salary).lower() for term in forbidden_terms):
+            job["salary"] = "Best in Industry"
+            
+        # 2. Auto-default batch
+        batch = job.get("batch")
+        if not batch or any(term in str(batch).lower() for term in forbidden_terms):
+            job["batch"] = "2024 / 2025 / 2026"
+            
+        # 3. Auto-default company (guess from title or URL first, then fallback to Top Company)
+        company = job.get("company")
+        if not company or any(term in str(company).lower() for term in forbidden_terms):
+            guessed = guess_company_from_title(job.get("title"))
+            if not guessed:
+                guessed = get_company_from_link(job.get("applyLink"))
+            job["company"] = guessed or "Top Company"
+            
+        # 4. Auto-default location
+        location = job.get("location")
+        if not location or any(term in str(location).lower() for term in forbidden_terms):
+            job["location"] = "Pan India"
+            
+        # 5. Auto-default experience
+        experience = job.get("experience")
+        if not experience or any(term in str(experience).lower() for term in forbidden_terms):
+            job["experience"] = "Fresher / 0-2 Years"
+            
+        # 6. Auto-default education
+        education = job.get("education")
+        if not education or any(term in str(education).lower() for term in forbidden_terms):
+            job["education"] = "Any Graduate"
+            
+        # Key fields to check
+        check_keys = ["company", "location", "salary", "experience", "education", "batch"]
     
     for key in check_keys:
         val = job.get(key)
@@ -398,7 +459,7 @@ async def extract_with_ai(text):
     prompt = f"""
 Analyze this Telegram job posting and extract the details.
 Return ONLY a valid, raw JSON object (no markdown formatting, no `json` blocks) with the following exact keys:
-"title", "company", "location", "applyLink", "type", "experience", "education", "shortSummary", "htmlDescription", "responsibilities", "requirements", "skills", "batch", "salary", "lastDate", "aboutCompany", "whyJoin", "howToApply", "finalThoughts".
+"title", "company", "location", "applyLink", "type", "experience", "education", "shortSummary", "htmlDescription", "responsibilities", "requirements", "skills", "batch", "salary", "lastDate", "aboutCompany", "whyJoin", "howToApply", "finalThoughts", "eligibility", "vacancies", "isGovernment".
 
 Rules:
 1. DO NOT guess, fabricate, or generate any details that are not explicitly present in the job posting text.
@@ -409,6 +470,8 @@ Rules:
    - "experience"
    - "education"
    - "batch"
+   - "eligibility"
+   - "vacancies"
 3. 'type' MUST be one of: "Full-Time", "Part-Time", "Internship", "Contract", "Remote", "Hybrid".
 4. 'applyLink' must be the first http/https link found.
 5. 'shortSummary' MUST be a clean, professional 15-20 word summary of the role. NO emojis.
@@ -421,46 +484,75 @@ Rules:
 12. 'whyJoin' MUST be a persuasive 3-4 sentence paragraph highlighting the benefits of working at this company for this role.
 13. 'howToApply' MUST be clear, step-by-step instructions detailing the application process for the candidate.
 14. 'finalThoughts' MUST be a short, encouraging concluding mark wishing the applicant success.
+15. 'eligibility' MUST be the qualification required for government jobs, or set to "Not Mentioned" if not specified.
+16. 'vacancies' MUST be the number of vacancies/posts available (e.g. "500 Posts"), or set to "Not Mentioned" if not specified.
+17. 'isGovernment' MUST be a boolean (true or false). Set to true if the job/post is a government recruitment, central/state government exam, admit card, answer key, result, or government agency post (e.g., SSC, UPSC, Bank PO, Railway, PSU, PSC, Defence, etc.). Otherwise, set to false.
 
 Job Posting Text:
 {text}
 """
-    try:
-        response = await client_gemini.aio.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-            ),
-        )
-        
-        # Sanitize response just in case Gemini hallucinates markdown blocks
-        clean_json = response.text.strip()
-        if clean_json.startswith("```json"):
-            clean_json = clean_json[7:-3].strip()
-            
-        data = json.loads(clean_json)
-        # 🎨 Give the beautiful HTML text to the job detail page, and clean summary to the home page cards
-        title_val = data.get("title", "Job Opening")
-        data["jobDescription"] = data.get("htmlDescription", text)
-        data["description"] = data.get("shortSummary", title_val[:150] + "...")
-        data["aboutCompany"] = data.get("aboutCompany", "")
-        data["whyJoin"] = data.get("whyJoin", "")
-        data["howToApply"] = data.get("howToApply", "")
-        data["finalThoughts"] = data.get("finalThoughts", "")
-        data["highlightText"] = data.get("title", "Freshers Eligible")
-        base_slug = slugify(data.get("title", "Job Opening"))
-        unique_id = hashlib.md5(text.encode()).hexdigest()[:5]
-        data["slug"] = f"{base_slug}-{unique_id}"
-        
-        # 🚀 Inject the predefined WhatsApp & Telegram Social links!
-        data["whatsapp"] = "https://chat.whatsapp.com/LVpuUJluTpUEdIc4daAemQ"
-        data["telegram"] = "https://t.me/nextjobpost"
-        
-        return data
-    except Exception as e:
-        print(f"⚠️ AI Parsing failed: {e}. Falling back to basic parser.")
+    candidate_models = [
+        "gemini-2.5-flash-lite",
+        "gemini-3.1-flash-lite",
+        "gemini-flash-lite-latest",
+        "gemini-3.5-flash",
+        "gemini-2.5-flash"
+    ]
+    
+    data = None
+    last_error = None
+    for model in candidate_models:
+        try:
+            print(f"🤖 Parsing with Gemini model: {model}...")
+            response = await client_gemini.aio.models.generate_content(
+                model=model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                ),
+            )
+            clean_json = response.text.strip()
+            if clean_json.startswith("```json"):
+                clean_json = clean_json[7:-3].strip()
+            elif clean_json.startswith("```"):
+                clean_json = clean_json[3:-3].strip()
+                
+            data = json.loads(clean_json)
+            break
+        except Exception as e:
+            if "RESOURCE_EXHAUSTED" in str(e):
+                print(f"⚠️ Model {model} resource exhausted. Trying next fallback model...")
+                last_error = e
+                continue
+            else:
+                print(f"⚠️ Gemini parsing failed with model {model}: {e}")
+                last_error = e
+                
+    if not data:
+        print(f"❌ All Gemini candidate models failed. Last error: {last_error}. Falling back to basic parser.")
         return extract_basic(text)
+        
+    # 🎨 Give the beautiful HTML text to the job detail page, and clean summary to the home page cards
+    title_val = data.get("title", "Job Opening")
+    data["jobDescription"] = data.get("htmlDescription", text)
+    data["description"] = data.get("shortSummary", title_val[:150] + "...")
+    data["aboutCompany"] = data.get("aboutCompany", "")
+    data["whyJoin"] = data.get("whyJoin", "")
+    data["howToApply"] = data.get("howToApply", "")
+    data["finalThoughts"] = data.get("finalThoughts", "")
+    data["highlightText"] = data.get("title", "Freshers Eligible")
+    data["eligibility"] = data.get("eligibility", "")
+    data["vacancies"] = data.get("vacancies", "")
+    data["isGovernment"] = data.get("isGovernment") is True or str(data.get("isGovernment")).lower() == "true"
+    base_slug = slugify(data.get("title", "Job Opening"))
+    unique_id = hashlib.md5(text.encode()).hexdigest()[:5]
+    data["slug"] = f"{base_slug}-{unique_id}"
+    
+    # 🚀 Inject the predefined WhatsApp & Telegram Social links!
+    data["whatsapp"] = "https://chat.whatsapp.com/LVpuUJluTpUEdIc4daAemQ"
+    data["telegram"] = "https://t.me/nextjobpost"
+    
+    return data
 
 # =========================
 # STEP 1A → POSTER GENERATOR & UPLOAD WITH RETRY
@@ -803,7 +895,7 @@ async def send_to_api(session, job):
     if API_TOKEN:
         headers["Authorization"] = f"Bearer {API_TOKEN}"
         
-    async with session.post(API_URL, json=job, headers=headers) as res:
+    async with session.post(API_URL, json=job, headers=headers, timeout=30) as res:
         try:
             data = await res.json()
             return data
@@ -815,18 +907,9 @@ def build_post(job, slug):
     job_url    = f"{SITE_BASE_URL}/{slug}"
     title      = job.get('title', 'Job Opening')
     company    = job.get('company', 'Top Company')
-    location   = job.get('location', 'Pan India')
-    education  = job.get('education', 'Any Graduate')
-    experience = job.get('experience', 'Fresher / 0-2 Years')
-    salary     = job.get('salary', 'Best in Industry')
-    batch      = job.get('batch', '2024 / 2025 / 2026')
-    job_type   = job.get('type', 'Full-Time')
-    last_date  = job.get('lastDate', '')
-    summary    = job.get('shortSummary', '') or job.get('description', '')
-    why_join   = job.get('whyJoin', '')
-    how_apply  = job.get('howToApply', '')
-    final_note = job.get('finalThoughts', '')
-
+    
+    is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
+    
     # ── Skills (up to 6) ──
     skills_raw = job.get('skills', [])
     skills_section = ''
@@ -849,79 +932,140 @@ def build_post(job, slug):
         req_section = f"\n✅ **Requirements:**\n{bullets}\n"
 
     # ── Why Join ──
+    why_join   = job.get('whyJoin', '')
     why_section = ''
     if why_join:
-        # Trim to 180 chars for Telegram readability
         trimmed = why_join[:180].rstrip()
         why_section = f"\n💡 **Why Join?**\n{trimmed}...\n"
 
     # ── How to Apply ──
+    how_apply  = job.get('howToApply', '')
     how_section = ''
     if how_apply:
         trimmed = how_apply[:200].rstrip()
         how_section = f"\n📝 **How to Apply:**\n{trimmed}\n"
 
-    # ── Optional fields ──
-    batch_line    = f"🎯 **Batch:**      {batch}\n" if batch else ''
-    type_line     = f"💼 **Job Type:**   {job_type}\n"
-    deadline_line = f"⏰ **Last Date:**  {last_date}\n" if last_date else ''
+    summary    = job.get('shortSummary', '') or job.get('description', '')
     summary_line  = f"\n📣 {summary}\n" if summary else ''
-
-    # ── Final thoughts ──
+    final_note = job.get('finalThoughts', '')
     final_section = ''
     if final_note:
         final_section = f"\n✨ {final_note}\n"
 
-    return (
-        f"🔥 **{title}** 🔥\n"
-        f"🏢 **{company}**\n"
-        f"{summary_line}"
-        f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"📍 **Location:**   {location}\n"
-        f"🎓 **Education:**  {education}\n"
-        f"⏳ **Experience:** {experience}\n"
-        f"💰 **Salary:**     {salary}\n"
-        f"{type_line}"
-        f"{batch_line}"
-        f"{deadline_line}"
-        f"━━━━━━━━━━━━━━━━━━━━━━━━"
-        f"{skills_section}"
-        f"{resp_section}"
-        f"\n🔗 **Apply Here →** {job_url}\n"
-        f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"📢 **Next Job Post** — Your daily job alert hub\n"
-        f"🌐 More Jobs:  https://nextjobpost.in\n"
-        f"💼 LinkedIn:   https://www.linkedin.com/in/next-job-post-199b5b371\n"
-        f"👉 **Join Channel:** https://t.me/nextjobpost\n"
-    )
+    if is_govt:
+        eligibility = job.get('eligibility', 'As per notification')
+        vacancies = job.get('vacancies', 'Various Vacancies')
+        salary = job.get('salary', 'Best in Industry')
+        last_date = job.get('lastDate', '')
+        deadline_line = f"⏰ **Last Date:**  {last_date}\n" if last_date else ''
+        
+        return (
+            f"🔥 **{title}** 🔥\n"
+            f"🏢 **{company}**\n"
+            f"{summary_line}"
+            f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"🎓 **Eligibility:** {eligibility}\n"
+            f"🔢 **Vacancies:**   {vacancies}\n"
+            f"💰 **Salary:**      {salary}\n"
+            f"{deadline_line}"
+            f"━━━━━━━━━━━━━━━━━━━━━━━━"
+            f"{skills_section}"
+            f"{resp_section}"
+            f"\n🔗 **Apply Here →** {job_url}\n"
+            f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"📢 **Next Job Post** — Your daily job alert hub\n"
+            f"🌐 More Jobs:  {SITE_BASE_URL}\n"
+            f"💼 LinkedIn:   https://www.linkedin.com/in/next-job-post-199b5b371\n"
+            f"👉 **Join Channel:** https://t.me/nextjobpost\n"
+        )
+    else:
+        location   = job.get('location', 'Pan India')
+        education  = job.get('education', 'Any Graduate')
+        experience = job.get('experience', 'Fresher / 0-2 Years')
+        salary     = job.get('salary', 'Best in Industry')
+        batch      = job.get('batch', '2024 / 2025 / 2026')
+        job_type   = job.get('type', 'Full-Time')
+        last_date  = job.get('lastDate', '')
+        
+        batch_line    = f"🎯 **Batch:**      {batch}\n" if batch else ''
+        type_line     = f"💼 **Job Type:**   {job_type}\n"
+        deadline_line = f"⏰ **Last Date:**  {last_date}\n" if last_date else ''
+
+        return (
+            f"🔥 **{title}** 🔥\n"
+            f"🏢 **{company}**\n"
+            f"{summary_line}"
+            f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"📍 **Location:**   {location}\n"
+            f"🎓 **Education:**  {education}\n"
+            f"⏳ **Experience:** {experience}\n"
+            f"💰 **Salary:**     {salary}\n"
+            f"{type_line}"
+            f"{batch_line}"
+            f"{deadline_line}"
+            f"━━━━━━━━━━━━━━━━━━━━━━━━"
+            f"{skills_section}"
+            f"{resp_section}"
+            f"\n🔗 **Apply Here →** {job_url}\n"
+            f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"📢 **Next Job Post** — Your daily job alert hub\n"
+            f"🌐 More Jobs:  {SITE_BASE_URL}\n"
+            f"💼 LinkedIn:   https://www.linkedin.com/in/next-job-post-199b5b371\n"
+            f"👉 **Join Channel:** https://t.me/nextjobpost\n"
+        )
 
 def build_post_caption(job, slug):
     """Build a compact Telegram image caption (max ~1000 chars to stay within limit)."""
     job_url    = f"{SITE_BASE_URL}/{slug}"
     title      = job.get('title', 'Job Opening')
     company    = job.get('company', 'Top Company')
-    location   = job.get('location', 'Pan India')
-    salary     = job.get('salary', 'Best in Industry')
     
-    # Build a compact caption
-    caption = (
-        f"🔥 {title}\n"
-        f"🏢 {company}\n"
-        f"📍 {location} | 💰 {salary}\n"
-        f"\n🔗 Apply: {job_url}\n"
-        f"👉 Join: https://t.me/nextjobpost"
-    )
-    
-    # Ensure caption doesn't exceed Telegram's 1024 char limit for media
-    if len(caption) > 1024:
-        # Truncate title and company if needed
+    is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
+    if is_govt:
+        eligibility = job.get('eligibility', 'As per notification')
+        vacancies   = job.get('vacancies', 'Various Vacancies')
+        salary      = job.get('salary', 'Best in Industry')
         caption = (
-            f"🔥 {title[:80]}\n"
-            f"🏢 {company[:50]}\n"
-            f"📍 {location[:40]} | 💰 {salary[:40]}\n"
+            f"🔥 {title}\n"
+            f"🏢 {company}\n"
+            f"🎓 Eligibility: {eligibility} | 👥 Vacancies: {vacancies} | 💰 {salary}\n"
             f"\n🔗 Apply: {job_url}\n"
             f"👉 Join: https://t.me/nextjobpost"
         )
+    else:
+        location   = job.get('location', 'Pan India')
+        salary     = job.get('salary', 'Best in Industry')
+        caption = (
+            f"🔥 {title}\n"
+            f"🏢 {company}\n"
+            f"📍 {location} | 💰 {salary}\n"
+            f"\n🔗 Apply: {job_url}\n"
+            f"👉 Join: https://t.me/nextjobpost"
+        )
+    
+    # Ensure caption doesn't exceed Telegram's 1024 char limit for media
+    if len(caption) > 1024:
+        if is_govt:
+            eligibility = job.get('eligibility', 'As per notification')
+            vacancies   = job.get('vacancies', 'Various Vacancies')
+            salary      = job.get('salary', 'Best in Industry')
+            caption = (
+                f"🔥 {title[:80]}\n"
+                f"🏢 {company[:50]}\n"
+                f"🎓 {eligibility[:40]} | 👥 {vacancies[:30]} | 💰 {salary[:30]}\n"
+                f"\n🔗 Apply: {job_url}\n"
+                f"👉 Join: https://t.me/nextjobpost"
+            )
+        else:
+            location   = job.get('location', 'Pan India')
+            salary     = job.get('salary', 'Best in Industry')
+            caption = (
+                f"🔥 {title[:80]}\n"
+                f"🏢 {company[:50]}\n"
+                f"📍 {location[:40]} | 💰 {salary[:40]}\n"
+                f"\n🔗 Apply: {job_url}\n"
+                f"👉 Join: https://t.me/nextjobpost"
+            )
     
     return caption
 
@@ -933,12 +1077,15 @@ def build_linkedin_post(job, slug):
     job_url      = f"{SITE_BASE_URL}/{slug}"
     title        = job.get('title', 'Job Opening')
     company      = job.get('company', 'Top Company')
+    
+    is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
+    
+    job_type     = job.get('type', 'Full-Time')
     location     = job.get('location', 'Pan India')
     education    = job.get('education', 'Any Graduate')
     experience   = job.get('experience', 'Fresher / 0-2 Years')
-    salary       = job.get('salary', 'As per industry standards')
+    salary       = job.get('salary', 'Best in Industry')
     batch        = job.get('batch', '')
-    job_type     = job.get('type', 'Full-Time')
     last_date    = job.get('lastDate', '')
     summary      = job.get('shortSummary', '') or job.get('description', '')
     about_co     = job.get('aboutCompany', '')
@@ -947,7 +1094,9 @@ def build_linkedin_post(job, slug):
     final_note   = job.get('finalThoughts', '')
 
     # ── Attention-grabbing opening hook ─────────────────────────────────
-    if 'intern' in job_type.lower() or 'intern' in title.lower():
+    if is_govt:
+        hook = f"🏛️ New Government Job Alert! {company} is hiring!\n"
+    elif 'intern' in job_type.lower() or 'intern' in title.lower():
         hook = f"🎓 Freshers & Students — This is YOUR moment! {company} is hiring!\n"
     elif 'remote' in location.lower() or 'remote' in job_type.lower():
         hook = f"🏠 Work from Anywhere! {company} has a Remote opening for you!\n"
@@ -991,59 +1140,81 @@ def build_linkedin_post(job, slug):
         how_section = f'\n📝 How to Apply:\n{how_apply}\n'
 
     # ── Optional badge lines ─────────────────────────────────────────────
-    batch_line    = f"🎯 Batch        : {batch}\n" if batch and batch.lower() not in ('not mentioned', 'not specified', '') else ''
     deadline_line = f"⏰ Last Date    : {last_date}  ← Don't miss the deadline!\n" if last_date else ''
-    type_badge    = f"💼 Job Type     : {job_type}\n"
-
-    # ── Final encouraging note ───────────────────────────────────────────
-    final_section = ''
-    if final_note:
-        final_section = f'\n✨ {final_note}\n'
-    else:
-        final_section = '\n✨ Best of luck with your application! You\'ve got this! 💪\n'
 
     # ── Smart dynamic hashtags ───────────────────────────────────────────
     hashtag_set = {
         '#Hiring', '#Jobs', '#JobAlert', '#NextJobPost', '#Career',
         '#JobSearch', '#Recruitment', '#OpenToWork',
     }
-    if 'intern' in job_type.lower() or 'intern' in title.lower():
-        hashtag_set.update(['#Internship', '#InternshipAlert', '#Fresher', '#CampusHiring'])
+    if is_govt:
+        hashtag_set.update(['#GovtJobs', '#GovernmentJobs', '#SarkariNaukri', '#CentralGovtJobs'])
     else:
-        hashtag_set.update(['#Fresher', '#JobOpening', '#NowHiring', '#OffCampus'])
-    if any(t in title.lower() for t in ['software', 'developer', 'engineer', 'tech', 'data', 'python', 'java', 'devops', 'cloud']):
-        hashtag_set.update(['#TechJobs', '#SoftwareJobs', '#ITJobs', '#TechHiring'])
-    if 'remote' in location.lower() or 'remote' in job_type.lower():
-        hashtag_set.update(['#RemoteJobs', '#WorkFromHome', '#RemoteWork'])
-    if 'finance' in title.lower() or 'banking' in title.lower():
-        hashtag_set.update(['#FinanceJobs', '#BankingJobs', '#BFSI'])
-    if 'data' in title.lower() or 'analyst' in title.lower():
-        hashtag_set.update(['#DataScience', '#Analytics', '#DataJobs'])
+        if 'intern' in job_type.lower() or 'intern' in title.lower():
+            hashtag_set.update(['#Internship', '#InternshipAlert', '#Fresher', '#CampusHiring'])
+        else:
+            hashtag_set.update(['#Fresher', '#JobOpening', '#NowHiring', '#OffCampus'])
+        if any(t in title.lower() for t in ['software', 'developer', 'engineer', 'tech', 'data', 'python', 'java', 'devops', 'cloud']):
+            hashtag_set.update(['#TechJobs', '#SoftwareJobs', '#ITJobs', '#TechHiring'])
+        if 'remote' in location.lower() or 'remote' in job_type.lower():
+            hashtag_set.update(['#RemoteJobs', '#WorkFromHome', '#RemoteWork'])
+        if 'finance' in title.lower() or 'banking' in title.lower():
+            hashtag_set.update(['#FinanceJobs', '#BankingJobs', '#BFSI'])
+        if 'data' in title.lower() or 'analyst' in title.lower():
+            hashtag_set.update(['#DataScience', '#Analytics', '#DataJobs'])
     hashtags = ' '.join(sorted(hashtag_set))
 
-    post_text = (
-        f"{hook}\n"
-        f"🔥 {title}\n"
-        f"📣 {summary}\n\n"
-        f"━━━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"📍 Location     : {location}\n"
-        f"🎓 Education    : {education}\n"
-        f"⏳ Experience   : {experience}\n"
-        f"💰 Salary       : {salary}\n"
-        f"{type_badge}"
-        f"{batch_line}"
-        f"{deadline_line}"
-        f"━━━━━━━━━━━━━━━━━━━━━━━━"
-        f"{resp_section}"
-        f"{skills_section}"
-        f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"🔗 Apply Now → {job_url}\n\n"
-        f"📊 Follow NextJobPost for daily fresh opportunities!\n"
-        f"📢 Telegram: https://t.me/nextjobpost\n"
-        f"🌐 Website:  https://nextjobpost.in\n"
-        f"\n👍 Like  |  🔁 Repost  |  💬 Tag someone who needs this!\n\n"
-        f"{hashtags}"
-    )
+    if is_govt:
+        eligibility = job.get('eligibility', 'As per notification')
+        vacancies = job.get('vacancies', 'Various Vacancies')
+        
+        post_text = (
+            f"{hook}\n"
+            f"🔥 {title}\n"
+            f"📣 {summary}\n\n"
+            f"━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"🎓 Eligibility  : {eligibility}\n"
+            f"🔢 Vacancies    : {vacancies}\n"
+            f"💰 Salary       : {salary}\n"
+            f"{deadline_line}"
+            f"━━━━━━━━━━━━━━━━━━━━━━━━"
+            f"{resp_section}"
+            f"{skills_section}"
+            f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"🔗 Apply Now → {job_url}\n\n"
+            f"📊 Follow NextJobPost for daily fresh opportunities!\n"
+            f"📢 Telegram: https://t.me/nextjobpost\n"
+            f"🌐 Website:  {SITE_BASE_URL}\n"
+            f"\n👍 Like  |  🔁 Repost  |  💬 Tag someone who needs this!\n\n"
+            f"{hashtags}"
+        )
+    else:
+        batch_line    = f"🎯 Batch        : {batch}\n" if batch and batch.lower() not in ('not mentioned', 'not specified', '') else ''
+        type_badge    = f"💼 Job Type     : {job_type}\n"
+        
+        post_text = (
+            f"{hook}\n"
+            f"🔥 {title}\n"
+            f"📣 {summary}\n\n"
+            f"━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"📍 Location     : {location}\n"
+            f"🎓 Education    : {education}\n"
+            f"⏳ Experience   : {experience}\n"
+            f"💰 Salary       : {salary}\n"
+            f"{type_badge}"
+            f"{batch_line}"
+            f"{deadline_line}"
+            f"━━━━━━━━━━━━━━━━━━━━━━━━"
+            f"{resp_section}"
+            f"{skills_section}"
+            f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"🔗 Apply Now → {job_url}\n\n"
+            f"📊 Follow NextJobPost for daily fresh opportunities!\n"
+            f"📢 Telegram: https://t.me/nextjobpost\n"
+            f"🌐 Website:  {SITE_BASE_URL}\n"
+            f"\n👍 Like  |  🔁 Repost  |  💬 Tag someone who needs this!\n\n"
+            f"{hashtags}"
+        )
     return post_text
 
 
@@ -1075,7 +1246,8 @@ async def _upload_image_to_linkedin(session, image_url: str) -> str:
         async with session.post(
             "https://api.linkedin.com/v2/assets?action=registerUpload",
             json=register_payload,
-            headers=headers_auth
+            headers=headers_auth,
+            timeout=30
         ) as reg_resp:
             if reg_resp.status not in (200, 201):
                 txt = await reg_resp.text()
@@ -1100,7 +1272,7 @@ async def _upload_image_to_linkedin(session, image_url: str) -> str:
 
     # Step B: Download the image bytes
     try:
-        async with session.get(image_url) as img_resp:
+        async with session.get(image_url, timeout=30) as img_resp:
             if img_resp.status != 200:
                 print(f"⚠️  Could not download job image [{img_resp.status}]: {image_url}")
                 return ""
@@ -1117,7 +1289,8 @@ async def _upload_image_to_linkedin(session, image_url: str) -> str:
             headers={
                 "Authorization": f"Bearer {LINKEDIN_ACCESS_TOKEN}",
                 "Content-Type": "image/jpeg"
-            }
+            },
+            timeout=30
         ) as put_resp:
             if put_resp.status not in (200, 201):
                 txt = await put_resp.text()
@@ -1201,7 +1374,8 @@ async def post_to_linkedin(session, job, slug):
         async with session.post(
             "https://api.linkedin.com/v2/ugcPosts",
             json=payload,
-            headers=headers
+            headers=headers,
+            timeout=30
         ) as resp:
             if resp.status in (200, 201):
                 data    = await resp.json()
@@ -1233,45 +1407,24 @@ async def process_and_post_job(job_data):
     is_valid, reason = is_valid_job(job)
     if not is_valid:
         print(f"🚫 [ABORT] Job '{job['title']}' has invalid or missing details: {reason}. Aborting social posts.")
-        return
+        return False
 
     async with aiohttp.ClientSession() as session:
-        # 1. Image Upload
+        # 1. Image Upload (Only if real image is present)
         uploaded_url = None
         has_real_image = image_path and os.path.exists(image_path) and os.path.getsize(image_path) > 0
         
         if has_real_image:
             uploaded_url = await upload_image_to_api(session, image_path)
-            
-        if not uploaded_url:
-            print(f"⚠️ [SCHEDULER] Real image upload failed or image missing for '{job['title']}'. Generating professional fallback poster...")
-            fallback_path = os.path.join(PENDING_IMAGES_DIR, f"generated_{h}.png")
-            
-            try:
-                await ensure_font_downloaded()
-                generate_poster(
-                    title=job.get("title", "Job Opportunity"),
-                    company=job.get("company", "Top Company"),
-                    location=job.get("location", "Pan India"),
-                    salary=job.get("salary", "Best in Industry"),
-                    output_path=fallback_path
-                )
-                print(f"🎨 [SCHEDULER] Fallback poster generated at: {fallback_path}")
-                
-                # Upload the generated poster
-                uploaded_url = await upload_image_to_api(session, fallback_path)
-                
-                # Update image_path so subsequent steps (Telegram/LinkedIn) post the generated poster
-                image_path = fallback_path
-            except Exception as gen_err:
-                print(f"❌ [SCHEDULER] Fallback poster generation/upload failed: {gen_err}")
-
-        if not uploaded_url:
-            print(f"🚫 [ABORT] Failed to upload any valid image for job '{job['title']}'. Aborting social posts.")
-            return
-
-        job["image"] = uploaded_url
-        print(f"📸 Image bound: {uploaded_url}")
+            if uploaded_url:
+                job["image"] = uploaded_url
+                print(f"📸 Real image uploaded and bound: {uploaded_url}")
+            else:
+                job["image"] = ""
+                print("⚠️ Failed to upload real image. Proceeding without image.")
+        else:
+            job["image"] = ""
+            print("ℹ️ No real image to upload. Proceeding without image.")
 
         # 2. Website Post (non-blocking — social posts continue even if website fails)
         response = await send_to_api(session, job)
@@ -1298,7 +1451,7 @@ async def process_and_post_job(job_data):
         forbidden_terms = ["not mentioned", "not specified", "not disclosed", "confidential", "hiring company"]
         if any(term in post.lower() for term in forbidden_terms):
             print(f"🚫 [ABORT] Generated Telegram post contains placeholder terms. Skipping Telegram post.")
-            return
+            return False
 
         try:
             # Prepend hidden image link using Markdown to let Telegram pull it as a premium preview banner
@@ -1318,10 +1471,11 @@ async def process_and_post_job(job_data):
                 peer=peer_entity,
                 message=msg_text,
                 entities=entities,
-                invert_media=True,
+                no_webpage=False if uploaded_url else True,
+                invert_media=True if uploaded_url else False,
                 random_id=random.randint(-2**63, 2**63 - 1)
             ))
-            print(f"✔ Telegram Posted in a single unified message section with the image at the TOP.")
+            print(f"✔ Telegram Posted in a single unified message section.")
         except Exception as e:
             print(f"❌ Telegram failed: {e}")
 
@@ -1335,6 +1489,8 @@ async def process_and_post_job(job_data):
         except Exception:
             pass
 
+        return True
+
 
 async def scheduler_task():
     """Background loop that posts one job every POST_INTERVAL seconds (default 30 min)."""
@@ -1347,22 +1503,40 @@ async def scheduler_task():
         # Only post if enough time has passed since last post
         if time_since_last >= POST_INTERVAL:
             queue = load_queue()
-            if queue:
-                job_data = queue.pop(0)  # Oldest first (FIFO)
+            processed_any = False
+            
+            while queue:
+                job_data = queue.pop(0)  # Dequeue the oldest item
                 save_queue(queue)
-                print(f"\n📤 [SCHEDULER] Dequeued job. Remaining in queue: {len(queue)}")
+                
+                job = job_data.get("job", {})
+                is_valid, reason = is_valid_job(job)
+                if not is_valid:
+                    print(f"🚫 [SCHEDULER] Skipping invalid/expired job from queue: '{job.get('title')}' - Reason: {reason}")
+                    continue
+                
+                print(f"\n📤 [SCHEDULER] Dequeued valid job. Remaining in queue: {len(queue)}")
                 try:
-                    await process_and_post_job(job_data)
-                    last_post_time = time.time()  # Reset timer only after successful processing
+                    success = await process_and_post_job(job_data)
+                    if success:
+                        last_post_time = time.time()  # Reset timer only after successful post
+                        processed_any = True
+                    else:
+                        print(f"⚠️ [SCHEDULER] Job '{job.get('title')}' was aborted/skipped inside process_and_post_job. Checking next queue item immediately...")
+                        continue  # Check the next queue item immediately without waiting 30 min!
                 except Exception as e:
                     print(f"❌ [SCHEDULER] Processing error: {e}")
                     import traceback; traceback.print_exc()
-                    last_post_time = time.time()  # Still reset to avoid rapid-fire retries
+                    last_post_time = time.time()  # Still reset on error to avoid rapid-fire error loops
+                    processed_any = True
                 
+                break  # We successfully posted or encountered an execution error (and reset timer), exit queue loop
+            
+            if processed_any:
                 remaining = load_queue()
                 print(f"⏳ [SCHEDULER] Next post in {POST_INTERVAL//60} min. Queue size: {len(remaining)}")
-            else:
-                print(f"📭 [SCHEDULER] Queue empty. Waiting for new jobs... (checked at {time.strftime('%H:%M:%S')})")
+            elif not queue:
+                print(f"📭 [SCHEDULER] Queue empty (or only contained invalid/aborted jobs). Waiting... (checked at {time.strftime('%H:%M:%S')})")
         
         # Sleep 10 seconds then re-check — allows fast response when new jobs arrive
         await asyncio.sleep(10)
@@ -1378,14 +1552,24 @@ async def handler(event):
     h = hash_text(text)
     if h in seen: return
 
-    # Strictly require a real, non-static/non-fake image attached to the incoming Telegram message.
+    # Check if this is a government job channel
+    is_govt_channel = False
+    try:
+        chat = await event.get_chat()
+        username = getattr(chat, 'username', '')
+        if username and username.lower() in ["government_jobs_sarkari_naukri", "sarkariresultofficialchannel", "freejobalertofficial"]:
+            is_govt_channel = True
+    except Exception as e:
+        print(f"Error checking channel username: {e}")
+
+    # Check if message has an image
     is_image_doc = event.message.document and event.message.document.mime_type and event.message.document.mime_type.startswith('image/')
-    if not (event.message.photo or is_image_doc):
-        print(f"🚫 [SKIPPING] Job '{text[:30]}...' has no image attached. Only jobs with real images are processed.")
-        return
+    has_image = bool(event.message.photo or is_image_doc)
 
     # Parse and extract fields using modern AI
     job = await extract_with_ai(text)
+    if is_govt_channel:
+        job["isGovernment"] = True
     
     # Verify that all required fields are present and valid (no "Not Mentioned" etc.)
     is_valid, reason = is_valid_job(job)
@@ -1393,19 +1577,21 @@ async def handler(event):
         print(f"🚫 [SKIPPING] Job '{text[:30]}...' rejected: {reason}")
         return
 
-    # Capture image now (before message disappears)
-    image_path = os.path.join(PENDING_IMAGES_DIR, f"{h}.jpg")
-    try:
-        await event.message.download_media(file=image_path)
-        if not os.path.exists(image_path) or os.path.getsize(image_path) == 0:
-            print(f"🚫 [SKIPPING] Image download failed or file empty for job '{text[:30]}...'.")
-            if os.path.exists(image_path):
-                try: os.remove(image_path)
-                except: pass
-            return
-    except Exception as e:
-        print(f"🚫 [SKIPPING] Error downloading image: {e}")
-        return
+    # Capture image if present
+    image_path = ""
+    if has_image:
+        image_path = os.path.join(PENDING_IMAGES_DIR, f"{h}.jpg")
+        try:
+            await event.message.download_media(file=image_path)
+            if not os.path.exists(image_path) or os.path.getsize(image_path) == 0:
+                print(f"⚠️ Image download failed or file empty for job '{text[:30]}...'. Proceeding without image.")
+                if os.path.exists(image_path):
+                    try: os.remove(image_path)
+                    except: pass
+                image_path = ""
+        except Exception as e:
+            print(f"⚠️ Error downloading image: {e}. Proceeding without image.")
+            image_path = ""
 
     # Add to queue
     queue = load_queue()
