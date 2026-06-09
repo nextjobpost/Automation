@@ -91,8 +91,8 @@ SITE_BASE_URL = os.getenv("SITE_BASE_URL", "https://nextjobpost.in")
 
 # ── Queue Setup ──
 QUEUE_FILE = "job_queue.json"
-# Default 30 minutes (1800 seconds) between posts
-POST_INTERVAL = int(os.getenv("POST_INTERVAL", 1800))
+# Default 30 minutes (1800 seconds) between posts. Capped at 3600 (1 hour) to guarantee at least 24 posts a day.
+POST_INTERVAL = min(int(os.getenv("POST_INTERVAL", 1800)), 3600)
 PENDING_IMAGES_DIR = "pending_images"
 
 if not os.path.exists(PENDING_IMAGES_DIR):
@@ -1610,6 +1610,36 @@ async def handler(event):
     print(f"📥 Job Queued! Total in queue: {len(queue)}")
 
 
+async def run_scraper_periodically():
+    """Background task that runs the government jobs scraper periodically to populate the queue."""
+    # Small startup delay so the main listener has booted up
+    await asyncio.sleep(15)
+    while True:
+        print("\n🔄 [SCRAPER] Running government jobs scraper in the background...")
+        try:
+            # We run it using the same Python executable to preserve dependencies
+            process = await asyncio.create_subprocess_exec(
+                sys.executable, "scrape_govt_jobs.py",
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE
+            )
+            stdout, stderr = await process.communicate()
+            print(f"✅ [SCRAPER] Background scraper finished with exit code {process.returncode}")
+            
+            # Print a snippet of stdout/stderr for logging
+            if stdout:
+                lines = stdout.decode(errors='replace').splitlines()
+                summary_out = "\n".join(lines[-5:]) if len(lines) > 5 else lines
+                print(f"[SCRAPER Output snippet]:\n{summary_out}")
+            if stderr and process.returncode != 0:
+                print(f"[SCRAPER Error]: {stderr.decode(errors='replace')[:500]}")
+        except Exception as e:
+            print(f"❌ [SCRAPER] Failed to execute background scraper: {e}")
+        
+        # Sleep for 6 hours (21600 seconds) before running again
+        await asyncio.sleep(21600)
+
+
 # =========================
 # RUN
 # =========================
@@ -1617,6 +1647,7 @@ import time
 async def main():
     await client.start()
     print("Dual Pipeline Job Agent with Scheduler Running...")
+
     
     # 🛡️ Validate channels
     valid_channels = []
@@ -1637,6 +1668,9 @@ async def main():
     
     # Start the scheduler in the background
     asyncio.create_task(scheduler_task())
+    
+    # Start the government scraper in the background
+    asyncio.create_task(run_scraper_periodically())
     
     await client.run_until_disconnected()
 
