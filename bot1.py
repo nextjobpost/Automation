@@ -965,7 +965,6 @@ def build_post(job, slug):
         
         return (
             f"🔥 **{title}** 🔥\n"
-            f"🏢 **{company}**\n"
             f"{summary_line}"
             f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
             f"🎓 **Eligibility:** {eligibility}\n"
@@ -997,9 +996,9 @@ def build_post(job, slug):
 
         return (
             f"🔥 **{title}** 🔥\n"
-            f"🏢 **{company}**\n"
             f"{summary_line}"
             f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"🏢 **Company:**    {company}\n"
             f"📍 **Location:**   {location}\n"
             f"🎓 **Education:**  {education}\n"
             f"⏳ **Experience:** {experience}\n"
