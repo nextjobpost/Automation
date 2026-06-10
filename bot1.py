@@ -197,33 +197,214 @@ client_gemini = genai.Client(api_key=API_KEY) if API_KEY else None
 # EXTRACTOR (AI + Basic Fallback)
 # =========================
 def extract_basic(text):
-    """Fallback parser if Gemini fails or is not setup"""
-    lines = [l.strip() for l in text.split("\n") if l.strip()]
-    title = lines[0][:120] if lines else "Job Opening"
+    """Fallback Regex Parser for Telegram posts if Gemini fails or is not setup"""
+    # 1. Clean mathematical bold/italic to standard Latin text
+    text_clean = normalize_text_keep_case(text)
+    
+    # 2. Extract Title (first non-empty line, stripped of emojis and special characters)
+    lines = [l.strip() for l in text_clean.split("\n") if l.strip()]
+    raw_title = lines[0][:120] if lines else "Job Opening"
+    title = re.sub(r"[^a-zA-Z0-9\s|:\-–]", " ", raw_title).strip()
+    # Normalize double spaces
+    title = re.sub(r"\s+", " ", title)
+    
+    # 3. Extract Links
     urls = re.findall(r'https?://[^\s]+', text)
     apply_link = urls[0] if urls else ""
+    
+    # 4. Guess Company
+    company = guess_company_from_title(title)
+    if not company:
+        # Search for company field in text
+        for l in lines:
+            if "company" in l.lower() or "organization" in l.lower():
+                company_val = l.split(":")[-1].strip()
+                company = clean_company_name(company_val)
+                break
+    if not company:
+        company = get_company_from_link(apply_link) or "Top Company"
 
-    company = "Not Mentioned"
-    location = "Not Mentioned"
-    job_type = "Full-Time"
-
+    # 5. Extract Location
+    location = "Pan India"
     for l in lines:
-        if "company" in l.lower():
-            company = l.split(":")[-1].strip()
-        if "location" in l.lower():
-            location = l.split(":")[-1].strip()
-        if "intern" in l.lower():
+        if "location" in l.lower() or "job location" in l.lower():
+            location_val = l.split(":")[-1].strip()
+            # Clean location value
+            location = re.sub(r"[^a-zA-Z0-9\s,.\-]", " ", location_val).strip()
+            location = re.sub(r"\s+", " ", location)
+            break
+
+    # 6. Extract Eligibility / Education
+    education = "Any Graduate"
+    eligibility = ""
+    for l in lines:
+        l_lower = l.lower()
+        if "eligibility" in l_lower or "education" in l_lower or "qualification" in l_lower:
+            val = l.split(":")[-1].strip()
+            val = re.sub(r"[^a-zA-Z0-9\s,.\-/]", " ", val).strip()
+            education = re.sub(r"\s+", " ", val)
+            eligibility = education
+            break
+            
+    # Heuristic match for B.Tech/Degree if not explicitly in education line
+    if education == "Any Graduate":
+        elig_keywords = [
+            r"\b(?:b\.?e\.?|b\.?tech)\b",
+            r"\b(?:m\.?e\.?|m\.?tech)\b",
+            r"\b(?:diploma)\b",
+            r"\b(?:degree|graduate|graduation)\b",
+            r"\b(?:m\.?sc\.?|b\.?sc\.?|m\.?c\.?a\.?|b\.?c\.?a\.?)\b"
+        ]
+        matches = []
+        for pattern in elig_keywords:
+            match = re.search(pattern, text_clean, re.IGNORECASE)
+            if match:
+                matches.append(match.group(0).upper())
+        if matches:
+            education = ", ".join(list(set(matches)))
+            eligibility = education
+       # 7. Extract Salary
+    salary = "Best in Industry"
+    for l in lines:
+        if "salary" in l.lower() or "stipend" in l.lower() or "package" in l.lower():
+            val = l.split(":")[-1].strip()
+            salary = re.sub(r"[^a-zA-Z0-9\s,.\-₹$#LPA]", " ", val).strip()
+            salary = re.sub(r"\s+", " ", salary)
+            break
+            
+    if salary == "Best in Industry":
+        # Match currency symbol + digits near keywords (pay, salary, stipend, scale)
+        salary_match = re.search(r'\b(?:pay|salary|stipend|remuneration|scale)\b[^0-9\n]{0,40}(?:rs\.?|inr|₹|rs|rs\.)\s*(\d+[\d,]*)\b', text_clean, re.IGNORECASE)
+        if salary_match:
+            salary = f"Rs. {salary_match.group(1).strip()}"
+        else:
+            # Match standalone digits near keywords
+            salary_match2 = re.search(r'\b(?:pay|salary|stipend|remuneration|scale)\b[^0-9\n]{0,40}\b(\d{4,6}|\d{1,3},\d{3})\b', text_clean, re.IGNORECASE)
+            if salary_match2:
+                salary = f"Rs. {salary_match2.group(1).strip()}"
+
+    # 8. Extract Vacancies
+    vacancies = "Various Vacancies"
+    for l in lines:
+        if "vacancies" in l.lower() or "vacancy" in l.lower() or "slots" in l.lower() or "posts" in l.lower():
+            val = l.split(":")[-1].strip()
+            vacancies = re.sub(r"[^a-zA-Z0-9\s,.\-]", " ", val).strip()
+            vacancies = re.sub(r"\s+", " ", vacancies)
+            break
+    if vacancies == "Various Vacancies":
+        vac_match = re.search(r'\b(\d+)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE)
+        if vac_match:
+            vacancies = vac_match.group(0).strip()
+
+    # 9. Extract Last Date
+    last_date = ""
+    # Fallback to search entire post for dates with deadline heuristics
+    months_pattern = r'(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)'
+    
+    # Check for date near keywords first
+    date_pattern_ld1 = r'(?:last\s*date|deadline|closing|submission|end\s*date)[^0-9\n]{0,50}\b(\d{1,2})[-/\s]+(' + months_pattern + r'|\d{1,2})[-/\s]+(\d{4})\b'
+    match_ld1 = re.search(date_pattern_ld1, text_clean, re.IGNORECASE)
+    if match_ld1:
+        d, m_name, y = match_ld1.groups()
+        if m_name.isdigit():
+            m_num = int(m_name)
+        else:
+            months_map = {
+                "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
+                "apr": 4, "april": 4, "may": 5, "jun": 6, "june": 6, "jul": 7, "july": 7,
+                "aug": 8, "august": 8, "sep": 9, "september": 9, "oct": 10, "october": 10,
+                "nov": 11, "november": 11, "dec": 12, "december": 12
+            }
+            m_num = months_map.get(m_name.lower()[:3]) or 1
+        try: last_date = f"{int(y):04d}-{m_num:02d}-{int(d):02d}"
+        except: pass
+            
+    if not last_date:
+        date_pattern_ld2 = r'(?:last\s*date|deadline|closing|submission|end\s*date)[^0-9\n]{0,50}\b(\d{4})[-/\s]+(' + months_pattern + r'|\d{1,2})[-/\s]+(\d{1,2})\b'
+        match_ld2 = re.search(date_pattern_ld2, text_clean, re.IGNORECASE)
+        if match_ld2:
+            y, m_name, d = match_ld2.groups()
+            if m_name.isdigit():
+                m_num = int(m_name)
+            else:
+                months_map = {
+                    "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
+                    "apr": 4, "april": 4, "may": 5, "jun": 6, "june": 6, "jul": 7, "july": 7,
+                    "aug": 8, "august": 8, "sep": 9, "september": 9, "oct": 10, "october": 10,
+                    "nov": 11, "november": 11, "dec": 12, "december": 12
+                }
+                m_num = months_map.get(m_name.lower()[:3]) or 1
+            try: last_date = f"{int(y):04d}-{m_num:02d}-{int(d):02d}"
+            except: pass
+
+    if not last_date:
+        # Fallback to general date regex (last match in text)
+        date_matches_m = re.findall(r'\b(\d{1,2})\s+(' + months_pattern + r')\s+(\d{4})\b', text_clean, re.IGNORECASE)
+        if date_matches_m:
+            d, m_name, y = date_matches_m[-1]
+            months_map = {
+                "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
+                "apr": 4, "april": 4, "may": 5, "jun": 6, "june": 6, "jul": 7, "july": 7,
+                "aug": 8, "august": 8, "sep": 9, "september": 9, "oct": 10, "october": 10,
+                "nov": 11, "november": 11, "dec": 12, "december": 12
+            }
+            m_num = months_map.get(m_name.lower()[:3]) or 1
+            try: last_date = f"{int(y):04d}-{m_num:02d}-{int(d):02d}"
+            except: pass
+                
+    if not last_date:
+        date_matches = re.findall(r'\b(\d{1,2})[-/](\d{1,2})[-/](\d{4})\b', text_clean)
+        if date_matches:
+            d, m, y = date_matches[-1]
+            try: last_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
+            except: pass
+        if not last_date:
+            date_matches_y = re.findall(r'\b(\d{4})[-/](\d{1,2})[-/](\d{1,2})\b', text_clean)
+            if date_matches_y:
+                y, m, d = date_matches_y[-1]
+                try: last_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
+                except: pass
+
+    # 10. Extract Job Type / Experience / Batch
+    job_type = "Full-Time"
+    experience = "Fresher / 0-2 Years"
+    batch = "2024 / 2025 / 2026"
+    
+    for l in lines:
+        l_lower = l.lower()
+        if "intern" in l_lower:
             job_type = "Internship"
+        if "experience" in l_lower:
+            val = l.split(":")[-1].strip()
+            experience = re.sub(r"[^a-zA-Z0-9\s\-/]", " ", val).strip()
+            experience = re.sub(r"\s+", " ", experience)
+        if "batch" in l_lower or "eligible batches" in l_lower:
+            val = l.split(":")[-1].strip()
+            batch = re.sub(r"[^a-zA-Z0-9\s/]", " ", val).strip()
+            batch = re.sub(r"\s+", " ", batch)
+
+    # 11. Government Job detection
+    is_govt = False
+    govt_keywords = ["drdo", "ssc", "upsc", "railway", "isro", "govt", "government", "sarkari", "public sector", "psu"]
+    if any(kw in title.lower() or kw in company.lower() for kw in govt_keywords):
+        is_govt = True
 
     return {
         "title": title,
         "company": company,
         "location": location,
         "applyLink": apply_link,
-        "jobDescription": text,
+        "jobDescription": text_clean,
+        "description": text_clean[:180] + "..." if len(text_clean) > 180 else text_clean,
         "type": job_type,
-        "experience": "Fresher / 0-2 Years",
-        "education": "Graduation",
+        "experience": experience,
+        "education": education,
+        "eligibility": eligibility,
+        "vacancies": vacancies,
+        "salary": salary,
+        "batch": batch,
+        "lastDate": last_date if last_date else None,
+        "isGovernment": is_govt,
         "slug": slugify(title) + "-" + hashlib.md5(text.encode()).hexdigest()[:5]
     }
 
@@ -336,6 +517,151 @@ def guess_company_from_title(title):
             
     return None
 
+def parse_salary_fallback(text):
+    if not text:
+        return None
+    import re
+    import unicodedata
+    
+    # Strip HTML tags if any
+    clean_text = re.sub(r'<[^>]+>', ' ', text)
+    # Normalize unicode/mathematical characters
+    clean_text = unicodedata.normalize('NFKD', str(clean_text))
+    
+    # Pattern 1: match currency symbol + digits + range + qualifiers like LPA/month/K
+    value_re = r'₹\s*[\d,.]+\s*(?:LPA|L|Lakh|lakhs?|K|\/month)?(?:\s*[-–—\u2212]\s*₹?\s*[\d,.]+\s*(?:LPA|L|Lakh|lakhs?|K|\/month)?)?(?:\s*\([^)\n]{1,30}\))?'
+    
+    lines = clean_text.split('\n')
+    for line in lines:
+        line_lower = line.lower()
+        if any(kw in line_lower for kw in ["salary", "stipend", "package", "ctc", "lpa"]):
+            # Look for the pattern in this specific line
+            match = re.search(value_re, line, re.IGNORECASE)
+            if match:
+                return match.group(0).strip()
+                
+            # If not matched, try matching "X LPA" or "X Lakh"
+            lpa_re = r'\b(\d+(?:\.\d+)?)\s*(?:LPA|Lakh|lacs?|k/month)\b'
+            match_lpa = re.search(lpa_re, line, re.IGNORECASE)
+            if match_lpa:
+                return match_lpa.group(0).strip()
+                
+    # If no line matches, search globally for ₹ value pattern
+    match_global = re.search(value_re, clean_text, re.IGNORECASE)
+    if match_global:
+        return match_global.group(0).strip()
+        
+    return None
+
+def enrich_company_details(job):
+    company = job.get("company", "").strip()
+    if not company:
+        company = "Top Company"
+        job["company"] = company
+        
+    company_lower = company.lower()
+    
+    # 🏢 Known company profiles
+    profiles = {
+        "ibm": {
+            "aboutCompany": "IBM is a leading global technology and consulting corporation pioneer in mainframe systems, cloud infrastructure, AI platforms, and quantum computing.",
+            "whyJoin": "IBM offers an incredible global platform, world-class technical training resources, and hands-on experience working on enterprise-scale hybrid cloud and AI projects.",
+            "howToApply": "Click the apply link, fill in your details on IBM's official candidate portal, upload your resume, and submit your application.",
+            "finalThoughts": "This is a fantastic opportunity to launch your career with a global technology pioneer. Best of luck!"
+        },
+        "accenture": {
+            "aboutCompany": "Accenture is a leading global professional services company providing advanced capabilities in strategy, consulting, digital technology, and operations.",
+            "whyJoin": "Accenture is renowned for its outstanding entry-level training programs, diverse global clients, supportive work culture, and clear career growth pathways.",
+            "howToApply": "Click the application link, fill out your details on the Accenture careers site, complete your candidate profile, and submit your resume.",
+            "finalThoughts": "A great chance to grow your skills at scale. Don't miss this opportunity, apply today!"
+        },
+        "tcs": {
+            "aboutCompany": "Tata Consultancy Services (TCS) is an IT services, consulting, and business solutions provider that has partnered with global enterprises for over 50 years.",
+            "whyJoin": "TCS provides exceptional job stability, extensive continuous learning via the TCS iON platform, a supportive environment, and international career options.",
+            "howToApply": "Click the apply link, navigate to the TCS NextStep portal or careers page, enter your academic details, and submit.",
+            "finalThoughts": "A perfect start to build a long-term foundation in the IT industry. Wish you success!"
+        },
+        "infosys": {
+            "aboutCompany": "Infosys is a global leader in next-generation digital services and technology consulting, operating across more than 50 countries.",
+            "whyJoin": "Infosys is famous for its world-class training academy at Mysore, robust mentorship, and strong focus on upskilling in artificial intelligence and cloud technologies.",
+            "howToApply": "Click the apply link to access the Infosys job application form, upload your resume, and verify your credentials.",
+            "finalThoughts": "Take the first step toward a bright future. Apply now!"
+        },
+        "wipro": {
+            "aboutCompany": "Wipro Limited is a premier global information technology, consulting, and business process services company.",
+            "whyJoin": "Wipro offers a highly collaborative work culture, structured fresher induction programs, and diverse project exposure across global industries.",
+            "howToApply": "Click the application link to go to Wipro's talent portal, fill in the candidate application form, and submit your CV.",
+            "finalThoughts": "An excellent opportunity to kickstart your tech journey. Apply today!"
+        },
+        "cognizant": {
+            "aboutCompany": "Cognizant is a multinational technology company that helps clients modernize legacy technology, reimagine processes, and transform user experiences.",
+            "whyJoin": "Cognizant offers rapid professional growth, comprehensive digital training platforms, and a vibrant workspace for entry-level developers.",
+            "howToApply": "Click the apply link, register on the Cognizant careers page, fill in your profile, and submit your application.",
+            "finalThoughts": "Start your digital career on the right foot. Good luck with your application!"
+        },
+        "google": {
+            "aboutCompany": "Google is a global technology company specializing in internet-related services, cloud computing, search engine technology, software, and hardware.",
+            "whyJoin": "Google offers a highly creative, collaborative work environment, cutting-edge engineering challenges, and industry-leading mentorship and perks.",
+            "howToApply": "Click the apply link, review the job requirements on the Google Careers site, upload your resume, and apply online.",
+            "finalThoughts": "A dream opportunity to make a massive global impact. Make sure to put your best foot forward!"
+        },
+        "microsoft": {
+            "aboutCompany": "Microsoft is a leading multinational technology corporation known for developing software, consumer electronics, and world-class cloud platforms.",
+            "whyJoin": "Microsoft provides an empowering culture, flexible working modes, top-tier compensation, and resources to innovate on next-gen AI and cloud tools.",
+            "howToApply": "Click the application link, sign in to Microsoft Careers, enter your details, and submit your resume.",
+            "finalThoughts": "Launch your career with one of the most respected tech giants in the world. Best wishes!"
+        },
+        "amazon": {
+            "aboutCompany": "Amazon is a global technology pioneer focusing on e-commerce, cloud computing (AWS), digital entertainment, and smart devices.",
+            "whyJoin": "Amazon provides a high-ownership environment, fast-paced career advancement, and the chance to build systems that scale to millions of transactions.",
+            "howToApply": "Click the apply link, complete your registration on Amazon Jobs, take any required assessments, and submit your application.",
+            "finalThoughts": "A stellar company to gain fast engineering velocity. Apply as soon as possible!"
+        },
+        "capgemini": {
+            "aboutCompany": "Capgemini is a multicultural global consulting and technology services leader enabling client business transformation.",
+            "whyJoin": "Capgemini offers international mobility prospects, structured talent development, and a strong culture of collaboration and sustainability.",
+            "howToApply": "Click the apply link to go to Capgemini's careers portal, complete the application form, and submit your CV.",
+            "finalThoughts": "A great place to work with high global standards. Apply now!"
+        },
+        "myntra": {
+            "aboutCompany": "Myntra is India's premier e-commerce platform for fashion, beauty, and lifestyle brands, delivering personalized shopping experiences.",
+            "whyJoin": "Myntra offers direct exposure to high-scale e-commerce tech stacks, modern front-end/back-end frameworks, and a highly agile dev culture.",
+            "howToApply": "Click the application link, fill out the application on Myntra's hiring portal, upload your resume, and submit.",
+            "finalThoughts": "Join a highly dynamic and fashionable tech team. We wish you the best!"
+        },
+        "flipkart": {
+            "aboutCompany": "Flipkart is one of India's leading digital commerce giants, empowering digital transactions and e-commerce services nationwide.",
+            "whyJoin": "Flipkart offers complex engineering opportunities in high-performance distributed databases, logistics tech, and payment gateways.",
+            "howToApply": "Click the apply link, log in or sign up on the Flipkart Careers page, enter your details, and submit your resume.",
+            "finalThoughts": "A fantastic team to build state-of-the-art consumer systems. Apply today!"
+        }
+    }
+    
+    # 🔍 Try to find a match
+    matched_profile = None
+    for key, profile in profiles.items():
+        if key in company_lower:
+            matched_profile = profile
+            break
+            
+    # fallback generic profiles
+    if not matched_profile:
+        matched_profile = {
+            "aboutCompany": f"{company} is a leading organization dedicated to delivering innovation and excellence in its field. The company is committed to cultivating a diverse workforce and providing a growth-oriented environment for its employees.",
+            "whyJoin": "This role provides a fantastic opportunity to collaborate with experienced professionals, work on impactful projects, accelerate your skill development, and build a rewarding career.",
+            "howToApply": f"Click on the apply link to navigate to the official career portal for {company}, complete the registration form with your details, upload your CV, and submit.",
+            "finalThoughts": "A wonderful chance to advance your career. Make sure to apply soon to secure your application!"
+        }
+        
+    # Apply to job object if the field is empty, missing, or a placeholder
+    forbidden_terms = ["not mentioned", "not specified", "not disclosed", "confidential", "hiring company", ""]
+    
+    for field in ["aboutCompany", "whyJoin", "howToApply", "finalThoughts"]:
+        val = str(job.get(field, "")).strip()
+        val_lower = val.lower()
+        if not val or any(term == val_lower for term in forbidden_terms):
+            job[field] = matched_profile[field]
+
 def is_valid_job(job):
     """
     Validates the job details. If any required information is missing, not specified, 
@@ -386,10 +712,11 @@ def is_valid_job(job):
     is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
     
     if is_govt:
-        # 1. Auto-default salary
+        # 1. Auto-default salary — "As per notification" is valid for govt jobs
         salary = job.get("salary")
         if not salary or any(term in str(salary).lower() for term in forbidden_terms):
-            job["salary"] = "Best in Industry"
+            parsed = parse_salary_fallback(job.get("jobDescription") or "")
+            job["salary"] = parsed if parsed else "As per notification"
             
         # 2. Auto-default vacancies
         vacancies = job.get("vacancies")
@@ -401,12 +728,18 @@ def is_valid_job(job):
         if not eligibility or any(term in str(eligibility).lower() for term in forbidden_terms):
             job["eligibility"] = "As per notification"
             
-        check_keys = ["company", "salary", "eligibility", "vacancies"]
+        # 4. Auto-default company
+        if not job.get("company"):
+            job["company"] = "Govt Department"
+
+        # Govt jobs only need company + eligibility + vacancies
+        check_keys = ["company", "eligibility", "vacancies"]
     else:
         # 1. Auto-default salary
         salary = job.get("salary")
         if not salary or any(term in str(salary).lower() for term in forbidden_terms):
-            job["salary"] = "Best in Industry"
+            parsed = parse_salary_fallback(job.get("jobDescription") or "")
+            job["salary"] = parsed if parsed else "Best in Industry"
             
         # 2. Auto-default batch
         batch = job.get("batch")
@@ -491,15 +824,22 @@ def is_valid_job(job):
         # Key fields to check
         check_keys = ["company", "location", "salary", "experience", "education", "batch"]
     
+    # Phrases that are legitimate defaults for govt jobs (not actual placeholders)
+    govt_accepted_values = {"as per notification", "as per official notification", "various vacancies"}
+    
     for key in check_keys:
         val = job.get(key)
         if not val:
             return False, f"Missing required field: {key}"
         
         val_lower = str(val).strip().lower()
+        # Skip forbidden check for accepted govt defaults
+        if val_lower in govt_accepted_values:
+            continue
         if any(term in val_lower for term in forbidden_terms):
             return False, f"Placeholder/Missing value '{val}' detected in field: {key}"
             
+    enrich_company_details(job)
     return True, ""
 
 async def extract_with_ai(text):
@@ -544,11 +884,9 @@ Job Posting Text:
 {text}
 """
     candidate_models = [
-        "gemini-2.5-flash-lite",
-        "gemini-3.1-flash-lite",
-        "gemini-flash-lite-latest",
-        "gemini-3.5-flash",
-        "gemini-2.5-flash"
+        "gemini-2.5-flash-lite-preview-06-17",
+        "gemini-2.5-flash",
+        "gemini-2.0-flash"
     ]
     
     data = None
@@ -1594,8 +1932,9 @@ async def scheduler_task():
 
 
 async def handler(event):
-    text = event.message.message or ""
-    if not text: return
+    raw_text = event.message.message or ""
+    if not raw_text: return
+    text = normalize_text_keep_case(raw_text)
 
     print(f"\n[DEBUG] 📩 Incoming message: {text[:60]}...")
     if not is_job(text): return

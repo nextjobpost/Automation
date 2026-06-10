@@ -40,9 +40,14 @@ GOVT_SCRAPER_DOMAIN = parsed_base.netloc or "govtjobsalert.in"
 CACHE_FILE = "scraped_urls.json"
 
 # Initialize Gemini
+client_gemini = None
 if not API_KEY:
-    raise ValueError("API_KEY not found in environment. Please configure it in .env")
-client_gemini = genai.Client(api_key=API_KEY)
+    print("⚠️ API_KEY not found in environment. Running in BASIC extraction mode (no AI).")
+else:
+    try:
+        client_gemini = genai.Client(api_key=API_KEY)
+    except Exception as e:
+        print(f"⚠️ Failed to initialize Gemini client: {e}. Running in BASIC extraction mode.")
 
 def load_cache():
     if os.path.exists(CACHE_FILE):
@@ -173,8 +178,191 @@ def extract_govt_links(html_content):
         "pdfLink": pdf_link
     }
 
+def guess_org_from_title(title):
+    if not title:
+        return "Govt Department"
+    # Basic guess logic: split by delimiters
+    title_clean = re.sub(r"[^a-zA-Z0-9\s|:\-–]", " ", title)
+    # Match common gov organizations
+    orgs = ["UPSC", "SSC", "DRDO", "Railway", "ISRO", "BARC", "HAL", "IOCL", "ONGC", "NTPC", "BHEL", "RBI", "SBI", "IBPS"]
+    for org in orgs:
+        if org.lower() in title_clean.lower():
+            return org
+    # Check delimiters
+    for delim in ["|", "-", ":", "–"]:
+        if delim in title:
+            parts = title.split(delim)
+            for part in parts:
+                cleaned = part.strip()
+                if cleaned and len(cleaned.split()) <= 3 and len(cleaned) < 25:
+                    if cleaned.lower() not in ["recruitment", "jobs", "hiring", "apply", "admit card", "result", "answer key", "vacancy", "vacancies"]:
+                        return cleaned
+    # Fallback to first word
+    words = title.split()
+    if words and len(words[0]) >= 2:
+        return words[0]
+    return "Govt Department"
+
+def enrich_content_basic(html_content, title):
+    """Fallback parser if Gemini fails or is not setup, using regex and BeautifulSoup"""
+    soup = BeautifulSoup(html_content, "html.parser")
+    text = soup.get_text(separator=" ")
+    text_clean = re.sub(r'\s+', ' ', text).strip()
+
+    # 1. Organization
+    org = guess_org_from_title(title)
+
+    # 2. Eligibility
+    eligibility = "As per notification"
+    eligibility_keywords = [
+        r"\b(?:10th|12th|ssc|hsc)\b",
+        r"\b(?:b\.?e\.?|b\.?tech)\b",
+        r"\b(?:m\.?e\.?|m\.?tech)\b",
+        r"\b(?:diploma)\b",
+        r"\b(?:degree|graduate|graduation)\b",
+        r"\b(?:post\s*graduate|post\s*graduation|master)\b",
+        r"\b(?:m\.?sc\.?|b\.?sc\.?|m\.?c\.?a\.?|b\.?c\.?a\.?)\b",
+        r"\b(?:iti)\b",
+        r"\b(?:ph\.?d)\b",
+        r"\b(?:mbbs)\b"
+    ]
+    matches = []
+    for pattern in eligibility_keywords:
+        match = re.search(pattern, text_clean, re.IGNORECASE)
+        if match:
+            matches.append(match.group(0).upper())
+    if matches:
+        eligibility = ", ".join(list(set(matches)))
+
+    # 3. Vacancies
+    vacancies = "Various Vacancies"
+    # Search for numbers followed by posts/vacancies
+    vac_match = re.search(r'\b(\d+)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE)
+    if vac_match:
+        vacancies = f"{vac_match.group(1)} Posts"
+    else:
+        # Search for "no. of vacancies: X" or similar
+        vac_match2 = re.search(r'(?:no\s*of\s*posts|total\s*posts|vacancies|vacancy)\s*[:\-]\s*(\d+)\b', text_clean, re.IGNORECASE)
+        if vac_match2:
+            vacancies = f"{vac_match2.group(1)} Posts"
+
+    # 4. Last Date
+    last_date = ""
+    months_pattern = r'(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)'
+    
+    # Heuristic: search for date near keywords "last date", "deadline", "closing", "submission" first
+    date_pattern_ld1 = r'(?:last\s*date|deadline|closing|submission|end\s*date)[^0-9\n]{0,50}\b(\d{1,2})[-/\s]+(' + months_pattern + r'|\d{1,2})[-/\s]+(\d{4})\b'
+    match_ld1 = re.search(date_pattern_ld1, text_clean, re.IGNORECASE)
+    if match_ld1:
+        d, m_name, y = match_ld1.groups()
+        if m_name.isdigit():
+            m_num = int(m_name)
+        else:
+            months_map = {
+                "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
+                "apr": 4, "april": 4, "may": 5, "jun": 6, "june": 6, "jul": 7, "july": 7,
+                "aug": 8, "august": 8, "sep": 9, "september": 9, "oct": 10, "october": 10,
+                "nov": 11, "november": 11, "dec": 12, "december": 12
+            }
+            m_num = months_map.get(m_name.lower()[:3]) or 1
+        try: last_date = f"{int(y):04d}-{m_num:02d}-{int(d):02d}"
+        except: pass
+            
+    if not last_date:
+        # Check for YYYY-MM-DD pattern near keywords
+        date_pattern_ld2 = r'(?:last\s*date|deadline|closing|submission|end\s*date)[^0-9\n]{0,50}\b(\d{4})[-/\s]+(' + months_pattern + r'|\d{1,2})[-/\s]+(\d{1,2})\b'
+        match_ld2 = re.search(date_pattern_ld2, text_clean, re.IGNORECASE)
+        if match_ld2:
+            y, m_name, d = match_ld2.groups()
+            if m_name.isdigit():
+                m_num = int(m_name)
+            else:
+                months_map = {
+                    "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
+                    "apr": 4, "april": 4, "may": 5, "jun": 6, "june": 6, "jul": 7, "july": 7,
+                    "aug": 8, "august": 8, "sep": 9, "september": 9, "oct": 10, "october": 10,
+                    "nov": 11, "november": 11, "dec": 12, "december": 12
+                }
+                m_num = months_map.get(m_name.lower()[:3]) or 1
+            try: last_date = f"{int(y):04d}-{m_num:02d}-{int(d):02d}"
+            except: pass
+
+    if not last_date:
+        # Fallback to general date regex (last date in the text usually)
+        date_matches_m = re.findall(r'\b(\d{1,2})\s+(' + months_pattern + r')\s+(\d{4})\b', text_clean, re.IGNORECASE)
+        if date_matches_m:
+            d, m_name, y = date_matches_m[-1]
+            months_map = {
+                "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
+                "apr": 4, "april": 4, "may": 5, "jun": 6, "june": 6, "jul": 7, "july": 7,
+                "aug": 8, "august": 8, "sep": 9, "september": 9, "oct": 10, "october": 10,
+                "nov": 11, "november": 11, "dec": 12, "december": 12
+            }
+            m_num = months_map.get(m_name.lower()[:3]) or 1
+            try: last_date = f"{int(y):04d}-{m_num:02d}-{int(d):02d}"
+            except: pass
+                
+    if not last_date:
+        date_matches = re.findall(r'\b(\d{1,2})[-/](\d{1,2})[-/](\d{4})\b', text_clean)
+        if date_matches:
+            d, m, y = date_matches[-1]
+            try: last_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
+            except: pass
+                
+    if not last_date:
+        date_matches_y = re.findall(r'\b(\d{4})[-/](\d{1,2})[-/](\d{1,2})\b', text_clean)
+        if date_matches_y:
+            y, m, d = date_matches_y[-1]
+            try: last_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
+            except: pass
+
+    # 5. Salary — covers Pay Matrix, Grade Pay, Level, CPC scales & standard formats
+    salary = "As per notification"
+    # Match: ₹1,23,456, Rs. 50000, INR 40000
+    m = re.search(r'(?:₹|rs\.?|inr)\s*(\d[\d,\.]+)(?:\s*(?:/-|per\s*month|pm|pa|p\.a\.?))?', text_clean, re.IGNORECASE)
+    if m:
+        salary = f"Rs. {m.group(1).strip()}"
+    else:
+        # Match: Pay Matrix Level 6, Level-10, CPC Level 8
+        m2 = re.search(r'(?:pay\s*matrix|pay\s*band|cpc)?\s*level\s*[-–]?\s*(\d+)', text_clean, re.IGNORECASE)
+        if m2:
+            salary = f"Pay Matrix Level {m2.group(1)}"
+        else:
+            # Match: Grade Pay ₹4200 or Grade Pay 4800
+            m3 = re.search(r'grade\s*pay\s*(?:₹|rs\.?)?\s*(\d[\d,]*)', text_clean, re.IGNORECASE)
+            if m3:
+                salary = f"Grade Pay Rs. {m3.group(1)}"
+            else:
+                # Match: Pay Scale 15600-39100 or 9300-34800
+                m4 = re.search(r'pay\s*(?:scale|band)[:\s]*([\d,]+-[\d,]+)', text_clean, re.IGNORECASE)
+                if m4:
+                    salary = f"Rs. {m4.group(1)}"
+                else:
+                    # Match: salary/stipend/pay near digits (generic fallback)
+                    m5 = re.search(r'\b(?:pay|salary|stipend|remuneration)\b[^0-9\n]{0,40}\b(\d{4,6}|\d{1,3},\d{3})\b', text_clean, re.IGNORECASE)
+                    if m5:
+                        salary = f"Rs. {m5.group(1).strip()}"
+
+    # 6. Summary
+    summary = text_clean[:180] + "..." if len(text_clean) > 180 else text_clean
+
+    return {
+        "organization": org,
+        "postName": title,
+        "eligibility": eligibility,
+        "vacancies": vacancies,
+        "lastDate": last_date,
+        "salary": salary,
+        "summary": summary,
+        "seoTitle": title[:60],
+        "seoDescription": summary[:155],
+        "faqs": []
+    }
+
 def enrich_content_with_ai(html_content, title):
     """Sends html/text content to Gemini 2.5 Flash to extract metadata, summary, and FAQs."""
+    if not client_gemini:
+        return None
     # Strip HTML tags to make the prompt smaller and save tokens
     soup = BeautifulSoup(html_content, "html.parser")
     text_content = soup.get_text(separator="\n")
@@ -209,11 +397,9 @@ def enrich_content_with_ai(html_content, title):
     """
     
     candidate_models = [
-        "gemini-2.5-flash-lite",
-        "gemini-3.1-flash-lite",
-        "gemini-flash-lite-latest",
-        "gemini-3.5-flash",
-        "gemini-2.5-flash"
+        "gemini-2.5-flash-lite-preview-06-17",
+        "gemini-2.5-flash",
+        "gemini-2.0-flash"
     ]
     
     last_error = None
@@ -328,11 +514,11 @@ def scrape_category(category_path, post_type_default):
             print("⚠️ Entry content empty or not found. Skipping.")
             continue
             
-        # 3. Call Gemini to enrich
+        # 3. Call Gemini to enrich, fallback to basic Regex/BeautifulSoup parser if it fails
         ai_data = enrich_content_with_ai(detail_html, raw_title)
         if not ai_data:
-            print("⚠️ AI Enrichment failed. Skipping.")
-            continue
+            print("⚠️ AI Enrichment failed. Falling back to basic regex/BeautifulSoup parser...")
+            ai_data = enrich_content_basic(detail_html, raw_title)
             
         # 4. Construct final structured content
         org = ai_data.get("organization", "Govt Department")
@@ -391,116 +577,69 @@ def scrape_category(category_path, post_type_default):
         if not extracted_pdf_link or any(domain in extracted_pdf_link for domain in ["govtjobsalert.in", "sarkariresult.com"]):
             extracted_pdf_link = ""
         
-        # 5. Determine if we should auto-post (queue for bot1.py) or post direct draft
-        auto_post = os.getenv("AUTO_POST_GOVT_JOBS", "false").lower() == "true"
-        
-        if auto_post:
-            slug_base = slugify(raw_title)
-            url_hash = hashlib.md5(href.encode()).hexdigest()[:5]
-            slug = f"{slug_base}-{url_hash}"
-            
-            queue_job = {
-                "title": raw_title,
-                "slug": slug,
-                "company": org,
-                "location": "",
-                "type": "Full-Time",
-                "experience": "",
-                "eligibility": eligibility,
-                "vacancies": vacancies,
-                "salary": salary,
-                "applyLink": extracted_apply_link,
-                "education": "",
-                "batch": "",
-                "lastDate": last_date if last_date else None,
-                "jobDescription": full_description_html,
-                "description": summary,
-                "metaTitle": seo_title,
-                "metaDescription": seo_desc,
-                "isGovernment": True,
-                "postType": post_type,
-                "sourceWebsite": GOVT_SCRAPER_DOMAIN,
-                "sourceUrl": href,
-                "importantDates": "As per official notification",
-                "pdfLink": extracted_pdf_link,
-                "isActive": True
-            }
-            
-            # Load, append and save to queue
-            queue_file = "job_queue.json"
-            queue = []
-            if os.path.exists(queue_file):
-                try:
-                    with open(queue_file, "r", encoding="utf-8") as f:
-                        queue = json.load(f)
-                except Exception:
-                    queue = []
-            
-            queue.append({
-                "job": queue_job,
-                "image_path": "", # Triggers Pillow poster fallback in bot1.py
-                "hash": hashlib.md5(href.encode()).hexdigest(),
-                "timestamp": time.time()
-            })
-            
+        # 5. Always queue the job for bot1.py (Telegram + LinkedIn + image)
+        slug_base = slugify(raw_title)
+        url_hash = hashlib.md5(href.encode()).hexdigest()[:5]
+        slug = f"{slug_base}-{url_hash}"
+
+        queue_job = {
+            "title": raw_title,
+            "slug": slug,
+            "company": org,
+            "location": "India",
+            "type": "Full-Time",
+            "experience": "As per notification",
+            "eligibility": eligibility,
+            "vacancies": vacancies,
+            "salary": salary,
+            "applyLink": extracted_apply_link,
+            "education": eligibility,
+            "batch": "",
+            "lastDate": last_date if last_date else None,
+            "jobDescription": full_description_html,
+            "description": summary,
+            "shortSummary": summary,
+            "metaTitle": seo_title,
+            "metaDescription": seo_desc,
+            "isGovernment": True,
+            "postType": post_type,
+            "sourceWebsite": GOVT_SCRAPER_DOMAIN,
+            "sourceUrl": href,
+            "importantDates": "As per official notification",
+            "pdfLink": extracted_pdf_link,
+            "isActive": True,
+            "whatsapp": "https://chat.whatsapp.com/LVpuUJluTpUEdIc4daAemQ",
+            "telegram": "https://t.me/nextjobpost"
+        }
+
+        # Load, append and save to queue
+        queue_file = "job_queue.json"
+        queue = []
+        if os.path.exists(queue_file):
             try:
-                with open(queue_file, "w", encoding="utf-8") as f:
-                    json.dump(queue, f, indent=2)
-                print(f"📥 Successfully queued government job for auto-posting: {raw_title}")
-                print(f"   └ Apply Link: {extracted_apply_link}")
-                print(f"   └ PDF Link: {extracted_pdf_link}")
-                cache.add(href)
-                save_cache(cache)
-                new_items_posted += 1
-            except Exception as e:
-                print(f"❌ Failed to write to job_queue.json: {e}")
-        else:
-            # 5. Create payload for local NextJobPost API as draft
-            payload = {
-                "title": raw_title,
-                "company": org,
-                "location": "",
-                "type": "Full-Time",
-                "experience": "",
-                "eligibility": eligibility,
-                "vacancies": vacancies,
-                "salary": salary,
-                "applyLink": extracted_apply_link,
-                "education": "",
-                "batch": "",
-                "lastDate": last_date if last_date else None,
-                "jobDescription": full_description_html,
-                "description": summary,
-                "metaTitle": seo_title,
-                "metaDescription": seo_desc,
-                "isActive": True,
-                "isGovernment": True,
-                "postType": post_type,
-                "sourceWebsite": GOVT_SCRAPER_DOMAIN,
-                "sourceUrl": href,
-                "importantDates": "As per official notification",
-                "pdfLink": extracted_pdf_link
-            }
-            
-            # 6. Post to API as draft
-            post_headers = {
-                "Authorization": f"Bearer {token}",
-                "Content-Type": "application/json"
-            }
-            
-            try:
-                post_resp = requests.post(API_URL, json=payload, headers=post_headers, timeout=15)
-                if post_resp.status_code in [200, 201]:
-                    print(f"✅ Successfully posted active job to backend: {raw_title}")
-                    print(f"   └ Apply Link: {extracted_apply_link}")
-                    print(f"   └ PDF Link: {extracted_pdf_link}")
-                    cache.add(href)
-                    save_cache(cache)
-                    new_items_posted += 1
-                else:
-                    print(f"❌ Failed to save active job. API returned status {post_resp.status_code}: {post_resp.text}")
-            except Exception as e:
-                print(f"❌ API post request failed: {e}")
+                with open(queue_file, "r", encoding="utf-8") as f:
+                    queue = json.load(f)
+            except Exception:
+                queue = []
+
+        queue.append({
+            "job": queue_job,
+            "image_path": "",  # bot1.py will auto-generate a poster via Pillow
+            "hash": hashlib.md5(href.encode()).hexdigest(),
+            "timestamp": time.time()
+        })
+
+        try:
+            with open(queue_file, "w", encoding="utf-8") as f:
+                json.dump(queue, f, indent=2)
+            print(f"📥 Queued govt job for Telegram + LinkedIn posting: {raw_title}")
+            print(f"   └ Apply Link : {extracted_apply_link}")
+            print(f"   └ PDF Link   : {extracted_pdf_link}")
+            cache.add(href)
+            save_cache(cache)
+            new_items_posted += 1
+        except Exception as e:
+            print(f"❌ Failed to write to job_queue.json: {e}")
             
     print(f"Finished category scraping. Posted {new_items_posted} new drafts.")
 
@@ -563,7 +702,7 @@ def scrape_sarkari_result(source, headers, cache, token):
         print(f"Found {len(valid_links)} listings in '{post_type}' column.")
         
         # Process each listing (up to 5 per category to keep it fast/polite)
-        for raw_title, href in valid_links[:5]:
+        for raw_title, href in valid_links[:10]:
             if href in cache:
                 continue
                 
@@ -586,11 +725,11 @@ def scrape_sarkari_result(source, headers, cache, token):
                 print("⚠️ Detail content empty or not found. Skipping.")
                 continue
                 
-            # 3. Call Gemini to enrich
+            # 3. Call Gemini to enrich, fallback to basic Regex/BeautifulSoup parser if it fails
             ai_data = enrich_content_with_ai(detail_html, raw_title)
             if not ai_data:
-                print("⚠️ AI Enrichment failed. Skipping.")
-                continue
+                print("⚠️ AI Enrichment failed. Falling back to basic regex/BeautifulSoup parser...")
+                ai_data = enrich_content_basic(detail_html, raw_title)
                 
             # 4. Construct final structured content
             org = ai_data.get("organization", "Govt Department")
@@ -651,114 +790,69 @@ def scrape_sarkari_result(source, headers, cache, token):
             if any(domain in extracted_pdf_link for domain in ["govtjobsalert.in", "sarkariresult.com"]):
                 extracted_pdf_link = ""
             
-            # 5. Queue or Post Draft
-            auto_post = os.getenv("AUTO_POST_GOVT_JOBS", "false").lower() == "true"
-            
-            if auto_post:
-                slug_base = slugify(raw_title)
-                url_hash = hashlib.md5(href.encode()).hexdigest()[:5]
-                slug = f"{slug_base}-{url_hash}"
-                
-                queue_job = {
-                    "title": raw_title,
-                    "slug": slug,
-                    "company": org,
-                    "location": "",
-                    "type": "Full-Time",
-                    "experience": "",
-                    "eligibility": eligibility,
-                    "vacancies": vacancies,
-                    "salary": salary,
-                    "applyLink": extracted_apply_link,
-                    "education": "",
-                    "batch": "",
-                    "lastDate": last_date if last_date else None,
-                    "jobDescription": full_description_html,
-                    "description": summary,
-                    "metaTitle": seo_title,
-                    "metaDescription": seo_desc,
-                    "isGovernment": True,
-                    "postType": post_type,
-                    "sourceWebsite": source_domain,
-                    "sourceUrl": href,
-                    "importantDates": "As per official notification",
-                    "pdfLink": extracted_pdf_link,
-                    "isActive": True
-                }
-                
-                # Load, append and save to queue
-                queue_file = "job_queue.json"
-                q_list = []
-                if os.path.exists(queue_file):
-                    try:
-                        with open(queue_file, "r", encoding="utf-8") as f:
-                            q_list = json.load(f)
-                    except Exception:
-                        q_list = []
-                
-                q_list.append({
-                    "job": queue_job,
-                    "image_path": "", # Triggers Pillow poster fallback in bot1.py
-                    "hash": hashlib.md5(href.encode()).hexdigest(),
-                    "timestamp": time.time()
-                })
-                
+            # 5. Always queue the job for bot1.py (Telegram + LinkedIn + image)
+            slug_base = slugify(raw_title)
+            url_hash = hashlib.md5(href.encode()).hexdigest()[:5]
+            slug = f"{slug_base}-{url_hash}"
+
+            queue_job = {
+                "title": raw_title,
+                "slug": slug,
+                "company": org,
+                "location": "India",
+                "type": "Full-Time",
+                "experience": "As per notification",
+                "eligibility": eligibility,
+                "vacancies": vacancies,
+                "salary": salary,
+                "applyLink": extracted_apply_link,
+                "education": eligibility,
+                "batch": "",
+                "lastDate": last_date if last_date else None,
+                "jobDescription": full_description_html,
+                "description": summary,
+                "shortSummary": summary,
+                "metaTitle": seo_title,
+                "metaDescription": seo_desc,
+                "isGovernment": True,
+                "postType": post_type,
+                "sourceWebsite": source_domain,
+                "sourceUrl": href,
+                "importantDates": "As per official notification",
+                "pdfLink": extracted_pdf_link,
+                "isActive": True,
+                "whatsapp": "https://chat.whatsapp.com/LVpuUJluTpUEdIc4daAemQ",
+                "telegram": "https://t.me/nextjobpost"
+            }
+
+            # Load, append and save to queue
+            queue_file = "job_queue.json"
+            q_list = []
+            if os.path.exists(queue_file):
                 try:
-                    with open(queue_file, "w", encoding="utf-8") as f:
-                        json.dump(q_list, f, indent=2)
-                    print(f"📥 Successfully queued government job for auto-posting: {raw_title}")
-                    print(f"   └ Apply Link: {extracted_apply_link}")
-                    print(f"   └ PDF Link: {extracted_pdf_link}")
-                    cache.add(href)
-                    save_cache(cache)
-                    new_items_posted += 1
-                except Exception as e:
-                    print(f"❌ Failed to write to job_queue.json: {e}")
-            else:
-                payload = {
-                    "title": raw_title,
-                    "company": org,
-                    "location": "",
-                    "type": "Full-Time",
-                    "experience": "",
-                    "eligibility": eligibility,
-                    "vacancies": vacancies,
-                    "salary": salary,
-                    "applyLink": extracted_apply_link,
-                    "education": "",
-                    "batch": "",
-                    "lastDate": last_date if last_date else None,
-                    "jobDescription": full_description_html,
-                    "description": summary,
-                    "metaTitle": seo_title,
-                    "metaDescription": seo_desc,
-                    "isActive": True,
-                    "isGovernment": True,
-                    "postType": post_type,
-                    "sourceWebsite": source_domain,
-                    "sourceUrl": href,
-                    "importantDates": "As per official notification",
-                    "pdfLink": extracted_pdf_link
-                }
-                
-                post_headers = {
-                    "Authorization": f"Bearer {token}",
-                    "Content-Type": "application/json"
-                }
-                
-                try:
-                    post_resp = requests.post(API_URL, json=payload, headers=post_headers, timeout=15)
-                    if post_resp.status_code in [200, 201]:
-                        print(f"✅ Successfully posted active job to backend: {raw_title}")
-                        print(f"   └ Apply Link: {extracted_apply_link}")
-                        print(f"   └ PDF Link: {extracted_pdf_link}")
-                        cache.add(href)
-                        save_cache(cache)
-                        new_items_posted += 1
-                    else:
-                        print(f"❌ Failed to save active job. Status {post_resp.status_code}: {post_resp.text}")
-                except Exception as e:
-                    print(f"❌ API post request failed: {e}")
+                    with open(queue_file, "r", encoding="utf-8") as f:
+                        q_list = json.load(f)
+                except Exception:
+                    q_list = []
+
+            q_list.append({
+                "job": queue_job,
+                "image_path": "",  # bot1.py will auto-generate a poster via Pillow
+                "hash": hashlib.md5(href.encode()).hexdigest(),
+                "timestamp": time.time()
+            })
+
+            try:
+                with open(queue_file, "w", encoding="utf-8") as f:
+                    json.dump(q_list, f, indent=2)
+                print(f"📥 Queued govt job for Telegram + LinkedIn posting: {raw_title}")
+                print(f"   └ Apply Link : {extracted_apply_link}")
+                print(f"   └ PDF Link   : {extracted_pdf_link}")
+                cache.add(href)
+                save_cache(cache)
+                new_items_posted += 1
+            except Exception as e:
+                print(f"❌ Failed to write to job_queue.json: {e}")
                     
     print(f"Finished Sarkari Result scraping. Posted {new_items_posted} new jobs.")
 
