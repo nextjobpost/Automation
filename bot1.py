@@ -58,30 +58,6 @@ SOURCE_CHANNELS = [
     "walkindrive",
     "freshershunt",
     "fresherearth",
-
-    # ── Internships & College Students ──
-    "jobs_and_internships_updates",
-    "InternshipsIndia",
-    "FresherInternships",
-    "PaidInternshipsIndia",
-    "StartupInternships",
-
-    # ── Remote & WFH ──
-    "seekeras",
-    "seekeraswfh",
-    "joblii",
-    "RemoteJobsGlobal",
-    "RemoteWorkDaily",
-
-    # ── Specialized Tech Roles ──
-    "PythonDeveloperJobs",
-    "JavaScriptFullStack",
-    "QA_Testing_Jobs",
-
-    # ── General & Sarkari Naukri ──
-    "Government_Jobs_Sarkari_Naukri",
-    "SarkariResultOfficialChannel",
-    "FreeJobAlertOfficial"
 ]
 
 TARGET_CHANNEL = "nextjobpost"
@@ -177,6 +153,13 @@ def normalize_text(text):
     # Normalize unicode bold/italic mathematical alphanumeric chars to standard Latin
     return unicodedata.normalize('NFKD', str(text)).lower()
 
+def normalize_text_keep_case(text):
+    if not text:
+        return ""
+    import unicodedata
+    # Normalize unicode bold/italic mathematical alphanumeric chars to standard Latin while keeping original case
+    return unicodedata.normalize('NFKD', str(text))
+
 def is_job(text):
     if not text: return False
     t = normalize_text(text)
@@ -247,8 +230,14 @@ def extract_basic(text):
 from urllib.parse import urlparse
 
 def clean_company_name(s):
-    words_orig = s.split()
-    s_lower = " " + s.lower() + " "
+    # Normalize unicode mathematical bold/italic characters to standard Latin
+    s_norm = normalize_text_keep_case(s)
+    
+    # Strip emojis and keep only standard characters (letters, digits, spaces, and & , . -)
+    s_norm = re.sub(r"[^a-zA-Z0-9\s&,\.\-]", " ", s_norm)
+    
+    words_orig = s_norm.split()
+    s_lower = " " + s_norm.lower() + " "
     
     # Remove common phrases and job titles
     patterns_to_remove = [
@@ -259,7 +248,8 @@ def clean_company_name(s):
         r"\bsoftware\s*engineer\b", r"\bsoftware\s*developer\b", r"\bdeveloper\b",
         r"\bengineer\b", r"\banalyst\b", r"\btester\b", r"\bsupport\b", r"\bconsultant\b",
         r"\bassociate\b", r"\bexecutive\b", r"\btrainee\b", r"\bmanager\b",
-        r"\bfor\b", r"\bat\b", r"\bthe\b", r"\ban\b", r"\ba\b", r"\bin\b", r"\bto\b", r"\bof\b", r"\bwith\b"
+        r"\bfor\b", r"\bat\b", r"\bthe\b", r"\ban\b", r"\ba\b", r"\bin\b", r"\bto\b", r"\bof\b", r"\bwith\b",
+        r"\bis\b", r"\bare\b"
     ]
     
     cleaned = s_lower
@@ -351,6 +341,12 @@ def is_valid_job(job):
     Validates the job details. If any required information is missing, not specified, 
     not disclosed, or not mentioned, we fill in a default or guess to ensure we do not skip.
     """
+    # Normalize title and company to standard Latin characters (preserving case)
+    if job.get("title"):
+        job["title"] = normalize_text_keep_case(job["title"])
+    if job.get("company"):
+        job["company"] = normalize_text_keep_case(job["company"])
+
     # Reject training, certification, bootcamp, academy, and course postings
     title = job.get("title", "")
     if title:
@@ -419,10 +415,50 @@ def is_valid_job(job):
             
         # 3. Auto-default company (guess from title or URL first, then fallback to Top Company)
         company = job.get("company")
-        if not company or any(term in str(company).lower() for term in forbidden_terms):
+        
+        forbidden_companies = {
+            "pdlink", "placement drive", "placement drive link", "placementkit", 
+            "nextjobpost", "next job post", "cseofficial", "it jobs career", 
+            "joblii", "seekeras", "freshershunt", "fresherearth", "telegram", 
+            "whatsapp", "youtube", "google form", "google doc", "hiring company",
+            "placement link", "job post", "job alert"
+        }
+        
+        company_lower = normalize_text(company) if company else ""
+        is_forbidden_company = False
+        
+        for term in forbidden_terms:
+            if term in company_lower:
+                is_forbidden_company = True
+                break
+                
+        if not is_forbidden_company:
+            for term in forbidden_companies:
+                if term == company_lower or company_lower.startswith(term + " ") or company_lower.endswith(" " + term) or (" " + term + " ") in (" " + company_lower + " "):
+                    is_forbidden_company = True
+                    break
+        
+        if not company or is_forbidden_company:
             guessed = guess_company_from_title(job.get("title"))
             if not guessed:
                 guessed = get_company_from_link(job.get("applyLink"))
+            
+            # If the guessed company is also forbidden/placeholder, don't use it, fall back to "Top Company"
+            if guessed:
+                guessed_lower = normalize_text(guessed)
+                is_guessed_forbidden = False
+                for term in forbidden_terms:
+                    if term in guessed_lower:
+                        is_guessed_forbidden = True
+                        break
+                if not is_guessed_forbidden:
+                    for term in forbidden_companies:
+                        if term == guessed_lower or guessed_lower.startswith(term + " ") or guessed_lower.endswith(" " + term) or (" " + term + " ") in (" " + guessed_lower + " "):
+                            is_guessed_forbidden = True
+                            break
+                if is_guessed_forbidden:
+                    guessed = None
+            
             job["company"] = guessed or "Top Company"
             
         # 4. Auto-default location
