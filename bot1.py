@@ -267,7 +267,7 @@ def clean_company_name(s):
             if clean_orig.lower() == w.lower():
                 orig_match = clean_orig
                 break
-        if orig_match and orig_match.isupper() and len(orig_match) >= 2:
+        if orig_match:
             result_words.append(orig_match)
         else:
             result_words.append(w.capitalize())
@@ -437,6 +437,18 @@ def is_valid_job(job):
                 if term == company_lower or company_lower.startswith(term + " ") or company_lower.endswith(" " + term) or (" " + term + " ") in (" " + company_lower + " "):
                     is_forbidden_company = True
                     break
+        
+        # Sentence / description checks to discard full sentences extracted as company names
+        if not is_forbidden_company and company:
+            sentence_indicators = [
+                "this is", "opportunity to", "career with", "leading global", 
+                "hiring for", "we are", "looking for", "about the", "join our", 
+                "work with", "leading company", "fast growing", "is looking", 
+                "is hiring", "apply now", "click here", "link in"
+            ]
+            comp_words = str(company).split()
+            if len(comp_words) > 4 or len(str(company)) > 30 or any(indicator in company_lower for indicator in sentence_indicators):
+                is_forbidden_company = True
         
         if not company or is_forbidden_company:
             guessed = guess_company_from_title(job.get("title"))
