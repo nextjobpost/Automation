@@ -884,14 +884,14 @@ Job Posting Text:
 {text}
 """
     candidate_models = [
-        "gemini-2.5-flash-lite-preview-06-17",
-        "gemini-2.5-flash",
-        "gemini-2.0-flash"
+        "gemini-2.5-flash-lite",   # Most efficient — try first
+        "gemini-2.5-flash",        # Stronger fallback
+        "gemini-2.0-flash"         # Final fallback
     ]
     
     data = None
     last_error = None
-    for model in candidate_models:
+    for i, model in enumerate(candidate_models):
         try:
             print(f"🤖 Parsing with Gemini model: {model}...")
             response = await client_gemini.aio.models.generate_content(
@@ -910,13 +910,24 @@ Job Posting Text:
             data = json.loads(clean_json)
             break
         except Exception as e:
-            if "RESOURCE_EXHAUSTED" in str(e):
-                print(f"⚠️ Model {model} resource exhausted. Trying next fallback model...")
-                last_error = e
-                continue
+            last_error = e
+            err_str = str(e)
+            if "RESOURCE_EXHAUSTED" in err_str or "429" in err_str:
+                # Extract retry delay from error message if present
+                retry_wait = 65  # default safe wait
+                import re as _re
+                match = _re.search(r'retryDelay.*?(\d+)s', err_str)
+                if match:
+                    retry_wait = int(match.group(1)) + 5
+                if i < len(candidate_models) - 1:
+                    print(f"⚠️ Model {model} rate limited (429). Waiting {retry_wait}s before trying next model...")
+                    await asyncio.sleep(retry_wait)
+                else:
+                    print(f"⚠️ Model {model} rate limited (429). No more fallback models.")
+            elif "NOT_FOUND" in err_str or "404" in err_str:
+                print(f"⚠️ Model {model} not found (404) — skipping to next model.")
             else:
                 print(f"⚠️ Gemini parsing failed with model {model}: {e}")
-                last_error = e
                 
     if not data:
         print(f"❌ All Gemini candidate models failed. Last error: {last_error}. Falling back to basic parser.")
