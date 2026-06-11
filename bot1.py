@@ -891,7 +891,7 @@ Job Posting Text:
     
     data = None
     last_error = None
-    for i, model in enumerate(candidate_models):
+    for model in candidate_models:
         try:
             print(f"🤖 Parsing with Gemini model: {model}...")
             response = await client_gemini.aio.models.generate_content(
@@ -908,30 +908,23 @@ Job Posting Text:
                 clean_json = clean_json[3:-3].strip()
                 
             data = json.loads(clean_json)
-            break
+            break  # ✅ Success — stop trying other models
         except Exception as e:
             last_error = e
             err_str = str(e)
             if "RESOURCE_EXHAUSTED" in err_str or "429" in err_str:
-                # Extract retry delay from error message if present
-                retry_wait = 65  # default safe wait
-                import re as _re
-                match = _re.search(r'retryDelay.*?(\d+)s', err_str)
-                if match:
-                    retry_wait = int(match.group(1)) + 5
-                if i < len(candidate_models) - 1:
-                    print(f"⚠️ Model {model} rate limited (429). Waiting {retry_wait}s before trying next model...")
-                    await asyncio.sleep(retry_wait)
-                else:
-                    print(f"⚠️ Model {model} rate limited (429). No more fallback models.")
+                print(f"⚠️ Model {model} rate limited (429). Switching to next model...")
             elif "NOT_FOUND" in err_str or "404" in err_str:
-                print(f"⚠️ Model {model} not found (404) — skipping to next model.")
+                print(f"⚠️ Model {model} not found (404). Switching to next model...")
             else:
-                print(f"⚠️ Gemini parsing failed with model {model}: {e}")
+                print(f"⚠️ Model {model} failed: {e}. Switching to next model...")
+            # No waiting — immediately try next model or fall back to basic parser
                 
     if not data:
-        print(f"❌ All Gemini candidate models failed. Last error: {last_error}. Falling back to basic parser.")
+        # ✅ Regex + BeautifulSoup parser — fast, reliable, no quota limits
+        print(f"⚠️ All Gemini models failed ({last_error}). Using regex/BS4 basic parser instantly.")
         return extract_basic(text)
+
         
     # 🎨 Give the beautiful HTML text to the job detail page, and clean summary to the home page cards
     title_val = data.get("title", "Job Opening")
