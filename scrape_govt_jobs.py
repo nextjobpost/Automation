@@ -186,7 +186,7 @@ def guess_org_from_title(title):
     # Match common gov organizations
     orgs = ["UPSC", "SSC", "DRDO", "Railway", "ISRO", "BARC", "HAL", "IOCL", "ONGC", "NTPC", "BHEL", "RBI", "SBI", "IBPS"]
     for org in orgs:
-        if org.lower() in title_clean.lower():
+        if re.search(r'\b' + re.escape(org) + r'\b', title_clean, re.IGNORECASE):
             return org
     # Check delimiters
     for delim in ["|", "-", ":", "–"]:
@@ -236,13 +236,13 @@ def enrich_content_basic(html_content, title):
 
     # 3. Vacancies
     vacancies = "Various Vacancies"
-    # Search for numbers followed by posts/vacancies
-    vac_match = re.search(r'\b(\d+)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE)
+    # Search for numbers followed by posts/vacancies (allowing commas)
+    vac_match = re.search(r'\b(\d[\d,]*)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE)
     if vac_match:
         vacancies = f"{vac_match.group(1)} Posts"
     else:
         # Search for "no. of vacancies: X" or similar
-        vac_match2 = re.search(r'(?:no\s*of\s*posts|total\s*posts|vacancies|vacancy)\s*[:\-]\s*(\d+)\b', text_clean, re.IGNORECASE)
+        vac_match2 = re.search(r'(?:no\s*of\s*posts|total\s*posts|vacancies|vacancy)\s*[:\-]\s*(\d[\d,]*)\b', text_clean, re.IGNORECASE)
         if vac_match2:
             vacancies = f"{vac_match2.group(1)} Posts"
 
@@ -318,8 +318,8 @@ def enrich_content_basic(html_content, title):
 
     # 5. Salary — covers Pay Matrix, Grade Pay, Level, CPC scales & standard formats
     salary = "As per notification"
-    # Match: ₹1,23,456, Rs. 50000, INR 40000
-    m = re.search(r'(?:₹|rs\.?|inr)\s*(\d[\d,\.]+)(?:\s*(?:/-|per\s*month|pm|pa|p\.a\.?))?', text_clean, re.IGNORECASE)
+    # Match: ₹1,23,456, Rs. 50000, INR 40000 (prefixed with word boundaries to avoid matching word suffixes like 'covers' or 'years')
+    m = re.search(r'(?:₹|\brs\.?|\binr)\s*(\d[\d,\.]+)(?:\s*(?:/-|per\s*month|pm|pa|p\.a\.?))?', text_clean, re.IGNORECASE)
     if m:
         salary = f"Rs. {m.group(1).strip()}"
     else:

@@ -273,8 +273,8 @@ def extract_basic(text):
             break
             
     if salary == "Best in Industry":
-        # Match currency symbol + digits near keywords (pay, salary, stipend, scale)
-        salary_match = re.search(r'\b(?:pay|salary|stipend|remuneration|scale)\b[^0-9\n]{0,40}(?:rs\.?|inr|₹|rs|rs\.)\s*(\d+[\d,]*)\b', text_clean, re.IGNORECASE)
+        # Match currency symbol + digits near keywords (pay, salary, stipend, scale) (prefixed with word boundaries to avoid matching word suffixes like 'covers' or 'years')
+        salary_match = re.search(r'\b(?:pay|salary|stipend|remuneration|scale)\b[^0-9\n]{0,40}(?:\brs\.?|\binr|₹)\s*(\d+[\d,]*)\b', text_clean, re.IGNORECASE)
         if salary_match:
             salary = f"Rs. {salary_match.group(1).strip()}"
         else:
@@ -292,7 +292,8 @@ def extract_basic(text):
             vacancies = re.sub(r"\s+", " ", vacancies)
             break
     if vacancies == "Various Vacancies":
-        vac_match = re.search(r'\b(\d+)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE)
+        # Match numbers (allowing commas) followed by posts/vacancies
+        vac_match = re.search(r'\b(\d[\d,]*)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE)
         if vac_match:
             vacancies = vac_match.group(0).strip()
 
@@ -735,8 +736,52 @@ def is_valid_job(job):
             job["eligibility"] = "As per notification"
             
         # 4. Auto-default company
-        if not job.get("company"):
-            job["company"] = "Govt Department"
+        company = job.get("company")
+        
+        forbidden_companies = {
+            "pdlink", "placement drive", "placement drive link", "placementkit", 
+            "nextjobpost", "next job post", "cseofficial", "it jobs career", 
+            "joblii", "seekeras", "freshershunt", "fresherearth", "telegram", 
+            "whatsapp", "youtube", "google form", "google doc", "hiring company",
+            "placement link", "job post", "job alert"
+        }
+        
+        company_lower = normalize_text(company) if company else ""
+        is_forbidden_company = False
+        
+        for term in forbidden_terms:
+            if term in company_lower:
+                is_forbidden_company = True
+                break
+                
+        if not is_forbidden_company:
+            for term in forbidden_companies:
+                if term == company_lower or company_lower.startswith(term + " ") or company_lower.endswith(" " + term) or (" " + term + " ") in (" " + company_lower + " "):
+                    is_forbidden_company = True
+                    break
+
+        if not company or is_forbidden_company:
+            guessed = guess_company_from_title(job.get("title"))
+            if not guessed:
+                guessed = get_company_from_link(job.get("applyLink"))
+            
+            # If the guessed company is also forbidden/placeholder, don't use it, fall back to "Govt Department"
+            if guessed:
+                guessed_lower = normalize_text(guessed)
+                is_guessed_forbidden = False
+                for term in forbidden_terms:
+                    if term in guessed_lower:
+                        is_guessed_forbidden = True
+                        break
+                if not is_guessed_forbidden:
+                    for term in forbidden_companies:
+                        if term == guessed_lower or guessed_lower.startswith(term + " ") or guessed_lower.endswith(" " + term) or (" " + term + " ") in (" " + guessed_lower + " "):
+                            is_guessed_forbidden = True
+                            break
+                if is_guessed_forbidden:
+                    guessed = None
+            
+            job["company"] = guessed or "Govt Department"
 
         # Govt jobs only need company + eligibility + vacancies
         check_keys = ["company", "eligibility", "vacancies"]
