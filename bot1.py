@@ -667,6 +667,12 @@ def is_valid_job(job):
     Validates the job details. If any required information is missing, not specified, 
     not disclosed, or not mentioned, we fill in a default or guess to ensure we do not skip.
     """
+    # 🚫 Sarkari Result Rejection Filter
+    for field in ["title", "company", "applyLink", "sourceWebsite", "sourceUrl", "jobDescription"]:
+        val = str(job.get(field, "")).lower()
+        if "sarkariresult" in val or "sarkari result" in val:
+            return False, f"Sarkari Result reference detected in '{field}'"
+
     # Normalize title and company to standard Latin characters (preserving case)
     if job.get("title"):
         job["title"] = normalize_text_keep_case(job["title"])
@@ -1289,12 +1295,16 @@ async def send_to_api(session, job):
     if API_TOKEN:
         headers["Authorization"] = f"Bearer {API_TOKEN}"
         
-    async with session.post(API_URL, json=job, headers=headers, timeout=30) as res:
-        try:
-            data = await res.json()
-            return data
-        except:
-            return None
+    try:
+        async with session.post(API_URL, json=job, headers=headers, timeout=30) as res:
+            try:
+                data = await res.json()
+                return data
+            except:
+                return None
+    except Exception as e:
+        print(f"❌ [API] Failed to post job to API: {e}")
+        return None
 
 def build_post(job, slug):
     """Build a rich, fully-featured Telegram post with maximum engagement."""
@@ -1951,7 +1961,7 @@ async def handler(event):
     try:
         chat = await event.get_chat()
         username = getattr(chat, 'username', '')
-        if username and username.lower() in ["government_jobs_sarkari_naukri", "sarkariresultofficialchannel", "freejobalertofficial"]:
+        if username and username.lower() in ["government_jobs_sarkari_naukri", "freejobalertofficial"]:
             is_govt_channel = True
     except Exception as e:
         print(f"Error checking channel username: {e}")
