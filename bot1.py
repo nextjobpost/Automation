@@ -191,7 +191,11 @@ def normalize_text_keep_case(text):
     if not text:
         return ""
     # Normalize unicode bold/italic mathematical alphanumeric chars to standard Latin while keeping original case
-    return unicodedata.normalize('NFKD', str(text))
+    normalized = unicodedata.normalize('NFKD', str(text))
+    # Replace mobile LinkedIn links with standard LinkedIn links
+    if "linkedin.com/m/" in normalized:
+        normalized = normalized.replace("linkedin.com/m/", "linkedin.com/")
+    return normalized
 
 def is_job(text):
     if not text: return False
@@ -1394,6 +1398,13 @@ async def send_to_api(session, job):
     # Remove image field from the payload sent to the website
     job_payload = dict(job)
     job_payload.pop("image", None)
+    
+    # Sanitize any LinkedIn mobile URLs in all string fields
+    for k, v in job_payload.items():
+        if isinstance(v, str) and "linkedin.com/m/" in v:
+            job_payload[k] = v.replace("linkedin.com/m/", "linkedin.com/")
+        elif isinstance(v, list):
+            job_payload[k] = [item.replace("linkedin.com/m/", "linkedin.com/") if isinstance(item, str) and "linkedin.com/m/" in item else item for item in v]
         
     try:
         async with session.post(API_URL, json=job_payload, headers=headers, timeout=30) as res:
@@ -1406,11 +1417,29 @@ async def send_to_api(session, job):
         print(f"❌ [API] Failed to post job to API: {e}")
         return None
 
+def strip_html(text):
+    if not text:
+        return ""
+    text = str(text)
+    # Replace block level tags with newlines/spaces to prevent words running together
+    text = re.sub(r'<(?:br\s*/?|/p|/h\d|/li|/div|/ul|/ol)>', '\n', text, flags=re.IGNORECASE)
+    # Strip all remaining HTML tags
+    clean = re.sub(r'<[^>]*>', '', text)
+    # Decode HTML entities
+    import html
+    clean = html.unescape(clean).replace('\xa0', ' ')
+    # Replace multiple consecutive newlines with a single newline/two newlines to clean up
+    clean = re.sub(r'\n\s*\n+', '\n\n', clean)
+    # Clean up mobile LinkedIn links if any
+    if "linkedin.com/m/" in clean:
+        clean = clean.replace("linkedin.com/m/", "linkedin.com/")
+    return clean.strip()
+
 def build_post(job, slug):
     """Build a rich, fully-featured Telegram post with maximum engagement."""
     job_url    = f"{SITE_BASE_URL}/{slug}"
-    title      = job.get('title', 'Job Opening')
-    company    = job.get('company', 'Top Company')
+    title      = strip_html(job.get('title', 'Job Opening'))
+    company    = strip_html(job.get('company', 'Top Company'))
     
     is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
     
@@ -1418,49 +1447,49 @@ def build_post(job, slug):
     skills_raw = job.get('skills', [])
     skills_section = ''
     if skills_raw:
-        skill_list = '  •  '.join(skills_raw[:6])
+        skill_list = '  •  '.join(strip_html(s) for s in skills_raw[:6] if s)
         skills_section = f"\n🛠 **Skills:** {skill_list}\n"
 
     # ── Responsibilities (up to 3) ──
     resp_raw = job.get('responsibilities', [])
     resp_section = ''
     if resp_raw:
-        bullets = '\n'.join(f'   ▸ {r}' for r in resp_raw[:3])
+        bullets = '\n'.join(f'   ▸ {strip_html(r)}' for r in resp_raw[:3] if r)
         resp_section = f"\n📋 **What You'll Do:**\n{bullets}\n"
 
     # ── Requirements (up to 3) ──
     req_raw = job.get('requirements', [])
     req_section = ''
     if req_raw:
-        bullets = '\n'.join(f'   ✔ {r}' for r in req_raw[:3])
+        bullets = '\n'.join(f'   ✔ {strip_html(r)}' for r in req_raw[:3] if r)
         req_section = f"\n✅ **Requirements:**\n{bullets}\n"
 
     # ── Why Join ──
-    why_join   = job.get('whyJoin', '')
+    why_join   = strip_html(job.get('whyJoin', ''))
     why_section = ''
     if why_join:
         trimmed = why_join[:180].rstrip()
         why_section = f"\n💡 **Why Join?**\n{trimmed}...\n"
 
     # ── How to Apply ──
-    how_apply  = job.get('howToApply', '')
+    how_apply  = strip_html(job.get('howToApply', ''))
     how_section = ''
     if how_apply:
         trimmed = how_apply[:200].rstrip()
         how_section = f"\n📝 **How to Apply:**\n{trimmed}\n"
 
-    summary    = job.get('shortSummary', '') or job.get('description', '')
+    summary    = strip_html(job.get('shortSummary', '') or job.get('description', ''))
     summary_line  = f"\n📣 {summary}\n" if summary else ''
-    final_note = job.get('finalThoughts', '')
+    final_note = strip_html(job.get('finalThoughts', ''))
     final_section = ''
     if final_note:
         final_section = f"\n✨ {final_note}\n"
 
     if is_govt:
-        eligibility = job.get('eligibility', 'As per notification')
-        vacancies = job.get('vacancies', 'Various Vacancies')
-        salary = job.get('salary', 'Best in Industry')
-        last_date = job.get('lastDate', '')
+        eligibility = strip_html(job.get('eligibility', 'As per notification'))
+        vacancies = strip_html(job.get('vacancies', 'Various Vacancies'))
+        salary = strip_html(job.get('salary', 'Best in Industry'))
+        last_date = strip_html(job.get('lastDate', ''))
         deadline_line = f"⏰ **Last Date:**  {last_date}\n" if last_date else ''
         
         return (
@@ -1482,13 +1511,13 @@ def build_post(job, slug):
             f"👉 **Join Channel:** https://t.me/nextjobpost\n"
         )
     else:
-        location   = job.get('location', 'Pan India')
-        education  = job.get('education', 'Any Graduate')
-        experience = job.get('experience', 'Fresher / 0-2 Years')
-        salary     = job.get('salary', 'Best in Industry')
-        batch      = job.get('batch', '2024 / 2025 / 2026')
-        job_type   = job.get('type', 'Full-Time')
-        last_date  = job.get('lastDate', '')
+        location   = strip_html(job.get('location', 'Pan India'))
+        education  = strip_html(job.get('education', 'Any Graduate'))
+        experience = strip_html(job.get('experience', 'Fresher / 0-2 Years'))
+        salary     = strip_html(job.get('salary', 'Best in Industry'))
+        batch      = strip_html(job.get('batch', '2024 / 2025 / 2026'))
+        job_type   = strip_html(job.get('type', 'Full-Time'))
+        last_date  = strip_html(job.get('lastDate', ''))
         
         batch_line    = f"🎯 **Batch:**      {batch}\n" if batch else ''
         type_line     = f"💼 **Job Type:**   {job_type}\n"
@@ -1520,14 +1549,14 @@ def build_post(job, slug):
 def build_post_caption(job, slug):
     """Build a compact Telegram image caption (max ~1000 chars to stay within limit)."""
     job_url    = f"{SITE_BASE_URL}/{slug}"
-    title      = job.get('title', 'Job Opening')
-    company    = job.get('company', 'Top Company')
+    title      = strip_html(job.get('title', 'Job Opening'))
+    company    = strip_html(job.get('company', 'Top Company'))
     
     is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
     if is_govt:
-        eligibility = job.get('eligibility', 'As per notification')
-        vacancies   = job.get('vacancies', 'Various Vacancies')
-        salary      = job.get('salary', 'Best in Industry')
+        eligibility = strip_html(job.get('eligibility', 'As per notification'))
+        vacancies   = strip_html(job.get('vacancies', 'Various Vacancies'))
+        salary      = strip_html(job.get('salary', 'Best in Industry'))
         caption = (
             f"🔥 {title}\n"
             f"🏢 {company}\n"
@@ -1536,8 +1565,8 @@ def build_post_caption(job, slug):
             f"👉 Join: https://t.me/nextjobpost"
         )
     else:
-        location   = job.get('location', 'Pan India')
-        salary     = job.get('salary', 'Best in Industry')
+        location   = strip_html(job.get('location', 'Pan India'))
+        salary     = strip_html(job.get('salary', 'Best in Industry'))
         caption = (
             f"🔥 {title}\n"
             f"🏢 {company}\n"
@@ -1549,9 +1578,9 @@ def build_post_caption(job, slug):
     # Ensure caption doesn't exceed Telegram's 1024 char limit for media
     if len(caption) > 1024:
         if is_govt:
-            eligibility = job.get('eligibility', 'As per notification')
-            vacancies   = job.get('vacancies', 'Various Vacancies')
-            salary      = job.get('salary', 'Best in Industry')
+            eligibility = strip_html(job.get('eligibility', 'As per notification'))
+            vacancies   = strip_html(job.get('vacancies', 'Various Vacancies'))
+            salary      = strip_html(job.get('salary', 'Best in Industry'))
             caption = (
                 f"🔥 {title[:80]}\n"
                 f"🏢 {company[:50]}\n"
@@ -1560,8 +1589,8 @@ def build_post_caption(job, slug):
                 f"👉 Join: https://t.me/nextjobpost"
             )
         else:
-            location   = job.get('location', 'Pan India')
-            salary     = job.get('salary', 'Best in Industry')
+            location   = strip_html(job.get('location', 'Pan India'))
+            salary     = strip_html(job.get('salary', 'Best in Industry'))
             caption = (
                 f"🔥 {title[:80]}\n"
                 f"🏢 {company[:50]}\n"
@@ -1578,23 +1607,23 @@ def build_post_caption(job, slug):
 def build_linkedin_post(job, slug):
     """Build a rich, fully-detailed LinkedIn post optimised for reach and engagement."""
     job_url      = f"{SITE_BASE_URL}/{slug}"
-    title        = job.get('title', 'Job Opening')
-    company      = job.get('company', 'Top Company')
+    title        = strip_html(job.get('title', 'Job Opening'))
+    company      = strip_html(job.get('company', 'Top Company'))
     
     is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
     
-    job_type     = job.get('type', 'Full-Time')
-    location     = job.get('location', 'Pan India')
-    education    = job.get('education', 'Any Graduate')
-    experience   = job.get('experience', 'Fresher / 0-2 Years')
-    salary       = job.get('salary', 'Best in Industry')
-    batch        = job.get('batch', '')
-    last_date    = job.get('lastDate', '')
-    summary      = job.get('shortSummary', '') or job.get('description', '')
-    about_co     = job.get('aboutCompany', '')
-    why_join     = job.get('whyJoin', '')
-    how_apply    = job.get('howToApply', '')
-    final_note   = job.get('finalThoughts', '')
+    job_type     = strip_html(job.get('type', 'Full-Time'))
+    location     = strip_html(job.get('location', 'Pan India'))
+    education    = strip_html(job.get('education', 'Any Graduate'))
+    experience   = strip_html(job.get('experience', 'Fresher / 0-2 Years'))
+    salary       = strip_html(job.get('salary', 'Best in Industry'))
+    batch        = strip_html(job.get('batch', ''))
+    last_date    = strip_html(job.get('lastDate', ''))
+    summary      = strip_html(job.get('shortSummary', '') or job.get('description', ''))
+    about_co     = strip_html(job.get('aboutCompany', ''))
+    why_join     = strip_html(job.get('whyJoin', ''))
+    how_apply    = strip_html(job.get('howToApply', ''))
+    final_note   = strip_html(job.get('finalThoughts', ''))
 
     # ── Attention-grabbing opening hook ─────────────────────────────────
     if is_govt:
@@ -1615,21 +1644,21 @@ def build_linkedin_post(job, slug):
     skills_raw = job.get('skills', [])
     skills_section = ''
     if skills_raw:
-        skill_bullets = '\n'.join(f'   ▸ {s}' for s in skills_raw[:6])
+        skill_bullets = '\n'.join(f'   ▸ {strip_html(s)}' for s in skills_raw[:6] if s)
         skills_section = f'\n🛠️ Key Skills Required:\n{skill_bullets}\n'
 
     # ── Key responsibilities (up to 5) ──────────────────────────────────
     resp_raw = job.get('responsibilities', [])
     resp_section = ''
     if resp_raw:
-        resp_bullets = '\n'.join(f'   📌 {r}' for r in resp_raw[:5])
+        resp_bullets = '\n'.join(f'   📌 {strip_html(r)}' for r in resp_raw[:5] if r)
         resp_section = f'\n📋 What You Will Do:\n{resp_bullets}\n'
 
     # ── Requirements (up to 5) ──────────────────────────────────────────
     req_raw = job.get('requirements', [])
     req_section = ''
     if req_raw:
-        req_bullets = '\n'.join(f'   ✔ {r}' for r in req_raw[:5])
+        req_bullets = '\n'.join(f'   ✔ {strip_html(r)}' for r in req_raw[:5] if r)
         req_section = f'\n✅ Who Should Apply:\n{req_bullets}\n'
 
     # ── Why Join section ────────────────────────────────────────────────
@@ -1668,8 +1697,8 @@ def build_linkedin_post(job, slug):
     hashtags = ' '.join(sorted(hashtag_set))
 
     if is_govt:
-        eligibility = job.get('eligibility', 'As per notification')
-        vacancies = job.get('vacancies', 'Various Vacancies')
+        eligibility = strip_html(job.get('eligibility', 'As per notification'))
+        vacancies = strip_html(job.get('vacancies', 'Various Vacancies'))
         
         post_text = (
             f"{hook}\n"

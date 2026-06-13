@@ -1,2 +1,3 @@
 2026-06-13 00:41:06,883 - ERROR - CRITICAL: Invalid API_ID in .env file! Found: 'your_telegram_api_id'. Please replace it with your actual numeric Telegram API ID.
 2026-06-13 21:35:19,072 - ERROR - CRITICAL: Invalid API_ID in .env file! Found: 'your_telegram_api_id'. Please replace it with your actual numeric Telegram API ID.
+2026-06-13 23:45:01,013 - ERROR - CRITICAL: Invalid API_ID in .env file! Found: 'None'. Please replace it with your actual numeric Telegram API ID.
