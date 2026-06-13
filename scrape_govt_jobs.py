@@ -421,8 +421,9 @@ def enrich_content_with_ai(html_content, title):
                 
             return json.loads(clean_json)
         except Exception as e:
-            if "RESOURCE_EXHAUSTED" in str(e):
-                print(f"⚠️ Model {model} resource exhausted. Trying next fallback model...")
+            if "RESOURCE_EXHAUSTED" in str(e) or "429" in str(e):
+                print(f"⚠️ Model {model} resource exhausted. Waiting 2s before trying next model...")
+                time.sleep(2)
                 last_error = e
                 continue
             else:

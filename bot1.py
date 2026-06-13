@@ -964,12 +964,12 @@ Job Posting Text:
             last_error = e
             err_str = str(e)
             if "RESOURCE_EXHAUSTED" in err_str or "429" in err_str:
-                print(f"⚠️ Model {model} rate limited (429). Switching to next model...")
+                print(f"⚠️ Model {model} rate limited (429). Waiting 2s before next model...")
+                await asyncio.sleep(2)
             elif "NOT_FOUND" in err_str or "404" in err_str:
                 print(f"⚠️ Model {model} not found (404). Switching to next model...")
             else:
                 print(f"⚠️ Model {model} failed: {e}. Switching to next model...")
-            # No waiting — immediately try next model or fall back to basic parser
                 
     if not data:
         # ✅ Regex + BeautifulSoup parser — fast, reliable, no quota limits
