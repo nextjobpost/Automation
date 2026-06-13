@@ -1884,7 +1884,7 @@ async def post_to_linkedin(session, job, slug):
                 data    = await resp.json()
                 post_id = data.get('id', 'unknown')
                 mode    = "with image 📸" if asset_urn else "with article link 🔗"
-                print(f"✅ LinkedIn Posted {mode}! Post ID: {post_id}")
+                print(f"✅ LinkedIn Posted {mode}! URL: https://www.linkedin.com/feed/update/{post_id}/")
                 return True
             else:
                 text = await resp.text()
