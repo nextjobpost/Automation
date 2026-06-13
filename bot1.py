@@ -1092,68 +1092,75 @@ def generate_poster(title, company, location, salary, output_path):
     """Generates a professional 1200x630 job poster dynamically with Pillow."""
     width, height = 1200, 630
     
-    # 1. Create a beautiful deep space blue/indigo gradient
+    # 1. Create a dark blue background
     base_grad = Image.new("RGB", (2, 2))
-    base_grad.putpixel((0, 0), (15, 23, 42))  # Slate 900
-    base_grad.putpixel((1, 0), (30, 41, 59))  # Slate 800
-    base_grad.putpixel((0, 1), (15, 25, 45))  # Deep Space Blue
-    base_grad.putpixel((1, 1), (43, 20, 85))  # Dark Indigo
+    base_grad.putpixel((0, 0), (14, 25, 45))  # Dark Blue
+    base_grad.putpixel((1, 0), (20, 35, 60))  
+    base_grad.putpixel((0, 1), (10, 20, 40))  
+    base_grad.putpixel((1, 1), (15, 28, 50))  
     
     img = base_grad.resize((width, height), Image.Resampling.BILINEAR)
     draw = ImageDraw.Draw(img)
     
     # Load fonts
     try:
-        font_logo = ImageFont.truetype(FONT_PATH, 28)
-        font_company = ImageFont.truetype(FONT_PATH, 34)
-        font_title = ImageFont.truetype(FONT_PATH, 54)
-        font_meta = ImageFont.truetype(FONT_PATH, 24)
-        font_btn = ImageFont.truetype(FONT_PATH, 26)
+        font_company = ImageFont.truetype(FONT_PATH, 28)
+        font_title = ImageFont.truetype(FONT_PATH, 64)
+        font_meta = ImageFont.truetype(FONT_PATH, 32)
+        font_footer = ImageFont.truetype(FONT_PATH, 24)
     except Exception as e:
         print(f"⚠️ Error loading font, using default: {e}")
-        font_logo = font_company = font_title = font_meta = font_btn = ImageFont.load_default()
+        font_company = font_title = font_meta = font_footer = ImageFont.load_default()
         
-    # Draw branding logo top-left
-    draw.text((80, 50), "NEXTJOBPOST.COM", fill=(56, 189, 248), font=font_logo)
-    draw.line([(80, 95), (200, 95)], fill=(56, 189, 248), width=3)
+    orange_color = (245, 158, 11) # Amber 500
+    white_color = (255, 255, 255)
+    light_gray = (209, 213, 219)
     
-    # Draw "WE ARE HIRING" / Company header
-    draw.text((80, 140), f"WE ARE HIRING AT {company.upper()}", fill=(244, 63, 94), font=font_company)
+    def get_text_width(text, font):
+        return font.getbbox(text)[2] - font.getbbox(text)[0]
+        
+    # Top Line
+    line_width = 400
+    line_x0 = (width - line_width) // 2
+    draw.line([(line_x0, 120), (line_x0 + line_width, 120)], fill=orange_color, width=3)
     
-    # Draw Job Title (with wrapping)
-    wrapped_title = wrap_text(title, font_title, 1040)
-    y_offset = 210
+    # Company Name
+    company_text = company.upper()
+    cw = get_text_width(company_text, font_company)
+    draw.text(((width - cw) // 2, 140), company_text, fill=white_color, font=font_company)
+    
+    # Job Title (with wrapping)
+    wrapped_title = wrap_text(title, font_title, 1000)
+    y_offset = 220
     for line in wrapped_title:
-        draw.text((80, y_offset), line, fill=(255, 255, 255), font=font_title)
-        y_offset += 75
+        lw = get_text_width(line, font_title)
+        draw.text(((width - lw) // 2, y_offset), line, fill=white_color, font=font_title)
+        y_offset += 80
         
-    # Draw Meta details
-    meta_y = y_offset + 30
+    # Meta details (Location/Salary)
+    y_offset += 20
     meta_text = []
-    if location:
-        meta_text.append(f"Location: {location}")
-    if salary:
-        meta_text.append(f"Salary: {salary}")
-    
-    if meta_text:
-        draw.text((80, meta_y), "  |  ".join(meta_text), fill=(209, 213, 219), font=font_meta)
+    if location and location.lower() != "not mentioned":
+        meta_text.append(f"{location}")
+    if salary and salary.lower() != "not mentioned":
+        meta_text.append(f"{salary}")
         
-    # Draw Button at the bottom
-    btn_x0, btn_y0 = 80, 500
-    btn_x1, btn_y1 = 280, 560
-    draw.rounded_rectangle([(btn_x0, btn_y0), (btn_x1, btn_y1)], radius=12, fill=(239, 68, 68))
+    if meta_text:
+        meta_str = " | ".join(meta_text)
+        mw = get_text_width(meta_str, font_meta)
+        draw.text(((width - mw) // 2, y_offset), meta_str, fill=orange_color, font=font_meta)
+        y_offset += 60
+        
+    # Bottom Line
+    draw.line([(line_x0, y_offset + 30), (line_x0 + line_width, y_offset + 30)], fill=orange_color, width=3)
     
-    btn_txt = "Apply Now"
-    btn_txt_w = font_btn.getbbox(btn_txt)[2] - font_btn.getbbox(btn_txt)[0]
-    btn_txt_h = font_btn.getbbox(btn_txt)[3] - font_btn.getbbox(btn_txt)[1]
-    
-    btn_txt_x = btn_x0 + (btn_x1 - btn_x0 - btn_txt_w) // 2
-    btn_txt_y = btn_y0 + (btn_y1 - btn_y0 - btn_txt_h) // 2 - 3
-    
-    draw.text((btn_txt_x, btn_txt_y), btn_txt, fill=(255, 255, 255), font=font_btn)
+    # Footer
+    footer_text = "NextJobPost.com"
+    fw = get_text_width(footer_text, font_footer)
+    draw.text(((width - fw) // 2, y_offset + 60), footer_text, fill=light_gray, font=font_footer)
     
     # Save Image
-    img.save(output_path, "PNG")
+    img.save(output_path, "JPEG", quality=85, optimize=True)
 
 
 def render_text_block(job, width=1200, padding=40):
@@ -1384,8 +1391,12 @@ async def send_to_api(session, job):
     if API_TOKEN:
         headers["Authorization"] = f"Bearer {API_TOKEN}"
         
+    # Remove image field from the payload sent to the website
+    job_payload = dict(job)
+    job_payload.pop("image", None)
+        
     try:
-        async with session.post(API_URL, json=job, headers=headers, timeout=30) as res:
+        async with session.post(API_URL, json=job_payload, headers=headers, timeout=30) as res:
             try:
                 data = await res.json()
                 return data
@@ -1908,7 +1919,7 @@ async def process_and_post_job(job_data):
         
         if not has_real_image:
             print("ℹ️ No real image found. Generating a dynamic poster...")
-            image_path = os.path.join(PENDING_IMAGES_DIR, f"gen_{h}.png")
+            image_path = os.path.join(PENDING_IMAGES_DIR, f"gen_{h}.jpg")
             try:
                 generate_poster(
                     title=job.get('title', 'Job Opening'),
