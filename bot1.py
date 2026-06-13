@@ -1155,7 +1155,7 @@ def generate_poster(title, company, location, salary, output_path):
     draw.line([(line_x0, y_offset + 30), (line_x0 + line_width, y_offset + 30)], fill=orange_color, width=3)
     
     # Footer
-    footer_text = "NextJobPost.com"
+    footer_text = "nextjobpost.in"
     fw = get_text_width(footer_text, font_footer)
     draw.text(((width - fw) // 2, y_offset + 60), footer_text, fill=light_gray, font=font_footer)
     
