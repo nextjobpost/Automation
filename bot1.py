@@ -1045,6 +1045,11 @@ Job Posting Text:
     data["whatsapp"] = "https://chat.whatsapp.com/LVpuUJluTpUEdIc4daAemQ"
     data["telegram"] = "https://t.me/nextjobpost"
     
+    # 🧹 Sanitize any mobile LinkedIn URLs to ensure universal compatibility
+    for key, value in data.items():
+        if isinstance(value, str) and "linkedin.com/m/" in value:
+            data[key] = value.replace("linkedin.com/m/", "linkedin.com/")
+            
     return data
 
 # =========================
