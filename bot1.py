@@ -80,6 +80,12 @@ if not API_TOKEN or API_TOKEN == OLD_TOKEN:
 LINKEDIN_ACCESS_TOKEN = os.getenv("LINKEDIN_ACCESS_TOKEN", "")
 LINKEDIN_PERSON_URN   = os.getenv("LINKEDIN_PERSON_URN", "")  # e.g. urn:li:person:XXXXX
 
+# Test Mode
+TEST_MODE = os.getenv("TEST_MODE", "False").lower() in ("true", "1", "yes")
+TEST_OUTPUT_DIR = "test_output"
+if TEST_MODE and not os.path.exists(TEST_OUTPUT_DIR):
+    os.makedirs(TEST_OUTPUT_DIR, exist_ok=True)
+
 SOURCE_CHANNELS = [
     "me",
     # ── Off-Campus & Tech (Freshers) ──
@@ -119,57 +125,12 @@ session = StringSession(SESSION_DATA) if len(SESSION_DATA) > 25 else SESSION_DAT
 client = TelegramClient(session, API_ID, API_HASH)
 
 # =========================
-# MEMORY CACHE (persistent)
+# DATABASE / CACHE
 # =========================
-CACHE_FILE = "posted_cache.json"
+import database
 
-# In-memory fallbacks for Railway (read-only filesystem)
-_MEMORY_QUEUE: list = []   # Used when job_queue.json can't be written
-_MEMORY_SEEN: set = set()  # Used when posted_cache.json can't be written
-
-def load_cache():
-    try:
-        if os.path.exists(CACHE_FILE):
-            with open(CACHE_FILE, "r", encoding="utf-8") as f:
-                return set(json.load(f))
-    except Exception:
-        pass
-    return set(_MEMORY_SEEN)
-
-def save_cache(cache_set):
-    global _MEMORY_SEEN
-    _MEMORY_SEEN = set(cache_set)
-    try:
-        with open(CACHE_FILE, "w", encoding="utf-8") as f:
-            json.dump(list(cache_set)[-500:], f)
-    except Exception:
-        pass  # Read-only filesystem (Railway) — use in-memory only
-
-# ── Queue Functions ──
-def load_queue():
-    """Load from file if available, otherwise use in-memory queue."""
-    try:
-        if os.path.exists(QUEUE_FILE):
-            with open(QUEUE_FILE, "r", encoding="utf-8") as f:
-                disk_queue = json.load(f)
-                # Sync in-memory queue to disk contents
-                if disk_queue:
-                    return disk_queue
-    except Exception:
-        pass
-    return list(_MEMORY_QUEUE)  # Fallback to in-memory
-
-def save_queue(queue):
-    """Save to file if writable, always sync to in-memory queue."""
-    global _MEMORY_QUEUE
-    _MEMORY_QUEUE = list(queue)
-    try:
-        with open(QUEUE_FILE, "w", encoding="utf-8") as f:
-            json.dump(queue, f, indent=2)
-    except Exception:
-        pass  # Read-only filesystem (Railway) — in-memory already updated above
-
-seen = load_cache()
+# Cache logic is handled in database.py
+seen = database.get_all_seen_hashes()
 
 def hash_text(t):
     return hashlib.md5(t.encode()).hexdigest()
@@ -906,7 +867,10 @@ def is_valid_job(job):
             job[k] = ""
 
     # Key fields to check
-    check_keys = ["title", "company", "location", "salary", "experience", "education", "batch", "applyLink"]
+    if is_govt:
+        check_keys = ["title", "company", "eligibility", "vacancies"]
+    else:
+        check_keys = ["title", "company", "location", "salary", "experience", "education", "batch", "applyLink"]
     
     # Phrases that are legitimate defaults for govt jobs (not actual placeholders)
     govt_accepted_values = {"as per notification", "as per official notification", "various vacancies"}
@@ -1970,24 +1934,33 @@ async def process_and_post_job(job_data):
                 image_path = ""
                 
         if has_real_image:
-            uploaded_url = await upload_image_to_api(session, image_path)
-            if uploaded_url:
+            if TEST_MODE:
+                print("🧪 [TEST_MODE] Mocking image upload...")
+                uploaded_url = "https://mock-image-url.com/poster.jpg"
                 job["image"] = uploaded_url
-                print(f"📸 Image uploaded and bound: {uploaded_url}")
             else:
-                job["image"] = ""
-                print("⚠️ Failed to upload image. Proceeding without image.")
+                uploaded_url = await upload_image_to_api(session, image_path)
+                if uploaded_url:
+                    job["image"] = uploaded_url
+                    print(f"📸 Image uploaded and bound: {uploaded_url}")
+                else:
+                    job["image"] = ""
+                    print("⚠️ Failed to upload image. Proceeding without image.")
         else:
             job["image"] = ""
             print("ℹ️ No image to upload. Proceeding without image.")
 
         # 2. Website Post (non-blocking — social posts continue even if website fails)
-        response = await send_to_api(session, job)
+        if TEST_MODE:
+            print("🧪 [TEST_MODE] Mocking Website API Post...")
+            response = {"success": True, "slug": job["slug"]}
+        else:
+            response = await send_to_api(session, job)
+            
         print(f"🌐 Website status: {response}")
 
         if not isinstance(response, dict) or response.get("success") is not True:
             print(f"⚠️ Website API rejected or failed ({response}) — continuing with Telegram & LinkedIn anyway.")
-
 
         # Get final slug
         slug = job["slug"]
@@ -2003,7 +1976,12 @@ async def process_and_post_job(job_data):
             # 3. LinkedIn Post (Only for Private/IT Jobs) - Post first to get LinkedIn URL for Telegram
             linkedin_url = None
             if not job.get("isGovernment", False):
-                linkedin_url = await post_to_linkedin(session, job, slug)
+                if TEST_MODE:
+                    print("🧪 [TEST_MODE] Mocking LinkedIn Post...")
+                    linkedin_url = f"https://www.linkedin.com/feed/update/urn:li:activity:mock_{h}/"
+                else:
+                    linkedin_url = await post_to_linkedin(session, job, slug)
+                    
                 if linkedin_url:
                     print("✔ LinkedIn Posted (Private Job).")
                 else:
@@ -2029,28 +2007,41 @@ async def process_and_post_job(job_data):
                     else:
                         telegram_post = post
 
-                    # Use raw SendMessageRequest with invert_media=True to show the image preview at the TOP of the message
-                    peer_entity = await client.get_input_entity(TARGET_CHANNEL)
-                    msg_text, entities = await client._parse_message_text(telegram_post, 'md')
+                    if TEST_MODE:
+                        print("🧪 [TEST_MODE] Mocking Telegram Post...")
+                        
+                        # Save test artifacts
+                        test_file = os.path.join(TEST_OUTPUT_DIR, f"test_job_{h}.json")
+                        with open(test_file, "w", encoding="utf-8") as f:
+                            json.dump({
+                                "job_payload": job,
+                                "telegram_post": telegram_post,
+                                "linkedin_url": linkedin_url
+                            }, f, indent=2)
+                        print(f"🧪 [TEST_MODE] Saved job payload and post text to {test_file}")
+                        
+                        if has_real_image and image_path:
+                            import shutil
+                            test_img = os.path.join(TEST_OUTPUT_DIR, f"test_poster_{h}.jpg")
+                            shutil.copy2(image_path, test_img)
+                            print(f"🧪 [TEST_MODE] Saved generated poster to {test_img}")
+                    else:
+                        # Use raw SendMessageRequest with invert_media=True to show the image preview at the TOP of the message
+                        peer_entity = await client.get_input_entity(TARGET_CHANNEL)
+                        msg_text, entities = await client._parse_message_text(telegram_post, 'md')
 
-                    await client(SendMessageRequest(
-                        peer=peer_entity,
-                        message=msg_text,
-                        entities=entities,
-                        no_webpage=False if uploaded_url else True,
-                        invert_media=True if uploaded_url else False,
-                        random_id=random.randint(-2**63, 2**63 - 1)
-                    ))
-                    print(f"✔ Telegram Posted in a single unified message section.")
+                        await client(SendMessageRequest(
+                            peer=peer_entity,
+                            message=msg_text,
+                            entities=entities,
+                            no_webpage=False if uploaded_url else True,
+                            invert_media=True if uploaded_url else False,
+                            random_id=random.randint(-2**63, 2**63 - 1)
+                        ))
+                        print(f"✔ Telegram Posted in a single unified message section.")
                 except Exception as e:
                     print(f"❌ Telegram failed: {e}")
 
-            # 4. LinkedIn Post (Only for Private/IT Jobs)
-            if not job.get("isGovernment", False):
-                await post_to_linkedin(session, job, slug)
-                print("✔ LinkedIn Posted (Private Job).")
-            else:
-                print("ℹ️ Skipping LinkedIn (Government jobs are not posted to LinkedIn).")
         else:
             print("ℹ️ Skipping Telegram and LinkedIn (Post categorized as noise or non-job).")
 
@@ -2074,46 +2065,22 @@ async def scheduler_task():
 
         # Only post if enough time has passed since last post
         if time_since_last >= POST_INTERVAL:
-            queue = load_queue()
+            jobs_to_process = database.get_jobs_batch(limit_govt=1, limit_private=1)
             processed_any = False
             
-            if queue:
-                # Find one govt job and one private job to post concurrently
-                govt_job_idx = -1
-                private_job_idx = -1
-                
-                # First clean up invalid jobs at the front
-                while queue:
-                    job = queue[0].get("job", {})
+            if jobs_to_process:
+                # First clean up invalid jobs
+                valid_jobs = []
+                for jd in jobs_to_process:
+                    job = jd.get("job", {})
                     is_valid, reason = is_valid_job(job)
                     if not is_valid:
                         logging.info(f"🚫 [SCHEDULER] Skipping invalid/expired job from queue: '{job.get('title')}' - Reason: {reason}")
-                        queue.pop(0)
-                        save_queue(queue)
                     else:
-                        break
+                        valid_jobs.append(jd)
                         
-                if not queue:
-                    continue
-                    
-                for i, jd in enumerate(queue):
-                    is_govt = jd.get("job", {}).get("isGovernment", False)
-                    if is_govt and govt_job_idx == -1:
-                        govt_job_idx = i
-                    elif not is_govt and private_job_idx == -1:
-                        private_job_idx = i
-                    if govt_job_idx != -1 and private_job_idx != -1:
-                        break
-                        
-                jobs_to_process = []
-                # Pop from highest index to lowest so popping doesn't shift the other index
-                indices = sorted([i for i in [govt_job_idx, private_job_idx] if i != -1], reverse=True)
-                for idx in indices:
-                    jobs_to_process.append(queue.pop(idx))
-                    
-                if jobs_to_process:
-                    save_queue(queue)
-                    logging.info(f"\n📤 [SCHEDULER] Dequeued {len(jobs_to_process)} job(s) concurrently. Remaining in queue: {len(queue)}")
+                if valid_jobs:
+                    logging.info(f"\n📤 [SCHEDULER] Dequeued {len(valid_jobs)} valid job(s) concurrently. Remaining in queue: {database.get_queue_size()}")
                     
                     async def process_with_error_handling(jd):
                         try:
@@ -2128,24 +2095,18 @@ async def scheduler_task():
                             traceback.print_exc()
                             if retries >= 3:
                                 logging.error("Job failed 3 times. Moving to dead-letter queue.")
-                                try:
-                                    with open("failed_jobs.json", "a", encoding="utf-8") as f:
-                                        f.write(json.dumps(jd) + "\n")
-                                except: pass
+                                database.add_to_failed_queue(jd, str(e))
                             else:
-                                q = load_queue()
-                                q.append(jd)
-                                save_queue(q)
+                                database.return_job_to_queue(jd)
                             return False
 
-                    await asyncio.gather(*(process_with_error_handling(jd) for jd in jobs_to_process))
+                    await asyncio.gather(*(process_with_error_handling(jd) for jd in valid_jobs))
                     last_post_time = time.time()
                     processed_any = True
             
             if processed_any:
-                remaining = load_queue()
-                print(f"⏳ [SCHEDULER] Next post in {POST_INTERVAL//60} min. Queue size: {len(remaining)}")
-            elif not queue:
+                print(f"⏳ [SCHEDULER] Next post in {POST_INTERVAL//60} min. Queue size: {database.get_queue_size()}")
+            elif database.get_queue_size() == 0:
                 print(f"📭 [SCHEDULER] Queue empty (or only contained invalid/aborted jobs). Waiting... (checked at {time.strftime('%H:%M:%S')})")
         
         # Sleep 10 seconds then re-check — allows fast response when new jobs arrive
@@ -2204,21 +2165,15 @@ async def handler(event):
             print(f"⚠️ Error downloading image: {e}. Proceeding without image.")
             image_path = ""
 
-    # Add to queue
-    queue = load_queue()
-    queue.append({
-        "job": job,
-        "image_path": image_path,
-        "hash": h,
-        "timestamp": time.time()
-    })
-    save_queue(queue)
-    
-    # Mark as seen so we don't queue it twice
-    seen.add(h)
-    save_cache(seen)
-    
-    print(f"📥 Job Queued! Total in queue: {len(queue)}")
+    # Add to SQLite queue
+    is_govt_flag = job.get("isGovernment", False)
+    if database.add_job_to_queue(job, h, image_path, is_govt_flag):
+        # Mark as seen so we don't queue it twice
+        seen.add(h)
+        database.mark_job_seen(h)
+        print(f"📥 Job Queued! Total in queue: {database.get_queue_size()}")
+    else:
+        print("⚠️ Job was already in queue or failed to add.")
 
 
 async def run_scraper_periodically():

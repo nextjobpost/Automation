@@ -12,6 +12,7 @@ from google import genai
 from google.genai import types
 from slugify import slugify
 from dotenv import load_dotenv
+import database
 
 # Force UTF-8 encoding for stdout and stderr to prevent UnicodeEncodeErrors on Windows
 if sys.stdout.encoding != 'utf-8':
@@ -74,35 +75,6 @@ def load_cache():
     if os.path.exists(CACHE_FILE):
         try:
             with open(CACHE_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                if isinstance(data, list):
-                    # Migrate old list format to dict format
-                    now = time.time()
-                    cache = {url: now for url in data}
-                elif isinstance(data, dict):
-                    cache = data
-        except Exception as e:
-            logging.error(f"Error loading cache: {e}")
-            
-    # Prune old entries (> 60 days)
-    pruned_cache = {}
-    cutoff_time = time.time() - (60 * 24 * 60 * 60)
-    for url, timestamp in cache.items():
-        if timestamp > cutoff_time:
-            pruned_cache[url] = timestamp
-            
-    if len(cache) != len(pruned_cache):
-        logging.info(f"Pruned {len(cache) - len(pruned_cache)} old URLs from cache.")
-        
-    return pruned_cache
-
-def save_cache(cache):
-    try:
-        with open(CACHE_FILE, "w", encoding="utf-8") as f:
-            json.dump(cache, f, indent=2)
-    except Exception as e:
-        logging.error(f"Error saving cache: {e}")
-
 def get_auth_token():
     """Dynamically logs in to get a valid Bearer token."""
     global API_TOKEN
@@ -512,8 +484,7 @@ def scrape_category(category_path, post_type_default):
     cards = soup.find_all("a", class_="gja-grid-card")
     print(f"Found {len(cards)} listings on listing page.")
     
-    cache = load_cache()
-    token = get_auth_token()
+    get_auth_token()
     
     new_items_posted = 0
     
@@ -524,7 +495,9 @@ def scrape_category(category_path, post_type_default):
             
         # Clean URL
         href = href.strip()
-        if href in cache:
+        job_hash = hashlib.md5(href.encode()).hexdigest()
+        
+        if database.is_job_seen(job_hash):
             continue
             
         title_elem = card.find(class_="gja-card-title")
@@ -590,8 +563,7 @@ def scrape_category(category_path, post_type_default):
                 
                 if parsed_date and parsed_date < date.today():
                     print(f"⚠️ Skipping expired job: '{raw_title}'. Last date '{last_date_str}' is in the past (today is {date.today()}).")
-                    cache[href] = time.time()
-                    save_cache(cache)
+                    database.mark_job_seen(job_hash)
                     continue
 
         summary = ai_data.get("summary", raw_title)
@@ -651,34 +623,20 @@ def scrape_category(category_path, post_type_default):
             "telegram": "https://t.me/nextjobpost"
         }
 
-        # Load, append and save to queue
-        queue_file = "job_queue.json"
-        queue = []
-        if os.path.exists(queue_file):
-            try:
-                with open(queue_file, "r", encoding="utf-8") as f:
-                    queue = json.load(f)
-            except Exception:
-                queue = []
-
-        queue.append({
-            "job": queue_job,
-            "image_path": "",  # bot1.py will auto-generate a poster via Pillow
-            "hash": hashlib.md5(href.encode()).hexdigest(),
-            "timestamp": time.time()
-        })
-
+        # Load, append and save to SQLite queue
+        job_hash = hashlib.md5(href.encode()).hexdigest()
+        
         try:
-            with open(queue_file, "w", encoding="utf-8") as f:
-                json.dump(queue, f, indent=2)
-            print(f"📥 Queued govt job for Telegram + LinkedIn posting: {raw_title}")
-            print(f"   └ Apply Link : {extracted_apply_link}")
-            print(f"   └ PDF Link   : {extracted_pdf_link}")
-            cache[href] = time.time()
-            save_cache(cache)
-            new_items_posted += 1
+            if database.add_job_to_queue(queue_job, job_hash, image_path="", is_government=True):
+                print(f"📥 Queued govt job for Telegram + LinkedIn posting: {raw_title}")
+                print(f"   └ Apply Link : {extracted_apply_link}")
+                print(f"   └ PDF Link   : {extracted_pdf_link}")
+                database.mark_job_seen(job_hash)
+                new_items_posted += 1
+            else:
+                print(f"⚠️ Failed to queue or already in queue: {raw_title}")
         except Exception as e:
-            print(f"❌ Failed to write to job_queue.json: {e}")
+            print(f"❌ Failed to write to SQLite: {e}")
             
     print(f"Finished category scraping. Posted {new_items_posted} new drafts.")
 

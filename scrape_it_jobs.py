@@ -5,6 +5,7 @@ import hashlib
 import logging
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+import database
 
 # =========================
 # LOGGING SETUP
@@ -15,30 +16,7 @@ logging.basicConfig(
     handlers=[
         logging.FileHandler("scraper_it.log", encoding="utf-8"),
         logging.StreamHandler()
-    ]
-)
-
-load_dotenv()
-
-CACHE_FILE = "scraped_it_urls.json"
-QUEUE_FILE = "job_queue.json"
-
-def load_cache():
-    cache = {}
-    if os.path.exists(CACHE_FILE):
-        try:
-            with open(CACHE_FILE, "r", encoding="utf-8") as f:
-                cache = json.load(f)
-        except Exception as e:
-            logging.error(f"Error loading cache: {e}")
-    return cache
-
-def save_cache(cache):
-    try:
-        with open(CACHE_FILE, "w", encoding="utf-8") as f:
-            json.dump(cache, f, indent=2)
-    except Exception as e:
-        logging.error(f"Error saving cache: {e}")
+# Cache logic has been fully migrated to database.py
 
 def scrape_it_jobs():
     """
@@ -46,7 +24,6 @@ def scrape_it_jobs():
     You can use requests/BeautifulSoup or Selenium here.
     """
     logging.info("Starting IT Jobs scraper...")
-    cache = load_cache()
     
     # Example placeholder job
     mock_jobs = [
@@ -60,26 +37,14 @@ def scrape_it_jobs():
         }
     ]
     
-    # Load queue
-    queue = []
-    if os.path.exists(QUEUE_FILE):
-        try:
-            with open(QUEUE_FILE, "r", encoding="utf-8") as f:
-                queue = json.load(f)
-        except Exception:
-            queue = []
-            
     added_jobs = 0
     
     for item in mock_jobs:
         href = item["url"]
-        if href in cache:
-            continue
-            
-        logging.info(f"New IT Job found: {item['title']}")
-        
-        # Build queue object
         slug = hashlib.md5(href.encode()).hexdigest()[:10]
+        
+        if database.is_job_seen(slug):
+            continue
         
         queue_job = {
             "title": item["title"],
@@ -114,25 +79,13 @@ def scrape_it_jobs():
             "telegram": "https://t.me/nextjobpost"
         }
 
-        queue.append({
-            "job": queue_job,
-            "image_path": "", 
-            "hash": slug,
-            "timestamp": time.time()
-        })
+        if database.add_job_to_queue(queue_job, slug, image_path="", is_government=False):
+            database.mark_job_seen(slug)
+            added_jobs += 1
         
-        cache[href] = time.time()
-        added_jobs += 1
-        
-    # Save queue and cache
+    # Final logging
     if added_jobs > 0:
-        try:
-            with open(QUEUE_FILE, "w", encoding="utf-8") as f:
-                json.dump(queue, f, indent=2)
-            save_cache(cache)
-            logging.info(f"Successfully queued {added_jobs} IT jobs.")
-        except Exception as e:
-            logging.error(f"Failed to write to queue: {e}")
+        logging.info(f"Successfully queued {added_jobs} IT jobs.")
     else:
         logging.info("No new IT jobs found.")
 
