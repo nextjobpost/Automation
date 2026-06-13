@@ -1435,8 +1435,9 @@ def strip_html(text):
         clean = clean.replace("linkedin.com/m/", "linkedin.com/")
     return clean.strip()
 
-def build_post(job, slug):
+def build_post(job, slug, linkedin_url=None):
     """Build a rich, fully-featured Telegram post with maximum engagement."""
+    linkedin_line = f"💼 **LinkedIn Post:** {linkedin_url}\n" if linkedin_url else f"💼 **LinkedIn:**      https://www.linkedin.com/in/next-job-post-199b5b371\n"
     job_url    = f"{SITE_BASE_URL}/{slug}"
     title      = strip_html(job.get('title', 'Job Opening'))
     company    = strip_html(job.get('company', 'Top Company'))
@@ -1507,7 +1508,7 @@ def build_post(job, slug):
             f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
             f"📢 **Next Job Post** — Your daily job alert hub\n"
             f"🌐 More Jobs:  {SITE_BASE_URL}\n"
-            f"💼 LinkedIn:   https://www.linkedin.com/in/next-job-post-199b5b371\n"
+            f"{linkedin_line}"
             f"👉 **Join Channel:** https://t.me/nextjobpost\n"
         )
     else:
@@ -1542,7 +1543,7 @@ def build_post(job, slug):
             f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
             f"📢 **Next Job Post** — Your daily job alert hub\n"
             f"🌐 More Jobs:  {SITE_BASE_URL}\n"
-            f"💼 LinkedIn:   https://www.linkedin.com/in/next-job-post-199b5b371\n"
+            f"{linkedin_line}"
             f"👉 **Join Channel:** https://t.me/nextjobpost\n"
         )
 
@@ -1913,12 +1914,13 @@ async def post_to_linkedin(session, job, slug):
                 data    = await resp.json()
                 post_id = data.get('id', 'unknown')
                 mode    = "with image 📸" if asset_urn else "with article link 🔗"
-                print(f"✅ LinkedIn Posted {mode}! URL: https://www.linkedin.com/feed/update/{post_id}/")
-                return True
+                linkedin_url = f"https://www.linkedin.com/feed/update/{post_id}/"
+                print(f"✅ LinkedIn Posted {mode}! URL: {linkedin_url}")
+                return linkedin_url
             else:
                 text = await resp.text()
                 print(f"⚠️  LinkedIn post failed [{resp.status}]: {text[:400]}")
-                return False
+                return None
     except Exception as e:
         print(f"❌ LinkedIn post error: {e}")
         return False
@@ -1993,8 +1995,20 @@ async def process_and_post_job(job_data):
             if backend_slug: slug = backend_slug
 
         if job.get("postToSocials", True):
-            # 3. Telegram Post
-            post = build_post(job, slug)
+            # 3. LinkedIn Post (Only for Private/IT Jobs) - Post first to get LinkedIn URL for Telegram
+            linkedin_url = None
+            if not job.get("isGovernment", False):
+                linkedin_url = await post_to_linkedin(session, job, slug)
+                if linkedin_url:
+                    print("✔ LinkedIn Posted (Private Job).")
+                else:
+                    print("❌ LinkedIn Posting failed.")
+            else:
+                print("ℹ️ Skipping LinkedIn (Government jobs are not posted to LinkedIn).")
+
+            # 4. Telegram Post (WITH IMAGE LINK PREVIEW AT THE TOP)
+            print("📢 Posting to Telegram channel as a unified message with image preview...")
+            post = build_post(job, slug, linkedin_url=linkedin_url)
 
             # Strictly check that the generated Telegram post does not contain any forbidden/placeholder terms
             forbidden_terms = ["not mentioned", "not specified", "not disclosed", "confidential", "hiring company"]

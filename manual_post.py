@@ -100,9 +100,21 @@ async def run_manual_post():
                 slug = backend_slug
                 print(f"✔ Using backend slug: {slug}")
         
-        # 4. Telegram Post (WITH IMAGE LINK PREVIEW AT THE TOP)
+        # 4. LinkedIn Post First to get the URL
+        linkedin_url = None
+        print("🔗 Posting to LinkedIn...")
+        try:
+            linkedin_url = await post_to_linkedin(session, job, slug)
+            if linkedin_url:
+                print(f"✔ Successfully posted to LinkedIn! URL: {linkedin_url}")
+            else:
+                print("❌ LinkedIn posting failed.")
+        except Exception as e:
+            print(f"❌ LinkedIn posting failed: {e}")
+
+        # 5. Telegram Post (WITH IMAGE LINK PREVIEW AT THE TOP)
         print("📢 Posting to Telegram channel as a unified message with image preview at the TOP...")
-        post = build_post(job, slug)
+        post = build_post(job, slug, linkedin_url=linkedin_url)
         try:
             if uploaded_url:
                 telegram_post = f"[\u200b]({uploaded_url}){post}"
@@ -123,14 +135,6 @@ async def run_manual_post():
             print("✔ Successfully posted to Telegram in a single unified message with the image at the TOP!")
         except Exception as e:
             print(f"❌ Telegram posting failed: {e}")
-            
-        # 5. LinkedIn Post
-        print("🔗 Posting to LinkedIn...")
-        try:
-            await post_to_linkedin(session, job, slug)
-            print("✔ Successfully posted to LinkedIn!")
-        except Exception as e:
-            print(f"❌ LinkedIn posting failed: {e}")
 
 if __name__ == "__main__":
     asyncio.run(run_manual_post())
