@@ -3,10 +3,13 @@ import sys
 
 # Fix Windows console encoding
 if sys.stdout.encoding != "utf-8":
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace") # type: ignore
+    except AttributeError:
+        pass
 
-from telethon.sync import TelegramClient
-from telethon.sessions import StringSession
+from telethon.sync import TelegramClient  # type: ignore
+from telethon.sessions import StringSession  # type: ignore
 from dotenv import load_dotenv
 
 load_dotenv()

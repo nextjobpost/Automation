@@ -19,7 +19,10 @@ import urllib.request
 
 # Fix Windows console encoding so emojis don't crash
 if sys.stdout.encoding != "utf-8":
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace") # type: ignore
+    except AttributeError:
+        pass
 
 # ─────────────────────────────────────────────
 # YOUR APP CREDENTIALS
@@ -43,7 +46,7 @@ auth_url = (
     f"&scope={urllib.parse.quote(SCOPES, safe='')}"
 )
 
-auth_code_holder = {}
+auth_code_holder: dict = {}
 
 # ─────────────────────────────────────────────
 # STEP 2: Local server to catch the redirect

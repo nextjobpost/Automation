@@ -5,7 +5,8 @@ import sys
 import requests
 import hashlib
 import time
-from datetime import datetime, date
+import logging
+from datetime import datetime, date, timedelta
 from bs4 import BeautifulSoup
 from google import genai
 from google.genai import types
@@ -15,23 +16,44 @@ from dotenv import load_dotenv
 # Force UTF-8 encoding for stdout and stderr to prevent UnicodeEncodeErrors on Windows
 if sys.stdout.encoding != 'utf-8':
     try:
-        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace') # type: ignore
     except AttributeError:
         pass
 if sys.stderr.encoding != 'utf-8':
     try:
-        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace') # type: ignore
     except AttributeError:
         pass
+
+# =========================
+# LOGGING SETUP
+# =========================
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("scraper.log", encoding="utf-8"),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
 
 # Load Environment
 load_dotenv(override=True)
 
-API_KEY = os.getenv("API_KEY")
-API_TOKEN = os.getenv("API_TOKEN")
-API_URL = os.getenv("API_URL", "http://localhost:4000/api/jobs")
-ADMIN_URL = os.getenv("ADMIN_URL", "http://localhost:4000/api/admin/login")
-GOVT_SCRAPER_BASE_URL = os.getenv("GOVT_SCRAPER_BASE_URL", "https://govtjobsalert.in")
+def validate_config():
+    api_key = os.getenv("API_KEY")
+    if not api_key or api_key == "your_google_gemini_api_key":
+        logging.warning("API_KEY (Gemini) not found or is placeholder. Running in BASIC extraction mode (no AI).")
+        api_key = None
+    
+    api_token = os.getenv("API_TOKEN")
+    api_url = os.getenv("API_URL", "http://localhost:4000/api/jobs")
+    admin_url = os.getenv("ADMIN_URL", "http://localhost:4000/api/admin/login")
+    govt_base = os.getenv("GOVT_SCRAPER_BASE_URL", "https://govtjobsalert.in")
+    
+    return api_key, api_token, api_url, admin_url, govt_base
+
+API_KEY, API_TOKEN, API_URL, ADMIN_URL, GOVT_SCRAPER_BASE_URL = validate_config()
 
 from urllib.parse import urlparse, urljoin
 parsed_base = urlparse(GOVT_SCRAPER_BASE_URL)
@@ -41,29 +63,45 @@ CACHE_FILE = "scraped_urls.json"
 
 # Initialize Gemini
 client_gemini = None
-if not API_KEY:
-    print("⚠️ API_KEY not found in environment. Running in BASIC extraction mode (no AI).")
-else:
+if API_KEY:
     try:
         client_gemini = genai.Client(api_key=API_KEY)
     except Exception as e:
-        print(f"⚠️ Failed to initialize Gemini client: {e}. Running in BASIC extraction mode.")
+        logging.warning(f"Failed to initialize Gemini client: {e}. Running in BASIC extraction mode.")
 
 def load_cache():
+    cache = {}
     if os.path.exists(CACHE_FILE):
         try:
             with open(CACHE_FILE, "r", encoding="utf-8") as f:
-                return set(json.load(f))
+                data = json.load(f)
+                if isinstance(data, list):
+                    # Migrate old list format to dict format
+                    now = time.time()
+                    cache = {url: now for url in data}
+                elif isinstance(data, dict):
+                    cache = data
         except Exception as e:
-            print(f"Error loading cache: {e}")
-    return set()
+            logging.error(f"Error loading cache: {e}")
+            
+    # Prune old entries (> 60 days)
+    pruned_cache = {}
+    cutoff_time = time.time() - (60 * 24 * 60 * 60)
+    for url, timestamp in cache.items():
+        if timestamp > cutoff_time:
+            pruned_cache[url] = timestamp
+            
+    if len(cache) != len(pruned_cache):
+        logging.info(f"Pruned {len(cache) - len(pruned_cache)} old URLs from cache.")
+        
+    return pruned_cache
 
 def save_cache(cache):
     try:
         with open(CACHE_FILE, "w", encoding="utf-8") as f:
-            json.dump(list(cache), f, indent=2)
+            json.dump(cache, f, indent=2)
     except Exception as e:
-        print(f"Error saving cache: {e}")
+        logging.error(f"Error saving cache: {e}")
 
 def get_auth_token():
     """Dynamically logs in to get a valid Bearer token."""
@@ -552,7 +590,7 @@ def scrape_category(category_path, post_type_default):
                 
                 if parsed_date and parsed_date < date.today():
                     print(f"⚠️ Skipping expired job: '{raw_title}'. Last date '{last_date_str}' is in the past (today is {date.today()}).")
-                    cache.add(href)
+                    cache[href] = time.time()
                     save_cache(cache)
                     continue
 
@@ -636,7 +674,7 @@ def scrape_category(category_path, post_type_default):
             print(f"📥 Queued govt job for Telegram + LinkedIn posting: {raw_title}")
             print(f"   └ Apply Link : {extracted_apply_link}")
             print(f"   └ PDF Link   : {extracted_pdf_link}")
-            cache.add(href)
+            cache[href] = time.time()
             save_cache(cache)
             new_items_posted += 1
         except Exception as e:

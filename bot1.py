@@ -4,34 +4,68 @@ import asyncio
 import hashlib
 import aiohttp
 import sys
+import json
+import unicodedata
+import random
+import time
+import traceback
+import logging
+from urllib.parse import urlparse
 from datetime import datetime, date
-from telethon import TelegramClient, events
-
-from telethon.sessions import StringSession
-from telethon.errors import FloodWaitError
+from PIL import Image, ImageDraw, ImageFont
+from telethon import TelegramClient, events  # type: ignore
+from telethon.tl.functions.messages import SendMessageRequest  # type: ignore
+from telethon.sessions import StringSession  # type: ignore
+from telethon.errors import FloodWaitError  # type: ignore
 from dotenv import load_dotenv
 from slugify import slugify
+from google import genai
+from google.genai import types
 
 # Force UTF-8 encoding for stdout and stderr to prevent UnicodeEncodeErrors on Windows
 if sys.stdout.encoding != 'utf-8':
     try:
-        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace') # type: ignore
     except AttributeError:
         pass
 if sys.stderr.encoding != 'utf-8':
     try:
-        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace') # type: ignore
     except AttributeError:
         pass
 
+
+# =========================
+# LOGGING SETUP
+# =========================
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("bot.log", encoding="utf-8"),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
 
 # =========================
 # ENV
 # =========================
 load_dotenv(override=True)
 
-API_ID    = int(os.getenv("API_ID"))
-API_HASH  = os.getenv("API_HASH")
+def validate_config():
+    api_id_str = os.getenv("API_ID")
+    if not api_id_str or not api_id_str.isdigit():
+        logging.error(f"CRITICAL: Invalid API_ID in .env file! Found: '{api_id_str}'. Please replace it with your actual numeric Telegram API ID.")
+        sys.exit(1)
+    
+    api_hash = os.getenv("API_HASH")
+    if not api_hash or api_hash == "your_telegram_api_hash":
+        logging.error("CRITICAL: API_HASH in .env file is missing or contains placeholder. Please update it.")
+        sys.exit(1)
+        
+    return int(api_id_str), api_hash
+
+API_ID, API_HASH = validate_config()
 API_TOKEN = os.getenv("API_TOKEN")
 API_KEY   = os.getenv("API_KEY")
 
@@ -90,8 +124,8 @@ client = TelegramClient(session, API_ID, API_HASH)
 CACHE_FILE = "posted_cache.json"
 
 # In-memory fallbacks for Railway (read-only filesystem)
-_MEMORY_QUEUE = []   # Used when job_queue.json can't be written
-_MEMORY_SEEN  = set()  # Used when posted_cache.json can't be written
+_MEMORY_QUEUE: list = []   # Used when job_queue.json can't be written
+_MEMORY_SEEN: set = set()  # Used when posted_cache.json can't be written
 
 def load_cache():
     try:
@@ -156,7 +190,6 @@ def normalize_text(text):
 def normalize_text_keep_case(text):
     if not text:
         return ""
-    import unicodedata
     # Normalize unicode bold/italic mathematical alphanumeric chars to standard Latin while keeping original case
     return unicodedata.normalize('NFKD', str(text))
 
@@ -186,10 +219,6 @@ def is_job(text):
     looks_like_job = any(indicator in text for indicator in ["𝗝𝗼𝗯", "𝗛𝗶𝗿𝗶𝗻𝗴", "𝗥𝗼𝗹𝗲", "𝗔𝗽𝗽𝗹𝘆"])
     
     return (has_job_word or has_job_emoji or looks_like_job) and has_link
-
-from google import genai
-from google.genai import types
-import json
 
 client_gemini = genai.Client(api_key=API_KEY) if API_KEY else None
 
@@ -409,8 +438,6 @@ def extract_basic(text):
         "slug": slugify(title) + "-" + hashlib.md5(text.encode()).hexdigest()[:5]
     }
 
-from urllib.parse import urlparse
-
 def clean_company_name(s):
     # Normalize unicode mathematical bold/italic characters to standard Latin
     s_norm = normalize_text_keep_case(s)
@@ -521,9 +548,6 @@ def guess_company_from_title(title):
 def parse_salary_fallback(text):
     if not text:
         return None
-    import re
-    import unicodedata
-    
     # Strip HTML tags if any
     clean_text = re.sub(r'<[^>]+>', ' ', text)
     # Normalize unicode/mathematical characters
@@ -872,8 +896,13 @@ def is_valid_job(job):
         if not education or any(term in str(education).lower() for term in forbidden_terms):
             job["education"] = "Any Graduate"
             
-        # Key fields to check
-        check_keys = ["company", "location", "salary", "experience", "education", "batch"]
+    # 0. Clean Null/Inconsistent values
+    for k, v in job.items():
+        if v is None or str(v).strip().lower() in ["null", "none", "n/a", "undefined"]:
+            job[k] = ""
+
+    # Key fields to check
+    check_keys = ["title", "company", "location", "salary", "experience", "education", "batch", "applyLink"]
     
     # Phrases that are legitimate defaults for govt jobs (not actual placeholders)
     govt_accepted_values = {"as per notification", "as per official notification", "various vacancies"}
@@ -890,6 +919,21 @@ def is_valid_job(job):
         if any(term in val_lower for term in forbidden_terms):
             return False, f"Placeholder/Missing value '{val}' detected in field: {key}"
             
+    # === Smart Social Media Filtering ===
+    job["postToSocials"] = True
+    
+    # 1. Skip Telegram/LinkedIn for Non-Job types (e.g., Admit Card, Result)
+    post_type = str(job.get("postType", "")).lower()
+    if any(t in post_type for t in ["admit card", "result", "syllabus", "answer key"]):
+        job["postToSocials"] = False
+
+    # 2. Complete rejection of noise/spam links (not even posted to website)
+    company_name = str(job.get("company", ""))
+    apply_link = str(job.get("applyLink", ""))
+        
+    if any(domain in apply_link.lower() for domain in ["t.me", "telegram.me", "whatsapp.com"]):
+        return False, "Job contains spam/noise applyLink (WhatsApp/Telegram group)."
+
     enrich_company_details(job)
     return True, ""
 
@@ -1858,21 +1902,37 @@ async def process_and_post_job(job_data):
         return False
 
     async with aiohttp.ClientSession() as session:
-        # 1. Image Upload (Only if real image is present)
+        # 1. Image Upload
         uploaded_url = None
         has_real_image = image_path and os.path.exists(image_path) and os.path.getsize(image_path) > 0
         
+        if not has_real_image:
+            print("ℹ️ No real image found. Generating a dynamic poster...")
+            image_path = os.path.join(PENDING_IMAGES_DIR, f"gen_{h}.png")
+            try:
+                generate_poster(
+                    title=job.get('title', 'Job Opening'),
+                    company=job.get('company', 'Top Company'),
+                    location=job.get('location', 'Pan India'),
+                    salary=job.get('salary', 'Best in Industry'),
+                    output_path=image_path
+                )
+                has_real_image = os.path.exists(image_path)
+            except Exception as e:
+                print(f"⚠️ Failed to generate poster: {e}")
+                image_path = ""
+                
         if has_real_image:
             uploaded_url = await upload_image_to_api(session, image_path)
             if uploaded_url:
                 job["image"] = uploaded_url
-                print(f"📸 Real image uploaded and bound: {uploaded_url}")
+                print(f"📸 Image uploaded and bound: {uploaded_url}")
             else:
                 job["image"] = ""
-                print("⚠️ Failed to upload real image. Proceeding without image.")
+                print("⚠️ Failed to upload image. Proceeding without image.")
         else:
             job["image"] = ""
-            print("ℹ️ No real image to upload. Proceeding without image.")
+            print("ℹ️ No image to upload. Proceeding without image.")
 
         # 2. Website Post (non-blocking — social posts continue even if website fails)
         response = await send_to_api(session, job)
@@ -1892,43 +1952,48 @@ async def process_and_post_job(job_data):
             )
             if backend_slug: slug = backend_slug
 
-        # 3. Telegram Post
-        post = build_post(job, slug)
+        if job.get("postToSocials", True):
+            # 3. Telegram Post
+            post = build_post(job, slug)
 
-        # Strictly check that the generated Telegram post does not contain any forbidden/placeholder terms
-        forbidden_terms = ["not mentioned", "not specified", "not disclosed", "confidential", "hiring company"]
-        if any(term in post.lower() for term in forbidden_terms):
-            print(f"🚫 [ABORT] Generated Telegram post contains placeholder terms. Skipping Telegram post.")
-            return False
-
-        try:
-            # Prepend hidden image link using Markdown to let Telegram pull it as a premium preview banner
-            if uploaded_url:
-                telegram_post = f"[\u200b]({uploaded_url}){post}"
+            # Strictly check that the generated Telegram post does not contain any forbidden/placeholder terms
+            forbidden_terms = ["not mentioned", "not specified", "not disclosed", "confidential", "hiring company"]
+            if any(term in post.lower() for term in forbidden_terms):
+                print(f"🚫 [ABORT] Generated Telegram post contains placeholder terms. Skipping Telegram post.")
+                # Don't return False here, because website upload already succeeded. Just skip socials.
+                pass
             else:
-                telegram_post = post
+                try:
+                    # Prepend hidden image link using Markdown to let Telegram pull it as a premium preview banner
+                    if uploaded_url:
+                        telegram_post = f"[\u200b]({uploaded_url}){post}"
+                    else:
+                        telegram_post = post
 
-            # Use raw SendMessageRequest with invert_media=True to show the image preview at the TOP of the message
-            from telethon.tl.functions.messages import SendMessageRequest
-            import random
+                    # Use raw SendMessageRequest with invert_media=True to show the image preview at the TOP of the message
+                    peer_entity = await client.get_input_entity(TARGET_CHANNEL)
+                    msg_text, entities = await client._parse_message_text(telegram_post, 'md')
 
-            peer_entity = await client.get_input_entity(TARGET_CHANNEL)
-            msg_text, entities = await client._parse_message_text(telegram_post, 'md')
+                    await client(SendMessageRequest(
+                        peer=peer_entity,
+                        message=msg_text,
+                        entities=entities,
+                        no_webpage=False if uploaded_url else True,
+                        invert_media=True if uploaded_url else False,
+                        random_id=random.randint(-2**63, 2**63 - 1)
+                    ))
+                    print(f"✔ Telegram Posted in a single unified message section.")
+                except Exception as e:
+                    print(f"❌ Telegram failed: {e}")
 
-            await client(SendMessageRequest(
-                peer=peer_entity,
-                message=msg_text,
-                entities=entities,
-                no_webpage=False if uploaded_url else True,
-                invert_media=True if uploaded_url else False,
-                random_id=random.randint(-2**63, 2**63 - 1)
-            ))
-            print(f"✔ Telegram Posted in a single unified message section.")
-        except Exception as e:
-            print(f"❌ Telegram failed: {e}")
-
-        # 4. LinkedIn Post
-        await post_to_linkedin(session, job, slug)
+            # 4. LinkedIn Post (Only for Private/IT Jobs)
+            if not job.get("isGovernment", False):
+                await post_to_linkedin(session, job, slug)
+                print("✔ LinkedIn Posted (Private Job).")
+            else:
+                print("ℹ️ Skipping LinkedIn (Government jobs are not posted to LinkedIn).")
+        else:
+            print("ℹ️ Skipping Telegram and LinkedIn (Post categorized as noise or non-job).")
 
         # Cleanup image
         try:
@@ -1942,7 +2007,7 @@ async def process_and_post_job(job_data):
 
 async def scheduler_task():
     """Background loop that posts one job every POST_INTERVAL seconds (default 30 min)."""
-    print(f"🕒 Scheduler started. Posting every {POST_INTERVAL}s ({POST_INTERVAL//60} min).")
+    logging.info(f"🕒 Scheduler started. Posting every {POST_INTERVAL}s ({POST_INTERVAL//60} min).")
     last_post_time = 0  # Track when last post went out
     while True:
         now = time.time()
@@ -1953,32 +2018,70 @@ async def scheduler_task():
             queue = load_queue()
             processed_any = False
             
-            while queue:
-                job_data = queue.pop(0)  # Dequeue the oldest item
-                save_queue(queue)
+            if queue:
+                # Find one govt job and one private job to post concurrently
+                govt_job_idx = -1
+                private_job_idx = -1
                 
-                job = job_data.get("job", {})
-                is_valid, reason = is_valid_job(job)
-                if not is_valid:
-                    print(f"🚫 [SCHEDULER] Skipping invalid/expired job from queue: '{job.get('title')}' - Reason: {reason}")
-                    continue
-                
-                print(f"\n📤 [SCHEDULER] Dequeued valid job. Remaining in queue: {len(queue)}")
-                try:
-                    success = await process_and_post_job(job_data)
-                    if success:
-                        last_post_time = time.time()  # Reset timer only after successful post
-                        processed_any = True
+                # First clean up invalid jobs at the front
+                while queue:
+                    job = queue[0].get("job", {})
+                    is_valid, reason = is_valid_job(job)
+                    if not is_valid:
+                        logging.info(f"🚫 [SCHEDULER] Skipping invalid/expired job from queue: '{job.get('title')}' - Reason: {reason}")
+                        queue.pop(0)
+                        save_queue(queue)
                     else:
-                        print(f"⚠️ [SCHEDULER] Job '{job.get('title')}' was aborted/skipped inside process_and_post_job. Checking next queue item immediately...")
-                        continue  # Check the next queue item immediately without waiting 30 min!
-                except Exception as e:
-                    print(f"❌ [SCHEDULER] Processing error: {e}")
-                    import traceback; traceback.print_exc()
-                    last_post_time = time.time()  # Still reset on error to avoid rapid-fire error loops
+                        break
+                        
+                if not queue:
+                    continue
+                    
+                for i, jd in enumerate(queue):
+                    is_govt = jd.get("job", {}).get("isGovernment", False)
+                    if is_govt and govt_job_idx == -1:
+                        govt_job_idx = i
+                    elif not is_govt and private_job_idx == -1:
+                        private_job_idx = i
+                    if govt_job_idx != -1 and private_job_idx != -1:
+                        break
+                        
+                jobs_to_process = []
+                # Pop from highest index to lowest so popping doesn't shift the other index
+                indices = sorted([i for i in [govt_job_idx, private_job_idx] if i != -1], reverse=True)
+                for idx in indices:
+                    jobs_to_process.append(queue.pop(idx))
+                    
+                if jobs_to_process:
+                    save_queue(queue)
+                    logging.info(f"\n📤 [SCHEDULER] Dequeued {len(jobs_to_process)} job(s) concurrently. Remaining in queue: {len(queue)}")
+                    
+                    async def process_with_error_handling(jd):
+                        try:
+                            success = await process_and_post_job(jd)
+                            if not success:
+                                logging.warning(f"⚠️ [SCHEDULER] Job '{jd.get('job', {}).get('title')}' was aborted/skipped.")
+                            return success
+                        except Exception as e:
+                            retries = jd.get("retries", 0) + 1
+                            jd["retries"] = retries
+                            logging.error(f"❌ [SCHEDULER] Processing error for '{jd.get('job', {}).get('title')}': {e}. Retry {retries}/3.")
+                            traceback.print_exc()
+                            if retries >= 3:
+                                logging.error("Job failed 3 times. Moving to dead-letter queue.")
+                                try:
+                                    with open("failed_jobs.json", "a", encoding="utf-8") as f:
+                                        f.write(json.dumps(jd) + "\n")
+                                except: pass
+                            else:
+                                q = load_queue()
+                                q.append(jd)
+                                save_queue(q)
+                            return False
+
+                    await asyncio.gather(*(process_with_error_handling(jd) for jd in jobs_to_process))
+                    last_post_time = time.time()
                     processed_any = True
-                
-                break  # We successfully posted or encountered an execution error (and reset timer), exit queue loop
             
             if processed_any:
                 remaining = load_queue()
@@ -2094,6 +2197,7 @@ async def run_scraper_periodically():
 # =========================
 import time
 async def main():
+    await ensure_font_downloaded()
     await client.start()
     print("Dual Pipeline Job Agent with Scheduler Running...")
 

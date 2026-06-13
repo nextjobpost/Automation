@@ -2,10 +2,22 @@ import os
 import sys
 import asyncio
 import aiohttp
+import hashlib
+import random
+from slugify import slugify
+from telethon.tl.functions.messages import SendMessageRequest  # type: ignore
 
-# Fix Windows console encoding so emojis don't crash the script in the terminal
-if sys.stdout.encoding != "utf-8":
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+# Force UTF-8 encoding for stdout and stderr to prevent UnicodeEncodeErrors on Windows
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace') # type: ignore
+    except AttributeError:
+        pass
+if sys.stderr.encoding != 'utf-8':
+    try:
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace') # type: ignore
+    except AttributeError:
+        pass
 
 from bot1 import (
     client, 
@@ -50,8 +62,6 @@ async def run_manual_post():
     }
     
     # Calculate slug matching the format
-    from slugify import slugify
-    import hashlib
     job["slug"] = slugify(job["title"]) + "-" + hashlib.md5(job["shortSummary"].encode()).hexdigest()[:5]
 
     image_path = r"C:\Users\Adarsh Sharma\.gemini\antigravity\brain\a55d9248-6f74-4ecd-8249-646f0f741abf\accenture_hiring_1779603634909.png"
@@ -98,10 +108,6 @@ async def run_manual_post():
                 telegram_post = f"[\u200b]({uploaded_url}){post}"
             else:
                 telegram_post = post
-
-            # Use raw SendMessageRequest with invert_media=True to show the image preview at the TOP of the message
-            from telethon.tl.functions.messages import SendMessageRequest
-            import random
 
             peer_entity = await client.get_input_entity(TARGET_CHANNEL)
             msg_text, entities = await client._parse_message_text(telegram_post, 'md')
