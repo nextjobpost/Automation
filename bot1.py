@@ -141,6 +141,27 @@ def hash_text(t):
 JOB_WORDS = ["job", "hiring", "apply", "vacancy", "intern", "opening", "recruitment", "role", "drive"]
 JOB_EMOJIS = ["🔔", "🚀", "📍", "💼", "🎓", "⏳", "👉"]
 
+def sanitize_text(text):
+    if not text:
+        return ""
+    # Remove explicit PD Link / Placement Drive phrases and URLs
+    # Also remove linkedin.com/channel/profile links or mentions
+    # Remove "PD Link : https://..." or "Placement Drive Link : https://..."
+    text = re.sub(r'(?i)\b(?:pd|placement\s*drive)\s*links?\s*[:\-]?\s*https?://[^\s<]+', '', text)
+    # Remove linkedin profile/company links (but keep job application links if any)
+    text = re.sub(r'(?i)https?://(?:www\.)?linkedin\.com/(?:company|in|groups|feed|posts)/?[^\s<]*', '', text)
+    # Remove Telegram links
+    text = re.sub(r'(?i)https?://(?:t\.me|telegram\.me)/[^\s<]*', '', text)
+    # Remove whatsapp links
+    text = re.sub(r'(?i)https?://(?:chat\.whatsapp\.com|wa\.me)/[^\s<]*', '', text)
+    # Remove any leftover "PD Link" or "Placement Drive" words if they are floating
+    text = re.sub(r'(?i)\b(?:pd|placement\s*drive)\s*links?\b', '', text)
+    # Remove any @channel_name mentions
+    text = re.sub(r'(?i)@[a-zA-Z0-9_]+', '', text)
+    # Remove common extra spacing left behind
+    text = re.sub(r'\s{2,}', ' ', text)
+    return text.strip()
+
 def normalize_text(text):
     if not text:
         return ""
@@ -389,8 +410,8 @@ def extract_basic(text):
         "company": company,
         "location": location,
         "applyLink": apply_link,
-        "jobDescription": text_clean,
-        "description": text_clean[:180] + "..." if len(text_clean) > 180 else text_clean,
+        "jobDescription": sanitize_text(text_clean),
+        "description": sanitize_text(text_clean)[:180] + "..." if len(sanitize_text(text_clean)) > 180 else sanitize_text(text_clean),
         "type": job_type,
         "experience": experience,
         "education": education,
@@ -900,9 +921,10 @@ def is_valid_job(job):
     # === Smart Social Media Filtering ===
     job["postToSocials"] = True
     
-    # 1. Skip Telegram/LinkedIn for Non-Job types (e.g., Admit Card, Result)
+    # 1. Skip Telegram/LinkedIn for Non-Job types (e.g., Admit Card, Syllabus)
+    # Note: Result and Answer Key are prioritized and will be posted to Telegram.
     post_type = str(job.get("postType", "")).lower()
-    if any(t in post_type for t in ["admit card", "result", "syllabus", "answer key"]):
+    if any(t in post_type for t in ["admit card", "syllabus"]):
         job["postToSocials"] = False
 
     # 2. Complete rejection of noise/spam links (not even posted to website)
@@ -1001,10 +1023,10 @@ Job Posting Text:
         
     # 🎨 Give the beautiful HTML text to the job detail page, and clean summary to the home page cards
     title_val = data.get("title", "Job Opening")
-    data["jobDescription"] = data.get("htmlDescription", text)
-    data["description"] = data.get("shortSummary", title_val[:150] + "...")
-    data["aboutCompany"] = data.get("aboutCompany", "")
-    data["whyJoin"] = data.get("whyJoin", "")
+    data["jobDescription"] = sanitize_text(data.get("htmlDescription", text))
+    data["description"] = sanitize_text(data.get("shortSummary", title_val[:150] + "..."))
+    data["aboutCompany"] = sanitize_text(data.get("aboutCompany", ""))
+    data["whyJoin"] = sanitize_text(data.get("whyJoin", ""))
     data["howToApply"] = data.get("howToApply", "")
     data["finalThoughts"] = data.get("finalThoughts", "")
     data["highlightText"] = data.get("title", "Freshers Eligible")
