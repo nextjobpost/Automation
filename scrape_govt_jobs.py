@@ -75,6 +75,11 @@ def load_cache():
     if os.path.exists(CACHE_FILE):
         try:
             with open(CACHE_FILE, "r", encoding="utf-8") as f:
+                cache = json.load(f)
+        except Exception:
+            pass
+    return cache
+
 def get_auth_token():
     """Dynamically logs in to get a valid Bearer token."""
     global API_TOKEN
