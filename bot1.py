@@ -724,6 +724,11 @@ def is_valid_job(job):
         if not eligibility or any(term in str(eligibility).lower() for term in forbidden_terms):
             job["eligibility"] = "As per notification"
             
+        # 3.5 Auto-default type
+        job_type = job.get("type")
+        if not job_type or any(term in str(job_type).lower() for term in forbidden_terms):
+            job["type"] = "Full-Time"
+            
         # 4. Auto-default company
         company = job.get("company")
         
@@ -785,6 +790,11 @@ def is_valid_job(job):
         batch = job.get("batch")
         if not batch or any(term in str(batch).lower() for term in forbidden_terms):
             job["batch"] = "2024 / 2025 / 2026"
+            
+        # 2.5 Auto-default type
+        job_type = job.get("type")
+        if not job_type or any(term in str(job_type).lower() for term in forbidden_terms):
+            job["type"] = "Full-Time"
             
         # 3. Auto-default company (guess from title or URL first, then fallback to Top Company)
         company = job.get("company")

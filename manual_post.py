@@ -64,7 +64,7 @@ async def run_manual_post():
     # Calculate slug matching the format
     job["slug"] = slugify(job["title"]) + "-" + hashlib.md5(job["shortSummary"].encode()).hexdigest()[:5]
 
-    image_path = r"C:\Users\Adarsh Sharma\.gemini\antigravity\brain\a55d9248-6f74-4ecd-8249-646f0f741abf\accenture_hiring_1779603634909.png"
+    image_path = "assets/placeholder.png" # Update this to an actual valid path on your system
     
     print("🚀 Starting manual job post process...")
     print(f"Job: {job['title']} at {job['company']}")
