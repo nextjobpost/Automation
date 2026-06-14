@@ -626,12 +626,23 @@ def scrape_category(category_path, post_type_default):
         # Load, append and save to SQLite queue
         job_hash = hashlib.md5(href.encode()).hexdigest()
         
+        # Semantic Deduplication
+        title_str = str(queue_job.get('title', '')).lower().strip()
+        comp_str = str(queue_job.get('company', '')).lower().strip()
+        semantic_hash = hashlib.md5(f"{title_str}::{comp_str}".encode()).hexdigest()
+        
+        if database.is_job_seen(semantic_hash):
+            print(f"⚠️ Semantic duplicate detected, skipping: {raw_title}")
+            database.mark_job_seen(job_hash)
+            continue
+        
         try:
             if database.add_job_to_queue(queue_job, job_hash, image_path="", is_government=True):
                 print(f"📥 Queued govt job for Telegram + LinkedIn posting: {raw_title}")
                 print(f"   └ Apply Link : {extracted_apply_link}")
                 print(f"   └ PDF Link   : {extracted_pdf_link}")
                 database.mark_job_seen(job_hash)
+                database.mark_job_seen(semantic_hash)
                 new_items_posted += 1
             else:
                 print(f"⚠️ Failed to queue or already in queue: {raw_title}")

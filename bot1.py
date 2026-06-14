@@ -2197,12 +2197,31 @@ async def handler(event):
             print(f"⚠️ Error downloading image: {e}. Proceeding without image.")
             image_path = ""
 
+    # Semantic Deduplication
+    title_str = str(job.get('title', '')).lower().strip()
+    company_str = str(job.get('company', '')).lower().strip()
+    semantic_hash = hashlib.md5(f"{title_str}::{company_str}".encode()).hexdigest()
+    
+    apply_link = str(job.get('applyLink', '')).lower().strip()
+    apply_hash = None
+    if apply_link and len(apply_link) > 15 and not any(d in apply_link for d in ['t.me', 'whatsapp', 'govtjobsalert.in', 'linkedin.com/company', 'google.com']):
+        apply_hash = hashlib.md5(apply_link.encode()).hexdigest()
+
+    if semantic_hash in seen or (apply_hash and apply_hash in seen):
+        print(f"🚫 [SKIPPING] Semantic duplicate detected (same title+company or applyLink): {title_str}")
+        return
+
     # Add to SQLite queue
     is_govt_flag = job.get("isGovernment", False)
     if database.add_job_to_queue(job, h, image_path, is_govt_flag):
         # Mark as seen so we don't queue it twice
         seen.add(h)
+        seen.add(semantic_hash)
         database.mark_job_seen(h)
+        database.mark_job_seen(semantic_hash)
+        if apply_hash:
+            seen.add(apply_hash)
+            database.mark_job_seen(apply_hash)
         print(f"📥 Job Queued! Total in queue: {database.get_queue_size()}")
     else:
         print("⚠️ Job was already in queue or failed to add.")
