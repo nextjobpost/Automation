@@ -154,7 +154,7 @@ def sanitize_text(text):
     text = re.sub(r'(?i)https?://(?:chat\.whatsapp\.com|wa\.me)/[^\s<"\'>]*', '', text)
     
     # Remove competitor & invalid URLs
-    competitor_pattern = r'(?i)https?://(?:(?:\.in|\.com|\.org|\.net|\.co|\.info|\.us|\.xyz)\b|(?:[^\s<"\'>]*\.)?(?:pdlink\.in|bit\.ly|tinyurl\.com|ow\.ly|goo\.gl|short\.ly|rebrand\.ly|cutt\.ly|t\.co|buff\.ly|dlvr\.it|internshala\.com|internshals\.com|naukri\.com|shine\.com|monster\.com|timesjobs\.com|freshersworld\.com|placementindia\.com|govtjobsalert\.in|sarkariresult\.com|rojgarresult\.com|freejobalert\.com|freshershunt\.in|fresherslive\.com|freshersvoice\.com|offcampusjobs4u\.in|youth4work\.com|ambitionbox\.com|glassdoor\.com|glassdoor\.co\.in|indeed\.com|indeed\.co\.in|foundthejob\.com))[^\s<"\'>]*'
+    competitor_pattern = r'(?i)https?://(?:(?:\.in|\.com|\.org|\.net|\.co|\.info|\.us|\.xyz)\b|(?:[^\s<"\'>]*\.)?(?:pdlink\.in|bit\.ly|tinyurl\.com|ow\.ly|goo\.gl|short\.ly|rebrand\.ly|cutt\.ly|t\.co|buff\.ly|dlvr\.it|internshala\.com|internshals\.com|naukri\.com|shine\.com|monster\.com|timesjobs\.com|freshersworld\.com|placementindia\.com|govtjobsalert\.in|sarkariresult\.com|rojgarresult\.com|freejobalert\.com|freshershunt\.in|fresherslive\.com|freshersvoice\.com|offcampusjobs4u\.in|youth4work\.com|ambitionbox\.com|glassdoor\.com|glassdoor\.co\.in|indeed\.com|indeed\.co\.in|foundthejob\.com|internships\.com|internshipss\.com))[^\s<"\'>]*'
     text = re.sub(competitor_pattern, '', text)
     
     # Remove any leftover "PD Link" or "Placement Drive" words if they are floating
@@ -2025,7 +2025,15 @@ async def process_and_post_job(job_data):
             )
             if backend_slug: slug = backend_slug
 
-        if job.get("postToSocials", True):
+        # Prevent posting duplicates to Telegram/LinkedIn
+        is_duplicate = False
+        if isinstance(response, dict) and response.get("success") is True:
+            message = response.get("message", "")
+            if "duplicate matched" in message.lower():
+                is_duplicate = True
+                print("🚫 Job already exists on website. Skipping Telegram & LinkedIn.")
+
+        if job.get("postToSocials", True) and not is_duplicate:
             # 3. LinkedIn Post (Only for Private/IT Jobs) - Post first to get LinkedIn URL for Telegram
             linkedin_url = None
             if not job.get("isGovernment", False):
