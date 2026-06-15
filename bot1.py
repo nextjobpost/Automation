@@ -2494,8 +2494,32 @@ async def preload_website_jobs_into_seen():
     except Exception as e:
         print(f"⚠️ Error preloading website jobs: {e}")
 
+from aiohttp import web
+
+async def health_check(request):
+    return web.Response(text="OK", status=200)
+
+async def start_dummy_server():
+    """Starts a dummy aiohttp web server to satisfy Render/Railway health checks."""
+    app = web.Application()
+    app.router.add_get('/', health_check)
+    app.router.add_get('/health', health_check)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    port = int(os.getenv("PORT", 8080))
+    site = web.TCPSite(runner, '0.0.0.0', port)
+    await site.start()
+    print(f"🌐 Health server listening on port {port} (Keep-Alive)")
+
 async def main():
     await ensure_font_downloaded()
+    
+    # 1. Start Dummy Health Server for Cloud Platforms
+    try:
+        await start_dummy_server()
+    except Exception as e:
+        print(f"⚠️ Could not start health server: {e}")
+
     try:
         await client.start()
     except AuthKeyDuplicatedError:
@@ -2535,7 +2559,24 @@ async def main():
     # Start the government scraper in the background
     asyncio.create_task(run_scraper_periodically())
     
-    await client.run_until_disconnected()
+    # Global Reconnection Loop
+    while True:
+        try:
+            if not client.is_connected():
+                print("🔄 Reconnecting Telegram client...")
+                await client.connect()
+            await client.run_until_disconnected()
+        except AuthKeyDuplicatedError:
+            print("\n❌ [TELEGRAM ERROR] AuthKeyDuplicatedError inside reconnection loop! Exiting to prevent ban...")
+            sys.exit(1)
+        except Exception as e:
+            print(f"⚠️ Telegram disconnected unexpectedly: {e}")
+        
+        print("⏳ Waiting 15 seconds before reconnecting...")
+        await asyncio.sleep(15)
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\n🛑 Bot stopped manually.")
