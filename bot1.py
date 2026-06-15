@@ -16,7 +16,7 @@ from PIL import Image, ImageDraw, ImageFont
 from telethon import TelegramClient, events  # type: ignore
 from telethon.tl.functions.messages import SendMessageRequest  # type: ignore
 from telethon.sessions import StringSession  # type: ignore
-from telethon.errors import FloodWaitError  # type: ignore
+from telethon.errors import FloodWaitError, AuthKeyDuplicatedError  # type: ignore
 from dotenv import load_dotenv
 from slugify import slugify
 from google import genai
@@ -2363,7 +2363,16 @@ async def preload_website_jobs_into_seen():
 
 async def main():
     await ensure_font_downloaded()
-    await client.start()
+    try:
+        await client.start()
+    except AuthKeyDuplicatedError:
+        print("\n❌ [TELEGRAM ERROR] AuthKeyDuplicatedError!")
+        print("This happens because the Telegram session is being used by two different containers/IPs at the same time.")
+        print("This is usually caused by Render/Railway zero-downtime (rolling) deployments running the new container before stopping the old one.")
+        print("To fix this:")
+        print("1. Set your Render/Railway deployment strategy to 'Recreate' (kill the old instance before starting the new one).")
+        print("2. Generate a new TELEGRAM_SESSION_STRING and update it in your environment variables.")
+        sys.exit(1)
     print("Dual Pipeline Job Agent with Scheduler Running...")
     
     # Preload recent jobs from website API
