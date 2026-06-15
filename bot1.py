@@ -1959,6 +1959,25 @@ async def process_and_post_job(job_data):
 
     print(f"\n🚀 [SCHEDULER] Processing job: {job['title']}")
 
+    # 0. Early duplicate check against preloaded seen set
+    title_str = str(job.get('title', '')).lower().strip()
+    company_str = str(job.get('company', '')).lower().strip()
+    semantic_hash = hashlib.md5(f"{title_str}::{company_str}".encode()).hexdigest()
+    
+    apply_link = str(job.get('applyLink', '')).lower().strip()
+    apply_hash = None
+    if apply_link and len(apply_link) > 15:
+        apply_hash = hashlib.md5(apply_link.encode()).hexdigest()
+        
+    if semantic_hash in seen or (apply_hash and apply_hash in seen):
+        print(f"🚫 [SCHEDULER] Job '{job['title']}' already exists on website (detected via seen cache). Skipping.")
+        try:
+            if image_path and os.path.exists(image_path):
+                os.remove(image_path)
+        except Exception:
+            pass
+        return True
+
     # Double check that the job contains all real information and no placeholder/missing values
     is_valid, reason = is_valid_job(job)
     if not is_valid:
@@ -2289,11 +2308,66 @@ async def run_scraper_periodically():
 # =========================
 # RUN
 # =========================
-import time
+async def preload_website_jobs_into_seen():
+    global seen
+    print("🔄 Preloading recent jobs from website API for smart duplicate checks...")
+    try:
+        # Fetch up to 200 recent jobs (both active and inactive)
+        headers = {}
+        api_token = os.getenv("API_TOKEN")
+        if api_token:
+            headers["Authorization"] = f"Bearer {api_token}"
+            
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"{API_URL}?limit=200&status=all", headers=headers, timeout=15) as r:
+                if r.status == 200:
+                    data = await r.json()
+                    jobs = data.get("jobs", []) if isinstance(data, dict) else (data if isinstance(data, list) else [])
+                    print(f"📊 Loaded {len(jobs)} recent jobs from backend.")
+                    
+                    preloaded_count = 0
+                    for j in jobs:
+                        # 1. Title + Company semantic hash
+                        title_str = str(j.get('title', '')).lower().strip()
+                        company_str = str(j.get('company', '')).lower().strip()
+                        if title_str and company_str:
+                            semantic_hash = hashlib.md5(f"{title_str}::{company_str}".encode()).hexdigest()
+                            if semantic_hash not in seen:
+                                seen.add(semantic_hash)
+                                database.mark_job_seen(semantic_hash)
+                                preloaded_count += 1
+                                
+                        # 2. Apply link hash
+                        apply_link = str(j.get('applyLink', '')).lower().strip()
+                        if apply_link and len(apply_link) > 15:
+                            apply_hash = hashlib.md5(apply_link.encode()).hexdigest()
+                            if apply_hash not in seen:
+                                seen.add(apply_hash)
+                                database.mark_job_seen(apply_hash)
+                                preloaded_count += 1
+                                
+                        # 3. Source URL hash
+                        source_url = str(j.get('sourceUrl', '')).lower().strip()
+                        if source_url and len(source_url) > 15:
+                            source_hash = hashlib.md5(source_url.encode()).hexdigest()
+                            if source_hash not in seen:
+                                seen.add(source_hash)
+                                database.mark_job_seen(source_hash)
+                                preloaded_count += 1
+                                
+                    print(f"✅ Preloaded {preloaded_count} new hashes into local seen cache.")
+                else:
+                    print(f"⚠️ Failed to preload jobs: website API returned status {r.status}")
+    except Exception as e:
+        print(f"⚠️ Error preloading website jobs: {e}")
+
 async def main():
     await ensure_font_downloaded()
     await client.start()
     print("Dual Pipeline Job Agent with Scheduler Running...")
+    
+    # Preload recent jobs from website API
+    await preload_website_jobs_into_seen()
 
     
     # 🛡️ Validate channels
