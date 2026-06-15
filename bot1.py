@@ -183,6 +183,65 @@ def sanitize_text(text):
     text = re.sub(r'\s{2,}', ' ', text)
     return text.strip()
 
+def clean_raw_text(val, is_html=False):
+    if not val:
+        return val
+    if isinstance(val, list):
+        return [clean_raw_text(item, is_html=is_html) for item in val]
+    if not isinstance(val, str):
+        return val
+        
+    competitor_domains = [
+        r'freshershunt\.(?:in|com|org)',
+        r'freshersvoice\.(?:in|com|org)',
+        r'jobsarkari\.(?:in|com|org)',
+        r'sarkariresult\.(?:in|com|org)',
+        r'careerbywell\.(?:in|com|org)',
+        r'sarkarijob\.(?:in|com|org)',
+        r'freejobalert\.(?:in|com|org)',
+        r'indgovtjobs\.(?:in|com|org)',
+        r'govtjobsalert\.(?:in|com|org)'
+    ]
+    cleaned = val
+    for comp in competitor_domains:
+        cleaned = re.sub(r'(?i)https?://\S*' + comp + r'\S*', '', cleaned)
+        cleaned = re.sub(r'(?i)\b\S*' + comp + r'\S*', '', cleaned)
+
+    cleaned = re.sub(r'(?i)https?://\.in/\S*', '', cleaned)
+    cleaned = re.sub(r'(?i)https?://\.in\b', '', cleaned)
+
+    phrases_to_remove = [
+        r'(?i)\bvisit\s+the\s+full\s+details\s+and\s+application\s+page\b',
+        r'(?i)\bfollow\s+the\s+instructions\s+provided\s+on\s+the\s+page\s+to\s+complete\s+your\s+application\b',
+        r'(?i)\bfor\s+a\s+detailed\s+guide\s+on\s+the\s+application\s+process\s*,\s*refer\s+to\s+the\s+youtube\s+video\b',
+        r'(?i)\bclick\s+here\s+to\s+apply\b',
+        r'(?i)\bofficial\s+website\b',
+        r'(?i)\bofficial\s+notification\b',
+        r'(?i)\bapply\s+online\b'
+    ]
+    for phrase in phrases_to_remove:
+        cleaned = re.sub(phrase, '', cleaned)
+
+    competitor_names = ['freshershunt', 'freshersvoice', 'jobsarkari', 'sarkariresult', 'careerbywell', 'sarkarijob', 'freejobalert', 'indgovtjobs', 'govtjobsalert']
+    for name in competitor_names:
+        cleaned = re.sub(r'(?i)\b' + name + r'\b', '', cleaned)
+
+    # Only strip numbered lists if they are followed by spacing, avoiding decimal values in dates/numbers
+    cleaned = re.sub(r'\b\d+\.\s*(?:\.|:|-)*\s+', '', cleaned)
+
+    cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+    cleaned = re.sub(r'\.\s*\.+', '.', cleaned)
+    cleaned = re.sub(r'-\s*-+', '-', cleaned)
+    cleaned = re.sub(r':\s*:+', ':', cleaned)
+    cleaned = re.sub(r'\.\s*\.', '.', cleaned)
+    cleaned = re.sub(r':\s*\.', ':', cleaned)
+
+    strip_chars = " -|:_!@#%^&*()[]{}.,/\\\"'" if is_html else " -|:_!@#%^&*()[]{}<>.,/\\\"'"
+    cleaned = cleaned.strip(strip_chars)
+    cleaned = re.sub(r'(?i)\s+\b(at|on|visit|from|link|website|official)\b\s*$', '', cleaned)
+    cleaned = cleaned.strip(strip_chars)
+    return cleaned
+
 def normalize_text(text):
     if not text:
         return ""
@@ -705,6 +764,34 @@ def is_valid_job(job):
         if "sarkariresult" in val or "sarkari result" in val:
             return False, f"Sarkari Result reference detected in '{field}'"
 
+    # Clean raw domains, URLs, and competitor names from all string and list fields, excluding key URLs/IDs/Dates/Metadata
+    exclude_fields = {
+        "applyLink", "pdfLink", "telegram", "whatsapp", "image", 
+        "sourceUrl", "sourceWebsite", "isActive", "isGovernment", 
+        "createdAt", "updatedAt", "lastDate", "postedAt", "slug", 
+        "views", "applications", "postedBy", "postType", "type", 
+        "isFeatured", "_id", "id", "__v"
+    }
+    html_fields = {"jobDescription", "howToApply"}
+    for field, val in list(job.items()):
+        if field not in exclude_fields and isinstance(val, (str, list)):
+            is_html = field in html_fields
+            job[field] = clean_raw_text(val, is_html=is_html)
+
+    # Sanitize applyLink and pdfLink from competitor domains/URLs
+    competitors = ['freshershunt', 'freshersvoice', 'jobsarkari', 'sarkariresult', 'careerbywell', 'sarkarijob', 'freejobalert', 'indgovtjobs', 'govtjobsalert']
+    apply_link = job.get("applyLink")
+    if apply_link:
+        apply_link_str = str(apply_link).lower()
+        if any(comp in apply_link_str for comp in competitors):
+            job["applyLink"] = "https://nextjobpost.in/"
+            
+    pdf_link = job.get("pdfLink")
+    if pdf_link:
+        pdf_link_str = str(pdf_link).lower()
+        if any(comp in pdf_link_str for comp in competitors):
+            job["pdfLink"] = ""
+
     # Normalize title and company to standard Latin characters (preserving case)
     if job.get("title"):
         job["title"] = normalize_text_keep_case(job["title"])
@@ -744,214 +831,173 @@ def is_valid_job(job):
             if parsed_date and parsed_date < date.today():
                 return False, f"Job has expired. Last date '{last_date_str}' is in the past (today is {date.today()})."
 
-    # Auto-default salary and batch if missing or containing forbidden placeholders
+    # Auto-default and clean all fields to prevent any rejection
     forbidden_terms = ["not mentioned", "not specified", "not disclosed", "confidential", "hiring company"]
-    
     is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
-    
-    if is_govt:
-        # 1. Auto-default salary — "As per notification" is valid for govt jobs
-        salary = job.get("salary")
-        if not salary or any(term in str(salary).lower() for term in forbidden_terms):
+
+    # 1. Clean applyLink first
+    apply_link = job.get("applyLink")
+    if not apply_link or any(term in str(apply_link).lower() for term in forbidden_terms):
+        job["applyLink"] = "https://nextjobpost.in/"
+
+    # 2. Clean title
+    if not job.get("title"):
+        job["title"] = "Job Opportunity"
+
+    # 3. Clean company
+    company = job.get("company")
+    forbidden_companies = {
+        "pdlink", "placement drive", "placement drive link", "placementkit", 
+        "nextjobpost", "next job post", "cseofficial", "it jobs career", 
+        "joblii", "seekeras", "freshershunt", "fresherearth", "telegram", 
+        "whatsapp", "youtube", "google form", "google doc", "hiring company",
+        "placement link", "job post", "job alert"
+    }
+    company_lower = normalize_text(company) if company else ""
+    is_forbidden_company = False
+    for term in forbidden_terms:
+        if term in company_lower:
+            is_forbidden_company = True
+            break
+    if not is_forbidden_company:
+        for term in forbidden_companies:
+            if term == company_lower or company_lower.startswith(term + " ") or company_lower.endswith(" " + term) or (" " + term + " ") in (" " + company_lower + " "):
+                is_forbidden_company = True
+                break
+
+    # Sentence / description checks to discard full sentences extracted as company names
+    if not is_forbidden_company and company and not is_govt:
+        sentence_indicators = [
+            "this is", "opportunity to", "career with", "leading global", 
+            "hiring for", "we are", "looking for", "about the", "join our", 
+            "work with", "leading company", "fast growing", "is looking", 
+            "is hiring", "apply now", "click here", "link in"
+        ]
+        comp_words = str(company).split()
+        if len(comp_words) > 4 or len(str(company)) > 30 or any(indicator in company_lower for indicator in sentence_indicators):
+            is_forbidden_company = True
+
+    if not company or is_forbidden_company:
+        guessed = guess_company_from_title(job.get("title"))
+        if not guessed:
+            guessed = get_company_from_link(job.get("applyLink"))
+        
+        # If the guessed company is also forbidden/placeholder, don't use it
+        if guessed:
+            guessed_lower = normalize_text(guessed)
+            is_guessed_forbidden = False
+            for term in forbidden_terms:
+                if term in guessed_lower:
+                    is_guessed_forbidden = True
+                    break
+            if not is_guessed_forbidden:
+                for term in forbidden_companies:
+                    if term == guessed_lower or guessed_lower.startswith(term + " ") or guessed_lower.endswith(" " + term) or (" " + term + " ") in (" " + guessed_lower + " "):
+                        is_guessed_forbidden = True
+                        break
+            if is_guessed_forbidden:
+                guessed = None
+        
+        if is_govt:
+            job["company"] = guessed or "Govt Department"
+        else:
+            job["company"] = guessed or "Top Company"
+
+    # 4. Clean salary
+    salary = job.get("salary")
+    if not salary or any(term in str(salary).lower() for term in forbidden_terms):
+        if is_govt:
             parsed = parse_salary_fallback(job.get("jobDescription") or "")
             job["salary"] = parsed if parsed else "As per notification"
-            
-        # 2. Auto-default vacancies
+        else:
+            parsed = parse_salary_fallback(job.get("jobDescription") or "")
+            job["salary"] = parsed if parsed else "Best in Industry"
+
+    # 5. Clean vacancies / eligibility (Govt only)
+    if is_govt:
         vacancies = job.get("vacancies")
         if not vacancies or any(term in str(vacancies).lower() for term in forbidden_terms):
             job["vacancies"] = "Various Vacancies"
             
-        # 3. Auto-default eligibility
         eligibility = job.get("eligibility")
         if not eligibility or any(term in str(eligibility).lower() for term in forbidden_terms):
             job["eligibility"] = "As per notification"
-            
-        # 3.5 Auto-default type
-        job_type = job.get("type")
-        if not job_type or any(term in str(job_type).lower() for term in forbidden_terms):
-            job["type"] = "Full-Time"
-            
-        # 4. Auto-default company
-        company = job.get("company")
-        
-        forbidden_companies = {
-            "pdlink", "placement drive", "placement drive link", "placementkit", 
-            "nextjobpost", "next job post", "cseofficial", "it jobs career", 
-            "joblii", "seekeras", "freshershunt", "fresherearth", "telegram", 
-            "whatsapp", "youtube", "google form", "google doc", "hiring company",
-            "placement link", "job post", "job alert"
-        }
-        
-        company_lower = normalize_text(company) if company else ""
-        is_forbidden_company = False
-        
-        for term in forbidden_terms:
-            if term in company_lower:
-                is_forbidden_company = True
-                break
-                
-        if not is_forbidden_company:
-            for term in forbidden_companies:
-                if term == company_lower or company_lower.startswith(term + " ") or company_lower.endswith(" " + term) or (" " + term + " ") in (" " + company_lower + " "):
-                    is_forbidden_company = True
-                    break
-
-        if not company or is_forbidden_company:
-            guessed = guess_company_from_title(job.get("title"))
-            if not guessed:
-                guessed = get_company_from_link(job.get("applyLink"))
-            
-            # If the guessed company is also forbidden/placeholder, don't use it, fall back to "Govt Department"
-            if guessed:
-                guessed_lower = normalize_text(guessed)
-                is_guessed_forbidden = False
-                for term in forbidden_terms:
-                    if term in guessed_lower:
-                        is_guessed_forbidden = True
-                        break
-                if not is_guessed_forbidden:
-                    for term in forbidden_companies:
-                        if term == guessed_lower or guessed_lower.startswith(term + " ") or guessed_lower.endswith(" " + term) or (" " + term + " ") in (" " + guessed_lower + " "):
-                            is_guessed_forbidden = True
-                            break
-                if is_guessed_forbidden:
-                    guessed = None
-            
-            job["company"] = guessed or "Govt Department"
-
-        # Govt jobs only need company + eligibility + vacancies
-        check_keys = ["company", "eligibility", "vacancies"]
     else:
-        # 1. Auto-default salary
-        salary = job.get("salary")
-        if not salary or any(term in str(salary).lower() for term in forbidden_terms):
-            parsed = parse_salary_fallback(job.get("jobDescription") or "")
-            job["salary"] = parsed if parsed else "Best in Industry"
-            
-        # 2. Auto-default batch
-        batch = job.get("batch")
-        if not batch or any(term in str(batch).lower() for term in forbidden_terms):
-            job["batch"] = "2024 / 2025 / 2026"
-            
-        # 2.5 Auto-default type
-        job_type = job.get("type")
-        if not job_type or any(term in str(job_type).lower() for term in forbidden_terms):
-            job["type"] = "Full-Time"
-            
-        # 3. Auto-default company (guess from title or URL first, then fallback to Top Company)
-        company = job.get("company")
-        
-        forbidden_companies = {
-            "pdlink", "placement drive", "placement drive link", "placementkit", 
-            "nextjobpost", "next job post", "cseofficial", "it jobs career", 
-            "joblii", "seekeras", "freshershunt", "fresherearth", "telegram", 
-            "whatsapp", "youtube", "google form", "google doc", "hiring company",
-            "placement link", "job post", "job alert"
-        }
-        
-        company_lower = normalize_text(company) if company else ""
-        is_forbidden_company = False
-        
-        for term in forbidden_terms:
-            if term in company_lower:
-                is_forbidden_company = True
-                break
-                
-        if not is_forbidden_company:
-            for term in forbidden_companies:
-                if term == company_lower or company_lower.startswith(term + " ") or company_lower.endswith(" " + term) or (" " + term + " ") in (" " + company_lower + " "):
-                    is_forbidden_company = True
-                    break
-        
-        # Sentence / description checks to discard full sentences extracted as company names
-        if not is_forbidden_company and company:
-            sentence_indicators = [
-                "this is", "opportunity to", "career with", "leading global", 
-                "hiring for", "we are", "looking for", "about the", "join our", 
-                "work with", "leading company", "fast growing", "is looking", 
-                "is hiring", "apply now", "click here", "link in"
-            ]
-            comp_words = str(company).split()
-            if len(comp_words) > 4 or len(str(company)) > 30 or any(indicator in company_lower for indicator in sentence_indicators):
-                is_forbidden_company = True
-        
-        if not company or is_forbidden_company:
-            guessed = guess_company_from_title(job.get("title"))
-            if not guessed:
-                guessed = get_company_from_link(job.get("applyLink"))
-            
-            # If the guessed company is also forbidden/placeholder, don't use it, fall back to "Top Company"
-            if guessed:
-                guessed_lower = normalize_text(guessed)
-                is_guessed_forbidden = False
-                for term in forbidden_terms:
-                    if term in guessed_lower:
-                        is_guessed_forbidden = True
-                        break
-                if not is_guessed_forbidden:
-                    for term in forbidden_companies:
-                        if term == guessed_lower or guessed_lower.startswith(term + " ") or guessed_lower.endswith(" " + term) or (" " + term + " ") in (" " + guessed_lower + " "):
-                            is_guessed_forbidden = True
-                            break
-                if is_guessed_forbidden:
-                    guessed = None
-            
-            job["company"] = guessed or "Top Company"
-            
-        # 4. Auto-default location
+        # 6. Clean location, experience, education, batch (Private only)
         location = job.get("location")
         if not location or any(term in str(location).lower() for term in forbidden_terms):
             job["location"] = "Pan India"
             
-        # 5. Auto-default experience
         experience = job.get("experience")
         if not experience or any(term in str(experience).lower() for term in forbidden_terms):
             job["experience"] = "Fresher / 0-2 Years"
             
-        # 6. Auto-default education
         education = job.get("education")
         if not education or any(term in str(education).lower() for term in forbidden_terms):
             job["education"] = "Any Graduate"
             
-    # 0. Clean Null/Inconsistent values
-    for k, v in job.items():
+        batch = job.get("batch")
+        if not batch or any(term in str(batch).lower() for term in forbidden_terms):
+            job["batch"] = "2024 / 2025 / 2026"
+
+    # 7. Clean type
+    job_type = job.get("type")
+    if not job_type or any(term in str(job_type).lower() for term in forbidden_terms):
+        job["type"] = "Full-Time"
+
+    # Clean Null/Inconsistent values
+    for k, v in list(job.items()):
         if v is None or str(v).strip().lower() in ["null", "none", "n/a", "undefined"]:
             job[k] = ""
 
-    # Key fields to check
+    # Key fields to check (should always pass now)
     if is_govt:
         check_keys = ["title", "company", "eligibility", "vacancies"]
     else:
         check_keys = ["title", "company", "location", "salary", "experience", "education", "batch", "applyLink"]
     
-    # Phrases that are legitimate defaults for govt jobs (not actual placeholders)
     govt_accepted_values = {"as per notification", "as per official notification", "various vacancies"}
     
     for key in check_keys:
         val = job.get(key)
         if not val:
-            return False, f"Missing required field: {key}"
+            if key == "applyLink": job[key] = "https://nextjobpost.in/"
+            elif key == "company": job[key] = "Govt Department" if is_govt else "Top Company"
+            elif key == "eligibility": job[key] = "As per notification"
+            elif key == "vacancies": job[key] = "Various Vacancies"
+            elif key == "location": job[key] = "Pan India"
+            elif key == "salary": job[key] = "As per notification" if is_govt else "Best in Industry"
+            elif key == "experience": job[key] = "Fresher / 0-2 Years"
+            elif key == "education": job[key] = "Any Graduate"
+            elif key == "batch": job[key] = "2024 / 2025 / 2026"
+            else: job[key] = "Not Mentioned"
+            val = job.get(key)
         
         val_lower = str(val).strip().lower()
-        # Skip forbidden check for accepted govt defaults
         if val_lower in govt_accepted_values:
             continue
         if any(term in val_lower for term in forbidden_terms):
-            return False, f"Placeholder/Missing value '{val}' detected in field: {key}"
-            
+            for term in forbidden_terms:
+                if term in val_lower:
+                    if key == "company": job[key] = "Govt Department" if is_govt else "Top Company"
+                    elif key == "eligibility": job[key] = "As per notification"
+                    elif key == "vacancies": job[key] = "Various Vacancies"
+                    elif key == "location": job[key] = "Pan India"
+                    elif key == "salary": job[key] = "As per notification" if is_govt else "Best in Industry"
+                    elif key == "experience": job[key] = "Fresher / 0-2 Years"
+                    elif key == "education": job[key] = "Any Graduate"
+                    elif key == "batch": job[key] = "2024 / 2025 / 2026"
+                    else: job[key] = "Not Mentioned"
+                    break
+
     # === Smart Social Media Filtering ===
     job["postToSocials"] = True
-    
-    # 1. Skip Telegram/LinkedIn for Non-Job types (e.g., Admit Card, Syllabus)
-    # Note: Result and Answer Key are prioritized and will be posted to Telegram.
     post_type = str(job.get("postType", "")).lower()
     if any(t in post_type for t in ["admit card", "syllabus"]):
         job["postToSocials"] = False
 
-    # 2. Complete rejection of noise/spam links (not even posted to website)
-    company_name = str(job.get("company", ""))
+    # Complete rejection of noise/spam links
     apply_link = str(job.get("applyLink", ""))
-        
     if any(domain in apply_link.lower() for domain in ["t.me", "telegram.me", "whatsapp.com"]):
         return False, "Job contains spam/noise applyLink (WhatsApp/Telegram group)."
 
@@ -995,6 +1041,7 @@ Rules:
 15. 'eligibility' MUST be the qualification required for government jobs, or set to "Not Mentioned" if not specified.
 16. 'vacancies' MUST be the number of vacancies/posts available (e.g. "500 Posts"), or set to "Not Mentioned" if not specified.
 17. 'isGovernment' MUST be a boolean (true or false). Set to true if the job/post is a government recruitment, central/state government exam, admit card, answer key, result, or government agency post (e.g., SSC, UPSC, Bank PO, Railway, PSU, PSC, Defence, etc.). Otherwise, set to false.
+18. CRITICAL: The posting text might contain links or references to competitor/third-party websites (e.g., freshershunt.in, freshersvoice.com, jobsarkari.com, sarkariresult.com, careerbywell.com, etc.). You MUST NEVER include any such raw domain names, URLs, or competitor references in any field, including 'title', 'company', 'aboutCompany', 'whyJoin', 'howToApply', 'finalThoughts', 'shortSummary', or 'htmlDescription'. Keep all descriptions clean and generic (e.g. replace competitor names with generic terms or remove them).
 
 Job Posting Text:
 {text}
@@ -1457,8 +1504,21 @@ def strip_html(text):
         clean = clean.replace("linkedin.com/m/", "linkedin.com/")
     return clean.strip()
 
+def get_action_label(job):
+    post_type = str(job.get('postType', '')).lower()
+    if 'admit card' in post_type:
+        return "Download Admit Card", "Download"
+    elif 'result' in post_type:
+        return "Check Result", "Check"
+    elif 'answer key' in post_type:
+        return "Check Answer Key", "Check"
+    elif 'syllabus' in post_type:
+        return "Download Syllabus", "Download"
+    return "Apply Here", "Apply"
+
 def build_post(job, slug, linkedin_url=None):
     """Build a rich, fully-featured Telegram post with maximum engagement."""
+    action_label, _ = get_action_label(job)
     linkedin_line = f"💼 **LinkedIn Post:** {linkedin_url}\n" if linkedin_url else f"💼 **LinkedIn:**      https://www.linkedin.com/in/next-job-post-199b5b371\n"
     job_url    = f"{SITE_BASE_URL}/{slug}"
     title      = strip_html(job.get('title', 'Job Opening'))
@@ -1526,7 +1586,7 @@ def build_post(job, slug, linkedin_url=None):
             f"━━━━━━━━━━━━━━━━━━━━━━━━"
             f"{skills_section}"
             f"{resp_section}"
-            f"\n🔗 **Apply Here →** {job_url}\n"
+            f"\n🔗 **{action_label} →** {job_url}\n"
             f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
             f"📢 **Next Job Post** — Your daily job alert hub\n"
             f"🌐 More Jobs:  {SITE_BASE_URL}\n"
@@ -1561,7 +1621,7 @@ def build_post(job, slug, linkedin_url=None):
             f"━━━━━━━━━━━━━━━━━━━━━━━━"
             f"{skills_section}"
             f"{resp_section}"
-            f"\n🔗 **Apply Here →** {job_url}\n"
+            f"\n🔗 **{action_label} →** {job_url}\n"
             f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
             f"📢 **Next Job Post** — Your daily job alert hub\n"
             f"🌐 More Jobs:  {SITE_BASE_URL}\n"
@@ -1575,6 +1635,8 @@ def build_post_caption(job, slug):
     title      = strip_html(job.get('title', 'Job Opening'))
     company    = strip_html(job.get('company', 'Top Company'))
     
+    _, action_verb = get_action_label(job)
+    
     is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
     if is_govt:
         eligibility = strip_html(job.get('eligibility', 'As per notification'))
@@ -1584,7 +1646,7 @@ def build_post_caption(job, slug):
             f"🔥 {title}\n"
             f"🏢 {company}\n"
             f"🎓 Eligibility: {eligibility} | 👥 Vacancies: {vacancies} | 💰 {salary}\n"
-            f"\n🔗 Apply: {job_url}\n"
+            f"\n🔗 {action_verb}: {job_url}\n"
             f"👉 Join: https://t.me/nextjobpost"
         )
     else:
@@ -1594,7 +1656,7 @@ def build_post_caption(job, slug):
             f"🔥 {title}\n"
             f"🏢 {company}\n"
             f"📍 {location} | 💰 {salary}\n"
-            f"\n🔗 Apply: {job_url}\n"
+            f"\n🔗 {action_verb}: {job_url}\n"
             f"👉 Join: https://t.me/nextjobpost"
         )
     
@@ -1608,7 +1670,7 @@ def build_post_caption(job, slug):
                 f"🔥 {title[:80]}\n"
                 f"🏢 {company[:50]}\n"
                 f"🎓 {eligibility[:40]} | 👥 {vacancies[:30]} | 💰 {salary[:30]}\n"
-                f"\n🔗 Apply: {job_url}\n"
+                f"\n🔗 {action_verb}: {job_url}\n"
                 f"👉 Join: https://t.me/nextjobpost"
             )
         else:
@@ -1618,7 +1680,7 @@ def build_post_caption(job, slug):
                 f"🔥 {title[:80]}\n"
                 f"🏢 {company[:50]}\n"
                 f"📍 {location[:40]} | 💰 {salary[:40]}\n"
-                f"\n🔗 Apply: {job_url}\n"
+                f"\n🔗 {action_verb}: {job_url}\n"
                 f"👉 Join: https://t.me/nextjobpost"
             )
     
