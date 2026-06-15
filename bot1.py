@@ -154,7 +154,7 @@ def sanitize_text(text):
     text = re.sub(r'(?i)https?://(?:chat\.whatsapp\.com|wa\.me)/[^\s<"\'>]*', '', text)
     
     # Remove competitor & invalid URLs
-    competitor_pattern = r'(?i)https?://(?:(?:\.in|\.com|\.org|\.net|\.co|\.info|\.us|\.xyz)\b|(?:[^\s<"\'>]*\.)?(?:pdlink\.in|bit\.ly|tinyurl\.com|ow\.ly|goo\.gl|short\.ly|rebrand\.ly|cutt\.ly|t\.co|buff\.ly|dlvr\.it|internshala\.com|internshals\.com|naukri\.com|shine\.com|monster\.com|timesjobs\.com|freshersworld\.com|placementindia\.com|govtjobsalert\.in|sarkariresult\.com|rojgarresult\.com|freejobalert\.com|freshershunt\.in|fresherslive\.com|freshersvoice\.com|offcampusjobs4u\.in|youth4work\.com|ambitionbox\.com|glassdoor\.com|glassdoor\.co\.in|indeed\.com|indeed\.co\.in|foundthejob\.com|internships\.com|internshipss\.com))[^\s<"\'>]*'
+    competitor_pattern = r'(?i)https?://(?:(?:\.in|\.com|\.org|\.net|\.co|\.info|\.us|\.xyz)\b|(?:[^\s<"\'>]*\.)?(?:pdlink\.in|bit\.ly|tinyurl\.com|ow\.ly|goo\.gl|short\.ly|rebrand\.ly|cutt\.ly|t\.co|buff\.ly|dlvr\.it|internshala\.com|internshals\.com|naukri\.com|shine\.com|monster\.com|timesjobs\.com|freshersworld\.com|placementindia\.com|govtjobsalert\.in|sarkariresult\.com|rojgarresult\.com|freejobalert\.com|freshershunt\.in|fresherslive\.com|freshersvoice\.com|offcampusjobs4u\.in|youth4work\.com|ambitionbox\.com|glassdoor\.com|glassdoor\.co\.in|indeed\.com|indeed\.co\.in|foundthejob\.com|internships\.com|internshipss\.com|offcampusjobs4u\.com|placementkit\.in|placementkit\.com|walkindrive\.com|fresherearth\.com|fresherearth\.in))[^\s<"\'>]*'
     text = re.sub(competitor_pattern, '', text)
     
     # Remove any leftover "PD Link" or "Placement Drive" words if they are floating
