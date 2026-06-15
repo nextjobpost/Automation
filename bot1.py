@@ -1976,13 +1976,13 @@ async def process_and_post_job(job_data):
                 os.remove(image_path)
         except Exception:
             pass
-        return True
+        return True, False
 
     # Double check that the job contains all real information and no placeholder/missing values
     is_valid, reason = is_valid_job(job)
     if not is_valid:
         print(f"🚫 [ABORT] Job '{job['title']}' has invalid or missing details: {reason}. Aborting social posts.")
-        return False
+        return False, False
 
     async with aiohttp.ClientSession() as session:
         # 1. Image Upload
@@ -2046,11 +2046,14 @@ async def process_and_post_job(job_data):
 
         # Prevent posting duplicates to Telegram/LinkedIn
         is_duplicate = False
+        was_posted = False
         if isinstance(response, dict) and response.get("success") is True:
             message = response.get("message", "")
             if "duplicate matched" in message.lower():
                 is_duplicate = True
                 print("🚫 Job already exists on website. Skipping Telegram & LinkedIn.")
+            else:
+                was_posted = True
 
         if job.get("postToSocials", True) and not is_duplicate:
             # 3. LinkedIn Post (Only for Private/IT Jobs) - Post first to get LinkedIn URL for Telegram
@@ -2132,7 +2135,7 @@ async def process_and_post_job(job_data):
         except Exception:
             pass
 
-        return True
+        return True, was_posted
 
 
 async def scheduler_task():
@@ -2145,10 +2148,14 @@ async def scheduler_task():
 
         # Only post if enough time has passed since last post
         if time_since_last >= POST_INTERVAL:
-            jobs_to_process = database.get_jobs_batch(limit_govt=1, limit_private=1)
-            processed_any = False
+            posted_any = False
             
-            if jobs_to_process:
+            while True:
+                jobs_to_process = database.get_jobs_batch(limit_govt=1, limit_private=1)
+                if not jobs_to_process:
+                    # Queue is empty! Break loop.
+                    break
+                
                 # First clean up invalid jobs
                 valid_jobs = []
                 for jd in jobs_to_process:
@@ -2159,32 +2166,41 @@ async def scheduler_task():
                     else:
                         valid_jobs.append(jd)
                         
-                if valid_jobs:
-                    logging.info(f"\n📤 [SCHEDULER] Dequeued {len(valid_jobs)} valid job(s) concurrently. Remaining in queue: {database.get_queue_size()}")
+                if not valid_jobs:
+                    # All jobs in this batch were invalid, try next batch immediately!
+                    continue
                     
-                    async def process_with_error_handling(jd):
-                        try:
-                            success = await process_and_post_job(jd)
-                            if not success:
-                                logging.warning(f"⚠️ [SCHEDULER] Job '{jd.get('job', {}).get('title')}' was aborted/skipped.")
-                            return success
-                        except Exception as e:
-                            retries = jd.get("retries", 0) + 1
-                            jd["retries"] = retries
-                            logging.error(f"❌ [SCHEDULER] Processing error for '{jd.get('job', {}).get('title')}': {e}. Retry {retries}/3.")
-                            traceback.print_exc()
-                            if retries >= 3:
-                                logging.error("Job failed 3 times. Moving to dead-letter queue.")
-                                database.add_to_failed_queue(jd, str(e))
-                            else:
-                                database.return_job_to_queue(jd)
-                            return False
+                logging.info(f"\n📤 [SCHEDULER] Dequeued {len(valid_jobs)} valid job(s) concurrently. Remaining in queue: {database.get_queue_size()}")
+                
+                async def process_with_error_handling(jd):
+                    try:
+                        success, was_posted = await process_and_post_job(jd)
+                        if not success:
+                            logging.warning(f"⚠️ [SCHEDULER] Job '{jd.get('job', {}).get('title')}' was aborted/skipped.")
+                        return success, was_posted
+                    except Exception as e:
+                        retries = jd.get("retries", 0) + 1
+                        jd["retries"] = retries
+                        logging.error(f"❌ [SCHEDULER] Processing error for '{jd.get('job', {}).get('title')}': {e}. Retry {retries}/3.")
+                        traceback.print_exc()
+                        if retries >= 3:
+                            logging.error("Job failed 3 times. Moving to dead-letter queue.")
+                            database.add_to_failed_queue(jd, str(e))
+                        else:
+                            database.return_job_to_queue(jd)
+                        return False, False
 
-                    await asyncio.gather(*(process_with_error_handling(jd) for jd in valid_jobs))
+                results = await asyncio.gather(*(process_with_error_handling(jd) for jd in valid_jobs))
+                
+                # If any job in this batch was actually posted to website
+                if any(was_posted for success, was_posted in results):
+                    posted_any = True
                     last_post_time = time.time()
-                    processed_any = True
-            
-            if processed_any:
+                    break # Break the inner loop to enforce the 30-minute interval
+                    
+                logging.info("🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...")
+
+            if posted_any:
                 print(f"⏳ [SCHEDULER] Next post in {POST_INTERVAL//60} min. Queue size: {database.get_queue_size()}")
             elif database.get_queue_size() == 0:
                 print(f"📭 [SCHEDULER] Queue empty (or only contained invalid/aborted jobs). Waiting... (checked at {time.strftime('%H:%M:%S')})")
