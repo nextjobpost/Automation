@@ -47,9 +47,22 @@ def validate_config():
         logging.warning("API_KEY (Gemini) not found or is placeholder. Running in BASIC extraction mode (no AI).")
         api_key = None
     
+    is_prod = os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RENDER") or os.getenv("PORT") is not None
+    
+    api_url = os.getenv("API_URL")
+    if not api_url:
+        api_url = "https://nextjobpost-backend.onrender.com/api/jobs" if is_prod else "http://localhost:4000/api/jobs"
+        
+    admin_url = os.getenv("ADMIN_URL")
+    if not admin_url:
+        admin_url = "https://nextjobpost-backend.onrender.com/api/admin/login" if is_prod else "http://localhost:4000/api/admin/login"
+        
     api_token = os.getenv("API_TOKEN")
-    api_url = os.getenv("API_URL", "http://localhost:4000/api/jobs")
-    admin_url = os.getenv("ADMIN_URL", "http://localhost:4000/api/admin/login")
+    old_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZjFhM2I0YzllOGE3ZDZlNWY0YzNiMiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.ts-o1us7bsOOJunK2dL4HNmz1ONh3tywCLj0D079k4M"
+    new_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZjFhM2I0YzllOGE3ZDZlNWY0YzNiMiIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODAxOTU0NDB9.QVqxcZLumH_FOjPG2xgvlCoVfSuzJVd-4uEHe8UI7ok"
+    if not api_token or api_token == old_token:
+        api_token = new_token
+        
     govt_base = os.getenv("GOVT_SCRAPER_BASE_URL", "https://govtjobsalert.in")
     
     return api_key, api_token, api_url, admin_url, govt_base
@@ -399,6 +412,7 @@ def enrich_content_with_ai(html_content, title):
       "summary": "A clean 2-3 sentence summary of the post, status, or announcement",
       "seoTitle": "Optimized search engine title (60 chars max)",
       "seoDescription": "Compelling search engine description (155 chars max)",
+      "officialPdfLink": "Direct URL to the official notification PDF file hosted on the organization's official website (e.g. ending in .pdf, like https://www.upsc.gov.in/notification.pdf) - search the web if needed, else leave empty string",
       "faqs": [
         {{
           "q": "Question related to application, eligibility, or exam date",
@@ -421,13 +435,25 @@ def enrich_content_with_ai(html_content, title):
     for model in candidate_models:
         try:
             print(f"🤖 Enriching with Gemini model: {model}...")
-            response = client_gemini.models.generate_content(
-                model=model,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                ),
-            )
+            # Try with search grounding first
+            try:
+                response = client_gemini.models.generate_content(
+                    model=model,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        tools=[types.Tool(google_search=types.GoogleSearch())]
+                    ),
+                )
+            except Exception as se:
+                print(f"⚠️ Search grounding failed on {model} ({se}). Retrying without search...")
+                response = client_gemini.models.generate_content(
+                    model=model,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json"
+                    ),
+                )
             clean_json = response.text.strip()
             if clean_json.startswith("```json"):
                 clean_json = clean_json[7:-3].strip()
@@ -467,7 +493,100 @@ def format_faq_html(faqs):
     faq_html += '</div>'
     return faq_html
 
-def scrape_category(category_path, post_type_default):
+def sanitize_description_links(html_content, official_pdf_url, official_apply_url, official_website_url):
+    """
+    Parses the scraped HTML content, finds any competitor-hosted PDF/file links, 
+    and rewrites them to the official PDF URL or the official notification/apply pages on the organization's site.
+    """
+    if not html_content:
+        return ""
+    soup = BeautifulSoup(html_content, "html.parser")
+    for a in soup.find_all("a"):
+        href = a.get("href", "").strip()
+        if not href:
+            continue
+        
+        # If it is a competitor domain link or ends with .pdf
+        if "govtjobsalert.in" in href or href.endswith(".pdf"):
+            target_url = official_pdf_url or official_apply_url or official_website_url
+            if target_url:
+                a["href"] = target_url
+                # Clean anchor text if it specifically says PDF but we fall back to a page
+                if not official_pdf_url:
+                    text = a.get_text().lower()
+                    if "pdf" in text:
+                        a.string = "Official Notification Page"
+            else:
+                a.decompose() # Remove the link entirely if no official fallback is available
+                
+    return str(soup)
+
+def fetch_recent_jobs():
+    """Fetches all recent jobs from the website backend to build a local map for smart duplication checks."""
+    global API_URL, API_TOKEN
+    headers = {}
+    if API_TOKEN:
+        headers["Authorization"] = f"Bearer {API_TOKEN}"
+    try:
+        r = requests.get(f"{API_URL}?limit=150&status=all", headers=headers, timeout=15)
+        if r.status_code == 200:
+            return r.json().get("data", [])
+    except Exception as e:
+        print(f"⚠️ Failed to fetch recent jobs from backend ({API_URL}): {e}")
+        # Fallback to production API if localhost failed
+        if "localhost" in API_URL:
+            prod_url = "https://nextjobpost-backend.onrender.com/api/jobs"
+            print(f"🔄 Attempting fallback to production API: {prod_url}")
+            try:
+                r = requests.get(f"{prod_url}?limit=150&status=all", headers=headers, timeout=15)
+                if r.status_code == 200:
+                    API_URL = prod_url
+                    print("✅ Successfully connected to production backend.")
+                    return r.json().get("data", [])
+            except Exception as ex:
+                print(f"❌ Fallback to production API failed: {ex}")
+    return []
+
+def find_existing_job(url, title, company, recent_jobs):
+    """Fuzzy and URL matching to find an existing job in the preloaded list."""
+    if not recent_jobs:
+        return None
+    url_clean = url.strip().lower().rstrip('/')
+    title_clean = title.strip().lower()
+    comp_clean = company.strip().lower()
+    
+    # 1. Match by sourceUrl or applyLink
+    for job in recent_jobs:
+        job_source = str(job.get("sourceUrl", "")).strip().lower().rstrip('/')
+        job_apply = str(job.get("applyLink", "")).strip().lower().rstrip('/')
+        if (job_source == url_clean) or (job_apply == url_clean and "govtjobsalert.in" in job_apply):
+            return job
+            
+    # 2. Match by slug similarity (slugify comparison)
+    slug_url = slugify(title)
+    slug_url_alt1 = slugify(title.replace("&", "and"))
+    slug_url_alt2 = slugify(title.replace("&", ""))
+    
+    for job in recent_jobs:
+        job_slug = str(job.get("slug", "")).strip().lower()
+        if job_slug in [slug_url, slug_url_alt1, slug_url_alt2]:
+            return job
+            
+    # 3. Match by Title + Company fuzzy check (slugify of title + company matches)
+    for job in recent_jobs:
+        job_title = str(job.get("title", "")).strip().lower()
+        job_company = str(job.get("company", "")).strip().lower()
+        if comp_clean == job_company:
+            t1 = re.sub(r'\b(apply\s+online|recruitment|posts|vacancies|salary|up\s+to|last\s+date|july|june|2026|2025)\b', '', title_clean)
+            t2 = re.sub(r'\b(apply\s+online|recruitment|posts|vacancies|salary|up\s+to|last\s+date|july|june|2026|2025)\b', '', job_title)
+            s1 = slugify(t1).replace('-', '')
+            s2 = slugify(t2).replace('-', '')
+            if s1 == s2 or s1 in s2 or s2 in s1:
+                return job
+                
+    return None
+
+def scrape_category(category_path, post_type_default, recent_jobs):
     """Scrapes a specific category listing page, processes new items, and uploads to NextJobPost."""
     url = f"{GOVT_SCRAPER_BASE_URL.rstrip('/')}/{category_path.lstrip('/')}"
     print(f"\n🔍 Scraping Category: {url} ...")
@@ -576,10 +695,6 @@ def scrape_category(category_path, post_type_default):
         seo_desc = ai_data.get("seoDescription", raw_title)
         faqs = ai_data.get("faqs", [])
         
-        # Append FAQs at the end of the jobDescription HTML
-        faq_html = format_faq_html(faqs)
-        full_description_html = detail_html + faq_html
-        
         # Extract official links from detail HTML
         govt_links = extract_govt_links(detail_html)
         extracted_apply_link = govt_links["applyLink"]
@@ -589,9 +704,29 @@ def scrape_category(category_path, post_type_default):
             if "govtjobsalert.in" in extracted_apply_link:
                 extracted_apply_link = ""
                 
-        extracted_pdf_link = govt_links["pdfLink"]
-        if not extracted_pdf_link or "govtjobsalert.in" in extracted_pdf_link:
-            extracted_pdf_link = ""
+        # Resolve PDF Link using Gemini search grounding or fallbacks
+        official_pdf_ai = ai_data.get("officialPdfLink", "").strip() if isinstance(ai_data, dict) else ""
+        extracted_pdf_link = ""
+        if official_pdf_ai and official_pdf_ai.startswith("http") and (official_pdf_ai.endswith(".pdf") or "pdf" in official_pdf_ai.lower()):
+            extracted_pdf_link = official_pdf_ai
+            print(f"   ✔ Found official PDF link via Gemini: {extracted_pdf_link}")
+            
+        if not extracted_pdf_link:
+            extracted_pdf_link = govt_links["pdfLink"]
+            if extracted_pdf_link and ("govtjobsalert.in" in extracted_pdf_link or "nextjobpost.in" in extracted_pdf_link):
+                extracted_pdf_link = ""
+
+        # Sanitize HTML body of competitor file links and replace with the official direct PDF or apply page
+        sanitized_detail_html = sanitize_description_links(
+            detail_html,
+            official_pdf_url=extracted_pdf_link,
+            official_apply_url=extracted_apply_link,
+            official_website_url=govt_links.get("officialWebsite")
+        )
+        
+        # Append FAQs at the end of the jobDescription HTML
+        faq_html = format_faq_html(faqs)
+        full_description_html = sanitized_detail_html + faq_html
         
         # 5. Always queue the job for bot1.py (Telegram + LinkedIn + image)
         slug_base = slugify(raw_title)
@@ -631,15 +766,63 @@ def scrape_category(category_path, post_type_default):
         # Load, append and save to SQLite queue
         job_hash = hashlib.md5(href.encode()).hexdigest()
         
-        # Semantic Deduplication
+        # Semantic Deduplication & Thin Content Check
         title_str = str(queue_job.get('title', '')).lower().strip()
         comp_str = str(queue_job.get('company', '')).lower().strip()
         semantic_hash = hashlib.md5(f"{title_str}::{comp_str}".encode()).hexdigest()
         
-        if database.is_job_seen(semantic_hash):
-            print(f"⚠️ Semantic duplicate detected, skipping: {raw_title}")
-            database.mark_job_seen(job_hash)
-            continue
+        existing_job = find_existing_job(href, raw_title, org, recent_jobs)
+        
+        if existing_job:
+            job_desc = existing_job.get("jobDescription", "")
+            desc_main_part = job_desc.split('<div class="enriched-job-content')[0]
+            is_thin = "<table>" not in job_desc.lower() or len(desc_main_part) < 1000
+            
+            if is_thin:
+                print(f"🔄 Thin description detected for live job '{raw_title}'. Enriching live post...")
+                job_id = existing_job.get("_id") or existing_job.get("id")
+                
+                # Construct update payload
+                update_payload = {
+                    "jobDescription": full_description_html,
+                    "pdfLink": extracted_pdf_link,
+                    "applyLink": extracted_apply_link or existing_job.get("applyLink"),
+                    "sourceWebsite": GOVT_SCRAPER_DOMAIN,
+                    "sourceUrl": href,
+                    "importantDates": "As per official notification",
+                    "eligibility": eligibility,
+                    "vacancies": vacancies,
+                    "salary": salary,
+                    "metaTitle": seo_title,
+                    "metaDescription": seo_desc
+                }
+                
+                headers = {"Content-Type": "application/json"}
+                if API_TOKEN:
+                    headers["Authorization"] = f"Bearer {API_TOKEN}"
+                    
+                try:
+                    up_r = requests.put(f"{API_URL}/{job_id}", json=update_payload, headers=headers, timeout=15)
+                    if up_r.status_code == 200:
+                        print(f"✅ Successfully enriched duplicate job: '{raw_title}' (ID: {job_id})")
+                        database.mark_job_seen(job_hash)
+                        database.mark_job_seen(semantic_hash)
+                        continue
+                    else:
+                        print(f"⚠️ Failed to update duplicate job. API returned status {up_r.status_code}: {up_r.text}")
+                except Exception as e:
+                    print(f"⚠️ Error updating duplicate job: {e}")
+            else:
+                print(f"⚠️ Job '{raw_title}' already exists with rich content. Skipping.")
+                database.mark_job_seen(job_hash)
+                database.mark_job_seen(semantic_hash)
+                continue
+        else:
+            # Fallback to local DB check if job is not live on backend
+            if database.is_job_seen(semantic_hash):
+                print(f"⚠️ Semantic duplicate detected in local DB, skipping: {raw_title}")
+                database.mark_job_seen(job_hash)
+                continue
         
         try:
             if database.add_job_to_queue(queue_job, job_hash, image_path="", is_government=True):
@@ -680,10 +863,15 @@ def main():
     cache = load_cache()
     get_auth_token()
 
+    # Preload recent jobs from Node.js backend for smart duplicate checking
+    print("📥 Preloading recent jobs from live website backend...")
+    recent_jobs = fetch_recent_jobs()
+    print(f"   ✔ Preloaded {len(recent_jobs)} jobs.")
+
     print(f"\n========================================\n🌐 Processing Source: Govt Jobs Alert ({govt_base})\n========================================")
 
     for category_path, post_type in categories:
-        scrape_category(category_path, post_type)
+        scrape_category(category_path, post_type, recent_jobs)
 
     print("\n✅ All scraper sources successfully processed.")
 
