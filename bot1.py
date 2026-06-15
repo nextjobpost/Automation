@@ -145,19 +145,40 @@ def sanitize_text(text):
     if not text:
         return ""
     # Remove explicit PD Link / Placement Drive phrases and URLs
-    # Also remove linkedin.com/channel/profile links or mentions
-    # Remove "PD Link : https://..." or "Placement Drive Link : https://..."
-    text = re.sub(r'(?i)\b(?:pd|placement\s*drive)\s*links?\s*[:\-]?\s*https?://[^\s<]+', '', text)
+    text = re.sub(r'(?i)\b(?:pd|placement\s*drive)\s*links?\s*[:\-]?\s*https?://[^\s<"\'>]+', '', text)
     # Remove linkedin profile/company links (but keep job application links if any)
-    text = re.sub(r'(?i)https?://(?:www\.)?linkedin\.com/(?:company|in|groups|feed|posts)/?[^\s<]*', '', text)
+    text = re.sub(r'(?i)https?://(?:www\.)?linkedin\.com/(?:company|in|groups|feed|posts)/?[^\s<"\'>]*', '', text)
     # Remove Telegram links
-    text = re.sub(r'(?i)https?://(?:t\.me|telegram\.me)/[^\s<]*', '', text)
+    text = re.sub(r'(?i)https?://(?:t\.me|telegram\.me)/[^\s<"\'>]*', '', text)
     # Remove whatsapp links
-    text = re.sub(r'(?i)https?://(?:chat\.whatsapp\.com|wa\.me)/[^\s<]*', '', text)
+    text = re.sub(r'(?i)https?://(?:chat\.whatsapp\.com|wa\.me)/[^\s<"\'>]*', '', text)
+    
+    # Remove competitor & invalid URLs
+    competitor_pattern = r'(?i)https?://(?:(?:\.in|\.com|\.org|\.net|\.co|\.info|\.us|\.xyz)\b|(?:[^\s<"\'>]*\.)?(?:pdlink\.in|bit\.ly|tinyurl\.com|ow\.ly|goo\.gl|short\.ly|rebrand\.ly|cutt\.ly|t\.co|buff\.ly|dlvr\.it|internshala\.com|internshals\.com|naukri\.com|shine\.com|monster\.com|timesjobs\.com|freshersworld\.com|placementindia\.com|govtjobsalert\.in|sarkariresult\.com|rojgarresult\.com|freejobalert\.com|freshershunt\.in|fresherslive\.com|freshersvoice\.com|offcampusjobs4u\.in|youth4work\.com|ambitionbox\.com|glassdoor\.com|glassdoor\.co\.in|indeed\.com|indeed\.co\.in|foundthejob\.com))[^\s<"\'>]*'
+    text = re.sub(competitor_pattern, '', text)
+    
     # Remove any leftover "PD Link" or "Placement Drive" words if they are floating
     text = re.sub(r'(?i)\b(?:pd|placement\s*drive)\s*links?\b', '', text)
     # Remove any @channel_name mentions
     text = re.sub(r'(?i)@[a-zA-Z0-9_]+', '', text)
+    
+    # Clean up empty anchor tags
+    text = re.sub(r'<a\b[^>]*>\s*</a>', '', text)
+    
+    # Clean up dangling labels (e.g. "Apply Now:", "Apply Link:", "Registration Link -", etc.) inside tags
+    dangling_patterns = [
+        r'(?i)<(strong|b|p|li|span)\b[^>]*>\s*(?:visit\s+the\s+full\s+details\s+and\s+application\s+page|apply\s*(?:now|online|link)?|registration\s*(?:link)?|click\s*here\s*to\s*apply|official\s*link|apply\s*here|link|join\s*here|job\s*link|careers?\s*link)\s*[:\-\–\—\s]*\s*</\1>'
+    ]
+    for pattern in dangling_patterns:
+        text = re.sub(pattern, '', text)
+        
+    # Clean up empty tags (repeat to handle nested elements)
+    for _ in range(3):
+        text = re.sub(r'<(p|li|strong|b|span|div)\b[^>]*>\s*</\1>', '', text)
+        
+    # Remove dangling prefixes in plain text followed by a dot, number, or end of string
+    text = re.sub(r'(?i)\b(?:visit\s+the\s+full\s+details\s+and\s+application\s+page|apply\s*(?:now|online|link)?|registration\s*(?:link)?|click\s*here\s*to\s*apply|official\s*link|apply\s*here|link|join\s*here|job\s*link|careers?\s*link)\s*[:\-\–\—\s]*\s*(?=\d|\.|$)', '', text)
+
     # Remove common extra spacing left behind
     text = re.sub(r'\s{2,}', ' ', text)
     return text.strip()
