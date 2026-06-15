@@ -517,7 +517,7 @@ def sanitize_description_links(html_content, official_pdf_url, official_apply_ur
                     if "pdf" in text:
                         a.string = "Official Notification Page"
             else:
-                a.decompose() # Remove the link entirely if no official fallback is available
+                a.unwrap() # Remove the link tag entirely but keep the text if no official fallback is available
                 
     return str(soup)
 
@@ -774,26 +774,34 @@ def scrape_category(category_path, post_type_default, recent_jobs):
         existing_job = find_existing_job(href, raw_title, org, recent_jobs)
         
         if existing_job:
-            job_desc = existing_job.get("jobDescription", "")
+            job_desc = existing_job.get("jobDescription", "") or ""
             desc_main_part = job_desc.split('<div class="enriched-job-content')[0]
-            is_thin = "<table>" not in job_desc.lower() or len(desc_main_part) < 1000
+            # Treat as thin if: empty, less than 2000 chars, or missing a proper table
+            is_thin = (
+                not job_desc
+                or len(desc_main_part) < 2000
+                or "<table" not in job_desc.lower()
+            )
             
             if is_thin:
                 print(f"🔄 Thin description detected for live job '{raw_title}'. Enriching live post...")
                 job_id = existing_job.get("_id") or existing_job.get("id")
                 
-                # Construct update payload
+                # Construct update payload — refresh all key fields
                 update_payload = {
-                    "jobDescription": full_description_html,
-                    "pdfLink": extracted_pdf_link,
-                    "applyLink": extracted_apply_link or existing_job.get("applyLink"),
-                    "sourceWebsite": GOVT_SCRAPER_DOMAIN,
-                    "sourceUrl": href,
-                    "importantDates": "As per official notification",
-                    "eligibility": eligibility,
-                    "vacancies": vacancies,
-                    "salary": salary,
-                    "metaTitle": seo_title,
+                    "jobDescription":  full_description_html,
+                    "description":     summary,
+                    "shortSummary":    summary,
+                    "pdfLink":         extracted_pdf_link,
+                    "applyLink":       extracted_apply_link or existing_job.get("applyLink"),
+                    "sourceWebsite":   GOVT_SCRAPER_DOMAIN,
+                    "sourceUrl":       href,
+                    "importantDates":  "As per official notification",
+                    "eligibility":     eligibility,
+                    "vacancies":       vacancies,
+                    "salary":          salary,
+                    "lastDate":        last_date if last_date else existing_job.get("lastDate"),
+                    "metaTitle":       seo_title,
                     "metaDescription": seo_desc
                 }
                 

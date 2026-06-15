@@ -1,21 +1,12 @@
-import os
-import requests
-import json
 import re
-import sys
+import json
 
-# Set up backend API URL
-API_URL = os.getenv("API_URL", "https://nextjobpost-backend.onrender.com/api/jobs")
-API_TOKEN = os.getenv("API_TOKEN", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZjFhM2I0YzllOGE3ZDZlNWY0YzNiMiIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODAxOTU0NDB9.QVqxcZLumH_FOjPG2xgvlCoVfSuzJVd-4uEHe8UI7ok")
-
-def clean_raw_text(val, is_html=False):
+def clean_raw_text_stepwise(val, is_html=False):
     if not val:
         return val
-    if isinstance(val, list):
-        return [clean_raw_text(item, is_html=is_html) for item in val]
-    if not isinstance(val, str):
-        return val
-        
+    
+    print("--- STEP 0: Original Length:", len(val))
+    
     competitor_domains_simple = [
         'freshershunt', 'freshersvoice', 'jobsarkari', 'sarkariresult', 
         'careerbywell', 'sarkarijob', 'freejobalert', 'indgovtjobs', 'govtjobsalert'
@@ -82,6 +73,7 @@ def clean_raw_text(val, is_html=False):
                 text_node.replace_with(txt)
                 
         cleaned = str(soup)
+        print("--- STEP 6: Final Cleaned Length:", len(cleaned))
         return cleaned
     else:
         # Fallback for plain text
@@ -120,91 +112,37 @@ def clean_raw_text(val, is_html=False):
         cleaned = cleaned.strip(strip_chars)
         cleaned = re.sub(r'(?i)\s+\b(at|on|visit|from|link|website|official)\b\s*$', '', cleaned)
         cleaned = cleaned.strip(strip_chars)
+        print("--- STEP 6: Final Cleaned Length:", len(cleaned))
         return cleaned
 
 def main():
-    print("Connecting to NextJobPost API...")
-    headers = {
-        "Authorization": f"Bearer {API_TOKEN}",
-        "Content-Type": "application/json"
-    }
-
-    print("Fetching jobs list...")
-    resp = requests.get(f"{API_URL}?limit=1000&status=all", headers=headers, timeout=30)
-    if resp.status_code != 200:
-        print(f"[ERROR] Failed to fetch jobs. API returned {resp.status_code}: {resp.text}")
-        return
+    with open("queue_job_11.json", "r", encoding="utf-8") as f:
+        job = json.load(f)
+        
+    desc = job.get("jobDescription", "")
     
-    jobs = resp.json().get("data", [])
-    print(f"Total jobs found: {len(jobs)}")
-
-    updated_count = 0
-    competitors = ['freshershunt', 'freshersvoice', 'jobsarkari', 'sarkariresult', 'careerbywell', 'sarkarijob', 'freejobalert', 'indgovtjobs', 'govtjobsalert']
+    cleaned_desc = clean_raw_text_stepwise(desc, is_html=True)
     
-    exclude_fields = {
-        "applyLink", "pdfLink", "telegram", "whatsapp", "image", 
-        "sourceUrl", "sourceWebsite", "isActive", "isGovernment", 
-        "createdAt", "updatedAt", "lastDate", "postedAt", "slug", 
-        "views", "applications", "postedBy", "postType", "type", 
-        "isFeatured", "_id", "id", "__v"
-    }
-    html_fields = {"jobDescription", "howToApply"}
-
-    for job in jobs:
-        job_id = job.get("_id", job.get("id"))
-        title = job.get("title", "")
-        safe_title = title.encode('ascii', 'ignore').decode('ascii')
+    # Save the output of the test
+    with open("test_cleaned_desc.html", "w", encoding="utf-8") as f:
+        f.write(cleaned_desc)
         
-        dirty_job = False
-        is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
+    print("\n--- Compare excerpts ---")
+    print("Original excerpt around government jobs:")
+    idx = desc.find("government jobs</a>")
+    if idx != -1:
+        print(desc[idx-100 : idx+300])
+    else:
+        print("Not found in original")
         
-        for field, val in job.items():
-            if field not in exclude_fields and isinstance(val, (str, list)):
-                is_html = field in html_fields
-                cleaned_val = clean_raw_text(val, is_html=is_html)
-                
-                # Check for empty string on required fields
-                if field == "company" and not cleaned_val:
-                    cleaned_val = "Government Department" if is_govt else "Top Company"
-                if field == "title" and not cleaned_val:
-                    cleaned_val = "Job Opportunity"
-                    
-                if cleaned_val != val:
-                    print(f"[DIRTY] Updating field '{field}' for job: '{safe_title}' (ID: {job_id})")
-                    up_resp = requests.put(f"{API_URL}/{job_id}", json={field: cleaned_val}, headers=headers, timeout=15)
-                    if up_resp.status_code == 200:
-                        dirty_job = True
-                    else:
-                        print(f"   -> [ERROR] Failed to update field '{field}': {up_resp.status_code} - {up_resp.text}")
-        
-        apply_link = job.get("applyLink")
-        if apply_link:
-            apply_link_str = str(apply_link).lower()
-            if any(comp in apply_link_str for comp in competitors):
-                print(f"[DIRTY] Updating field 'applyLink' for job: '{safe_title}' (ID: {job_id})")
-                up_resp = requests.put(f"{API_URL}/{job_id}", json={"applyLink": "https://nextjobpost.in/"}, headers=headers, timeout=15)
-                if up_resp.status_code == 200:
-                    dirty_job = True
-                else:
-                    print(f"   -> [ERROR] Failed to update applyLink: {up_resp.status_code} - {up_resp.text}")
-                
-        pdf_link = job.get("pdfLink")
-        if pdf_link:
-            pdf_link_str = str(pdf_link).lower()
-            if any(comp in pdf_link_str for comp in competitors):
-                print(f"[DIRTY] Updating field 'pdfLink' for job: '{safe_title}' (ID: {job_id})")
-                up_resp = requests.put(f"{API_URL}/{job_id}", json={"pdfLink": ""}, headers=headers, timeout=15)
-                if up_resp.status_code == 200:
-                    dirty_job = True
-                else:
-                    print(f"   -> [ERROR] Failed to update pdfLink: {up_resp.status_code} - {up_resp.text}")
-                
-        if dirty_job:
-            updated_count += 1
-
-    print("\n=============================================")
-    print(f"[SUCCESS] DB Sanitization Complete! Cleaned/Updated {updated_count} postings.")
-    print("=============================================")
+    print("\nCleaned excerpt around government jobs:")
+    idx2 = cleaned_desc.find("government jobs")
+    if idx2 != -1:
+        print(cleaned_desc[idx2-100 : idx2+300])
+    else:
+        # Let's print from index 1000 to 1500 of cleaned
+        print("Not found in cleaned, printing chunk:")
+        print(cleaned_desc[1000:1500])
 
 if __name__ == "__main__":
     main()

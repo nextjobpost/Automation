@@ -153,8 +153,8 @@ def sanitize_text(text):
     # Remove whatsapp links
     text = re.sub(r'(?i)https?://(?:chat\.whatsapp\.com|wa\.me)/[^\s<"\'>]*', '', text)
     
-    # Remove competitor & invalid URLs
-    competitor_pattern = r'(?i)https?://(?:(?:\.in|\.com|\.org|\.net|\.co|\.info|\.us|\.xyz)\b|(?:[^\s<"\'>]*\.)?(?:pdlink\.in|bit\.ly|tinyurl\.com|ow\.ly|goo\.gl|short\.ly|rebrand\.ly|cutt\.ly|t\.co|buff\.ly|dlvr\.it|internshala\.com|internshals\.com|naukri\.com|shine\.com|monster\.com|timesjobs\.com|freshersworld\.com|placementindia\.com|govtjobsalert\.in|sarkariresult\.com|rojgarresult\.com|freejobalert\.com|freshershunt\.in|fresherslive\.com|freshersvoice\.com|offcampusjobs4u\.in|youth4work\.com|ambitionbox\.com|glassdoor\.com|glassdoor\.co\.in|indeed\.com|indeed\.co\.in|foundthejob\.com|internships\.com|internshipss\.com|offcampusjobs4u\.com|placementkit\.in|placementkit\.com|walkindrive\.com|fresherearth\.com|fresherearth\.in))[^\s<"\'>]*'
+    # Remove competitor & invalid URLs (govtjobsalert.in is our approved source — handled by scraper)
+    competitor_pattern = r'(?i)https?://(?:(?:\.in|\.com|\.org|\.net|\.co|\.info|\.us|\.xyz)\b|(?:[^\s<"\'>]*\.)?(?:pdlink\.in|bit\.ly|tinyurl\.com|ow\.ly|goo\.gl|short\.ly|rebrand\.ly|cutt\.ly|t\.co|buff\.ly|dlvr\.it|internshala\.com|internshals\.com|naukri\.com|shine\.com|monster\.com|timesjobs\.com|freshersworld\.com|placementindia\.com|sarkariresult\.com|rojgarresult\.com|freejobalert\.com|freshershunt\.in|fresherslive\.com|freshersvoice\.com|offcampusjobs4u\.in|youth4work\.com|ambitionbox\.com|glassdoor\.com|glassdoor\.co\.in|indeed\.com|indeed\.co\.in|foundthejob\.com|internships\.com|internshipss\.com|offcampusjobs4u\.com|placementkit\.in|placementkit\.com|walkindrive\.com|fresherearth\.com|fresherearth\.in))[^\s<"\'>]*'
     text = re.sub(competitor_pattern, '', text)
     
     # Remove any leftover "PD Link" or "Placement Drive" words if they are floating
@@ -191,56 +191,111 @@ def clean_raw_text(val, is_html=False):
     if not isinstance(val, str):
         return val
         
-    competitor_domains = [
-        r'freshershunt\.(?:in|com|org)',
-        r'freshersvoice\.(?:in|com|org)',
-        r'jobsarkari\.(?:in|com|org)',
-        r'sarkariresult\.(?:in|com|org)',
-        r'careerbywell\.(?:in|com|org)',
-        r'sarkarijob\.(?:in|com|org)',
-        r'freejobalert\.(?:in|com|org)',
-        r'indgovtjobs\.(?:in|com|org)',
-        r'govtjobsalert\.(?:in|com|org)'
+    competitor_domains_simple = [
+        'freshershunt', 'freshersvoice', 'jobsarkari', 'sarkariresult', 
+        'careerbywell', 'sarkarijob', 'freejobalert', 'indgovtjobs', 'govtjobsalert'
     ]
-    cleaned = val
-    for comp in competitor_domains:
-        cleaned = re.sub(r'(?i)https?://\S*' + comp + r'\S*', '', cleaned)
-        cleaned = re.sub(r'(?i)\b\S*' + comp + r'\S*', '', cleaned)
-
-    cleaned = re.sub(r'(?i)https?://\.in/\S*', '', cleaned)
-    cleaned = re.sub(r'(?i)https?://\.in\b', '', cleaned)
-
-    phrases_to_remove = [
-        r'(?i)\bvisit\s+the\s+full\s+details\s+and\s+application\s+page\b',
-        r'(?i)\bfollow\s+the\s+instructions\s+provided\s+on\s+the\s+page\s+to\s+complete\s+your\s+application\b',
-        r'(?i)\bfor\s+a\s+detailed\s+guide\s+on\s+the\s+application\s+process\s*,\s*refer\s+to\s+the\s+youtube\s+video\b',
-        r'(?i)\bclick\s+here\s+to\s+apply\b',
-        r'(?i)\bofficial\s+website\b',
-        r'(?i)\bofficial\s+notification\b',
-        r'(?i)\bapply\s+online\b'
-    ]
-    for phrase in phrases_to_remove:
-        cleaned = re.sub(phrase, '', cleaned)
-
-    competitor_names = ['freshershunt', 'freshersvoice', 'jobsarkari', 'sarkariresult', 'careerbywell', 'sarkarijob', 'freejobalert', 'indgovtjobs', 'govtjobsalert']
-    for name in competitor_names:
-        cleaned = re.sub(r'(?i)\b' + name + r'\b', '', cleaned)
-
-    # Only strip numbered lists if they are followed by spacing, avoiding decimal values in dates/numbers
-    cleaned = re.sub(r'\b\d+\.\s*(?:\.|:|-)*\s+', '', cleaned)
-
-    cleaned = re.sub(r'\s+', ' ', cleaned).strip()
-    cleaned = re.sub(r'\.\s*\.+', '.', cleaned)
-    cleaned = re.sub(r'-\s*-+', '-', cleaned)
-    cleaned = re.sub(r':\s*:+', ':', cleaned)
-    cleaned = re.sub(r'\.\s*\.', '.', cleaned)
-    cleaned = re.sub(r':\s*\.', ':', cleaned)
-
-    strip_chars = " -|:_!@#%^&*()[]{}.,/\\\"'" if is_html else " -|:_!@#%^&*()[]{}<>.,/\\\"'"
-    cleaned = cleaned.strip(strip_chars)
-    cleaned = re.sub(r'(?i)\s+\b(at|on|visit|from|link|website|official)\b\s*$', '', cleaned)
-    cleaned = cleaned.strip(strip_chars)
-    return cleaned
+    
+    if is_html:
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(val, "html.parser")
+        
+        # 1. Handle all anchor tags first
+        for a in soup.find_all("a"):
+            href = a.get("href", "")
+            if any(comp in href.lower() for comp in competitor_domains_simple):
+                a.unwrap()
+            elif not href:
+                a.unwrap()
+                
+        # 2. Recursively clean text nodes
+        for text_node in soup.find_all(text=True):
+            if not text_node.string:
+                continue
+            if text_node.parent and text_node.parent.name in ['script', 'style']:
+                continue
+                
+            txt = text_node.string
+            
+            # Remove competitor URLs inside text nodes
+            for comp in competitor_domains_simple:
+                txt = re.sub(r'(?i)https?://\S*' + comp + r'\S*', '', txt)
+                txt = re.sub(r'(?i)\b\S*' + comp + r'\S*', '', txt)
+                
+            txt = re.sub(r'(?i)https?://\.in/\S*', '', txt)
+            txt = re.sub(r'(?i)https?://\.in\b', '', txt)
+            
+            # Phrases
+            phrases_to_remove = [
+                r'(?i)\bvisit\s+the\s+full\s+details\s+and\s+application\s+page\b',
+                r'(?i)\bfollow\s+the\s+instructions\s+provided\s+on\s+the\s+page\s+to\s+complete\s+your\s+application\b',
+                r'(?i)\bfor\s+a\s+detailed\s+guide\s+on\s+the\s+application\s+process\s*,\s*refer\s+to\s+the\s+youtube\s+video\b',
+                r'(?i)\bclick\s+here\s+to\s+apply\b',
+                r'(?i)\bofficial\s+website\b',
+                r'(?i)\bofficial\s+notification\b',
+                r'(?i)\bapply\s+online\b'
+            ]
+            for phrase in phrases_to_remove:
+                txt = re.sub(phrase, '', txt)
+                
+            # Names
+            for name in competitor_domains_simple:
+                txt = re.sub(r'(?i)\b' + name + r'\b', '', txt)
+                
+            # Numbered lists stripping
+            txt = re.sub(r'\b\d+\.\s*(?:\.|:|-)*\s+', '', txt)
+            
+            # Cleanup multiple spacing/punctuation
+            txt = re.sub(r'\s+', ' ', txt)
+            txt = re.sub(r'\.\s*\.+', '.', txt)
+            txt = re.sub(r'-\s*-+', '-', txt)
+            txt = re.sub(r':\s*:+', ':', txt)
+            txt = re.sub(r'\.\s*\.', '.', txt)
+            txt = re.sub(r':\s*\.', ':', txt)
+            
+            if txt != text_node.string:
+                text_node.replace_with(txt)
+                
+        cleaned = str(soup)
+        return cleaned
+    else:
+        # Fallback for plain text
+        cleaned = val
+        for comp in competitor_domains_simple:
+            cleaned = re.sub(r'(?i)https?://\S*' + comp + r'\S*', '', cleaned)
+            cleaned = re.sub(r'(?i)\b\S*' + comp + r'\S*', '', cleaned)
+            
+        cleaned = re.sub(r'(?i)https?://\.in/\S*', '', cleaned)
+        cleaned = re.sub(r'(?i)https?://\.in\b', '', cleaned)
+        
+        phrases_to_remove = [
+            r'(?i)\bvisit\s+the\s+full\s+details\s+and\s+application\s+page\b',
+            r'(?i)\bfollow\s+the\s+instructions\s+provided\s+on\s+the\s+page\s+to\s+complete\s+your\s+application\b',
+            r'(?i)\bfor\s+a\s+detailed\s+guide\s+on\s+the\s+application\s+process\s*,\s*refer\s+to\s+the\s+youtube\s+video\b',
+            r'(?i)\bclick\s+here\s+to\s+apply\b',
+            r'(?i)\bofficial\s+website\b',
+            r'(?i)\bofficial\s+notification\b',
+            r'(?i)\bapply\s+online\b'
+        ]
+        for phrase in phrases_to_remove:
+            cleaned = re.sub(phrase, '', cleaned)
+            
+        for name in competitor_domains_simple:
+            cleaned = re.sub(r'(?i)\b' + name + r'\b', '', cleaned)
+            
+        cleaned = re.sub(r'\b\d+\.\s*(?:\.|:|-)*\s+', '', cleaned)
+        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        cleaned = re.sub(r'\.\s*\.+', '.', cleaned)
+        cleaned = re.sub(r'-\s*-+', '-', cleaned)
+        cleaned = re.sub(r':\s*:+', ':', cleaned)
+        cleaned = re.sub(r'\.\s*\.', '.', cleaned)
+        cleaned = re.sub(r':\s*\.', ':', cleaned)
+        
+        strip_chars = " -|:_!@#%^&*()[]{}<>.,/\\\"'"
+        cleaned = cleaned.strip(strip_chars)
+        cleaned = re.sub(r'(?i)\s+\b(at|on|visit|from|link|website|official)\b\s*$', '', cleaned)
+        cleaned = cleaned.strip(strip_chars)
+        return cleaned
 
 def normalize_text(text):
     if not text:
