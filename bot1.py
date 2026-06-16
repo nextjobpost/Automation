@@ -215,7 +215,7 @@ def clean_raw_text(val, is_html=False):
                 a.unwrap()
                 
         # 2. Recursively clean text nodes
-        for text_node in soup.find_all(text=True):
+        for text_node in soup.find_all(string=True):
             if not text_node.string:
                 continue
             if text_node.parent and text_node.parent.name in ['script', 'style']:
