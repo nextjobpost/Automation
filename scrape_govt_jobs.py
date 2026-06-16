@@ -270,7 +270,7 @@ def enrich_content_basic(html_content, title):
     eligibility = "As per notification"
     eligibility_keywords = [
         r"\b(?:10th|12th|ssc|hsc)\b",
-        r"\b(?:b\.?e\.?|b\.?tech)\b",
+        r"\b(?:b\.\s*e\.|b\.?tech)\b",
         r"\b(?:m\.?e\.?|m\.?tech)\b",
         r"\b(?:diploma)\b",
         r"\b(?:degree|graduate|graduation)\b",
@@ -291,10 +291,14 @@ def enrich_content_basic(html_content, title):
     # 3. Vacancies
     vacancies = "Various Vacancies"
     # Search for numbers followed by posts/vacancies (allowing commas)
-    vac_match = re.search(r'\b(\d[\d,]*)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE)
-    if vac_match:
-        vacancies = f"{vac_match.group(1)} Posts"
-    else:
+    for m in re.finditer(r'\b(\d[\d,]*)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE):
+        num_str = m.group(1).replace(',', '')
+        if num_str.isdigit() and 2020 <= int(num_str) <= 2030:
+            continue
+        vacancies = f"{m.group(1)} Posts"
+        break
+    
+    if vacancies == "Various Vacancies":
         # Search for "no. of vacancies: X" or similar
         vac_match2 = re.search(r'(?:no\s*of\s*posts|total\s*posts|vacancies|vacancy)\s*[:\-]\s*(\d[\d,]*)\b', text_clean, re.IGNORECASE)
         if vac_match2:
@@ -393,7 +397,7 @@ def enrich_content_basic(html_content, title):
                     salary = f"Rs. {m4.group(1)}"
                 else:
                     # Match: salary/stipend/pay near digits (generic fallback)
-                    m5 = re.search(r'\b(?:pay|salary|stipend|remuneration)\b[^0-9\n]{0,40}\b(\d{4,6}|\d{1,3},\d{3})\b', text_clean, re.IGNORECASE)
+                    m5 = re.search(r'\b(?:salary|stipend|remuneration|pay\s*scale|pay\s*matrix)\b[^0-9\n]{0,40}\b(\d{4,6}|\d{1,3},\d{3})\b', text_clean, re.IGNORECASE)
                     if m5:
                         salary = f"Rs. {m5.group(1).strip()}"
 

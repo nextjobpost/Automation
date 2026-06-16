@@ -405,7 +405,7 @@ def extract_basic(text):
     # Heuristic match for B.Tech/Degree if not explicitly in education line
     if education == "Any Graduate":
         elig_keywords = [
-            r"\b(?:b\.?e\.?|b\.?tech)\b",
+            r"\b(?:b\.\s*e\.|b\.?tech)\b",
             r"\b(?:m\.?e\.?|m\.?tech)\b",
             r"\b(?:diploma)\b",
             r"\b(?:degree|graduate|graduation)\b",
@@ -429,13 +429,13 @@ def extract_basic(text):
             break
             
     if salary == "Best in Industry":
-        # Match currency symbol + digits near keywords (pay, salary, stipend, scale) (prefixed with word boundaries to avoid matching word suffixes like 'covers' or 'years')
-        salary_match = re.search(r'\b(?:pay|salary|stipend|remuneration|scale)\b[^0-9\n]{0,40}(?:\brs\.?|\binr|₹)\s*(\d+[\d,]*)\b', text_clean, re.IGNORECASE)
+        # Match currency symbol + digits near keywords (salary, stipend, scale)
+        salary_match = re.search(r'\b(?:salary|stipend|remuneration|scale|pay\s*scale|pay\s*matrix)\b[^0-9\n]{0,40}(?:\brs\.?|\binr|₹)\s*(\d+[\d,]*)\b', text_clean, re.IGNORECASE)
         if salary_match:
             salary = f"Rs. {salary_match.group(1).strip()}"
         else:
             # Match standalone digits near keywords
-            salary_match2 = re.search(r'\b(?:pay|salary|stipend|remuneration|scale)\b[^0-9\n]{0,40}\b(\d{4,6}|\d{1,3},\d{3})\b', text_clean, re.IGNORECASE)
+            salary_match2 = re.search(r'\b(?:salary|stipend|remuneration|scale|pay\s*scale|pay\s*matrix)\b[^0-9\n]{0,40}\b(\d{4,6}|\d{1,3},\d{3})\b', text_clean, re.IGNORECASE)
             if salary_match2:
                 salary = f"Rs. {salary_match2.group(1).strip()}"
 
@@ -449,9 +449,12 @@ def extract_basic(text):
             break
     if vacancies == "Various Vacancies":
         # Match numbers (allowing commas) followed by posts/vacancies
-        vac_match = re.search(r'\b(\d[\d,]*)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE)
-        if vac_match:
-            vacancies = vac_match.group(0).strip()
+        for m in re.finditer(r'\b(\d[\d,]*)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE):
+            num_str = m.group(1).replace(',', '')
+            if num_str.isdigit() and 2020 <= int(num_str) <= 2030:
+                continue
+            vacancies = m.group(0).strip()
+            break
 
     # 9. Extract Last Date
     last_date = ""
