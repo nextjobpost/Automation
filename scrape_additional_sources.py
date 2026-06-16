@@ -150,11 +150,13 @@ def extract_indgovtjobs_listings(soup, base_url):
         
         # WordPress blog posts use /YYYY/MM/title.html format
         if "indgovtjobs.in" in parsed.netloc:
-            if re.search(r'/\d{4}/\d{2}/', parsed.path) and parsed.path.endswith(".html"):
+            # Only extract active jobs from 2025 or 2026 to filter out old static category hubs
+            if re.search(r'/(?:2025|2026)/\d{2}/', parsed.path) and parsed.path.endswith(".html"):
                 # Avoid static pages
                 if not any(x in parsed.path.lower() for x in ["no-exam-government-jobs.html", "employment-news.html", "last-date-government-jobs.html"]):
                     listings.append((title, full_url))
     return listings
+
 
 def extract_recruitmentguru_listings(soup, base_url):
     """Extracts job detail links from Recruitment.guru homepage."""
@@ -203,6 +205,10 @@ def scrape_site(site_name, site_url, extractor_func):
             unique_listings.append((title, url))
             
     logging.info(f"Found {len(unique_listings)} potential job listings.")
+    
+    # Limit to the top 40 latest listings per site to avoid historical archives bottleneck
+    unique_listings = unique_listings[:40]
+    logging.info(f"Processing the first {len(unique_listings)} latest listings for updates.")
     
     recent_jobs = fetch_recent_jobs()
     new_jobs_queued = 0
