@@ -2416,26 +2416,28 @@ async def run_scraper_periodically():
     # Small startup delay so the main listener has booted up
     await asyncio.sleep(15)
     while True:
-        print("\n🔄 [SCRAPER] Running government jobs scraper in the background...")
-        try:
-            # We run it using the same Python executable to preserve dependencies
-            process = await asyncio.create_subprocess_exec(
-                sys.executable, "scrape_govt_jobs.py",
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE
-            )
-            stdout, stderr = await process.communicate()
-            print(f"✅ [SCRAPER] Background scraper finished with exit code {process.returncode}")
-            
-            # Print a snippet of stdout/stderr for logging
-            if stdout:
-                lines = stdout.decode(errors='replace').splitlines()
-                summary_out = "\n".join(lines[-5:]) if len(lines) > 5 else lines
-                print(f"[SCRAPER Output snippet]:\n{summary_out}")
-            if stderr and process.returncode != 0:
-                print(f"[SCRAPER Error]: {stderr.decode(errors='replace')[:500]}")
-        except Exception as e:
-            print(f"❌ [SCRAPER] Failed to execute background scraper: {e}")
+        print("\n🔄 [SCRAPER] Running government jobs scrapers in the background...")
+        scrapers = ["scrape_govt_jobs.py", "scrape_additional_sources.py"]
+        for scraper_file in scrapers:
+            try:
+                # We run it using the same Python executable to preserve dependencies
+                process = await asyncio.create_subprocess_exec(
+                    sys.executable, scraper_file,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
+                stdout, stderr = await process.communicate()
+                print(f"✅ [SCRAPER] Background {scraper_file} finished with exit code {process.returncode}")
+                
+                # Print a snippet of stdout/stderr for logging
+                if stdout:
+                    lines = stdout.decode(errors='replace').splitlines()
+                    summary_out = "\n".join(lines[-5:]) if len(lines) > 5 else lines
+                    print(f"[{scraper_file} Output snippet]:\n{summary_out}")
+                if stderr and process.returncode != 0:
+                    print(f"[{scraper_file} Error]: {stderr.decode(errors='replace')[:500]}")
+            except Exception as e:
+                print(f"❌ [SCRAPER] Failed to execute background {scraper_file}: {e}")
         
         # Sleep for 6 hours (21600 seconds) before running again
         await asyncio.sleep(21600)
