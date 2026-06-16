@@ -1318,14 +1318,18 @@ def render_text_block(job, width=1200, padding=40):
         lines.append(summary)
         lines.append("\n")
 
+    post_type = str(job.get('postType', '')).lower()
+    is_non_job = any(k in post_type for k in ['admit card', 'result', 'answer key', 'syllabus'])
+
     fields = [
         ("Company", job.get('company', 'Top Company')),
         ("Location", job.get('location', 'Pan India')),
         ("Education", job.get('education', 'Any Graduate')),
         ("Experience", job.get('experience', 'Fresher / 0-2 Years')),
-        ("Salary", job.get('salary', 'Best in Industry')),
-        ("Job Type", job.get('type', 'Full-Time')),
     ]
+    if not is_non_job:
+        fields.append(("Salary", job.get('salary', 'Best in Industry')))
+    fields.append(("Job Type", job.get('type', 'Full-Time')))
 
     for k, v in fields:
         lines.append(f"{k}: {v}")
@@ -1634,16 +1638,26 @@ def build_post(job, slug, linkedin_url=None):
         vacancies = strip_html(job.get('vacancies', 'Various Vacancies'))
         salary = strip_html(job.get('salary', 'Best in Industry'))
         last_date = strip_html(job.get('lastDate', ''))
-        deadline_line = f"⏰ **Last Date:**  {last_date}\n" if last_date else ''
+        
+        post_type = str(job.get('postType', '')).lower()
+        is_non_job = any(k in post_type for k in ['admit card', 'result', 'answer key', 'syllabus'])
+        
+        metadata_lines = [
+            f"🎓 **Eligibility:** {eligibility}",
+            f"🔢 **Vacancies:**   {vacancies}"
+        ]
+        if not is_non_job:
+            metadata_lines.append(f"💰 **Salary:**      {salary}")
+        if last_date:
+            metadata_lines.append(f"⏰ **Last Date:**  {last_date}")
+            
+        metadata_block = "\n".join(metadata_lines)
         
         return (
             f"🔥 **{title}** 🔥\n"
             f"{summary_line}"
             f"\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
-            f"🎓 **Eligibility:** {eligibility}\n"
-            f"🔢 **Vacancies:**   {vacancies}\n"
-            f"💰 **Salary:**      {salary}\n"
-            f"{deadline_line}"
+            f"{metadata_block}\n"
             f"━━━━━━━━━━━━━━━━━━━━━━━━"
             f"{skills_section}"
             f"{resp_section}"
@@ -1655,6 +1669,7 @@ def build_post(job, slug, linkedin_url=None):
             f"👉 **Join Channel:** https://t.me/nextjobpost\n"
         )
     else:
+
         location   = strip_html(job.get('location', 'Pan India'))
         education  = strip_html(job.get('education', 'Any Graduate'))
         experience = strip_html(job.get('experience', 'Fresher / 0-2 Years'))
@@ -1703,10 +1718,19 @@ def build_post_caption(job, slug):
         eligibility = strip_html(job.get('eligibility', 'As per notification'))
         vacancies   = strip_html(job.get('vacancies', 'Various Vacancies'))
         salary      = strip_html(job.get('salary', 'Best in Industry'))
+        
+        post_type = str(job.get('postType', '')).lower()
+        is_non_job = any(k in post_type for k in ['admit card', 'result', 'answer key', 'syllabus'])
+        
+        meta_parts = [f"🎓 Eligibility: {eligibility}", f"👥 Vacancies: {vacancies}"]
+        if not is_non_job:
+            meta_parts.append(f"💰 {salary}")
+        meta_str = " | ".join(meta_parts)
+        
         caption = (
             f"🔥 {title}\n"
             f"🏢 {company}\n"
-            f"🎓 Eligibility: {eligibility} | 👥 Vacancies: {vacancies} | 💰 {salary}\n"
+            f"{meta_str}\n"
             f"\n🔗 {action_verb}: {job_url}\n"
             f"👉 Join: https://t.me/nextjobpost"
         )
@@ -1727,10 +1751,19 @@ def build_post_caption(job, slug):
             eligibility = strip_html(job.get('eligibility', 'As per notification'))
             vacancies   = strip_html(job.get('vacancies', 'Various Vacancies'))
             salary      = strip_html(job.get('salary', 'Best in Industry'))
+            
+            post_type = str(job.get('postType', '')).lower()
+            is_non_job = any(k in post_type for k in ['admit card', 'result', 'answer key', 'syllabus'])
+            
+            meta_parts_short = [f"🎓 {eligibility[:40]}", f"👥 {vacancies[:30]}"]
+            if not is_non_job:
+                meta_parts_short.append(f"💰 {salary[:30]}")
+            meta_str_short = " | ".join(meta_parts_short)
+            
             caption = (
                 f"🔥 {title[:80]}\n"
                 f"🏢 {company[:50]}\n"
-                f"🎓 {eligibility[:40]} | 👥 {vacancies[:30]} | 💰 {salary[:30]}\n"
+                f"{meta_str_short}\n"
                 f"\n🔗 {action_verb}: {job_url}\n"
                 f"👉 Join: https://t.me/nextjobpost"
             )
@@ -1842,9 +1875,14 @@ def build_linkedin_post(job, slug):
             hashtag_set.update(['#DataScience', '#Analytics', '#DataJobs'])
     hashtags = ' '.join(sorted(hashtag_set))
 
+    post_type = str(job.get('postType', '')).lower()
+    is_non_job = any(k in post_type for k in ['admit card', 'result', 'answer key', 'syllabus'])
+
     if is_govt:
         eligibility = strip_html(job.get('eligibility', 'As per notification'))
         vacancies = strip_html(job.get('vacancies', 'Various Vacancies'))
+        
+        salary_line = f"💰 Salary       : {salary}\n" if not is_non_job else ""
         
         post_text = (
             f"{hook}\n"
@@ -1853,7 +1891,7 @@ def build_linkedin_post(job, slug):
             f"━━━━━━━━━━━━━━━━━━━━━━━━\n"
             f"🎓 Eligibility  : {eligibility}\n"
             f"🔢 Vacancies    : {vacancies}\n"
-            f"💰 Salary       : {salary}\n"
+            f"{salary_line}"
             f"{deadline_line}"
             f"━━━━━━━━━━━━━━━━━━━━━━━━"
             f"{resp_section}"
@@ -1870,6 +1908,8 @@ def build_linkedin_post(job, slug):
         batch_line    = f"🎯 Batch        : {batch}\n" if batch and batch.lower() not in ('not mentioned', 'not specified', '') else ''
         type_badge    = f"💼 Job Type     : {job_type}\n"
         
+        salary_line = f"💰 Salary       : {salary}\n" if not is_non_job else ""
+        
         post_text = (
             f"{hook}\n"
             f"🔥 {title}\n"
@@ -1878,7 +1918,7 @@ def build_linkedin_post(job, slug):
             f"📍 Location     : {location}\n"
             f"🎓 Education    : {education}\n"
             f"⏳ Experience   : {experience}\n"
-            f"💰 Salary       : {salary}\n"
+            f"{salary_line}"
             f"{type_badge}"
             f"{batch_line}"
             f"{deadline_line}"
@@ -2115,12 +2155,19 @@ async def process_and_post_job(job_data):
         if not has_real_image:
             print("ℹ️ No real image found. Generating a dynamic poster...")
             image_path = os.path.join(PENDING_IMAGES_DIR, f"gen_{h}.jpg")
+            
+            post_type = str(job.get('postType', '')).lower()
+            is_non_job = any(k in post_type for k in ['admit card', 'result', 'answer key', 'syllabus'])
+            salary_val = job.get('salary', 'Best in Industry')
+            if is_non_job:
+                salary_val = ""
+                
             try:
                 generate_poster(
                     title=job.get('title', 'Job Opening'),
                     company=job.get('company', 'Top Company'),
                     location=job.get('location', 'Pan India'),
-                    salary=job.get('salary', 'Best in Industry'),
+                    salary=salary_val,
                     output_path=image_path
                 )
                 has_real_image = os.path.exists(image_path)
