@@ -422,7 +422,10 @@ def extract_basic(text):
        # 7. Extract Salary
     salary = "Best in Industry"
     for l in lines:
-        if "salary" in l.lower() or "stipend" in l.lower() or "package" in l.lower():
+        l_lower = l.lower()
+        if any(bad in l_lower for bad in ["fee", "challan", "application"]):
+            continue
+        if "salary" in l_lower or "stipend" in l_lower or "package" in l_lower:
             val = l.split(":")[-1].strip()
             salary = re.sub(r"[^a-zA-Z0-9\s,.\-₹$#LPA]", " ", val).strip()
             salary = re.sub(r"\s+", " ", salary)
@@ -584,9 +587,11 @@ def clean_company_name(s):
         r"\bjobs?\b", r"\bcareers?\b", r"\bnew\b", r"\bfreshers?\b", 
         r"\binternships?\b", r"\binterns?\b", r"\b202[0-9]\b", r"\bapply\s*now\b",
         r"\bopportunity\b", r"\bopenings?\b", r"\balerts?\b", r"\bupdates?\b",
+        r"\bonline\s*form\b", r"\bform\b", r"\bonline\b", r"\bresults?\b", r"\badmit\s*card\b", r"\bsyllabus\b",
+        r"\bvarious\b", r"\bposts?\b", r"\bvacancies\b", r"\bvacancy\b",
         r"\bsoftware\s*engineer\b", r"\bsoftware\s*developer\b", r"\bdeveloper\b",
         r"\bengineer\b", r"\banalyst\b", r"\btester\b", r"\bsupport\b", r"\bconsultant\b",
-        r"\bassociate\b", r"\bexecutive\b", r"\btrainee\b", r"\bmanager\b",
+        r"\bassociate\b", r"\bexecutive\b", r"\btrainee\b", r"\bmanagers?\b",
         r"\bfor\b", r"\bat\b", r"\bthe\b", r"\ban\b", r"\ba\b", r"\bin\b", r"\bto\b", r"\bof\b", r"\bwith\b",
         r"\bis\b", r"\bare\b"
     ]
@@ -689,6 +694,11 @@ def parse_salary_fallback(text):
     lines = clean_text.split('\n')
     for line in lines:
         line_lower = line.lower()
+        
+        # NEGATIVE CONSTRAINT: Ignore lines that talk about application fees
+        if any(bad in line_lower for bad in ["fee", "challan", "application fee", "exam fee"]):
+            continue
+            
         if any(kw in line_lower for kw in ["salary", "stipend", "package", "ctc", "lpa"]):
             # Look for the pattern in this specific line
             match = re.search(value_re, line, re.IGNORECASE)

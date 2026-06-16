@@ -290,19 +290,19 @@ def enrich_content_basic(html_content, title):
 
     # 3. Vacancies
     vacancies = "Various Vacancies"
-    # Search for numbers followed by posts/vacancies (allowing commas)
-    for m in re.finditer(r'\b(\d[\d,]*)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE):
-        num_str = m.group(1).replace(',', '')
-        if num_str.isdigit() and 2020 <= int(num_str) <= 2030:
-            continue
-        vacancies = f"{m.group(1)} Posts"
-        break
     
-    if vacancies == "Various Vacancies":
-        # Search for "no. of vacancies: X" or similar
-        vac_match2 = re.search(r'(?:no\s*of\s*posts|total\s*posts|vacancies|vacancy)\s*[:\-]\s*(\d[\d,]*)\b', text_clean, re.IGNORECASE)
-        if vac_match2:
-            vacancies = f"{vac_match2.group(1)} Posts"
+    # Priority 1: Explicit labels like "Total Vacancies: X"
+    vac_match1 = re.search(r'(?:no\s*of\s*(?:posts|vacancies)|total\s*(?:posts|vacancies)|vacancies|vacancy)\s*[:\-]\s*(\d[\d,]*)\b', text_clean, re.IGNORECASE)
+    if vac_match1:
+        vacancies = f"{vac_match1.group(1)} Posts"
+    else:
+        # Priority 2: Numbers followed by posts/vacancies (allowing commas)
+        for m in re.finditer(r'\b(\d[\d,]*)\s*(?:posts|vacancies|slots|positions|seats)\b', text_clean, re.IGNORECASE):
+            num_str = m.group(1).replace(',', '')
+            if num_str.isdigit() and 2020 <= int(num_str) <= 2030:
+                continue
+            vacancies = f"{m.group(1)} Posts"
+            break
 
     # 4. Last Date
     last_date = ""
