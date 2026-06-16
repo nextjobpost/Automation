@@ -397,9 +397,12 @@ def enrich_content_basic(html_content, title):
                     salary = f"Rs. {m4.group(1)}"
                 else:
                     # Match: salary/stipend/pay near digits (generic fallback)
-                    m5 = re.search(r'\b(?:salary|stipend|remuneration|pay\s*scale|pay\s*matrix)\b[^0-9\n]{0,40}\b(\d{4,6}|\d{1,3},\d{3})\b', text_clean, re.IGNORECASE)
-                    if m5:
+                    for m5 in re.finditer(r'\b(?:salary|stipend|remuneration|pay\s*scale|pay\s*matrix)\b[^0-9\n]{0,40}\b(\d{4,6}|\d{1,3},\d{3})\b', text_clean, re.IGNORECASE):
+                        num_str = m5.group(1).replace(',', '')
+                        if num_str.isdigit() and 2020 <= int(num_str) <= 2030:
+                            continue
                         salary = f"Rs. {m5.group(1).strip()}"
+                        break
 
     # 6. Summary
     summary = text_clean[:180] + "..." if len(text_clean) > 180 else text_clean
@@ -485,10 +488,10 @@ def enrich_content_with_ai(html_content, title):
                     ),
                 )
             clean_json = response.text.strip()
-            if clean_json.startswith("```json"):
-                clean_json = clean_json[7:-3].strip()
-            elif clean_json.startswith("```"):
-                clean_json = clean_json[3:-3].strip()
+            # Robust JSON extraction using regex
+            json_match = re.search(r'\{.*\}', clean_json, re.DOTALL)
+            if json_match:
+                clean_json = json_match.group(0)
                 
             return json.loads(clean_json)
         except Exception as e:

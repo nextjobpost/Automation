@@ -64,22 +64,31 @@ def init_db():
     conn.commit()
     conn.close()
 
-def add_job_to_queue(job_dict, job_hash, image_path="", is_government=False):
+def add_job_to_queue(job_dict, job_hash, image_path="", is_government=False, retries=5):
     """Inserts a new job into the queue. Ignores if hash already exists in queue."""
-    conn = get_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute('''
-            INSERT OR IGNORE INTO job_queue (job_hash, job_data, image_path, is_government, timestamp)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (job_hash, json.dumps(job_dict), image_path, is_government, time.time()))
-        conn.commit()
-        return cursor.rowcount > 0
-    except Exception as e:
-        print(f"Database error adding job to queue: {e}")
-        return False
-    finally:
-        conn.close()
+    for attempt in range(1, retries + 1):
+        conn = get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute('''
+                INSERT OR IGNORE INTO job_queue (job_hash, job_data, image_path, is_government, timestamp)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (job_hash, json.dumps(job_dict), image_path, is_government, time.time()))
+            conn.commit()
+            return cursor.rowcount > 0
+        except sqlite3.OperationalError as e:
+            if "locked" in str(e).lower() and attempt < retries:
+                print(f"⚠️ [DB] Database locked, retrying attempt {attempt}/{retries}...")
+                time.sleep(0.5 * attempt)
+                continue
+            print(f"Database error adding job to queue: {e}")
+            return False
+        except Exception as e:
+            print(f"Database error adding job to queue: {e}")
+            return False
+        finally:
+            conn.close()
+    return False
 
 def get_jobs_batch(limit_govt=1, limit_private=1):
     """Atomically retrieves and deletes up to `limit_govt` govt jobs and `limit_private` private jobs."""

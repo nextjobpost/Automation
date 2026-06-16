@@ -438,9 +438,12 @@ def extract_basic(text):
             salary = f"Rs. {salary_match.group(1).strip()}"
         else:
             # Match standalone digits near keywords
-            salary_match2 = re.search(r'\b(?:salary|stipend|remuneration|scale|pay\s*scale|pay\s*matrix)\b[^0-9\n]{0,40}\b(\d{4,6}|\d{1,3},\d{3})\b', text_clean, re.IGNORECASE)
-            if salary_match2:
+            for salary_match2 in re.finditer(r'\b(?:salary|stipend|remuneration|scale|pay\s*scale|pay\s*matrix)\b[^0-9\n]{0,40}\b(\d{4,6}|\d{1,3},\d{3})\b', text_clean, re.IGNORECASE):
+                num_str = salary_match2.group(1).replace(',', '')
+                if num_str.isdigit() and 2020 <= int(num_str) <= 2030:
+                    continue
                 salary = f"Rs. {salary_match2.group(1).strip()}"
+                break
 
     # 8. Extract Vacancies
     vacancies = "Various Vacancies"
@@ -902,16 +905,22 @@ def is_valid_job(job):
                     except ValueError:
                         pass
             
-            if parsed_date and parsed_date < date.today():
-                return False, f"Job has expired. Last date '{last_date_str}' is in the past (today is {date.today()})."
+            if parsed_date:
+                if parsed_date < date.today():
+                    return False, f"Job has expired. Last date '{last_date_str}' is in the past (today is {date.today()})."
+                # Strict Date Validation: Re-format to YYYY-MM-DD
+                job["lastDate"] = parsed_date.strftime("%Y-%m-%d")
+            else:
+                job["lastDate"] = ""
 
     # Auto-default and clean all fields to prevent any rejection
     forbidden_terms = ["not mentioned", "not specified", "not disclosed", "confidential", "hiring company"]
     is_govt = job.get("isGovernment") is True or str(job.get("isGovernment")).lower() == "true"
 
-    # 1. Clean applyLink first
-    apply_link = job.get("applyLink")
-    if not apply_link or any(term in str(apply_link).lower() for term in forbidden_terms):
+    # 1. Clean applyLink first (Enforce HTTP)
+    apply_link = job.get("applyLink", "")
+    apply_link_str = str(apply_link).strip()
+    if not apply_link_str or any(term in apply_link_str.lower() for term in forbidden_terms) or not apply_link_str.startswith("http"):
         job["applyLink"] = "https://nextjobpost.in/"
 
     # 2. Clean title
@@ -1535,7 +1544,7 @@ async def upload_image_to_api(session, file_path, retries=3, delay=5):
 # =========================
 # STEP 1B → SEND TO API FIRST
 # =========================
-async def send_to_api(session, job):
+async def send_to_api(session, job, retries=3, delay=2):
     headers = {
         "Content-Type": "application/json"
     }
@@ -1553,16 +1562,31 @@ async def send_to_api(session, job):
         elif isinstance(v, list):
             job_payload[k] = [item.replace("linkedin.com/m/", "linkedin.com/") if isinstance(item, str) and "linkedin.com/m/" in item else item for item in v]
         
-    try:
-        async with session.post(API_URL, json=job_payload, headers=headers, timeout=30) as res:
-            try:
-                data = await res.json()
-                return data
-            except:
-                return None
-    except Exception as e:
-        print(f"❌ [API] Failed to post job to API: {e}")
-        return None
+    for attempt in range(1, retries + 1):
+        try:
+            async with session.post(API_URL, json=job_payload, headers=headers, timeout=30) as res:
+                if res.status == 503 or res.status == 500:
+                    print(f"⚠️ [API] Server Error ({res.status}) on attempt {attempt}")
+                    if attempt < retries:
+                        await asyncio.sleep(delay * attempt)
+                        continue
+                try:
+                    data = await res.json()
+                    return data
+                except Exception as json_err:
+                    print(f"⚠️ [API] Invalid JSON output on attempt {attempt}: {json_err}")
+                    if attempt < retries:
+                        await asyncio.sleep(delay * attempt)
+                        continue
+                    return None
+        except Exception as e:
+            print(f"❌ [API] Failed to post job to API on attempt {attempt}: {e}")
+            if attempt < retries:
+                await asyncio.sleep(delay * attempt)
+                continue
+            return None
+            
+    return None
 
 def strip_html(text):
     if not text:
