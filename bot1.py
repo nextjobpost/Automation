@@ -105,8 +105,7 @@ SOURCE_CHANNELS = [
     "PrepTrain",
 ]
 
-# TARGET_CHANNEL = os.getenv("TELEGRAM_CHANNEL", "@nextjobpost")
-TARGET_CHANNEL = -1003577992218
+TARGET_CHANNEL = os.getenv("TELEGRAM_CHANNEL", "@nextjobpost")
 
 # Detect environment to set appropriate default API url
 IS_PRODUCTION = os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RENDER") or os.getenv("PORT") is not None
