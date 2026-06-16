@@ -2450,52 +2450,76 @@ async def preload_website_jobs_into_seen():
     global seen
     print("🔄 Preloading recent jobs from website API for smart duplicate checks...")
     try:
-        # Fetch up to 200 recent jobs (both active and inactive)
         headers = {}
         api_token = os.getenv("API_TOKEN")
         if api_token:
             headers["Authorization"] = f"Bearer {api_token}"
             
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{API_URL}?limit=200&status=all", headers=headers, timeout=15) as r:
-                if r.status == 200:
-                    data = await r.json()
-                    jobs = data.get("jobs", []) if isinstance(data, dict) else (data if isinstance(data, list) else [])
-                    print(f"📊 Loaded {len(jobs)} recent jobs from backend.")
-                    
-                    preloaded_count = 0
-                    for j in jobs:
-                        # 1. Title + Company semantic hash
-                        title_str = str(j.get('title', '')).lower().strip()
-                        company_str = str(j.get('company', '')).lower().strip()
-                        if title_str and company_str:
-                            semantic_hash = hashlib.md5(f"{title_str}::{company_str}".encode()).hexdigest()
-                            if semantic_hash not in seen:
-                                seen.add(semantic_hash)
-                                database.mark_job_seen(semantic_hash)
-                                preloaded_count += 1
-                                
-                        # 2. Apply link hash
-                        apply_link = str(j.get('applyLink', '')).lower().strip()
-                        if apply_link and len(apply_link) > 15:
-                            apply_hash = hashlib.md5(apply_link.encode()).hexdigest()
-                            if apply_hash not in seen:
-                                seen.add(apply_hash)
-                                database.mark_job_seen(apply_hash)
-                                preloaded_count += 1
-                                
-                        # 3. Source URL hash
-                        source_url = str(j.get('sourceUrl', '')).lower().strip()
-                        if source_url and len(source_url) > 15:
-                            source_hash = hashlib.md5(source_url.encode()).hexdigest()
-                            if source_hash not in seen:
-                                seen.add(source_hash)
-                                database.mark_job_seen(source_hash)
-                                preloaded_count += 1
-                                
-                    print(f"✅ Preloaded {preloaded_count} new hashes into local seen cache.")
-                else:
-                    print(f"⚠️ Failed to preload jobs: website API returned status {r.status}")
+            r_status = 0
+            data = None
+            
+            # 1. Try fetching with status=all (requires admin permissions)
+            try:
+                async with session.get(f"{API_URL}?limit=200&status=all", headers=headers, timeout=15) as r:
+                    r_status = r.status
+                    if r.status == 200:
+                        data = await r.json()
+            except Exception as e:
+                print(f"⚠️ Failed to connect for admin preload: {e}")
+                r_status = -1
+                
+            # 2. Fall back to public endpoint (limit=200, no status=all) if not authorized
+            if r_status != 200:
+                print("🔄 Falling back to public API endpoint (no status=all)...")
+                try:
+                    async with session.get(f"{API_URL}?limit=200", timeout=15) as r:
+                        r_status = r.status
+                        if r.status == 200:
+                            data = await r.json()
+                        else:
+                            print(f"⚠️ Failed to preload jobs: website API returned status {r.status}")
+                            return
+                except Exception as e:
+                    print(f"⚠️ Error during public preload fallback: {e}")
+                    return
+            
+            if data:
+                # The backend API returns jobs inside "data" (and occasionally "jobs" in debug scripts)
+                jobs = data.get("data", []) or data.get("jobs", []) if isinstance(data, dict) else (data if isinstance(data, list) else [])
+                print(f"📊 Loaded {len(jobs)} recent jobs from backend.")
+                
+                preloaded_count = 0
+                for j in jobs:
+                    # 1. Title + Company semantic hash
+                    title_str = str(j.get('title', '')).lower().strip()
+                    company_str = str(j.get('company', '')).lower().strip()
+                    if title_str and company_str:
+                        semantic_hash = hashlib.md5(f"{title_str}::{company_str}".encode()).hexdigest()
+                        if semantic_hash not in seen:
+                            seen.add(semantic_hash)
+                            database.mark_job_seen(semantic_hash)
+                            preloaded_count += 1
+                            
+                    # 2. Apply link hash
+                    apply_link = str(j.get('applyLink', '')).lower().strip()
+                    if apply_link and len(apply_link) > 15:
+                        apply_hash = hashlib.md5(apply_link.encode()).hexdigest()
+                        if apply_hash not in seen:
+                            seen.add(apply_hash)
+                            database.mark_job_seen(apply_hash)
+                            preloaded_count += 1
+                            
+                    # 3. Source URL hash
+                    source_url = str(j.get('sourceUrl', '')).lower().strip()
+                    if source_url and len(source_url) > 15:
+                        source_hash = hashlib.md5(source_url.encode()).hexdigest()
+                        if source_hash not in seen:
+                            seen.add(source_hash)
+                            database.mark_job_seen(source_hash)
+                            preloaded_count += 1
+                            
+                print(f"✅ Preloaded {preloaded_count} new hashes into local seen cache.")
     except Exception as e:
         print(f"⚠️ Error preloading website jobs: {e}")
 

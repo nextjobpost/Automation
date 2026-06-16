@@ -5,6 +5,10 @@
 *.session
 session.session
 
+# ── SQLite Databases ───────────────────────────────────────
+*.db
+automation.db
+
 # ── Python cache ───────────────────────────────────────────
 __pycache__/
 *.py[cod]
