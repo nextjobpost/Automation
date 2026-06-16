@@ -2,10 +2,20 @@ import sqlite3
 import json
 import time
 import os
+import shutil
 
 # Allow overriding the data directory via environment variable for cloud persistent storage
 DATA_DIR = os.getenv("DATA_DIR", ".")
 DB_PATH = os.path.join(DATA_DIR, "automation.db")
+LOCAL_DB = "automation.db"
+
+# Seed the persistent volume if it is fresh and we shipped a local DB via git
+if DATA_DIR != "." and not os.path.exists(DB_PATH) and os.path.exists(LOCAL_DB):
+    try:
+        shutil.copy2(LOCAL_DB, DB_PATH)
+        print(f"📦 Copied bundled {LOCAL_DB} to persistent volume at {DB_PATH}")
+    except Exception as e:
+        print(f"⚠️ Failed to copy bundled DB: {e}")
 
 def get_connection():
     # timeout=20 ensures that if the DB is locked by another script, it waits up to 20 seconds before failing.
