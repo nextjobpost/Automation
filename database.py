@@ -3,7 +3,9 @@ import json
 import time
 import os
 
-DB_PATH = "automation.db"
+# Allow overriding the data directory via environment variable for cloud persistent storage
+DATA_DIR = os.getenv("DATA_DIR", ".")
+DB_PATH = os.path.join(DATA_DIR, "automation.db")
 
 def get_connection():
     # timeout=20 ensures that if the DB is locked by another script, it waits up to 20 seconds before failing.
