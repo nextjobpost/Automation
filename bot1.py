@@ -2263,9 +2263,22 @@ async def process_and_post_job(job_data):
                 was_posted = True
 
         if job.get("postToSocials", True) and not is_duplicate:
-            # 3. LinkedIn Post (Only for Private/IT Jobs) - Post first to get LinkedIn URL for Telegram
+            # 3. LinkedIn Post - Enforce 5/day limit for Government Jobs
             linkedin_url = None
-            if not job.get("isGovernment", False):
+            is_govt = job.get("isGovernment", False)
+            should_post_to_linkedin = False
+
+            if not is_govt:
+                should_post_to_linkedin = True
+            else:
+                # Check 24-hour limit for government jobs
+                govt_posts_count = database.count_linkedin_govt_posts_last_24h()
+                if govt_posts_count < 5:
+                    should_post_to_linkedin = True
+                else:
+                    print(f"ℹ️ Skipping LinkedIn: Reached daily limit of 5 government jobs (Posted: {govt_posts_count}/5).")
+
+            if should_post_to_linkedin:
                 if TEST_MODE:
                     print("🧪 [TEST_MODE] Mocking LinkedIn Post...")
                     linkedin_url = f"https://www.linkedin.com/feed/update/urn:li:activity:mock_{h}/"
@@ -2273,11 +2286,11 @@ async def process_and_post_job(job_data):
                     linkedin_url = await post_to_linkedin(session, job, slug)
                     
                 if linkedin_url:
-                    print("✔ LinkedIn Posted (Private Job).")
+                    print(f"✔ LinkedIn Posted ({'Govt' if is_govt else 'Private'} Job).")
+                    if is_govt:
+                        database.log_linkedin_govt_post()
                 else:
                     print("❌ LinkedIn Posting failed.")
-            else:
-                print("ℹ️ Skipping LinkedIn (Government jobs are not posted to LinkedIn).")
 
             # 4. Telegram Post (WITH IMAGE LINK PREVIEW AT THE TOP)
             print("📢 Posting to Telegram channel as a unified message with image preview...")

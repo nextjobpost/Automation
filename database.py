@@ -61,6 +61,20 @@ def init_db():
     # Create an index on is_government for faster querying
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_is_govt ON job_queue(is_government)')
     
+    # linkedin_govt_posts: Tracks timestamps of government jobs posted to LinkedIn to enforce daily limits
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS linkedin_govt_posts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp REAL
+        )
+    ''')
+    
+    # Add priority column to job_queue if it doesn't exist
+    try:
+        cursor.execute('ALTER TABLE job_queue ADD COLUMN priority INTEGER DEFAULT 0')
+    except sqlite3.OperationalError:
+        pass # Column already exists
+    
     conn.commit()
     conn.close()
 
@@ -69,11 +83,18 @@ def add_job_to_queue(job_dict, job_hash, image_path="", is_government=False, ret
     for attempt in range(1, retries + 1):
         conn = get_connection()
         cursor = conn.cursor()
+        
+        # Calculate Priority Score based on high-value keywords
+        priority = 0
+        job_text = json.dumps(job_dict).lower()
+        if any(kw in job_text for kw in [" ssc", " upsc", "army", "bank"]):
+            priority = 1
+            
         try:
             cursor.execute('''
-                INSERT OR IGNORE INTO job_queue (job_hash, job_data, image_path, is_government, timestamp)
-                VALUES (?, ?, ?, ?, ?)
-            ''', (job_hash, json.dumps(job_dict), image_path, is_government, time.time()))
+                INSERT OR IGNORE INTO job_queue (job_hash, job_data, image_path, is_government, timestamp, priority)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (job_hash, json.dumps(job_dict), image_path, is_government, time.time(), priority))
             conn.commit()
             return cursor.rowcount > 0
         except sqlite3.OperationalError as e:
@@ -106,7 +127,7 @@ def get_jobs_batch(limit_govt=1, limit_private=1):
         if limit_govt > 0:
             cursor.execute('''
                 SELECT id, job_hash, job_data, image_path, is_government, timestamp, retries 
-                FROM job_queue WHERE is_government = 1 ORDER BY timestamp ASC LIMIT ?
+                FROM job_queue WHERE is_government = 1 ORDER BY priority DESC, timestamp ASC LIMIT ?
             ''', (limit_govt,))
             govt_rows = cursor.fetchall()
             for row in govt_rows:
@@ -116,7 +137,7 @@ def get_jobs_batch(limit_govt=1, limit_private=1):
         if limit_private > 0:
             cursor.execute('''
                 SELECT id, job_hash, job_data, image_path, is_government, timestamp, retries 
-                FROM job_queue WHERE is_government = 0 ORDER BY timestamp ASC LIMIT ?
+                FROM job_queue WHERE is_government = 0 ORDER BY priority DESC, timestamp ASC LIMIT ?
             ''', (limit_private,))
             private_rows = cursor.fetchall()
             for row in private_rows:
@@ -234,6 +255,32 @@ def preload_seen_jobs(hash_list):
         conn.commit()
     except Exception as e:
         print(f"Error preloading seen jobs: {e}")
+    finally:
+        conn.close()
+
+def count_linkedin_govt_posts_last_24h():
+    """Returns the number of government jobs posted to LinkedIn in the last 24 hours."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        twenty_four_hours_ago = time.time() - 86400
+        cursor.execute('SELECT COUNT(*) FROM linkedin_govt_posts WHERE timestamp > ?', (twenty_four_hours_ago,))
+        return cursor.fetchone()[0]
+    except Exception as e:
+        print(f"Error counting linkedin govt posts: {e}")
+        return 0
+    finally:
+        conn.close()
+
+def log_linkedin_govt_post():
+    """Logs a new government job post to LinkedIn to track daily limits."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('INSERT INTO linkedin_govt_posts (timestamp) VALUES (?)', (time.time(),))
+        conn.commit()
+    except Exception as e:
+        print(f"Error logging linkedin govt post: {e}")
     finally:
         conn.close()
 
