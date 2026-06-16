@@ -116,17 +116,23 @@ def get_auth_token():
 
 def clean_detail_html(html_content):
     """Parses detail page HTML, extracts .entry-content, and strips out ads/widgets/competitor links."""
+    if not html_content:
+        return ""
+        
+    # Strip HTML-encoded SVG blocks and normal SVG tags
+    html_content = re.sub(r'<svg\b[^>]*>.*?</svg>', '', html_content, flags=re.DOTALL | re.IGNORECASE)
+    html_content = re.sub(r'&lt;svg\b.*?&lt;/svg&gt;', '', html_content, flags=re.DOTALL | re.IGNORECASE)
+    
     soup = BeautifulSoup(html_content, "html.parser")
+
     entry_content = soup.find(class_="entry-content")
     if not entry_content:
         # Some sites place main content inside div#content or div#primary
         entry_content = soup.find(id="content") or soup.find(id="primary")
     if not entry_content:
-        # Fallback to main body or article
-        entry_content = soup.find("article") or soup.find("body")
-    
-    if not entry_content:
-        return ""
+        # Fallback to the soup itself (document fragment)
+        entry_content = soup
+
 
     # 1. Remove script, style, and AdSense ins tags
     for tag in entry_content.find_all(["script", "style", "ins"]):
