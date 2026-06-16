@@ -115,7 +115,7 @@ def get_auth_token():
     return API_TOKEN
 
 def clean_detail_html(html_content):
-    """Parses detail page HTML, extracts .entry-content, and strips out ads/widgets."""
+    """Parses detail page HTML, extracts .entry-content, and strips out ads/widgets/competitor links."""
     soup = BeautifulSoup(html_content, "html.parser")
     entry_content = soup.find(class_="entry-content")
     if not entry_content:
@@ -128,28 +128,48 @@ def clean_detail_html(html_content):
     if not entry_content:
         return ""
 
-    # Elements to remove (ads, share buttons, follow us, dividers)
-    classes_to_remove = [
-        "code-block-default",
-        "code-block-center",
-        "gja-share-box",
-        "gja-divider",
-        "gja-btns",
-        "gja-label",
-        "gja-news-box",
-        "adsbygoogle",
-        "gja-grid-ad"
-    ]
-    for cls in classes_to_remove:
-        for tag in entry_content.find_all(class_=cls):
-            tag.decompose()
-            
-    # Also remove any script, style, or ins tags (AdSense placeholders)
+    # 1. Remove script, style, and AdSense ins tags
     for tag in entry_content.find_all(["script", "style", "ins"]):
         tag.decompose()
 
+    # 2. Decompose elements by class names or tag attributes
+    for tag in list(entry_content.find_all(True)):
+        if not tag.parent:
+            continue
+            
+        classes = tag.get("class", [])
+        if isinstance(classes, list):
+            class_str = " ".join(classes).lower()
+        else:
+            class_str = str(classes).lower()
+            
+        # Decompose class prefixes for competitors (e.g. gja- for GovtJobsAlert, fja- for FreeJobAlert)
+        if any(x in class_str for x in ["gja-", "fja-", "code-block", "adsbygoogle", "share-box", "social-share"]):
+            tag.decompose()
+            continue
+            
+        # Decompose social media links
+        if tag.name == "a":
+            href = tag.get("href", "").lower()
+            if any(domain in href for domain in ["whatsapp.com", "t.me", "telegram.me", "instagram.com", "youtube.com", "facebook.com", "twitter.com"]):
+                if "nextjobpost" not in href:
+                    tag.decompose()
+                    continue
+                    
+        # Decompose specific texts containing competitor follow/join phrases
+        text = tag.get_text(strip=True).upper()
+        if any(phrase in text for phrase in ["JOIN WHATSAPP", "JOIN TELEGRAM", "JOIN INSTAGRAM", "JOIN YOUTUBE", "FOLLOW US ON", "JOIN US ON", "FOLLOW US", "JOIN US"]):
+            if tag.name in ["li", "p", "strong", "span", "a", "h2", "h3", "h4", "div", "b", "i", "em"]:
+                # Skip decomposing large outer containers
+                if tag.name == "div" and len(text) > 150:
+                    continue
+                tag.decompose()
+                continue
+
+
     # Get clean HTML string
     return str(entry_content)
+
 
 def extract_govt_links(html_content):
     """
