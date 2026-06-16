@@ -123,6 +123,7 @@ SESSION_DATA = os.getenv("TELEGRAM_SESSION_STRING", "session")
 # If it looks like a string session (long), use StringSession, otherwise use file name
 session = StringSession(SESSION_DATA) if len(SESSION_DATA) > 25 else SESSION_DATA
 client = TelegramClient(session, API_ID, API_HASH)
+TELEGRAM_ENABLED = False  # Set dynamically in main()
 
 # =========================
 # DATABASE / CACHE
@@ -2207,7 +2208,9 @@ async def process_and_post_job(job_data):
                     else:
                         telegram_post = post
 
-                    if TEST_MODE:
+                    if not TELEGRAM_ENABLED:
+                        print("⚠️ Telegram is disabled (not authorized/connected). Skipping Telegram post.")
+                    elif TEST_MODE:
                         print("🧪 [TEST_MODE] Mocking Telegram Post...")
                         
                         # Save test artifacts
@@ -2512,6 +2515,7 @@ async def start_dummy_server():
     print(f"🌐 Health server listening on port {port} (Keep-Alive)")
 
 async def main():
+    global TELEGRAM_ENABLED
     await ensure_font_downloaded()
     
     # 1. Start Dummy Health Server for Cloud Platforms
@@ -2521,37 +2525,45 @@ async def main():
         print(f"⚠️ Could not start health server: {e}")
 
     try:
-        await client.start()
+        await client.connect()
+        if await client.is_user_authorized():
+            TELEGRAM_ENABLED = True
+            print("✔ Telegram Client authorized and connected successfully.")
+        else:
+            print("\n⚠️ [TELEGRAM WARNING] Telegram session is NOT authorized!")
+            print("Telegram listener and Telegram posting will be disabled.")
+            print("Please run 'python generate_session.py' locally to generate a new session string, then update it in Railway/Render.")
     except AuthKeyDuplicatedError:
         print("\n❌ [TELEGRAM ERROR] AuthKeyDuplicatedError!")
         print("This happens because the Telegram session is being used by two different containers/IPs at the same time.")
-        print("This is usually caused by Render/Railway zero-downtime (rolling) deployments running the new container before stopping the old one.")
-        print("To fix this:")
-        print("1. Set your Render/Railway deployment strategy to 'Recreate' (kill the old instance before starting the new one).")
-        print("2. Generate a new TELEGRAM_SESSION_STRING and update it in your environment variables.")
-        sys.exit(1)
+        print("Telegram listener and Telegram posting will be disabled.")
+    except Exception as e:
+        print(f"⚠️ Telegram client connection failed: {e}")
+
     print("Dual Pipeline Job Agent with Scheduler Running...")
     
     # Preload recent jobs from website API
     await preload_website_jobs_into_seen()
 
-    
-    # 🛡️ Validate channels
-    valid_channels = []
-    for ch in SOURCE_CHANNELS:
-        try:
-            entity = await client.get_input_entity(ch)
-            valid_channels.append(entity)
-        except Exception as e:
-            print(f"⚠️ Skipping channel '{ch}': {e}")
-            
-    if not valid_channels:
-        print("❌ No valid channels found.")
-        return
+    if TELEGRAM_ENABLED:
+        # 🛡️ Validate channels
+        valid_channels = []
+        for ch in SOURCE_CHANNELS:
+            try:
+                entity = await client.get_input_entity(ch)
+                valid_channels.append(entity)
+            except Exception as e:
+                print(f"⚠️ Skipping channel '{ch}': {e}")
+                
+        if not valid_channels:
+            print("❌ No valid channels found.")
+            TELEGRAM_ENABLED = False
 
-    client.add_event_handler(handler, events.NewMessage(chats=valid_channels))
-    
-    print(f"👂 Listening to {len(valid_channels)} channels...")
+    if TELEGRAM_ENABLED:
+        client.add_event_handler(handler, events.NewMessage(chats=valid_channels))
+        print(f"👂 Listening to {len(valid_channels)} channels...")
+    else:
+        print("⚠️ Running in Web-Only Mode (no Telegram listener).")
     
     # Start the scheduler in the background
     asyncio.create_task(scheduler_task())
@@ -2562,18 +2574,23 @@ async def main():
     # Global Reconnection Loop
     while True:
         try:
-            if not client.is_connected():
-                print("🔄 Reconnecting Telegram client...")
-                await client.connect()
-            await client.run_until_disconnected()
+            if TELEGRAM_ENABLED:
+                if not client.is_connected():
+                    print("🔄 Reconnecting Telegram client...")
+                    await client.connect()
+                await client.run_until_disconnected()
+            else:
+                # Web-only mode: keep the process alive
+                await asyncio.sleep(3600)
         except AuthKeyDuplicatedError:
             print("\n❌ [TELEGRAM ERROR] AuthKeyDuplicatedError inside reconnection loop! Exiting to prevent ban...")
             sys.exit(1)
         except Exception as e:
             print(f"⚠️ Telegram disconnected unexpectedly: {e}")
         
-        print("⏳ Waiting 15 seconds before reconnecting...")
-        await asyncio.sleep(15)
+        if TELEGRAM_ENABLED:
+            print("⏳ Waiting 15 seconds before reconnecting...")
+            await asyncio.sleep(15)
 
 if __name__ == '__main__':
     try:
