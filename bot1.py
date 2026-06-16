@@ -98,6 +98,11 @@ SOURCE_CHANNELS = [
     "walkindrive",
     "freshershunt",
     "fresherearth",
+    "fresheroffcampus",
+    "offcampusjobs4u",
+    "offcampus_phodenge",
+    "jobxx",
+    "PrepTrain",
 ]
 
 TARGET_CHANNEL = "nextjobpost"
