@@ -377,7 +377,7 @@ def enrich_content_basic(html_content, title):
     # 5. Salary — covers Pay Matrix, Grade Pay, Level, CPC scales & standard formats
     salary = "As per notification"
     # Match: ₹1,23,456, Rs. 50000, INR 40000 (prefixed with word boundaries to avoid matching word suffixes like 'covers' or 'years')
-    m = re.search(r'(?:₹|\brs\.?|\binr)\s*(\d[\d,\.]+)(?:\s*(?:/-|per\s*month|pm|pa|p\.a\.?))?', text_clean, re.IGNORECASE)
+    m = re.search(r'(?:₹|\brs\.?|\binr)\s*(\d[\d,\.]+)\s*(?:per\s*month|pm|pa|p\.a\.?)\b', text_clean, re.IGNORECASE)
     if m:
         salary = f"Rs. {m.group(1).strip()}"
     else:
