@@ -265,42 +265,6 @@ def clean_private_job_html(html_content):
 #  LISTING EXTRACTORS — one per website
 # ═══════════════════════════════════════════════════════════════════════════
 
-def extract_remoteok_rss(limit=30):
-    """Fetches job listings from RemoteOK.com RSS feed (global remote jobs)."""
-    listings = []
-    seen = set()
-    rss_urls = [
-        "https://remoteok.com/remote-dev-jobs.rss",
-        "https://remoteok.com/remote-software-jobs.rss",
-        "https://remoteok.com/remote-jobs.rss",
-    ]
-    for rss_url in rss_urls:
-        try:
-            resp = requests.get(rss_url, headers=HEADERS, timeout=15)
-            if resp.status_code != 200:
-                logging.warning(f"RemoteOK RSS {resp.status_code}: {rss_url}")
-                continue
-            root = ET.fromstring(resp.content)
-            for item in root.findall(".//item"):
-                t_el = item.find("title")
-                l_el = item.find("link")
-                if t_el is None or l_el is None:
-                    continue
-                title = (t_el.text or "").strip()
-                link  = (l_el.text or "").strip()
-                if not title or not link or link in seen or len(title) < 8:
-                    continue
-                # Skip non-tech/irrelevant titles
-                if any(kw in title.lower() for kw in ["expression of interest", "life coach", "investment"]):
-                    continue
-                seen.add(link)
-                listings.append((title, link))
-                if len(listings) >= limit:
-                    return listings
-        except Exception as e:
-            logging.warning(f"RemoteOK RSS error: {e}")
-    return listings
-
 
 def extract_weworkremotely_rss(limit=30):
     """Fetches job listings from WeWorkRemotely RSS feeds."""
@@ -746,8 +710,8 @@ def run_scraper(name, fetch_fn, recent_jobs, limit=25, delay=1.5):
 def main():
     logging.info("=" * 50)
     logging.info("💼 NextJobPost — Private Jobs Scraper v2")
-    logging.info("   Sources: RemoteOK · WeWorkRemotely")
-    logging.info("            Freshersworld · Internshala · WorkAtAStartup")
+    logging.info("   Sources: WeWorkRemotely · Freshersworld")
+    logging.info("            Internshala · WorkAtAStartup")
     logging.info("=" * 50)
 
     get_auth_token()
@@ -756,10 +720,7 @@ def main():
     recent_jobs = fetch_recent_jobs()
     logging.info(f"   ✔ Preloaded {len(recent_jobs)} live jobs.")
 
-    # ── Source 1: RemoteOK (100 tech remote jobs via RSS)
-    run_scraper("RemoteOK", extract_remoteok_rss, recent_jobs, limit=25, delay=1.5)
-
-    # ── Source 2: WeWorkRemotely (software/dev remote jobs via RSS)
+    # ── Source 1: WeWorkRemotely (software/dev remote jobs via RSS)
     run_scraper("WeWorkRemotely", extract_weworkremotely_rss, recent_jobs, limit=20, delay=1.5)
 
     # ── Source 3: Freshersworld (Indian fresher IT jobs)
