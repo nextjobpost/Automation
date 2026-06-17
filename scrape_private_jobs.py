@@ -454,6 +454,121 @@ def extract_workatastartup_listings(limit=25):
     return listings
 
 
+def build_beautiful_private_job_desc(raw_title, company, location, job_type, experience, salary, education, batch, last_date, skills, resp_list, req_list, summary, detail_html, faqs):
+    # 1. Key Highlights Table
+    batch_tr = f"<tr><td><strong>Eligible Batches</strong></td><td>{batch}</td></tr>" if batch else ""
+    last_date_tr = f"<tr><td><strong>Last Date to Apply</strong></td><td>{last_date}</td></tr>" if last_date else ""
+    
+    table_html = f"""
+    <figure class="wp-block-table">
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Hiring Company</strong></td>
+            <td>{company}</td>
+          </tr>
+          <tr>
+            <td><strong>Job Title</strong></td>
+            <td>{raw_title}</td>
+          </tr>
+          <tr>
+            <td><strong>Location</strong></td>
+            <td>{location}</td>
+          </tr>
+          <tr>
+            <td><strong>Employment Type</strong></td>
+            <td>{job_type}</td>
+          </tr>
+          <tr>
+            <td><strong>Experience Required</strong></td>
+            <td>{experience}</td>
+          </tr>
+          <tr>
+            <td><strong>Salary / CTC</strong></td>
+            <td>{salary}</td>
+          </tr>
+          <tr>
+            <td><strong>Education Qualification</strong></td>
+            <td>{education}</td>
+          </tr>
+          {batch_tr}
+          {last_date_tr}
+        </tbody>
+      </table>
+    </figure>
+    """
+
+    # 2. Lists for Skills, Responsibilities, Requirements
+    skills_html = ""
+    if skills:
+        skills_items = "".join(f"<li>{s}</li>" for s in skills if s)
+        if skills_items:
+            skills_html = f"<h3>Key Skills Required</h3><ul>{skills_items}</ul>"
+
+    resp_html = ""
+    if resp_list:
+        resp_items = "".join(f"<li>{r}</li>" for r in resp_list if r)
+        if resp_items:
+            resp_html = f"<h3>Roles &amp; Responsibilities</h3><ul>{resp_items}</ul>"
+
+    req_html = ""
+    if req_list:
+        req_items = "".join(f"<li>{rq}</li>" for rq in req_list if rq)
+        if req_items:
+            req_html = f"<h3>Job Requirements &amp; Eligibility</h3><ul>{req_items}</ul>"
+
+    # 3. Standard Sections
+    about_company = f"{company} is a leading global technology and services organization known for delivering innovative solutions and cultivating a growth-oriented workforce."
+    why_join = "This role offers an exceptional opportunity to collaborate with industry professionals on impactful projects, accelerate your skill development, and build a rewarding long-term career."
+    how_to_apply = f"To apply for this role, click on the application link below to navigate to the official {company} careers page, fill out the application form with your details, upload your resume, and submit."
+    final_thoughts = "Make sure to apply as soon as possible before the application window closes. Share this opportunity with your friends who might be interested."
+
+    # 4. FAQs
+    faq_html = ""
+    if faqs:
+        faq_html = format_faq_html(faqs)
+
+    # 5. Cleaned Original Description
+    original_description_html = ""
+    if detail_html and len(detail_html.strip()) > 50:
+        original_description_html = f"""
+        <h3>Original Job Details / Description</h3>
+        <div class="original-description-box" style="border-left: 3px solid #ccc; padding-left: 15px; margin-top: 15px;">
+            {detail_html}
+        </div>
+        """
+
+    full_desc = f"""
+    <div>
+      <h2>Career Opportunity: {raw_title} at {company}</h2>
+      <p>{summary}</p>
+      
+      <h3>Key Highlights &amp; Job Details</h3>
+      {table_html}
+      
+      {skills_html}
+      {resp_html}
+      {req_html}
+      
+      <h3>About {company}</h3>
+      <p>{about_company}</p>
+      
+      <h3>Why You Should Join</h3>
+      <p>{why_join}</p>
+      
+      <h3>How to Apply</h3>
+      <p>{how_to_apply}</p>
+      
+      <h3>Final Thoughts</h3>
+      <p>{final_thoughts}</p>
+      
+      {original_description_html}
+      {faq_html}
+    </div>
+    """
+    return full_desc
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 #  CORE PROCESSOR — enriches and queues a single private job
 # ═══════════════════════════════════════════════════════════════════════════
@@ -519,8 +634,23 @@ def process_private_job(title, detail_url, site_name, recent_jobs):
                 continue
 
     # Build full description
-    faq_html = format_faq_html(faqs)
-    full_description_html = detail_html + faq_html
+    full_description_html = build_beautiful_private_job_desc(
+        raw_title=raw_title,
+        company=company,
+        location=location,
+        job_type=job_type,
+        experience=experience,
+        salary=salary,
+        education=education,
+        batch=batch,
+        last_date=last_date,
+        skills=skills,
+        resp_list=resp_list,
+        req_list=req_list,
+        summary=summary,
+        detail_html=detail_html,
+        faqs=faqs
+    )
 
     # Build slug
     slug_base = slugify(raw_title)
