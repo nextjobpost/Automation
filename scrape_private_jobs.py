@@ -250,10 +250,11 @@ def clean_private_job_html(html_content):
                 tag.decompose()
 
     main = (
-        soup.find("div", {"class": re.compile(r'job.?detail|job.?desc|job.?content|main.?content|job.?info', re.I)})
+        soup.find("div", {"class": re.compile(r'\bdescription\b|job.?detail|job.?desc|job.?content|main.?content|job.?info', re.I)})
         or soup.find("article")
         or soup.find("main")
         or soup.find("div", {"id": re.compile(r'content|main|job', re.I)})
+        or soup.body
         or soup
     )
 
