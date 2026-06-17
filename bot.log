@@ -7,3 +7,10 @@
 2026-06-14 19:53:16,919 - ERROR - CRITICAL: Invalid API_ID in .env file! Found: 'your_telegram_api_id'. Please replace it with your actual numeric Telegram API ID.
 2026-06-14 19:57:18,784 - ERROR - CRITICAL: Invalid API_ID in .env file! Found: 'your_telegram_api_id'. Please replace it with your actual numeric Telegram API ID.
 2026-06-16 02:19:42,647 - ERROR - CRITICAL: Invalid API_ID in .env file! Found: 'your_telegram_api_id'. Please replace it with your actual numeric Telegram API ID.
+2026-06-16 09:55:20,976 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-16 09:55:23,053 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-16 09:57:05,848 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-16 09:57:05,999 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-16 09:57:08,945 - INFO - 🕒 Scheduler started. Posting every 1800s (30 min).
+2026-06-16 09:57:09,201 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 35
