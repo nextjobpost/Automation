@@ -258,6 +258,24 @@ def clean_private_job_html(html_content):
         or soup
     )
 
+    # Beautify headings (e.g. <p><strong>Heading</strong></p> to <h3>Heading</h3>)
+    for p in list(main.find_all("p")):
+        if not p.contents:
+            continue
+        first_child = p.contents[0]
+        if first_child.name in ["strong", "b"]:
+            strong_text = first_child.get_text().strip()
+            if strong_text and len(strong_text) < 70:
+                # We create a new h3 element
+                h3 = soup.new_tag("h3")
+                h3.string = strong_text
+                p.insert_before(h3)
+                first_child.extract()
+                
+                # Remove leading <br> elements from the paragraph content
+                while p.contents and (p.contents[0].name == "br" or (isinstance(p.contents[0], str) and not p.contents[0].strip())):
+                    p.contents[0].extract()
+
     return str(main)
 
 
