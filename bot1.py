@@ -981,10 +981,9 @@ def is_valid_job(job):
             if is_guessed_forbidden:
                 guessed = None
         
-        if is_govt:
-            job["company"] = guessed or "Govt Department"
-        else:
-            job["company"] = guessed or "Top Company"
+        if not guessed:
+            return False, "Company name is not mentioned."
+        job["company"] = guessed
 
     # 4. Clean salary
     salary = job.get("salary")
@@ -1045,7 +1044,7 @@ def is_valid_job(job):
         val = job.get(key)
         if not val:
             if key == "applyLink": job[key] = "https://nextjobpost.in/"
-            elif key == "company": job[key] = "Govt Department" if is_govt else "Top Company"
+            elif key == "company": return False, "Company name is not mentioned."
             elif key == "eligibility": job[key] = "As per notification"
             elif key == "vacancies": job[key] = "Various Vacancies"
             elif key == "location": job[key] = "Pan India"
@@ -1062,7 +1061,7 @@ def is_valid_job(job):
         if any(term in val_lower for term in forbidden_terms):
             for term in forbidden_terms:
                 if term in val_lower:
-                    if key == "company": job[key] = "Govt Department" if is_govt else "Top Company"
+                    if key == "company": return False, "Company name is not mentioned."
                     elif key == "eligibility": job[key] = "As per notification"
                     elif key == "vacancies": job[key] = "Various Vacancies"
                     elif key == "location": job[key] = "Pan India"
