@@ -1,0 +1,647 @@
+import os
+import re
+import json
+import sys
+import requests
+import hashlib
+import time
+import logging
+from bs4 import BeautifulSoup
+from datetime import datetime, date
+from urllib.parse import urlparse, urljoin
+from slugify import slugify
+import xml.etree.ElementTree as ET
+
+# Force UTF-8 encoding for stdout/stderr on Windows
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+if sys.stderr.encoding != 'utf-8':
+    try:
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+
+# ─── Logging ───────────────────────────────────────────────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("scraper.log", encoding="utf-8"),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+
+# ─── Import shared helpers from govt scraper ───────────────────────────────
+try:
+    from scrape_govt_jobs import (
+        API_KEY,
+        API_TOKEN,
+        API_URL,
+        ADMIN_URL,
+        client_gemini,
+        format_faq_html,
+        fetch_recent_jobs,
+        find_existing_job,
+        get_auth_token,
+    )
+except ImportError as e:
+    logging.error(f"Failed to import helpers from scrape_govt_jobs.py: {e}")
+    sys.exit(1)
+
+try:
+    from google.genai import types
+except ImportError:
+    types = None
+
+import database
+
+# ─── HTTP Headers ──────────────────────────────────────────────────────────
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+}
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  AI ENRICHMENT — Private Job Specific
+# ═══════════════════════════════════════════════════════════════════════════
+
+def enrich_private_job_with_ai(html_content, title):
+    """Uses Gemini AI to extract structured private job fields from a detail page."""
+    if not client_gemini:
+        return None
+
+    soup = BeautifulSoup(html_content, "html.parser")
+    for tag in soup(["script", "style", "noscript"]):
+        tag.decompose()
+    text_content = soup.get_text(separator="\n").strip()
+    text_content = re.sub(r'\n{3,}', '\n\n', text_content)[:6000]
+
+    prompt = f"""
+Analyze the following private job listing for "{title}".
+Return ONLY a valid JSON object — no markdown, no code fences.
+
+JSON schema:
+{{
+  "company": "Hiring company name (e.g. TCS, Infosys). Extract from context.",
+  "location": "Job location (e.g. Bangalore, Mumbai, Remote, Pan India)",
+  "experience": "Experience required (e.g. Fresher, 0-2 Years, 2-5 Years)",
+  "salary": "Salary/CTC (e.g. 3.5 LPA, Rs. 25000/month). Do NOT include application/registration fees.",
+  "education": "Required educational qualification (e.g. B.Tech/BE, Any Graduate, MBA)",
+  "batch": "Eligible graduation years (e.g. 2023/2024/2025), or empty string if not mentioned",
+  "jobType": "Full-Time / Part-Time / Contract / Internship / Remote",
+  "skills": ["skill1", "skill2", "skill3"],
+  "responsibilities": ["key responsibility 1", "key responsibility 2", "key responsibility 3"],
+  "requirements": ["requirement 1", "requirement 2"],
+  "lastDate": "Application deadline in YYYY-MM-DD format, or empty string",
+  "summary": "2-3 sentence compelling summary of the role and opportunity for Indian job seekers",
+  "seoTitle": "SEO job title (60 chars max)",
+  "seoDescription": "Meta description for search engines (155 chars max)",
+  "faqs": [
+    {{"q": "Relevant question about this job", "a": "Answer from the listing"}}
+  ]
+}}
+
+Job Listing:
+{text_content}
+"""
+
+    candidate_models = [
+        "gemini-2.5-flash-lite-preview-06-17",
+        "gemini-2.5-flash",
+        "gemini-2.0-flash",
+    ]
+
+    last_error = None
+    for model in candidate_models:
+        try:
+            logging.info(f"Enriching with Gemini ({model})...")
+            if types:
+                response = client_gemini.models.generate_content(
+                    model=model,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(response_mime_type="application/json"),
+                )
+            else:
+                response = client_gemini.models.generate_content(model=model, contents=prompt)
+            clean_json = response.text.strip()
+            match = re.search(r'\{.*\}', clean_json, re.DOTALL)
+            if match:
+                clean_json = match.group(0)
+            return json.loads(clean_json)
+        except Exception as e:
+            if "RESOURCE_EXHAUSTED" in str(e) or "429" in str(e):
+                logging.warning(f"Model {model} quota exhausted. Waiting 3s...")
+                time.sleep(3)
+            else:
+                logging.warning(f"Gemini {model} failed: {e}")
+            last_error = e
+
+    logging.error(f"All Gemini models failed. Last: {last_error}")
+    return None
+
+
+def enrich_private_job_basic(html_content, title):
+    """Regex/BS4 fallback enrichment for private jobs when AI is unavailable."""
+    soup = BeautifulSoup(html_content, "html.parser")
+    text = re.sub(r'\s+', ' ', soup.get_text(separator=" ")).strip()
+
+    # Company: try to extract from title delimiters
+    company = "Top Company"
+    for sep in [" at ", " @ ", " - ", " | "]:
+        if sep.lower() in title.lower():
+            parts = title.split(sep)
+            candidate = parts[-1].strip()
+            if 3 < len(candidate) < 60:
+                company = candidate
+                break
+
+    # Location
+    location = "Pan India"
+    loc_m = re.search(
+        r'\b(bangalore|bengaluru|mumbai|delhi|chennai|hyderabad|pune|kolkata|'
+        r'noida|gurugram|gurgaon|ahmedabad|remote|work from home)\b',
+        text, re.IGNORECASE
+    )
+    if loc_m:
+        location = loc_m.group(0).title()
+
+    # Experience
+    experience = "Fresher / 0-2 Years"
+    exp_m = re.search(r'(\d+)\s*[-–to]+\s*(\d+)\s*years?\s*(of\s*)?(experience|exp)?', text, re.IGNORECASE)
+    if exp_m:
+        experience = f"{exp_m.group(1)}-{exp_m.group(2)} Years"
+
+    # Salary — skip if looks like a fee
+    salary = "Best in Industry"
+    sal_m = re.search(
+        r'(?:salary|ctc|package|stipend|compensation)[^0-9\n]{0,30}'
+        r'(?:rs\.?|inr|₹)?\s*([\d,.]+)\s*(?:lpa|lakh|k/month|per month|/-)?',
+        text, re.IGNORECASE
+    )
+    if sal_m:
+        salary = f"{sal_m.group(1).strip()} LPA"
+
+    # Education
+    education = "Any Graduate"
+    for pat in [r'\bB\.?Tech\b', r'\bBE\b', r'\bMBA\b', r'\bBCA\b', r'\bMCA\b',
+                r'\bB\.?Sc\b', r'\bM\.?Tech\b', r'\bAny Graduate\b']:
+        m = re.search(pat, text, re.IGNORECASE)
+        if m:
+            education = m.group(0)
+            break
+
+    return {
+        "company":         company,
+        "location":        location,
+        "experience":      experience,
+        "salary":          salary,
+        "education":       education,
+        "batch":           "",
+        "jobType":         "Full-Time",
+        "skills":          [],
+        "responsibilities":[],
+        "requirements":    [],
+        "lastDate":        "",
+        "summary":         title,
+        "seoTitle":        title[:60],
+        "seoDescription":  f"Apply for {title}. Great opportunity at {company} for freshers and experienced candidates.",
+        "faqs":            [],
+    }
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  HTML CLEANER — Private job detail pages
+# ═══════════════════════════════════════════════════════════════════════════
+
+def clean_private_job_html(html_content):
+    """Strips ads, nav, footers, and noise from a private job detail page."""
+    if not html_content:
+        return ""
+    soup = BeautifulSoup(html_content, "html.parser")
+
+    for tag in soup(["script", "style", "noscript", "iframe", "ins", "aside",
+                     "header", "footer", "nav"]):
+        tag.decompose()
+
+    for tag in list(soup.find_all(True)):
+        if not tag.parent:
+            continue
+        class_str = " ".join(tag.get("class", [])).lower()
+        id_str    = (tag.get("id") or "").lower()
+        if any(kw in class_str or kw in id_str for kw in [
+            "advertisement", "adsbygoogle", "social-share", "share-box",
+            "related-jobs", "newsletter", "popup", "cookie", "sidebar", "banner",
+            "follow-us", "subscribe"
+        ]):
+            tag.decompose()
+            continue
+        if tag.name == "a":
+            href = tag.get("href", "").lower()
+            if any(d in href for d in ["whatsapp.com", "t.me", "telegram", "instagram.com",
+                                        "facebook.com", "twitter.com", "youtube.com"]):
+                tag.decompose()
+
+    main = (
+        soup.find("div", {"class": re.compile(r'job.?detail|job.?desc|job.?content|main.?content|job.?info', re.I)})
+        or soup.find("article")
+        or soup.find("main")
+        or soup.find("div", {"id": re.compile(r'content|main|job', re.I)})
+        or soup
+    )
+
+    return str(main)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  LISTING EXTRACTORS — one per website
+# ═══════════════════════════════════════════════════════════════════════════
+
+def extract_remoteok_rss(limit=30):
+    """Fetches job listings from RemoteOK.com RSS feed (global remote jobs)."""
+    listings = []
+    seen = set()
+    rss_urls = [
+        "https://remoteok.com/remote-dev-jobs.rss",
+        "https://remoteok.com/remote-software-jobs.rss",
+        "https://remoteok.com/remote-jobs.rss",
+    ]
+    for rss_url in rss_urls:
+        try:
+            resp = requests.get(rss_url, headers=HEADERS, timeout=15)
+            if resp.status_code != 200:
+                logging.warning(f"RemoteOK RSS {resp.status_code}: {rss_url}")
+                continue
+            root = ET.fromstring(resp.content)
+            for item in root.findall(".//item"):
+                t_el = item.find("title")
+                l_el = item.find("link")
+                if t_el is None or l_el is None:
+                    continue
+                title = (t_el.text or "").strip()
+                link  = (l_el.text or "").strip()
+                if not title or not link or link in seen or len(title) < 8:
+                    continue
+                # Skip non-tech/irrelevant titles
+                if any(kw in title.lower() for kw in ["expression of interest", "life coach", "investment"]):
+                    continue
+                seen.add(link)
+                listings.append((title, link))
+                if len(listings) >= limit:
+                    return listings
+        except Exception as e:
+            logging.warning(f"RemoteOK RSS error: {e}")
+    return listings
+
+
+def extract_weworkremotely_rss(limit=30):
+    """Fetches job listings from WeWorkRemotely RSS feeds."""
+    listings = []
+    seen = set()
+    rss_urls = [
+        "https://weworkremotely.com/categories/remote-programming-jobs.rss",
+        "https://weworkremotely.com/categories/remote-full-stack-programming-jobs.rss",
+        "https://weworkremotely.com/categories/remote-back-end-programming-jobs.rss",
+    ]
+    for rss_url in rss_urls:
+        try:
+            resp = requests.get(rss_url, headers=HEADERS, timeout=15)
+            if resp.status_code != 200:
+                logging.warning(f"WeWorkRemotely RSS {resp.status_code}: {rss_url}")
+                continue
+            root = ET.fromstring(resp.content)
+            for item in root.findall(".//item"):
+                t_el = item.find("title")
+                l_el = item.find("link")
+                if t_el is None or l_el is None:
+                    continue
+                title = (t_el.text or "").strip()
+                link  = (l_el.text or "").strip()
+                # WeWorkRemotely title format: "Company: Job Title - Location"
+                # Clean it: extract just the job title part
+                if ": " in title:
+                    title = title.split(": ", 1)[1].strip()
+                if not title or not link or link in seen or len(title) < 5:
+                    continue
+                seen.add(link)
+                listings.append((title, link))
+                if len(listings) >= limit:
+                    return listings
+        except Exception as e:
+            logging.warning(f"WeWorkRemotely RSS error: {e}")
+    return listings
+
+
+def extract_freshersworld_listings(limit=30):
+    """Extracts fresher job listings from Freshersworld.com."""
+    listings = []
+    seen = set()
+    search_urls = [
+        "https://www.freshersworld.com/jobs/jobsearch/it-software-jobs-for-freshers-0-3-years-experience",
+        "https://www.freshersworld.com/jobs/jobsearch/engineering-jobs-for-freshers",
+        "https://www.freshersworld.com/jobs/jobsearch/bca-mca-bsc-jobs-for-freshers",
+    ]
+    for url in search_urls:
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=15)
+            if resp.status_code != 200:
+                logging.warning(f"Freshersworld {resp.status_code}: {url}")
+                continue
+            soup = BeautifulSoup(resp.content, "html.parser")
+
+            # "View & Apply" buttons link directly to job detail pages
+            for a in soup.find_all("a", href=True):
+                href = a.get("href", "")
+                full = ("https://www.freshersworld.com" + href) if href.startswith("/") else href
+
+                # Match: freshersworld.com/jobs/<title-slug>-<5+ digit id>
+                if re.search(r'freshersworld\.com/jobs/[a-z0-9\-]+-\d{5,}/?', full) and full not in seen:
+                    # Find nearest heading for the real job title
+                    parent = a.find_parent(["div", "li", "article", "section"])
+                    title = ""
+                    if parent:
+                        h = parent.find(["h2", "h3", "h4", "strong", "b"])
+                        title = h.get_text(strip=True) if h else ""
+                    if not title or len(title) < 5:
+                        # Derive title from URL slug
+                        slug_part = re.search(r'/jobs/([a-z0-9\-]+)-\d{5,}', full)
+                        title = slug_part.group(1).replace("-", " ").title() if slug_part else "Fresher Job"
+
+                    seen.add(full)
+                    listings.append((title, full))
+                    if len(listings) >= limit:
+                        return listings
+        except Exception as e:
+            logging.warning(f"Freshersworld fetch error: {e}")
+    return listings
+
+
+def extract_internshala_listings(limit=30):
+    """Extracts job listings from Internshala.com — India's top fresher job portal."""
+    listings = []
+    seen = set()
+    search_urls = [
+        "https://internshala.com/jobs/fresher-jobs/",
+        "https://internshala.com/jobs/computer-science-jobs/",
+        "https://internshala.com/jobs/web-development-jobs/",
+    ]
+    for url in search_urls:
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=15)
+            if resp.status_code != 200:
+                logging.warning(f"Internshala {resp.status_code}: {url}")
+                continue
+            soup = BeautifulSoup(resp.content, "html.parser")
+
+            # Internshala job links: /jobs/<slug>-<id> OR /job-detail/<id>
+            for a in soup.find_all("a", href=True):
+                href  = a.get("href", "").strip()
+                title = a.get_text(strip=True)
+                full  = urljoin("https://internshala.com", href)
+
+                # Match patterns like /jobs/some-title-12345678 or /job-detail/12345
+                is_job = (
+                    re.search(r'internshala\.com/jobs/[a-z0-9\-]+-\d{5,}/?$', full, re.I)
+                    or re.search(r'internshala\.com/job-detail/\d+', full, re.I)
+                )
+                if is_job and full not in seen and len(title) >= 5:
+                    # Derive title from URL if anchor text is unhelpful
+                    if title.lower() in ["view", "apply", "view & apply", ""]:
+                        slug = re.search(r'/jobs/([a-z0-9\-]+)-\d+/?$', full, re.I)
+                        title = slug.group(1).replace("-", " ").title() if slug else title
+                    seen.add(full)
+                    listings.append((title, full))
+                    if len(listings) >= limit:
+                        return listings
+        except Exception as e:
+            logging.warning(f"Internshala fetch error: {e}")
+    return listings
+
+
+def extract_workatastartup_listings(limit=25):
+    """Extracts job listings from WorkAtAStartup.in (AngelList India ecosystem)."""
+    listings = []
+    seen = set()
+    try:
+        resp = requests.get(
+            "https://www.workatastartup.com/jobs?role=engineering&stage=all&salary=0",
+            headers=HEADERS, timeout=15
+        )
+        if resp.status_code != 200:
+            logging.warning(f"WorkAtAStartup {resp.status_code}")
+            return listings
+        soup = BeautifulSoup(resp.content, "html.parser")
+        for a in soup.find_all("a", href=True):
+            href  = a.get("href", "").strip()
+            title = a.get_text(strip=True)
+            full  = urljoin("https://www.workatastartup.com", href)
+            # Job pages: /jobs/<id>
+            if re.search(r'workatastartup\.com/jobs/\d+', full) and full not in seen and len(title) >= 8:
+                seen.add(full)
+                listings.append((title, full))
+                if len(listings) >= limit:
+                    break
+    except Exception as e:
+        logging.warning(f"WorkAtAStartup fetch error: {e}")
+    return listings
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  CORE PROCESSOR — enriches and queues a single private job
+# ═══════════════════════════════════════════════════════════════════════════
+
+def process_private_job(title, detail_url, site_name, recent_jobs):
+    """Fetches, enriches, deduplicates and queues a single private job."""
+    raw_title = title.replace("\u2013", "-").replace("\u2014", "-").strip()
+    job_hash  = hashlib.md5(detail_url.encode()).hexdigest()
+
+    if database.is_job_seen(job_hash):
+        return False
+
+    logging.info(f"  🚀 [{site_name}] {raw_title[:70]}")
+
+    # Fetch detail page
+    try:
+        resp = requests.get(detail_url, headers=HEADERS, timeout=20)
+        if resp.status_code != 200:
+            logging.warning(f"  ⚠️ HTTP {resp.status_code}: {detail_url}")
+            return False
+    except Exception as e:
+        logging.warning(f"  ⚠️ Fetch error: {e}")
+        return False
+
+    # Clean HTML
+    detail_html = clean_private_job_html(resp.text)
+    if not detail_html or len(detail_html) < 150:
+        logging.warning("  ⚠️ Page content too short. Skipping.")
+        return False
+
+    # AI enrichment (with basic fallback)
+    ai_data = enrich_private_job_with_ai(detail_html, raw_title)
+    if not ai_data:
+        logging.warning("  ⚠️ AI failed. Using basic extractor...")
+        ai_data = enrich_private_job_basic(detail_html, raw_title)
+
+    company     = ai_data.get("company",          "Top Company")
+    location    = ai_data.get("location",          "Pan India")
+    experience  = ai_data.get("experience",        "Fresher / 0-2 Years")
+    salary      = ai_data.get("salary",            "Best in Industry")
+    education   = ai_data.get("education",         "Any Graduate")
+    batch       = ai_data.get("batch",             "")
+    job_type    = ai_data.get("jobType",           "Full-Time")
+    skills      = ai_data.get("skills",            [])
+    resp_list   = ai_data.get("responsibilities",  [])
+    req_list    = ai_data.get("requirements",      [])
+    last_date   = ai_data.get("lastDate",          "")
+    summary     = ai_data.get("summary",           raw_title)
+    seo_title   = ai_data.get("seoTitle",          raw_title[:60])
+    seo_desc    = ai_data.get("seoDescription",    "")
+    faqs        = ai_data.get("faqs",              [])
+
+    # Skip expired listings
+    if last_date:
+        for fmt in ('%Y-%m-%d', '%d-%m-%Y', '%Y/%m/%d'):
+            try:
+                if datetime.strptime(last_date, fmt).date() < date.today():
+                    logging.info(f"  ⚠️ Expired ({last_date}). Skipping.")
+                    database.mark_job_seen(job_hash)
+                    return False
+                break
+            except ValueError:
+                continue
+
+    # Build full description
+    faq_html = format_faq_html(faqs)
+    full_description_html = detail_html + faq_html
+
+    # Build slug
+    slug_base = slugify(raw_title)
+    url_hash  = hashlib.md5(detail_url.encode()).hexdigest()[:5]
+    slug      = f"{slug_base}-{url_hash}"
+
+    # Build private job payload
+    queue_job = {
+        "title":            raw_title,
+        "slug":             slug,
+        "company":          company,
+        "location":         location,
+        "type":             job_type,
+        "experience":       experience,
+        "salary":           salary,
+        "education":        education,
+        "batch":            batch,
+        "skills":           skills if isinstance(skills, list) else [],
+        "responsibilities": resp_list if isinstance(resp_list, list) else [],
+        "requirements":     req_list if isinstance(req_list, list) else [],
+        "applyLink":        detail_url,
+        "lastDate":         last_date if last_date else None,
+        "jobDescription":   full_description_html,
+        "description":      summary,
+        "shortSummary":     summary,
+        "metaTitle":        seo_title,
+        "metaDescription":  seo_desc,
+        "isGovernment":     False,
+        "postType":         "Private Job",
+        "sourceWebsite":    urlparse(detail_url).netloc,
+        "sourceUrl":        detail_url,
+        "isActive":         True,
+        "whatsapp":         "https://chat.whatsapp.com/LVpuUJluTpUEdIc4daAemQ",
+        "telegram":         "https://t.me/nextjobpost",
+    }
+
+    # Deduplication
+    semantic_hash = hashlib.md5(
+        f"{raw_title.lower()}::{company.lower()}".encode()
+    ).hexdigest()
+
+    existing = find_existing_job(detail_url, raw_title, company, recent_jobs)
+    if existing:
+        logging.info(f"  ⚠️ Already on website: '{raw_title}'. Skipping.")
+        database.mark_job_seen(job_hash)
+        database.mark_job_seen(semantic_hash)
+        return False
+
+    if database.is_job_seen(semantic_hash):
+        logging.info(f"  ⚠️ Semantic duplicate: '{raw_title}'. Skipping.")
+        database.mark_job_seen(job_hash)
+        return False
+
+    # Queue
+    try:
+        if database.add_job_to_queue(queue_job, job_hash, image_path="", is_government=False):
+            logging.info(f"  📥 Queued private job from {site_name}: {raw_title}")
+            database.mark_job_seen(job_hash)
+            database.mark_job_seen(semantic_hash)
+            return True
+        else:
+            logging.warning(f"  ⚠️ Already in queue or failed to add: {raw_title}")
+    except Exception as e:
+        logging.error(f"  ❌ SQLite error: {e}")
+
+    return False
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  SITE RUNNERS
+# ═══════════════════════════════════════════════════════════════════════════
+
+def run_scraper(name, fetch_fn, recent_jobs, limit=25, delay=1.5):
+    """Generic runner: fetches listings from fetch_fn and processes each one."""
+    logging.info(f"\n{'='*48}")
+    logging.info(f"🌐 Scraping: {name}")
+    logging.info(f"{'='*48}")
+    listings = fetch_fn(limit)
+    logging.info(f"Found {len(listings)} listings from {name}.")
+    count = 0
+    for title, url in listings:
+        if process_private_job(title, url, name, recent_jobs):
+            count += 1
+        time.sleep(delay)
+    logging.info(f"✅ {name}: Queued {count} new private jobs.")
+    return count
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  MAIN
+# ═══════════════════════════════════════════════════════════════════════════
+
+def main():
+    logging.info("=" * 50)
+    logging.info("💼 NextJobPost — Private Jobs Scraper v2")
+    logging.info("   Sources: RemoteOK · WeWorkRemotely")
+    logging.info("            Freshersworld · Internshala · WorkAtAStartup")
+    logging.info("=" * 50)
+
+    get_auth_token()
+
+    logging.info("\n📥 Preloading recent jobs from backend for deduplication...")
+    recent_jobs = fetch_recent_jobs()
+    logging.info(f"   ✔ Preloaded {len(recent_jobs)} live jobs.")
+
+    # ── Source 1: RemoteOK (100 tech remote jobs via RSS)
+    run_scraper("RemoteOK", extract_remoteok_rss, recent_jobs, limit=25, delay=1.5)
+
+    # ── Source 2: WeWorkRemotely (software/dev remote jobs via RSS)
+    run_scraper("WeWorkRemotely", extract_weworkremotely_rss, recent_jobs, limit=20, delay=1.5)
+
+    # ── Source 3: Freshersworld (Indian fresher IT jobs)
+    run_scraper("Freshersworld", extract_freshersworld_listings, recent_jobs, limit=25, delay=2.0)
+
+    # ── Source 4: Internshala (India's top fresher job portal)
+    run_scraper("Internshala", extract_internshala_listings, recent_jobs, limit=20, delay=2.0)
+
+    # ── Source 5: WorkAtAStartup (startup ecosystem jobs India)
+    run_scraper("WorkAtAStartup", extract_workatastartup_listings, recent_jobs, limit=15, delay=1.5)
+
+    logging.info("\n✅ All private job sources successfully processed.")
+
+
+if __name__ == "__main__":
+    main()

@@ -2263,11 +2263,22 @@ async def process_and_post_job(job_data):
                 was_posted = True
 
         if job.get("postToSocials", True) and not is_duplicate:
-            # 3. LinkedIn Post - Always post (no daily limit)
+            # 3. LinkedIn Post - Enforce 5/day limit for Government Jobs
             linkedin_url = None
             is_govt = job.get("isGovernment", False)
+            should_post_to_linkedin = False
 
-            if True:  # Always post to LinkedIn
+            if not is_govt:
+                should_post_to_linkedin = True
+            else:
+                # Check 24-hour limit for government jobs
+                govt_posts_count = database.count_linkedin_govt_posts_last_24h()
+                if govt_posts_count < 5:
+                    should_post_to_linkedin = True
+                else:
+                    print(f"ℹ️ Skipping LinkedIn: Reached daily limit of 5 government jobs (Posted: {govt_posts_count}/5).")
+
+            if should_post_to_linkedin:
                 if TEST_MODE:
                     print("🧪 [TEST_MODE] Mocking LinkedIn Post...")
                     linkedin_url = f"https://www.linkedin.com/feed/update/urn:li:activity:mock_{h}/"
@@ -2276,6 +2287,8 @@ async def process_and_post_job(job_data):
                     
                 if linkedin_url:
                     print(f"✔ LinkedIn Posted ({'Govt' if is_govt else 'Private'} Job).")
+                    if is_govt:
+                        database.log_linkedin_govt_post()
                 else:
                     print("❌ LinkedIn Posting failed.")
 
@@ -2506,7 +2519,10 @@ async def run_scraper_periodically():
     await asyncio.sleep(15)
     while True:
         print("\n🔄 [SCRAPER] Running government jobs scrapers in the background...")
-        scrapers = ["scrape_govt_jobs.py", "scrape_additional_sources.py"]
+        scrapers = [
+            "scrape_govt_jobs.py",
+            "scrape_additional_sources.py",
+        ]
         for scraper_file in scrapers:
             try:
                 # We run it using the same Python executable to preserve dependencies

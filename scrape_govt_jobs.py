@@ -914,7 +914,15 @@ def main():
     for category_path, post_type in categories:
         scrape_category(category_path, post_type, recent_jobs)
 
-    print("\n✅ All scraper sources successfully processed.")
+    print("\n✅ All government scraper sources successfully processed.")
+
+    # ── Run Private Jobs Scraper ──
+    try:
+        print("\n💼 Running private jobs scraper...")
+        import scrape_private_jobs
+        scrape_private_jobs.main()
+    except Exception as e:
+        print(f"❌ Failed to run private jobs scraper: {e}")
 
 
 if __name__ == "__main__":
