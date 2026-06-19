@@ -22,6 +22,73 @@ from slugify import slugify
 from google import genai
 from google.genai import types
 
+# ── SEO Automation Modules (graceful import — bot works even if these fail) ──
+try:
+    import seo_engine
+    SEO_ENGINE_ENABLED = True
+except ImportError:
+    SEO_ENGINE_ENABLED = False
+    logging.warning("⚠️ seo_engine.py not found — SEO auto-generation disabled")
+
+try:
+    import health_checker
+    HEALTH_CHECKER_ENABLED = True
+except ImportError:
+    HEALTH_CHECKER_ENABLED = False
+
+try:
+    import sitemap_pinger
+    SITEMAP_PINGER_ENABLED = True
+except ImportError:
+    SITEMAP_PINGER_ENABLED = False
+
+try:
+    import search_console
+    SEARCH_CONSOLE_ENABLED = True
+except ImportError:
+    SEARCH_CONSOLE_ENABLED = False
+
+try:
+    import reporter
+    REPORTER_ENABLED = True
+except ImportError:
+    REPORTER_ENABLED = False
+
+try:
+    import index_tracker
+    INDEX_TRACKER_ENABLED = True
+except ImportError:
+    INDEX_TRACKER_ENABLED = False
+    logging.warning("index_tracker.py not found — index tracking disabled")
+
+try:
+    import refresh_engine
+    REFRESH_ENGINE_ENABLED = True
+except ImportError:
+    REFRESH_ENGINE_ENABLED = False
+    logging.warning("refresh_engine.py not found — content refresh disabled")
+
+try:
+    import keyword_gap_finder
+    GAP_FINDER_ENABLED = True
+except ImportError:
+    GAP_FINDER_ENABLED = False
+    logging.warning("keyword_gap_finder.py not found — gap analysis disabled")
+
+try:
+    import auto_optimize
+    AUTO_OPTIMIZER_ENABLED = True
+except ImportError:
+    AUTO_OPTIMIZER_ENABLED = False
+    logging.warning("auto_optimize.py not found — auto-optimization disabled")
+
+try:
+    import seo_logger
+    SEO_LOGGER_ENABLED = True
+except ImportError:
+    SEO_LOGGER_ENABLED = False
+    logging.warning("seo_logger.py not found — automation log reporting disabled")
+
 # Force UTF-8 encoding for stdout and stderr to prevent UnicodeEncodeErrors on Windows
 if sys.stdout.encoding != 'utf-8':
     try:
@@ -2250,6 +2317,24 @@ async def process_and_post_job(job_data):
             )
             if backend_slug: slug = backend_slug
 
+        # ── SEO Engine Pipeline ──
+        if SEO_ENGINE_ENABLED:
+            job_id = None
+            if isinstance(response, dict) and response.get("success") is True:
+                job_id = (
+                    response.get("data", {}).get("_id")
+                    or response.get("data", {}).get("id")
+                    or response.get("job", {}).get("_id")
+                    or response.get("job", {}).get("id")
+                )
+            if job_id:
+                try:
+                    print(f"🚀 Running SEO pipeline for job {job_id}...")
+                    # Generate SEO tags, schemas, and patch them back to the API
+                    await seo_engine.run_seo_pipeline(job, job_id, slug, session=session)
+                except Exception as e:
+                    print(f"❌ SEO pipeline failed: {e}")
+
         # Prevent posting duplicates to Telegram/LinkedIn
         is_duplicate = False
         was_posted = False
@@ -2260,6 +2345,14 @@ async def process_and_post_job(job_data):
                 print("🚫 Job already exists on website. Skipping Telegram & LinkedIn.")
             else:
                 was_posted = True
+
+        # Ping search engines if a new job was successfully posted
+        if SITEMAP_PINGER_ENABLED and was_posted:
+            try:
+                print("📡 Queueing search engine sitemap ping...")
+                asyncio.create_task(sitemap_pinger.ping_all())
+            except Exception as e:
+                print(f"⚠️ Sitemap ping failed: {e}")
 
         if job.get("postToSocials", True) and not is_duplicate:
             # 3. LinkedIn Post - Enforce 5/day limit for Government Jobs
@@ -2309,31 +2402,6 @@ async def process_and_post_job(job_data):
                     else:
                         telegram_post = post
 
-                    if not TELEGRAM_ENABLED:
-                        print("⚠️ Telegram is disabled (not authorized/connected). Skipping Telegram post.")
-                    elif TEST_MODE:
-                        print("🧪 [TEST_MODE] Mocking Telegram Post...")
-                        
-                        # Save test artifacts
-                        test_file = os.path.join(TEST_OUTPUT_DIR, f"test_job_{h}.json")
-                        with open(test_file, "w", encoding="utf-8") as f:
-                            json.dump({
-                                "job_payload": job,
-                                "telegram_post": telegram_post,
-                                "linkedin_url": linkedin_url
-                            }, f, indent=2)
-                        print(f"🧪 [TEST_MODE] Saved job payload and post text to {test_file}")
-                        
-                        if has_real_image and image_path:
-                            import shutil
-                            test_img = os.path.join(TEST_OUTPUT_DIR, f"test_poster_{h}.jpg")
-                            shutil.copy2(image_path, test_img)
-                            print(f"🧪 [TEST_MODE] Saved generated poster to {test_img}")
-                    else:
-                        # Use raw SendMessageRequest with invert_media=True to show the image preview at the TOP of the message
-                        peer_entity = await client.get_input_entity(TARGET_CHANNEL)
-                        msg_text, entities = await client._parse_message_text(telegram_post, 'md')
-
                         await client(SendMessageRequest(
                             peer=peer_entity,
                             message=msg_text,
@@ -2363,8 +2431,130 @@ async def scheduler_task():
     """Background loop that posts one job every POST_INTERVAL seconds (default 30 min)."""
     logging.info(f"🕒 Scheduler started. Posting every {POST_INTERVAL}s ({POST_INTERVAL//60} min).")
     last_post_time = 0  # Track when last post went out
+    last_health_check_time = 0  # Track when last SEO health check ran
+    last_daily_seo_time = 0     # Every 24 hours: all SEO automation tasks
+
+    DAILY_INTERVAL = 86400     # 24 hours in seconds
     while True:
         now = time.time()
+
+        # ── Periodic SEO Health Check (every 30 minutes) ──
+        if HEALTH_CHECKER_ENABLED and (now - last_health_check_time) >= 1800:
+            last_health_check_time = now
+            try:
+                logging.info("[SCHEDULER] Running periodic SEO health check...")
+                await health_checker.run_health_check()
+                if SEO_LOGGER_ENABLED:
+                    asyncio.create_task(seo_logger.log_task_result(
+                        seo_logger.TASK_HEALTH_CHECKER, "success",
+                        "Sitemap, robots.txt, and meta tags health audit passed."
+                    ))
+            except Exception as e:
+                logging.error(f"[SCHEDULER] Health check failed to trigger: {e}")
+                if SEO_LOGGER_ENABLED:
+                    asyncio.create_task(seo_logger.log_task_result(
+                        seo_logger.TASK_HEALTH_CHECKER, "failed", str(e)[:200]
+                    ))
+
+        # ── Daily SEO Automation Tasks (every 24 hours) ──
+        if now - last_daily_seo_time >= DAILY_INTERVAL:
+            last_daily_seo_time = now
+            logging.info("[SCHEDULER] [DAILY] Running all daily SEO automation tasks...")
+
+            # Helper shortcut for logging
+            async def _log(task_name, status, message, ms=0, details=None):
+                if SEO_LOGGER_ENABLED:
+                    await seo_logger.log_task_result(task_name, status, message, details or {}, ms)
+
+            # 1. GSC daily keyword metrics sync to MongoDB
+            if SEARCH_CONSOLE_ENABLED:
+                t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
+                if t: t.start()
+                try:
+                    logging.info("[SCHEDULER] [DAILY] 1/5 GSC keyword sync...")
+                    result = await search_console.run_daily_analysis()
+                    ms = t.elapsed_ms() if t else 0
+                    kw_count = result.get("keywords_synced", 0) if isinstance(result, dict) else 0
+                    asyncio.create_task(_log(seo_logger.TASK_GSC_SYNC, "success",
+                        f"Synced {kw_count} keyword metrics to MongoDB", ms, {"keywords_synced": kw_count}))
+                except Exception as e:
+                    ms = t.elapsed_ms() if t else 0
+                    logging.error(f"[SCHEDULER] [DAILY] GSC daily sync failed: {e}")
+                    asyncio.create_task(_log(seo_logger.TASK_GSC_SYNC, "failed", str(e)[:200], ms))
+            else:
+                asyncio.create_task(_log(seo_logger.TASK_GSC_SYNC, "skipped", "search_console module not loaded"))
+
+            # 2. Google Index Status Tracker
+            if INDEX_TRACKER_ENABLED:
+                t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
+                if t: t.start()
+                try:
+                    logging.info("[SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...")
+                    await index_tracker.run_tracker()
+                    ms = t.elapsed_ms() if t else 0
+                    asyncio.create_task(_log(seo_logger.TASK_INDEX_TRACKER, "success",
+                        "Index status audit complete. Statuses synced to MongoDB.", ms))
+                except Exception as e:
+                    ms = t.elapsed_ms() if t else 0
+                    logging.error(f"[SCHEDULER] [DAILY] Index tracker failed: {e}")
+                    asyncio.create_task(_log(seo_logger.TASK_INDEX_TRACKER, "failed", str(e)[:200], ms))
+            else:
+                asyncio.create_task(_log(seo_logger.TASK_INDEX_TRACKER, "skipped", "index_tracker module not loaded"))
+
+            # 3. Search Console Auto-Optimizer (patch low-CTR pages)
+            if AUTO_OPTIMIZER_ENABLED:
+                t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
+                if t: t.start()
+                try:
+                    logging.info("[SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...")
+                    await auto_optimize.main()
+                    ms = t.elapsed_ms() if t else 0
+                    asyncio.create_task(_log(seo_logger.TASK_AUTO_OPTIMIZER, "success",
+                        "Low-CTR pages patched with optimized meta titles and descriptions.", ms))
+                except Exception as e:
+                    ms = t.elapsed_ms() if t else 0
+                    logging.error(f"[SCHEDULER] [DAILY] Auto-optimizer failed: {e}")
+                    asyncio.create_task(_log(seo_logger.TASK_AUTO_OPTIMIZER, "failed", str(e)[:200], ms))
+            else:
+                asyncio.create_task(_log(seo_logger.TASK_AUTO_OPTIMIZER, "skipped", "auto_optimize module not loaded"))
+
+            # 4. Content Refresh Engine
+            if REFRESH_ENGINE_ENABLED:
+                t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
+                if t: t.start()
+                try:
+                    logging.info("[SCHEDULER] [DAILY] 4/5 Content Refresh Engine...")
+                    await refresh_engine.main()
+                    ms = t.elapsed_ms() if t else 0
+                    asyncio.create_task(_log(seo_logger.TASK_CONTENT_REFRESH, "success",
+                        "Programmatic pages refreshed. Job counts, FAQs, and links updated.", ms))
+                except Exception as e:
+                    ms = t.elapsed_ms() if t else 0
+                    logging.error(f"[SCHEDULER] [DAILY] Content refresh engine failed: {e}")
+                    asyncio.create_task(_log(seo_logger.TASK_CONTENT_REFRESH, "failed", str(e)[:200], ms))
+            else:
+                asyncio.create_task(_log(seo_logger.TASK_CONTENT_REFRESH, "skipped", "refresh_engine module not loaded"))
+
+            # 5. Competitor Keyword Gap Finder
+            if GAP_FINDER_ENABLED:
+                t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
+                if t: t.start()
+                try:
+                    logging.info("[SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...")
+                    await keyword_gap_finder.run_analysis()
+                    ms = t.elapsed_ms() if t else 0
+                    asyncio.create_task(_log(seo_logger.TASK_GAP_FINDER, "success",
+                        "Competitor keyword gap analysis complete. New opportunities saved.", ms))
+                except Exception as e:
+                    ms = t.elapsed_ms() if t else 0
+                    logging.error(f"[SCHEDULER] [DAILY] Keyword gap finder failed: {e}")
+                    asyncio.create_task(_log(seo_logger.TASK_GAP_FINDER, "failed", str(e)[:200], ms))
+            else:
+                asyncio.create_task(_log(seo_logger.TASK_GAP_FINDER, "skipped", "keyword_gap_finder module not loaded"))
+
+            logging.info("[SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.")
+
+
         time_since_last = now - last_post_time
 
         # Only post if enough time has passed since last post
