@@ -111,8 +111,8 @@ def add_job_to_queue(job_dict, job_hash, image_path="", is_government=False, ret
             conn.close()
     return False
 
-def get_jobs_batch(limit_govt=1, limit_private=1):
-    """Atomically retrieves and deletes up to `limit_govt` govt jobs and `limit_private` private jobs."""
+def get_jobs_batch(limit=1):
+    """Atomically retrieves and deletes up to `limit` jobs, prioritizing private jobs."""
     conn = get_connection()
     # Enable dict-like row access
     conn.row_factory = sqlite3.Row
@@ -123,24 +123,24 @@ def get_jobs_batch(limit_govt=1, limit_private=1):
         # Begin exclusive transaction
         cursor.execute('BEGIN EXCLUSIVE')
         
-        # 1. Fetch govt jobs
-        if limit_govt > 0:
+        # 1. Fetch private jobs first
+        cursor.execute('''
+            SELECT id, job_hash, job_data, image_path, is_government, timestamp, retries 
+            FROM job_queue WHERE is_government = 0 ORDER BY priority DESC, timestamp ASC LIMIT ?
+        ''', (limit,))
+        private_rows = cursor.fetchall()
+        for row in private_rows:
+            jobs.append(dict(row))
+                
+        # 2. Fetch govt jobs if we haven't reached the limit
+        remaining_limit = limit - len(jobs)
+        if remaining_limit > 0:
             cursor.execute('''
                 SELECT id, job_hash, job_data, image_path, is_government, timestamp, retries 
                 FROM job_queue WHERE is_government = 1 ORDER BY priority DESC, timestamp ASC LIMIT ?
-            ''', (limit_govt,))
+            ''', (remaining_limit,))
             govt_rows = cursor.fetchall()
             for row in govt_rows:
-                jobs.append(dict(row))
-                
-        # 2. Fetch private jobs
-        if limit_private > 0:
-            cursor.execute('''
-                SELECT id, job_hash, job_data, image_path, is_government, timestamp, retries 
-                FROM job_queue WHERE is_government = 0 ORDER BY priority DESC, timestamp ASC LIMIT ?
-            ''', (limit_private,))
-            private_rows = cursor.fetchall()
-            for row in private_rows:
                 jobs.append(dict(row))
                 
         # 3. Delete fetched jobs from queue so no other process can take them

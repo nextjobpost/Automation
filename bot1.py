@@ -2567,7 +2567,7 @@ async def scheduler_task():
             posted_any = False
             
             while True:
-                jobs_to_process = database.get_jobs_batch(limit_govt=1, limit_private=1)
+                jobs_to_process = database.get_jobs_batch(limit=1)
                 if not jobs_to_process:
                     # Queue is empty! Break loop.
                     break
