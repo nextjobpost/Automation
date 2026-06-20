@@ -2304,7 +2304,13 @@ async def process_and_post_job(job_data):
             
         print(f"🌐 Website status: {response}")
 
-        if not isinstance(response, dict) or response.get("success") is not True:
+        is_website_duplicate = False
+        if isinstance(response, dict):
+            msg = str(response.get("message", "")).lower()
+            if "duplicate matched" in msg or "already exists" in msg:
+                is_website_duplicate = True
+                
+        if not is_website_duplicate and (not isinstance(response, dict) or response.get("success") is not True):
             print(f"⚠️ Website API rejected or failed ({response}) — continuing with Telegram & LinkedIn anyway.")
 
         # Get final slug
@@ -2336,15 +2342,12 @@ async def process_and_post_job(job_data):
                     print(f"❌ SEO pipeline failed: {e}")
 
         # Prevent posting duplicates to Telegram/LinkedIn
-        is_duplicate = False
+        is_duplicate = is_website_duplicate
         was_posted = False
-        if isinstance(response, dict) and response.get("success") is True:
-            message = response.get("message", "")
-            if "duplicate matched" in message.lower():
-                is_duplicate = True
-                print("🚫 Job already exists on website. Skipping Telegram & LinkedIn.")
-            else:
-                was_posted = True
+        if is_duplicate:
+            print("🚫 Job already exists on website. Skipping Telegram & LinkedIn.")
+        elif isinstance(response, dict) and response.get("success") is True:
+            was_posted = True
 
         # Ping search engines if a new job was successfully posted
         if SITEMAP_PINGER_ENABLED and was_posted:
