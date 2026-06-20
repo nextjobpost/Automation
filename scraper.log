@@ -8246,3 +8246,4 @@
 2026-06-17 17:29:50,126 - WARNING - API_KEY (Gemini) not found or is placeholder. Running in BASIC extraction mode (no AI).
 2026-06-17 17:30:11,981 - WARNING - API_KEY (Gemini) not found or is placeholder. Running in BASIC extraction mode (no AI).
 2026-06-17 18:12:11,953 - WARNING - API_KEY (Gemini) not found or is placeholder. Running in BASIC extraction mode (no AI).
+2026-06-20 19:42:05,096 - ERROR - Failed to import helpers from scrape_govt_jobs.py: cannot import name 'genai' from 'google' (unknown location)

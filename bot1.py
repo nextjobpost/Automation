@@ -2355,7 +2355,7 @@ async def process_and_post_job(job_data):
                 print(f"⚠️ Sitemap ping failed: {e}")
 
         if job.get("postToSocials", True) and not is_duplicate:
-            # 3. LinkedIn Post - Enforce 5/day limit for Government Jobs
+            # 3. LinkedIn Post - Enforce strict keyword rules for Government Jobs
             linkedin_url = None
             is_govt = job.get("isGovernment", False)
             should_post_to_linkedin = False
@@ -2363,12 +2363,14 @@ async def process_and_post_job(job_data):
             if not is_govt:
                 should_post_to_linkedin = True
             else:
-                # Check 24-hour limit for government jobs
-                govt_posts_count = database.count_linkedin_govt_posts_last_24h()
-                if govt_posts_count < 5:
+                # Government jobs: Only post if it matches high-value keywords
+                high_value_keywords = ['cse', 'mechanical', 'electrical', 'civil', 'engineering', 'airforce', 'navy', 'army', 'defense', 'ssc', 'upsc', 'bank', 'ibps', 'sbi', 'po', 'clerk', 'rbi', 'manager']
+                job_text = (str(job.get('title', '')) + " " + str(job.get('shortSummary', '')) + " " + str(job.get('jobDescription', ''))).lower()
+                
+                if any(kw in job_text for kw in high_value_keywords):
                     should_post_to_linkedin = True
                 else:
-                    print(f"ℹ️ Skipping LinkedIn: Reached daily limit of 5 government jobs (Posted: {govt_posts_count}/5).")
+                    print("ℹ️ Skipping LinkedIn: Government job does not match high-value engineering/defense/banking keywords.")
 
             if should_post_to_linkedin:
                 if TEST_MODE:
@@ -2703,14 +2705,15 @@ async def handler(event):
 
 
 async def run_scraper_periodically():
-    """Background task that runs the government jobs scraper periodically to populate the queue."""
+    """Background task that runs the job scrapers periodically to populate the queue."""
     # Small startup delay so the main listener has booted up
     await asyncio.sleep(15)
     while True:
-        print("\n🔄 [SCRAPER] Running government jobs scrapers in the background...")
+        print("\n🔄 [SCRAPER] Running all job scrapers in the background...")
         scrapers = [
             "scrape_govt_jobs.py",
             "scrape_additional_sources.py",
+            "scrape_private_jobs.py",
         ]
         for scraper_file in scrapers:
             try:
