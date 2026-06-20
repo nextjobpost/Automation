@@ -57,6 +57,8 @@ except ImportError:
     types = None
 
 import database
+from dotenv import load_dotenv
+load_dotenv()
 
 # ─── HTTP Headers ──────────────────────────────────────────────────────────
 HEADERS = {
@@ -282,6 +284,95 @@ def clean_private_job_html(html_content):
 # ═══════════════════════════════════════════════════════════════════════════
 #  LISTING EXTRACTORS — one per website
 # ═══════════════════════════════════════════════════════════════════════════
+
+def extract_linkedin_jobs_official(limit=30):
+    """Fetches jobs using the Official LinkedIn API via existing access token."""
+    listings = []
+    seen = set()
+    access_token = os.getenv("LINKEDIN_ACCESS_TOKEN")
+    
+    if not access_token:
+        logging.warning("No LINKEDIN_ACCESS_TOKEN found in environment. Skipping LinkedIn.")
+        return listings
+
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "X-Restli-Protocol-Version": "2.0.0",
+        "Accept": "application/json"
+    }
+    
+    # NOTE: The exact endpoint depends on the API product access granted to your app.
+    # We use the standard /v2/jobPostings or similar endpoint.
+    url = "https://api.linkedin.com/v2/jobPostings?q=search&title=Software%20Developer&location=India"
+    
+    try:
+        resp = requests.get(url, headers=headers, timeout=15)
+        if resp.status_code != 200:
+            logging.warning(f"LinkedIn API Error {resp.status_code}: {resp.text}")
+            return listings
+        
+        data = resp.json()
+        elements = data.get("elements", [])
+        
+        for job in elements:
+            title = job.get("title", "")
+            job_id = job.get("id", "")
+            desc = job.get("description", "")
+            # LinkedIn job postings often have this link structure
+            link = f"https://www.linkedin.com/jobs/view/{job_id}"
+            
+            if title and link and link not in seen:
+                seen.add(link)
+                listings.append((title, link, desc))
+                if len(listings) >= limit:
+                    return listings
+    except Exception as e:
+        logging.warning(f"LinkedIn official API fetch error: {e}")
+        
+    return listings
+
+
+def extract_adzuna_jobs(limit=30):
+    """Fetches job listings from Adzuna API (Free Tier)."""
+    listings = []
+    seen = set()
+    app_id = os.getenv("ADZUNA_APP_ID")
+    app_key = os.getenv("ADZUNA_APP_KEY")
+
+    if not app_id or not app_key:
+        logging.warning("Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.")
+        return listings
+
+    # Country code 'in' for India, category 'it-jobs' or search 'software'
+    url = f"https://api.adzuna.com/v1/api/jobs/in/search/1?app_id={app_id}&app_key={app_key}&results_per_page={limit}&what=software%20developer"
+
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=15)
+        if resp.status_code != 200:
+            logging.warning(f"Adzuna API Error {resp.status_code}: {resp.text}")
+            return listings
+
+        data = resp.json()
+        results = data.get("results", [])
+
+        for job in results:
+            title = job.get("title", "")
+            # Adzuna provides a direct redirect link
+            link = job.get("redirect_url", "")
+            desc = job.get("description", "")
+            
+            # Clean HTML tags from title if any
+            title = BeautifulSoup(title, "html.parser").get_text(strip=True)
+
+            if title and link and link not in seen:
+                seen.add(link)
+                listings.append((title, link, desc))
+                if len(listings) >= limit:
+                    return listings
+    except Exception as e:
+        logging.warning(f"Adzuna official API fetch error: {e}")
+
+    return listings
 
 
 def extract_weworkremotely_rss(limit=30):
@@ -555,7 +646,7 @@ def build_beautiful_private_job_desc(raw_title, company, location, job_type, exp
 #  CORE PROCESSOR — enriches and queues a single private job
 # ═══════════════════════════════════════════════════════════════════════════
 
-def process_private_job(title, detail_url, site_name, recent_jobs):
+def process_private_job(title, detail_url, site_name, recent_jobs, provided_html=None):
     """Fetches, enriches, deduplicates and queues a single private job."""
     raw_title = title.replace("\u2013", "-").replace("\u2014", "-").strip()
     job_hash  = hashlib.md5(detail_url.encode()).hexdigest()
@@ -565,21 +656,27 @@ def process_private_job(title, detail_url, site_name, recent_jobs):
 
     logging.info(f"  🚀 [{site_name}] {raw_title[:70]}")
 
-    # Fetch detail page
-    try:
-        resp = requests.get(detail_url, headers=HEADERS, timeout=20)
-        if resp.status_code != 200:
-            logging.warning(f"  ⚠️ HTTP {resp.status_code}: {detail_url}")
+    if provided_html is not None:
+        detail_html = provided_html
+        if len(detail_html.strip()) < 15:
+            logging.warning("  ⚠️ Provided API content too short or empty. Skipping.")
             return False
-    except Exception as e:
-        logging.warning(f"  ⚠️ Fetch error: {e}")
-        return False
+    else:
+        # Fetch detail page
+        try:
+            resp = requests.get(detail_url, headers=HEADERS, timeout=20)
+            if resp.status_code != 200:
+                logging.warning(f"  ⚠️ HTTP {resp.status_code}: {detail_url}")
+                return False
+        except Exception as e:
+            logging.warning(f"  ⚠️ Fetch error: {e}")
+            return False
 
-    # Clean HTML
-    detail_html = clean_private_job_html(resp.text)
-    if not detail_html or len(detail_html) < 150:
-        logging.warning("  ⚠️ Page content too short. Skipping.")
-        return False
+        # Clean HTML
+        detail_html = clean_private_job_html(resp.text)
+        if not detail_html or len(detail_html) < 150:
+            logging.warning("  ⚠️ Page content too short. Skipping.")
+            return False
 
     # AI enrichment (with basic fallback)
     ai_data = enrich_private_job_with_ai(detail_html, raw_title)
@@ -713,8 +810,14 @@ def run_scraper(name, fetch_fn, recent_jobs, limit=25, delay=1.5):
     listings = fetch_fn(limit)
     logging.info(f"Found {len(listings)} listings from {name}.")
     count = 0
-    for title, url in listings:
-        if process_private_job(title, url, name, recent_jobs):
+    for item in listings:
+        if len(item) == 3:
+            title, url, desc = item
+        else:
+            title, url = item
+            desc = None
+            
+        if process_private_job(title, url, name, recent_jobs, provided_html=desc):
             count += 1
         time.sleep(delay)
     logging.info(f"✅ {name}: Queued {count} new private jobs.")
@@ -728,8 +831,7 @@ def run_scraper(name, fetch_fn, recent_jobs, limit=25, delay=1.5):
 def main():
     logging.info("=" * 50)
     logging.info("💼 NextJobPost — Private Jobs Scraper v2")
-    logging.info("   Sources: WeWorkRemotely · Freshersworld")
-    logging.info("            Internshala · WorkAtAStartup")
+    logging.info("   Sources: LinkedIn Official API · Adzuna API")
     logging.info("=" * 50)
 
     get_auth_token()
@@ -738,17 +840,11 @@ def main():
     recent_jobs = fetch_recent_jobs()
     logging.info(f"   ✔ Preloaded {len(recent_jobs)} live jobs.")
 
-    # ── Source 1: WeWorkRemotely (software/dev remote jobs via RSS)
-    run_scraper("WeWorkRemotely", extract_weworkremotely_rss, recent_jobs, limit=20, delay=1.5)
+    # ── Source 0: LinkedIn (via Official API)
+    run_scraper("LinkedIn Official", extract_linkedin_jobs_official, recent_jobs, limit=10, delay=1.5)
 
-    # ── Source 3: Freshersworld (Indian fresher IT jobs)
-    run_scraper("Freshersworld", extract_freshersworld_listings, recent_jobs, limit=25, delay=2.0)
-
-    # ── Source 4: Internshala (India's top fresher job portal)
-    run_scraper("Internshala", extract_internshala_listings, recent_jobs, limit=20, delay=2.0)
-
-    # ── Source 5: WorkAtAStartup (startup ecosystem jobs India)
-    run_scraper("WorkAtAStartup", extract_workatastartup_listings, recent_jobs, limit=15, delay=1.5)
+    # ── Source 0.5: Adzuna (Job Aggregator API)
+    run_scraper("Adzuna API", extract_adzuna_jobs, recent_jobs, limit=15, delay=1.5)
 
     logging.info("\n✅ All private job sources successfully processed.")
 
