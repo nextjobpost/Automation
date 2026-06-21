@@ -2157,7 +2157,7 @@ async def process_and_post_job(job_data):
     if apply_link and len(apply_link) > 15:
         apply_hash = hashlib.md5(apply_link.encode()).hexdigest()
         
-    if semantic_hash in seen or (apply_hash and apply_hash in seen):
+    if semantic_hash in seen or database.is_job_seen(semantic_hash) or (apply_hash and (apply_hash in seen or database.is_job_seen(apply_hash))):
         print(f"🚫 [SCHEDULER] Job '{job['title']}' already exists on website (detected via seen cache). Skipping.")
         try:
             if image_path and os.path.exists(image_path):
@@ -2229,7 +2229,9 @@ async def process_and_post_job(job_data):
         is_website_duplicate = False
         if isinstance(response, dict):
             msg = str(response.get("message", "")).lower()
-            if "duplicate matched" in msg or "already exists" in msg:
+            err = str(response.get("error", "")).lower()
+            combined_msg = msg + " " + err
+            if "duplicate" in combined_msg or "already exist" in combined_msg or "e11000" in combined_msg:
                 is_website_duplicate = True
                 
         if not is_website_duplicate and (not isinstance(response, dict) or response.get("success") is not True):
@@ -2339,12 +2341,15 @@ async def process_and_post_job(job_data):
                     print(f"⚠️ Telegram Flood Wait Limit Hit: Must wait {e.seconds} seconds before next post.")
                     await asyncio.sleep(e.seconds)
                     # Retry once after sleeping
-                    await client.send_message(
-                        entity=TARGET_CHANNEL,
-                        message=telegram_post,
-                        link_preview=True if uploaded_url else False
-                    )
-                    print(f"✔ Telegram Posted after flood wait.")
+                    try:
+                        await client.send_message(
+                            entity=TARGET_CHANNEL,
+                            message=telegram_post,
+                            link_preview=True if uploaded_url else False
+                        )
+                        print(f"✔ Telegram Posted after flood wait.")
+                    except Exception as retry_err:
+                        print(f"❌ Telegram retry failed: {retry_err}")
                 except Exception as e:
                     print(f"❌ Telegram failed: {e}")
 
