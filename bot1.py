@@ -19,12 +19,6 @@ from telethon.sessions import StringSession  # type: ignore
 from telethon.errors import FloodWaitError, AuthKeyDuplicatedError  # type: ignore
 from dotenv import load_dotenv
 from slugify import slugify
-try:
-    from google import genai
-    from google.genai import types
-except ImportError:
-    genai = None
-    types = None
 
 # ── SEO Automation Modules (graceful import — bot works even if these fail) ──
 try:
@@ -422,7 +416,6 @@ def is_job(text):
     
     return (has_job_word or has_job_emoji or looks_like_job) and has_link
 
-client_gemini = genai.Client(api_key=API_KEY) if API_KEY else None
 
 # =========================
 # EXTRACTOR (AI + Basic Fallback)
@@ -1162,91 +1155,9 @@ def is_valid_job(job):
     return True, ""
 
 async def extract_with_ai(text):
-    """Uses modern Gemini 2.5 Flash to extract job fields"""
-    if not API_KEY or not client_gemini:
-        print("💡 API_KEY (Gemini) not found in .env, using basic parser...")
-        return extract_basic(text)
-
-    prompt = f"""
-Analyze this Telegram job posting and extract the details.
-Return ONLY a valid, raw JSON object (no markdown formatting, no `json` blocks) with the following exact keys:
-"title", "company", "location", "applyLink", "type", "experience", "education", "shortSummary", "htmlDescription", "responsibilities", "requirements", "skills", "batch", "salary", "lastDate", "aboutCompany", "whyJoin", "howToApply", "finalThoughts", "eligibility", "vacancies", "isGovernment".
-
-Rules:
-1. DO NOT guess, fabricate, or generate any details that are not explicitly present in the job posting text.
-2. If any of the following fields are not clearly and explicitly specified in the text, you MUST set their value exactly to "Not Mentioned":
-   - "company" (Do NOT guess from the apply link domain, do NOT use "Hiring Company" or "Confidential")
-   - "location" (Do NOT default to "Pan India" or "Remote")
-   - "salary"
-   - "experience"
-   - "education"
-   - "batch"
-   - "eligibility"
-   - "vacancies"
-3. 'type' MUST be one of: "Full-Time", "Part-Time", "Internship", "Contract", "Remote", "Hybrid".
-4. 'applyLink' must be the first http/https link found.
-5. 'shortSummary' MUST be a clean, professional 15-20 word summary of the role. NO emojis.
-6. 'htmlDescription' MUST be beautifully formatted HTML based on the provided text. Use <h2>, <ul>, <li>, <br/> and <strong> tags.
-7. 'responsibilities' MUST be a JSON array of strings detailing the job role. If none, return [].
-8. 'requirements' MUST be a JSON array of strings detailing eligibility. If none, return [].
-9. 'skills' MUST be a JSON array of strings. If none, return [].
-10. 'lastDate' MUST be either an empty string "" or a valid date string if a deadline is mentioned.
-11. 'aboutCompany' MUST be a detailed 3-4 sentence professional context about the extracted company. Generate this intelligently only if the company name is actually present, otherwise set to "".
-12. 'whyJoin' MUST be a persuasive 3-4 sentence paragraph highlighting the benefits of working at this company for this role.
-13. 'howToApply' MUST be clear, step-by-step instructions detailing the application process for the candidate.
-14. 'finalThoughts' MUST be a short, encouraging concluding mark wishing the applicant success.
-15. 'eligibility' MUST be the qualification required for government jobs, or set to "Not Mentioned" if not specified.
-16. 'vacancies' MUST be the number of vacancies/posts available (e.g. "500 Posts"), or set to "Not Mentioned" if not specified.
-17. 'isGovernment' MUST be a boolean (true or false). Set to true if the job/post is a government recruitment, central/state government exam, admit card, answer key, result, or government agency post (e.g., SSC, UPSC, Bank PO, Railway, PSU, PSC, Defence, etc.). Otherwise, set to false.
-18. CRITICAL: The posting text might contain links or references to competitor/third-party websites (e.g., freshershunt.in, freshersvoice.com, jobsarkari.com, sarkariresult.com, careerbywell.com, etc.). You MUST NEVER include any such raw domain names, URLs, or competitor references in any field, including 'title', 'company', 'aboutCompany', 'whyJoin', 'howToApply', 'finalThoughts', 'shortSummary', or 'htmlDescription'. Keep all descriptions clean and generic (e.g. replace competitor names with generic terms or remove them).
-
-Job Posting Text:
-{text}
-"""
-    candidate_models = [
-        "gemini-2.5-flash-lite",   # Most efficient — try first
-        "gemini-2.5-flash",        # Stronger fallback
-        "gemini-2.0-flash"         # Final fallback
-    ]
+    """Uses basic fallback extraction since AI was removed."""
+    data = extract_basic(text)
     
-    data = None
-    last_error = None
-    for model in candidate_models:
-        try:
-            print(f"🤖 Parsing with Gemini model: {model}...")
-            response = await client_gemini.aio.models.generate_content(
-                model=model,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                ),
-            )
-            clean_json = response.text.strip()
-            if clean_json.startswith("```json"):
-                clean_json = clean_json[7:-3].strip()
-            elif clean_json.startswith("```"):
-                clean_json = clean_json[3:-3].strip()
-                
-            data = json.loads(clean_json)
-            break  # ✅ Success — stop trying other models
-        except Exception as e:
-            last_error = e
-            err_str = str(e)
-            if "RESOURCE_EXHAUSTED" in err_str or "429" in err_str:
-                print(f"⚠️ Model {model} rate limited (429). Waiting 2s before next model...")
-                await asyncio.sleep(2)
-            elif "NOT_FOUND" in err_str or "404" in err_str:
-                print(f"⚠️ Model {model} not found (404). Switching to next model...")
-            else:
-                print(f"⚠️ Model {model} failed: {e}. Switching to next model...")
-                
-    if not data:
-        # ✅ Regex + BeautifulSoup parser — fast, reliable, no quota limits
-        print(f"⚠️ All Gemini models failed ({last_error}). Using regex/BS4 basic parser instantly.")
-        return extract_basic(text)
-
-        
-    # 🎨 Give the beautiful HTML text to the job detail page, and clean summary to the home page cards
     title_val = data.get("title", "Job Opening")
     data["jobDescription"] = sanitize_text(data.get("htmlDescription", text))
     data["description"] = sanitize_text(data.get("shortSummary", title_val[:150] + "..."))
@@ -1258,6 +1169,9 @@ Job Posting Text:
     data["eligibility"] = data.get("eligibility", "")
     data["vacancies"] = data.get("vacancies", "")
     data["isGovernment"] = data.get("isGovernment") is True or str(data.get("isGovernment")).lower() == "true"
+    
+    from slugify import slugify
+    import hashlib
     base_slug = slugify(data.get("title", "Job Opening"))
     unique_id = hashlib.md5(text.encode()).hexdigest()[:5]
     data["slug"] = f"{base_slug}-{unique_id}"
@@ -2416,7 +2330,7 @@ async def process_and_post_job(job_data):
                         telegram_post = post
 
                     await client.send_message(
-                        entity=peer_entity,
+                        entity=TARGET_CHANNEL,
                         message=telegram_post,
                         link_preview=True if uploaded_url else False
                     )
@@ -2426,7 +2340,7 @@ async def process_and_post_job(job_data):
                     await asyncio.sleep(e.seconds)
                     # Retry once after sleeping
                     await client.send_message(
-                        entity=peer_entity,
+                        entity=TARGET_CHANNEL,
                         message=telegram_post,
                         link_preview=True if uploaded_url else False
                     )

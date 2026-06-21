@@ -14,3 +14,4 @@
 2026-06-16 09:57:08,945 - INFO - 🕒 Scheduler started. Posting every 1800s (30 min).
 2026-06-16 09:57:09,201 - INFO - 
 📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 35
+2026-06-21 11:03:56,559 - ERROR - CRITICAL: Invalid API_ID in .env file! Found: 'your_telegram_api_id'. Please replace it with your actual numeric Telegram API ID.
