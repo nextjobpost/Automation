@@ -2157,14 +2157,7 @@ async def process_and_post_job(job_data):
     if apply_link and len(apply_link) > 15:
         apply_hash = hashlib.md5(apply_link.encode()).hexdigest()
         
-    if semantic_hash in seen or database.is_job_seen(semantic_hash) or (apply_hash and (apply_hash in seen or database.is_job_seen(apply_hash))):
-        print(f"🚫 [SCHEDULER] Job '{job['title']}' already exists on website (detected via seen cache). Skipping.")
-        try:
-            if image_path and os.path.exists(image_path):
-                os.remove(image_path)
-        except Exception:
-            pass
-        return True, False
+    # Duplicate check is handled during queueing phase and by the website API backend.
 
     # Double check that the job contains all real information and no placeholder/missing values
     is_valid, reason = is_valid_job(job)
