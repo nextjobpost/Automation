@@ -6,7 +6,7 @@ python-dotenv==1.2.2
 python-slugify==8.0.4
 Requests==2.34.2
 telethon==1.43.2
-google-genai==2.8.0
+
 cryptography==48.0.1
 mypy==2.1.0
 pylint==4.0.5

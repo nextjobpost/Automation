@@ -37,11 +37,9 @@ logging.basicConfig(
 # ─── Import shared helpers from govt scraper ───────────────────────────────
 try:
     from scrape_govt_jobs import (
-        API_KEY,
         API_TOKEN,
         API_URL,
         ADMIN_URL,
-        client_gemini,
         format_faq_html,
         fetch_recent_jobs,
         find_existing_job,
@@ -50,11 +48,6 @@ try:
 except ImportError as e:
     logging.error(f"Failed to import helpers from scrape_govt_jobs.py: {e}")
     sys.exit(1)
-
-try:
-    from google.genai import types
-except ImportError:
-    types = None
 
 import database
 from dotenv import load_dotenv
@@ -74,81 +67,6 @@ HEADERS = {
 # ═══════════════════════════════════════════════════════════════════════════
 #  AI ENRICHMENT — Private Job Specific
 # ═══════════════════════════════════════════════════════════════════════════
-
-def enrich_private_job_with_ai(html_content, title):
-    """Uses Gemini AI to extract structured private job fields from a detail page."""
-    if not client_gemini:
-        return None
-
-    soup = BeautifulSoup(html_content, "html.parser")
-    for tag in soup(["script", "style", "noscript"]):
-        tag.decompose()
-    text_content = soup.get_text(separator="\n").strip()
-    text_content = re.sub(r'\n{3,}', '\n\n', text_content)[:6000]
-
-    prompt = f"""
-Analyze the following private job listing for "{title}".
-Return ONLY a valid JSON object — no markdown, no code fences.
-
-JSON schema:
-{{
-  "company": "Hiring company name (e.g. TCS, Infosys). Extract from context.",
-  "location": "Job location (e.g. Bangalore, Mumbai, Remote, Pan India)",
-  "experience": "Experience required (e.g. Fresher, 0-2 Years, 2-5 Years)",
-  "salary": "Salary/CTC (e.g. 3.5 LPA, Rs. 25000/month). Do NOT include application/registration fees.",
-  "education": "Required educational qualification (e.g. B.Tech/BE, Any Graduate, MBA)",
-  "batch": "Eligible graduation years (e.g. 2023/2024/2025), or empty string if not mentioned",
-  "jobType": "Full-Time / Part-Time / Contract / Internship / Remote",
-  "skills": ["skill1", "skill2", "skill3"],
-  "responsibilities": ["key responsibility 1", "key responsibility 2", "key responsibility 3"],
-  "requirements": ["requirement 1", "requirement 2"],
-  "lastDate": "Application deadline in YYYY-MM-DD format, or empty string",
-  "summary": "2-3 sentence compelling summary of the role and opportunity for Indian job seekers",
-  "seoTitle": "SEO job title (60 chars max)",
-  "seoDescription": "Meta description for search engines (155 chars max)",
-  "faqs": [
-    {{"q": "Relevant question about this job", "a": "Answer from the listing"}}
-  ]
-}}
-
-Job Listing:
-{text_content}
-"""
-
-    candidate_models = [
-        "gemini-2.5-flash-lite-preview-06-17",
-        "gemini-2.5-flash",
-        "gemini-2.0-flash",
-    ]
-
-    last_error = None
-    for model in candidate_models:
-        try:
-            logging.info(f"Enriching with Gemini ({model})...")
-            if types:
-                response = client_gemini.models.generate_content(
-                    model=model,
-                    contents=prompt,
-                    config=types.GenerateContentConfig(response_mime_type="application/json"),
-                )
-            else:
-                response = client_gemini.models.generate_content(model=model, contents=prompt)
-            clean_json = response.text.strip()
-            match = re.search(r'\{.*\}', clean_json, re.DOTALL)
-            if match:
-                clean_json = match.group(0)
-            return json.loads(clean_json)
-        except Exception as e:
-            if "RESOURCE_EXHAUSTED" in str(e) or "429" in str(e):
-                logging.warning(f"Model {model} quota exhausted. Waiting 3s...")
-                time.sleep(3)
-            else:
-                logging.warning(f"Gemini {model} failed: {e}")
-            last_error = e
-
-    logging.error(f"All Gemini models failed. Last: {last_error}")
-    return None
-
 
 def enrich_private_job_basic(html_content, title):
     """Regex/BS4 fallback enrichment for private jobs when AI is unavailable."""
@@ -678,11 +596,8 @@ def process_private_job(title, detail_url, site_name, recent_jobs, provided_html
             logging.warning("  ⚠️ Page content too short. Skipping.")
             return False
 
-    # AI enrichment (with basic fallback)
-    ai_data = enrich_private_job_with_ai(detail_html, raw_title)
-    if not ai_data:
-        logging.warning("  ⚠️ AI failed. Using basic extractor...")
-        ai_data = enrich_private_job_basic(detail_html, raw_title)
+    # Basic extraction
+    ai_data = enrich_private_job_basic(detail_html, raw_title)
 
     company     = ai_data.get("company",          "Top Company")
     location    = ai_data.get("location",          "Pan India")

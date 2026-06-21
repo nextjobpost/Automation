@@ -19,7 +19,10 @@ if DATA_DIR != "." and not os.path.exists(DB_PATH) and os.path.exists(LOCAL_DB):
 
 def get_connection():
     # timeout=20 ensures that if the DB is locked by another script, it waits up to 20 seconds before failing.
-    return sqlite3.connect(DB_PATH, timeout=20.0)
+    conn = sqlite3.connect(DB_PATH, timeout=20.0)
+    # Enable Write-Ahead Logging (WAL) for better concurrency
+    conn.execute('PRAGMA journal_mode=WAL;')
+    return conn
 
 def init_db():
     """Initializes the SQLite database and creates necessary tables."""

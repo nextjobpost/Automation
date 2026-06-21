@@ -8,8 +8,7 @@ import time
 import logging
 from datetime import datetime, date, timedelta
 from bs4 import BeautifulSoup
-from google import genai
-from google.genai import types
+
 from slugify import slugify
 from dotenv import load_dotenv
 import database
@@ -42,10 +41,7 @@ logging.basicConfig(
 load_dotenv(override=True)
 
 def validate_config():
-    api_key = os.getenv("API_KEY")
-    if not api_key or api_key == "your_google_gemini_api_key":
-        logging.warning("API_KEY (Gemini) not found or is placeholder. Running in BASIC extraction mode (no AI).")
-        api_key = None
+
     
     is_prod = os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RENDER") or os.getenv("PORT") is not None
     
@@ -65,9 +61,9 @@ def validate_config():
         
     govt_base = os.getenv("GOVT_SCRAPER_BASE_URL", "https://govtjobsalert.in")
     
-    return api_key, api_token, api_url, admin_url, govt_base
+    return api_token, api_url, admin_url, govt_base
 
-API_KEY, API_TOKEN, API_URL, ADMIN_URL, GOVT_SCRAPER_BASE_URL = validate_config()
+API_TOKEN, API_URL, ADMIN_URL, GOVT_SCRAPER_BASE_URL = validate_config()
 
 from urllib.parse import urlparse, urljoin
 parsed_base = urlparse(GOVT_SCRAPER_BASE_URL)
@@ -75,13 +71,7 @@ GOVT_SCRAPER_DOMAIN = parsed_base.netloc or "govtjobsalert.in"
 
 CACHE_FILE = "scraped_urls.json"
 
-# Initialize Gemini
-client_gemini = None
-if API_KEY:
-    try:
-        client_gemini = genai.Client(api_key=API_KEY)
-    except Exception as e:
-        logging.warning(f"Failed to initialize Gemini client: {e}. Running in BASIC extraction mode.")
+
 
 def load_cache():
     cache = {}
@@ -420,92 +410,7 @@ def enrich_content_basic(html_content, title):
         "faqs": []
     }
 
-def enrich_content_with_ai(html_content, title):
-    """Sends html/text content to Gemini 2.5 Flash to extract metadata, summary, and FAQs."""
-    if not client_gemini:
-        return None
-    # Strip HTML tags to make the prompt smaller and save tokens
-    soup = BeautifulSoup(html_content, "html.parser")
-    text_content = soup.get_text(separator="\n")
-    # Clean whitespace
-    text_content = re.sub(r'\n+', '\n', text_content).strip()
 
-    prompt = f"""
-    Analyze the following government notification detail page for "{title}".
-    Extract key information and return ONLY a valid JSON object. Do not include any markdown format blocks or `json` text backticks.
-    
-    The JSON structure MUST match this exact schema:
-    {{
-      "organization": "Name of the government body (e.g. UPSC, SSC, DRDO, Railway, State PSC, etc.)",
-      "postName": "Refined short post/exam name",
-      "eligibility": "Required eligibility criteria/qualification (e.g., 10th Pass, B.Tech in CSE, Any Graduate, etc.)",
-      "vacancies": "Number of vacancies or posts available (e.g., 500 Posts, 12 Vacancies, etc. - leave empty string if not found)",
-      "lastDate": "Application deadline or objection closing date in YYYY-MM-DD format (leave as empty string if not found)",
-      "salary": "Salary or pay scale info if present (else 'As per notification')",
-      "summary": "A clean 2-3 sentence summary of the post, status, or announcement",
-      "seoTitle": "Optimized search engine title (60 chars max)",
-      "seoDescription": "Compelling search engine description (155 chars max)",
-      "officialPdfLink": "Direct URL to the official notification PDF file hosted on the organization's official website (e.g. ending in .pdf, like https://www.upsc.gov.in/notification.pdf) - search the web if needed, else leave empty string",
-      "faqs": [
-        {{
-          "q": "Question related to application, eligibility, or exam date",
-          "a": "Clear answer based on the notification"
-        }}
-      ]
-    }}
-    
-    Article Text:
-    {text_content[:6000]}
-    """
-    
-    candidate_models = [
-        "gemini-2.5-flash-lite-preview-06-17",
-        "gemini-2.5-flash",
-        "gemini-2.0-flash"
-    ]
-    
-    last_error = None
-    for model in candidate_models:
-        try:
-            print(f"🤖 Enriching with Gemini model: {model}...")
-            # Try with search grounding first
-            try:
-                response = client_gemini.models.generate_content(
-                    model=model,
-                    contents=prompt,
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json",
-                        tools=[types.Tool(google_search=types.GoogleSearch())]
-                    ),
-                )
-            except Exception as se:
-                print(f"⚠️ Search grounding failed on {model} ({se}). Retrying without search...")
-                response = client_gemini.models.generate_content(
-                    model=model,
-                    contents=prompt,
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json"
-                    ),
-                )
-            clean_json = response.text.strip()
-            # Robust JSON extraction using regex
-            json_match = re.search(r'\{.*\}', clean_json, re.DOTALL)
-            if json_match:
-                clean_json = json_match.group(0)
-                
-            return json.loads(clean_json)
-        except Exception as e:
-            if "RESOURCE_EXHAUSTED" in str(e) or "429" in str(e):
-                print(f"⚠️ Model {model} resource exhausted. Waiting 2s before trying next model...")
-                time.sleep(2)
-                last_error = e
-                continue
-            else:
-                print(f"⚠️ Gemini processing failed with model {model}: {e}")
-                last_error = e
-                
-    print(f"❌ All Gemini candidate models failed. Last error: {last_error}")
-    return None
 
 def format_faq_html(faqs):
     """Formats a list of FAQ dictionary items into beautiful HTML block."""
@@ -683,11 +588,8 @@ def scrape_category(category_path, post_type_default, recent_jobs):
             print("⚠️ Entry content empty or not found. Skipping.")
             continue
             
-        # 3. Call Gemini to enrich, fallback to basic Regex/BeautifulSoup parser if it fails
-        ai_data = enrich_content_with_ai(detail_html, raw_title)
-        if not ai_data:
-            print("⚠️ AI Enrichment failed. Falling back to basic regex/BeautifulSoup parser...")
-            ai_data = enrich_content_basic(detail_html, raw_title)
+        # 3. Call basic Regex/BeautifulSoup parser
+        ai_data = enrich_content_basic(detail_html, raw_title)
             
         # 4. Construct final structured content
         org = ai_data.get("organization", "Govt Department")
@@ -737,17 +639,10 @@ def scrape_category(category_path, post_type_default, recent_jobs):
             if "govtjobsalert.in" in extracted_apply_link:
                 extracted_apply_link = ""
                 
-        # Resolve PDF Link using Gemini search grounding or fallbacks
-        official_pdf_ai = ai_data.get("officialPdfLink", "").strip() if isinstance(ai_data, dict) else ""
-        extracted_pdf_link = ""
-        if official_pdf_ai and official_pdf_ai.startswith("http") and (official_pdf_ai.endswith(".pdf") or "pdf" in official_pdf_ai.lower()):
-            extracted_pdf_link = official_pdf_ai
-            print(f"   ✔ Found official PDF link via Gemini: {extracted_pdf_link}")
-            
-        if not extracted_pdf_link:
-            extracted_pdf_link = govt_links["pdfLink"]
-            if extracted_pdf_link and ("govtjobsalert.in" in extracted_pdf_link or "nextjobpost.in" in extracted_pdf_link):
-                extracted_pdf_link = ""
+        # Resolve PDF Link
+        extracted_pdf_link = govt_links["pdfLink"]
+        if extracted_pdf_link and ("govtjobsalert.in" in extracted_pdf_link or "nextjobpost.in" in extracted_pdf_link):
+            extracted_pdf_link = ""
 
         # Sanitize HTML body of competitor file links and replace with the official direct PDF or apply page
         sanitized_detail_html = sanitize_description_links(

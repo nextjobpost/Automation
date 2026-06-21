@@ -19,8 +19,12 @@ from telethon.sessions import StringSession  # type: ignore
 from telethon.errors import FloodWaitError, AuthKeyDuplicatedError  # type: ignore
 from dotenv import load_dotenv
 from slugify import slugify
-from google import genai
-from google.genai import types
+try:
+    from google import genai
+    from google.genai import types
+except ImportError:
+    genai = None
+    types = None
 
 # ── SEO Automation Modules (graceful import — bot works even if these fail) ──
 try:
@@ -115,9 +119,13 @@ logging.basicConfig(
 )
 
 # =========================
-# ENV
+# ENV & SYSTEM SETUP
 # =========================
 load_dotenv(override=True)
+
+# Ensure essential directories exist
+os.makedirs("assets", exist_ok=True)
+os.makedirs("pending_images", exist_ok=True)
 
 def validate_config():
     api_id_str = os.getenv("API_ID")
@@ -2407,15 +2415,22 @@ async def process_and_post_job(job_data):
                     else:
                         telegram_post = post
 
-                        await client(SendMessageRequest(
-                            peer=peer_entity,
-                            message=msg_text,
-                            entities=entities,
-                            no_webpage=False if uploaded_url else True,
-                            invert_media=True if uploaded_url else False,
-                            random_id=random.randint(-2**63, 2**63 - 1)
-                        ))
-                        print(f"✔ Telegram Posted in a single unified message section.")
+                    await client.send_message(
+                        entity=peer_entity,
+                        message=telegram_post,
+                        link_preview=True if uploaded_url else False
+                    )
+                    print(f"✔ Telegram Posted in a single unified message section.")
+                except FloodWaitError as e:
+                    print(f"⚠️ Telegram Flood Wait Limit Hit: Must wait {e.seconds} seconds before next post.")
+                    await asyncio.sleep(e.seconds)
+                    # Retry once after sleeping
+                    await client.send_message(
+                        entity=peer_entity,
+                        message=telegram_post,
+                        link_preview=True if uploaded_url else False
+                    )
+                    print(f"✔ Telegram Posted after flood wait.")
                 except Exception as e:
                     print(f"❌ Telegram failed: {e}")
 
@@ -2441,188 +2456,193 @@ async def scheduler_task():
 
     DAILY_INTERVAL = 86400     # 24 hours in seconds
     while True:
-        now = time.time()
+        try:
+            now = time.time()
 
-        # ── Periodic SEO Health Check (every 30 minutes) ──
-        if HEALTH_CHECKER_ENABLED and (now - last_health_check_time) >= 1800:
-            last_health_check_time = now
-            try:
-                logging.info("[SCHEDULER] Running periodic SEO health check...")
-                await health_checker.run_health_check()
-                if SEO_LOGGER_ENABLED:
-                    asyncio.create_task(seo_logger.log_task_result(
-                        seo_logger.TASK_HEALTH_CHECKER, "success",
-                        "Sitemap, robots.txt, and meta tags health audit passed."
-                    ))
-            except Exception as e:
-                logging.error(f"[SCHEDULER] Health check failed to trigger: {e}")
-                if SEO_LOGGER_ENABLED:
-                    asyncio.create_task(seo_logger.log_task_result(
-                        seo_logger.TASK_HEALTH_CHECKER, "failed", str(e)[:200]
-                    ))
-
-        # ── Daily SEO Automation Tasks (every 24 hours) ──
-        if now - last_daily_seo_time >= DAILY_INTERVAL:
-            last_daily_seo_time = now
-            logging.info("[SCHEDULER] [DAILY] Running all daily SEO automation tasks...")
-
-            # Helper shortcut for logging
-            async def _log(task_name, status, message, ms=0, details=None):
-                if SEO_LOGGER_ENABLED:
-                    await seo_logger.log_task_result(task_name, status, message, details or {}, ms)
-
-            # 1. GSC daily keyword metrics sync to MongoDB
-            if SEARCH_CONSOLE_ENABLED:
-                t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
-                if t: t.start()
+            # ── Periodic SEO Health Check (every 30 minutes) ──
+            if HEALTH_CHECKER_ENABLED and (now - last_health_check_time) >= 1800:
+                last_health_check_time = now
                 try:
-                    logging.info("[SCHEDULER] [DAILY] 1/5 GSC keyword sync...")
-                    result = await search_console.run_daily_analysis()
-                    ms = t.elapsed_ms() if t else 0
-                    kw_count = result.get("keywords_synced", 0) if isinstance(result, dict) else 0
-                    asyncio.create_task(_log(seo_logger.TASK_GSC_SYNC, "success",
-                        f"Synced {kw_count} keyword metrics to MongoDB", ms, {"keywords_synced": kw_count}))
+                    logging.info("[SCHEDULER] Running periodic SEO health check...")
+                    await health_checker.run_health_check()
+                    if SEO_LOGGER_ENABLED:
+                        asyncio.create_task(seo_logger.log_task_result(
+                            seo_logger.TASK_HEALTH_CHECKER, "success",
+                            "Sitemap, robots.txt, and meta tags health audit passed."
+                        ))
                 except Exception as e:
-                    ms = t.elapsed_ms() if t else 0
-                    logging.error(f"[SCHEDULER] [DAILY] GSC daily sync failed: {e}")
-                    asyncio.create_task(_log(seo_logger.TASK_GSC_SYNC, "failed", str(e)[:200], ms))
-            else:
-                asyncio.create_task(_log(seo_logger.TASK_GSC_SYNC, "skipped", "search_console module not loaded"))
+                    logging.error(f"[SCHEDULER] Health check failed to trigger: {e}")
+                    if SEO_LOGGER_ENABLED:
+                        asyncio.create_task(seo_logger.log_task_result(
+                            seo_logger.TASK_HEALTH_CHECKER, "failed", str(e)[:200]
+                        ))
 
-            # 2. Google Index Status Tracker
-            if INDEX_TRACKER_ENABLED:
-                t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
-                if t: t.start()
-                try:
-                    logging.info("[SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...")
-                    await index_tracker.run_tracker()
-                    ms = t.elapsed_ms() if t else 0
-                    asyncio.create_task(_log(seo_logger.TASK_INDEX_TRACKER, "success",
-                        "Index status audit complete. Statuses synced to MongoDB.", ms))
-                except Exception as e:
-                    ms = t.elapsed_ms() if t else 0
-                    logging.error(f"[SCHEDULER] [DAILY] Index tracker failed: {e}")
-                    asyncio.create_task(_log(seo_logger.TASK_INDEX_TRACKER, "failed", str(e)[:200], ms))
-            else:
-                asyncio.create_task(_log(seo_logger.TASK_INDEX_TRACKER, "skipped", "index_tracker module not loaded"))
+            # ── Daily SEO Automation Tasks (every 24 hours) ──
+            if now - last_daily_seo_time >= DAILY_INTERVAL:
+                last_daily_seo_time = now
+                logging.info("[SCHEDULER] [DAILY] Running all daily SEO automation tasks...")
 
-            # 3. Search Console Auto-Optimizer (patch low-CTR pages)
-            if AUTO_OPTIMIZER_ENABLED:
-                t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
-                if t: t.start()
-                try:
-                    logging.info("[SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...")
-                    await auto_optimize.main()
-                    ms = t.elapsed_ms() if t else 0
-                    asyncio.create_task(_log(seo_logger.TASK_AUTO_OPTIMIZER, "success",
-                        "Low-CTR pages patched with optimized meta titles and descriptions.", ms))
-                except Exception as e:
-                    ms = t.elapsed_ms() if t else 0
-                    logging.error(f"[SCHEDULER] [DAILY] Auto-optimizer failed: {e}")
-                    asyncio.create_task(_log(seo_logger.TASK_AUTO_OPTIMIZER, "failed", str(e)[:200], ms))
-            else:
-                asyncio.create_task(_log(seo_logger.TASK_AUTO_OPTIMIZER, "skipped", "auto_optimize module not loaded"))
+                # Helper shortcut for logging
+                async def _log(task_name, status, message, ms=0, details=None):
+                    if SEO_LOGGER_ENABLED:
+                        await seo_logger.log_task_result(task_name, status, message, details or {}, ms)
 
-            # 4. Content Refresh Engine
-            if REFRESH_ENGINE_ENABLED:
-                t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
-                if t: t.start()
-                try:
-                    logging.info("[SCHEDULER] [DAILY] 4/5 Content Refresh Engine...")
-                    await refresh_engine.main()
-                    ms = t.elapsed_ms() if t else 0
-                    asyncio.create_task(_log(seo_logger.TASK_CONTENT_REFRESH, "success",
-                        "Programmatic pages refreshed. Job counts, FAQs, and links updated.", ms))
-                except Exception as e:
-                    ms = t.elapsed_ms() if t else 0
-                    logging.error(f"[SCHEDULER] [DAILY] Content refresh engine failed: {e}")
-                    asyncio.create_task(_log(seo_logger.TASK_CONTENT_REFRESH, "failed", str(e)[:200], ms))
-            else:
-                asyncio.create_task(_log(seo_logger.TASK_CONTENT_REFRESH, "skipped", "refresh_engine module not loaded"))
-
-            # 5. Competitor Keyword Gap Finder
-            if GAP_FINDER_ENABLED:
-                t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
-                if t: t.start()
-                try:
-                    logging.info("[SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...")
-                    await keyword_gap_finder.run_analysis()
-                    ms = t.elapsed_ms() if t else 0
-                    asyncio.create_task(_log(seo_logger.TASK_GAP_FINDER, "success",
-                        "Competitor keyword gap analysis complete. New opportunities saved.", ms))
-                except Exception as e:
-                    ms = t.elapsed_ms() if t else 0
-                    logging.error(f"[SCHEDULER] [DAILY] Keyword gap finder failed: {e}")
-                    asyncio.create_task(_log(seo_logger.TASK_GAP_FINDER, "failed", str(e)[:200], ms))
-            else:
-                asyncio.create_task(_log(seo_logger.TASK_GAP_FINDER, "skipped", "keyword_gap_finder module not loaded"))
-
-            logging.info("[SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.")
-
-
-        time_since_last = now - last_post_time
-
-        # Only post if enough time has passed since last post
-        if time_since_last >= POST_INTERVAL:
-            posted_any = False
-            
-            while True:
-                jobs_to_process = database.get_jobs_batch(limit=1)
-                if not jobs_to_process:
-                    # Queue is empty! Break loop.
-                    break
-                
-                # First clean up invalid jobs
-                valid_jobs = []
-                for jd in jobs_to_process:
-                    job = jd.get("job", {})
-                    is_valid, reason = is_valid_job(job)
-                    if not is_valid:
-                        logging.info(f"🚫 [SCHEDULER] Skipping invalid/expired job from queue: '{job.get('title')}' - Reason: {reason}")
-                    else:
-                        valid_jobs.append(jd)
-                        
-                if not valid_jobs:
-                    # All jobs in this batch were invalid, try next batch immediately!
-                    continue
-                    
-                logging.info(f"\n📤 [SCHEDULER] Dequeued {len(valid_jobs)} valid job(s) concurrently. Remaining in queue: {database.get_queue_size()}")
-                
-                async def process_with_error_handling(jd):
+                # 1. GSC daily keyword metrics sync to MongoDB
+                if SEARCH_CONSOLE_ENABLED:
+                    t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
+                    if t: t.start()
                     try:
-                        success, was_posted = await process_and_post_job(jd)
-                        if not success:
-                            logging.warning(f"⚠️ [SCHEDULER] Job '{jd.get('job', {}).get('title')}' was aborted/skipped.")
-                        return success, was_posted
+                        logging.info("[SCHEDULER] [DAILY] 1/5 GSC keyword sync...")
+                        result = await search_console.run_daily_analysis()
+                        ms = t.elapsed_ms() if t else 0
+                        kw_count = result.get("keywords_synced", 0) if isinstance(result, dict) else 0
+                        asyncio.create_task(_log(seo_logger.TASK_GSC_SYNC, "success",
+                            f"Synced {kw_count} keyword metrics to MongoDB", ms, {"keywords_synced": kw_count}))
                     except Exception as e:
-                        retries = jd.get("retries", 0) + 1
-                        jd["retries"] = retries
-                        logging.error(f"❌ [SCHEDULER] Processing error for '{jd.get('job', {}).get('title')}': {e}. Retry {retries}/3.")
-                        traceback.print_exc()
-                        if retries >= 3:
-                            logging.error("Job failed 3 times. Moving to dead-letter queue.")
-                            database.add_to_failed_queue(jd, str(e))
-                        else:
-                            database.return_job_to_queue(jd)
-                        return False, False
+                        ms = t.elapsed_ms() if t else 0
+                        logging.error(f"[SCHEDULER] [DAILY] GSC daily sync failed: {e}")
+                        asyncio.create_task(_log(seo_logger.TASK_GSC_SYNC, "failed", str(e)[:200], ms))
+                else:
+                    asyncio.create_task(_log(seo_logger.TASK_GSC_SYNC, "skipped", "search_console module not loaded"))
 
-                results = await asyncio.gather(*(process_with_error_handling(jd) for jd in valid_jobs))
+                # 2. Google Index Status Tracker
+                if INDEX_TRACKER_ENABLED:
+                    t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
+                    if t: t.start()
+                    try:
+                        logging.info("[SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...")
+                        await index_tracker.run_tracker()
+                        ms = t.elapsed_ms() if t else 0
+                        asyncio.create_task(_log(seo_logger.TASK_INDEX_TRACKER, "success",
+                            "Index status audit complete. Statuses synced to MongoDB.", ms))
+                    except Exception as e:
+                        ms = t.elapsed_ms() if t else 0
+                        logging.error(f"[SCHEDULER] [DAILY] Index tracker failed: {e}")
+                        asyncio.create_task(_log(seo_logger.TASK_INDEX_TRACKER, "failed", str(e)[:200], ms))
+                else:
+                    asyncio.create_task(_log(seo_logger.TASK_INDEX_TRACKER, "skipped", "index_tracker module not loaded"))
+
+                # 3. Search Console Auto-Optimizer (patch low-CTR pages)
+                if AUTO_OPTIMIZER_ENABLED:
+                    t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
+                    if t: t.start()
+                    try:
+                        logging.info("[SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...")
+                        await auto_optimize.main()
+                        ms = t.elapsed_ms() if t else 0
+                        asyncio.create_task(_log(seo_logger.TASK_AUTO_OPTIMIZER, "success",
+                            "Low-CTR pages patched with optimized meta titles and descriptions.", ms))
+                    except Exception as e:
+                        ms = t.elapsed_ms() if t else 0
+                        logging.error(f"[SCHEDULER] [DAILY] Auto-optimizer failed: {e}")
+                        asyncio.create_task(_log(seo_logger.TASK_AUTO_OPTIMIZER, "failed", str(e)[:200], ms))
+                else:
+                    asyncio.create_task(_log(seo_logger.TASK_AUTO_OPTIMIZER, "skipped", "auto_optimize module not loaded"))
+
+                # 4. Content Refresh Engine
+                if REFRESH_ENGINE_ENABLED:
+                    t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
+                    if t: t.start()
+                    try:
+                        logging.info("[SCHEDULER] [DAILY] 4/5 Content Refresh Engine...")
+                        await refresh_engine.main()
+                        ms = t.elapsed_ms() if t else 0
+                        asyncio.create_task(_log(seo_logger.TASK_CONTENT_REFRESH, "success",
+                            "Programmatic pages refreshed. Job counts, FAQs, and links updated.", ms))
+                    except Exception as e:
+                        ms = t.elapsed_ms() if t else 0
+                        logging.error(f"[SCHEDULER] [DAILY] Content refresh engine failed: {e}")
+                        asyncio.create_task(_log(seo_logger.TASK_CONTENT_REFRESH, "failed", str(e)[:200], ms))
+                else:
+                    asyncio.create_task(_log(seo_logger.TASK_CONTENT_REFRESH, "skipped", "refresh_engine module not loaded"))
+
+                # 5. Competitor Keyword Gap Finder
+                if GAP_FINDER_ENABLED:
+                    t = seo_logger.TaskTimer() if SEO_LOGGER_ENABLED else None
+                    if t: t.start()
+                    try:
+                        logging.info("[SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...")
+                        await keyword_gap_finder.run_analysis()
+                        ms = t.elapsed_ms() if t else 0
+                        asyncio.create_task(_log(seo_logger.TASK_GAP_FINDER, "success",
+                            "Competitor keyword gap analysis complete. New opportunities saved.", ms))
+                    except Exception as e:
+                        ms = t.elapsed_ms() if t else 0
+                        logging.error(f"[SCHEDULER] [DAILY] Keyword gap finder failed: {e}")
+                        asyncio.create_task(_log(seo_logger.TASK_GAP_FINDER, "failed", str(e)[:200], ms))
+                else:
+                    asyncio.create_task(_log(seo_logger.TASK_GAP_FINDER, "skipped", "keyword_gap_finder module not loaded"))
+
+                logging.info("[SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.")
+
+
+            time_since_last = now - last_post_time
+
+            # Only post if enough time has passed since last post
+            if time_since_last >= POST_INTERVAL:
+                posted_any = False
+            
+                while True:
+                    jobs_to_process = database.get_jobs_batch(limit=1)
+                    if not jobs_to_process:
+                        # Queue is empty! Break loop.
+                        break
                 
-                # If any job in this batch was actually posted to website
-                if any(was_posted for success, was_posted in results):
-                    posted_any = True
-                    last_post_time = time.time()
-                    break # Break the inner loop to enforce the 30-minute interval
+                    # First clean up invalid jobs
+                    valid_jobs = []
+                    for jd in jobs_to_process:
+                        job = jd.get("job", {})
+                        is_valid, reason = is_valid_job(job)
+                        if not is_valid:
+                            logging.info(f"🚫 [SCHEDULER] Skipping invalid/expired job from queue: '{job.get('title')}' - Reason: {reason}")
+                        else:
+                            valid_jobs.append(jd)
+                        
+                    if not valid_jobs:
+                        # All jobs in this batch were invalid, try next batch immediately!
+                        continue
                     
-                logging.info("🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...")
+                    logging.info(f"\n📤 [SCHEDULER] Dequeued {len(valid_jobs)} valid job(s) concurrently. Remaining in queue: {database.get_queue_size()}")
+                
+                    async def process_with_error_handling(jd):
+                        try:
+                            success, was_posted = await process_and_post_job(jd)
+                            if not success:
+                                logging.warning(f"⚠️ [SCHEDULER] Job '{jd.get('job', {}).get('title')}' was aborted/skipped.")
+                            return success, was_posted
+                        except Exception as e:
+                            retries = jd.get("retries", 0) + 1
+                            jd["retries"] = retries
+                            logging.error(f"❌ [SCHEDULER] Processing error for '{jd.get('job', {}).get('title')}': {e}. Retry {retries}/3.")
+                            traceback.print_exc()
+                            if retries >= 3:
+                                logging.error("Job failed 3 times. Moving to dead-letter queue.")
+                                database.add_to_failed_queue(jd, str(e))
+                            else:
+                                database.return_job_to_queue(jd)
+                            return False, False
 
-            if posted_any:
-                print(f"⏳ [SCHEDULER] Next post in {POST_INTERVAL//60} min. Queue size: {database.get_queue_size()}")
-            elif database.get_queue_size() == 0:
-                print(f"📭 [SCHEDULER] Queue empty (or only contained invalid/aborted jobs). Waiting... (checked at {time.strftime('%H:%M:%S')})")
+                    results = await asyncio.gather(*(process_with_error_handling(jd) for jd in valid_jobs))
+                
+                    # If any job in this batch was actually posted to website
+                    if any(was_posted for success, was_posted in results):
+                        posted_any = True
+                        last_post_time = time.time()
+                        break # Break the inner loop to enforce the 30-minute interval
+                    
+                    logging.info("🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...")
+
+                if posted_any:
+                    print(f"⏳ [SCHEDULER] Next post in {POST_INTERVAL//60} min. Queue size: {database.get_queue_size()}")
+                elif database.get_queue_size() == 0:
+                    print(f"📭 [SCHEDULER] Queue empty (or only contained invalid/aborted jobs). Waiting... (checked at {time.strftime('%H:%M:%S')})")
         
-        # Sleep 10 seconds then re-check — allows fast response when new jobs arrive
-        await asyncio.sleep(10)
+            # Sleep 10 seconds then re-check — allows fast response when new jobs arrive
+            await asyncio.sleep(10)
+        except Exception as e:
+            logging.critical(f"🔥 [CRITICAL] Fatal error in scheduler loop: {e}")
+            traceback.print_exc()
+            await asyncio.sleep(60)
 
 
 async def handler(event):

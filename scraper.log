@@ -8247,3 +8247,38 @@
 2026-06-17 17:30:11,981 - WARNING - API_KEY (Gemini) not found or is placeholder. Running in BASIC extraction mode (no AI).
 2026-06-17 18:12:11,953 - WARNING - API_KEY (Gemini) not found or is placeholder. Running in BASIC extraction mode (no AI).
 2026-06-20 19:42:05,096 - ERROR - Failed to import helpers from scrape_govt_jobs.py: cannot import name 'genai' from 'google' (unknown location)
+2026-06-21 10:23:23,691 - WARNING - API_KEY (Gemini) not found or is placeholder. Running in BASIC extraction mode (no AI).
+2026-06-21 10:23:23,693 - INFO - ==================================================
+2026-06-21 10:23:23,693 - INFO - 💼 NextJobPost — Private Jobs Scraper v2
+2026-06-21 10:23:23,693 - INFO -    Sources: LinkedIn Official API · Adzuna API
+2026-06-21 10:23:23,693 - INFO - ==================================================
+2026-06-21 10:23:23,695 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-21 10:23:40,047 - INFO -    ✔ Preloaded 0 live jobs.
+2026-06-21 10:23:40,047 - INFO - 
+================================================
+2026-06-21 10:23:40,048 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-21 10:23:40,048 - INFO - ================================================
+2026-06-21 10:23:42,496 - WARNING - LinkedIn API Error 401: {"status":401,"serviceErrorCode":65600,"code":"INVALID_ACCESS_TOKEN","message":"Invalid access token"}
+2026-06-21 10:23:42,500 - INFO - Found 0 listings from LinkedIn Official.
+2026-06-21 10:23:42,501 - INFO - ✅ LinkedIn Official: Queued 0 new private jobs.
+2026-06-21 10:23:42,501 - INFO - 
+================================================
+2026-06-21 10:23:42,502 - INFO - 🌐 Scraping: Adzuna API
+2026-06-21 10:23:42,502 - INFO - ================================================
+2026-06-21 10:23:44,518 - WARNING - Adzuna API Error 401: <!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Adzuna API</title>
+<link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/doc.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<dl><dt>__CLASS__</dt><dd>Adzuna::API::Response::Exception</dd><dt>display</dt><dd>Authorisation failed</dd><dt>doc</dt><dd>https://api.adzuna.com/v1/doc</dd><dt>exception</dt><dd>AUTH_FAIL</dd></dl>
+</body>
+</html>
+
+2026-06-21 10:23:44,523 - INFO - Found 0 listings from Adzuna API.
+2026-06-21 10:23:44,524 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-06-21 10:23:44,525 - INFO - 
+✅ All private job sources successfully processed.
