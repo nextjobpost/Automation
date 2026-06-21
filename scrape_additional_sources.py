@@ -31,7 +31,6 @@ headers = {
 # Import core config, database, and helpers from scrape_govt_jobs.py
 try:
     from scrape_govt_jobs import (
-        API_KEY,
         API_TOKEN,
         API_URL,
         ADMIN_URL,
