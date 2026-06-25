@@ -908,6 +908,10 @@ def is_valid_job(job):
         val = str(job.get(field, "")).lower()
         if "sarkariresult" in val or "sarkari result" in val:
             return False, f"Sarkari Result reference detected in '{field}'"
+            
+        # 🚫 Banned Keywords Filter
+        if any(kw in val for kw in ["pdlink", "pd link", "top company", "certification"]):
+            return False, f"Banned keyword detected in '{field}'"
 
     # Clean raw domains, URLs, and competitor names from all string and list fields, excluding key URLs/IDs/Dates/Metadata
     exclude_fields = {
@@ -1881,7 +1885,9 @@ def build_linkedin_post(job, slug):
     # ── Smart dynamic hashtags ───────────────────────────────────────────
     hashtag_set = {
         '#Hiring', '#Jobs', '#JobAlert', '#NextJobPost', '#Career',
-        '#JobSearch', '#Recruitment', '#OpenToWork',
+        '#JobSearch', '#Recruitment', '#OpenToWork', '#HiringNow', 
+        '#JobOpportunities', '#Employment', '#JobSeekers', '#Careers',
+        '#Opportunity', '#JobHunt'
     }
     if is_govt:
         hashtag_set.update(['#GovtJobs', '#GovernmentJobs', '#SarkariNaukri', '#CentralGovtJobs'])
@@ -2648,7 +2654,6 @@ async def run_scraper_periodically():
         scrapers = [
             "scrape_govt_jobs.py",
             "scrape_additional_sources.py",
-            "scrape_private_jobs.py",
         ]
         for scraper_file in scrapers:
             try:
