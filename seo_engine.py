@@ -31,7 +31,7 @@ def _get_gemini_client():
     if _client_gemini is None and API_KEY:
         try:
             from google import genai  # type: ignore
-            _client_gemini = genai.Client(api_key=API_KEY)
+            _client_gemini = None  # Disabled Gemini Integration
         except Exception as e:
             logging.warning(f"[SEO] Could not init Gemini client: {e}")
     return _client_gemini

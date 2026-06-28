@@ -84,7 +84,7 @@ _client = None
 if API_KEY:
     try:
         from google import genai
-        _client = genai.Client(api_key=API_KEY)
+        _client = None  # Disabled Gemini Integration
     except Exception as e:
         logging.warning(f"[P-SEO] Gemini init failed: {e}")
 

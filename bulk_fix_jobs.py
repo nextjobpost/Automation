@@ -53,7 +53,7 @@ if API_KEY:
     try:
         from google import genai
         from google.genai import types as gtypes
-        client_gemini = genai.Client(api_key=API_KEY)
+        client_gemini = None  # Disabled Gemini Integration
         print("🤖 Gemini AI ready.")
     except Exception as e:
         print(f"⚠️  Gemini init failed: {e}. Will use basic parser.")

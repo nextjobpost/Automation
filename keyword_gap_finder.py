@@ -70,7 +70,7 @@ async def find_gaps_via_gemini(my_keywords: list) -> list:
         
     try:
         from google import genai
-        client = genai.Client(api_key=API_KEY)
+        client = None  # Disabled Gemini Integration
         
         my_kws_str = ", ".join(my_keywords[:80]) if my_keywords else "None tracked yet"
         

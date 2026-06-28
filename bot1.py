@@ -1828,6 +1828,15 @@ def build_linkedin_post(job, slug):
     batch        = strip_html(job.get('batch', ''))
     last_date    = strip_html(job.get('lastDate', ''))
     summary      = strip_html(job.get('shortSummary', '') or job.get('description', ''))
+    
+    # Remove HR/Recruiter mentions, phone numbers, and external links from summary
+    import re
+    summary = re.sub(r'(?i)\b(?:hr|recruiter|contact person|contact|send resume to)\b[^a-zA-Z0-9]*[a-zA-Z\s\.\,\-]+(?=\n|$)', '', summary)
+    summary = re.sub(r'https?://\S+|www\.\S+', '', summary)
+    summary = re.sub(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', '', summary)
+    summary = re.sub(r'(?:\+91|0)?\s?[6-9]\d{9}', '', summary)
+    summary = re.sub(r'\s+', ' ', summary).strip()
+
     about_co     = strip_html(job.get('aboutCompany', ''))
     why_join     = strip_html(job.get('whyJoin', ''))
     how_apply    = strip_html(job.get('howToApply', ''))
@@ -2091,28 +2100,23 @@ async def post_to_linkedin(session, job, slug):
                 "description": {"text": job.get('shortSummary', '')[:256]}
             }
         ]
-        media_category = "IMAGE"
+        share_content = {
+            "shareCommentary": {"text": post_text},
+            "shareMediaCategory": "IMAGE",
+            "media": media_block
+        }
     else:
-        # Fallback: article / link preview
-        media_block = [
-            {
-                "status": "READY",
-                "originalUrl": job_url,
-                "title": {"text": job.get('title', 'Job Opening')[:400]},
-                "description": {"text": job.get('shortSummary', '')[:256]}
-            }
-        ]
-        media_category = "ARTICLE"
+        # Fallback: Text only to avoid LinkedIn auto-generating external link previews
+        share_content = {
+            "shareCommentary": {"text": post_text},
+            "shareMediaCategory": "NONE"
+        }
 
     payload = {
         "author": LINKEDIN_PERSON_URN,
         "lifecycleState": "PUBLISHED",
         "specificContent": {
-            "com.linkedin.ugc.ShareContent": {
-                "shareCommentary": {"text": post_text},
-                "shareMediaCategory": media_category,
-                "media": media_block
-            }
+            "com.linkedin.ugc.ShareContent": share_content
         },
         "visibility": {
             "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"

@@ -99,7 +99,7 @@ async def generate_better_metadata(job: dict, target_query: str) -> dict:
         
     try:
         from google import genai
-        client = genai.Client(api_key=API_KEY)
+        client = None  # Disabled Gemini Integration
         
         prompt = f"""
 You are an expert search engine optimizer. We want to improve the click-through rate (CTR) of a landing page.

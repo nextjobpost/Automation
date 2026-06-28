@@ -3,7 +3,7 @@ with open("bot1.py", "r") as f:
 
 import re
 
-# Remove the line: client_gemini = genai.Client(api_key=API_KEY) if API_KEY else None
+# Remove the line: client_gemini = None  # Disabled Gemini Integration if API_KEY else None
 content = re.sub(r'client_gemini = genai\.Client\(api_key=API_KEY\) if API_KEY else None\n', '', content)
 
 # Replace extract_with_ai

@@ -1,4 +1,4 @@
 from google import genai
-client = genai.Client(api_key="test")
+client = None  # Disabled Gemini Integration
 print(client.aio)
 print(client.aio.models)
