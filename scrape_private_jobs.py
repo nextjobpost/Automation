@@ -169,14 +169,18 @@ def clean_private_job_html(html_content):
                                         "facebook.com", "twitter.com", "youtube.com"]):
                 tag.decompose()
 
-    main = (
-        soup.find("div", {"class": re.compile(r'\bdescription\b|job.?detail|job.?desc|job.?content|main.?content|job.?info', re.I)})
-        or soup.find("article")
-        or soup.find("main")
-        or soup.find("div", {"id": re.compile(r'content|main|job', re.I)})
-        or soup.body
-        or soup
-    )
+    linkedin_desc = soup.find(class_=re.compile(r'show-more-less-html__markup|description__text'))
+    if linkedin_desc:
+        main = linkedin_desc
+    else:
+        main = (
+            soup.find("div", {"class": re.compile(r'\bdescription\b|job.?detail|job.?desc|job.?content|main.?content|job.?info', re.I)})
+            or soup.find("article")
+            or soup.find("main")
+            or soup.find("div", {"id": re.compile(r'content|main|job', re.I)})
+            or soup.body
+            or soup
+        )
 
     # Beautify headings (e.g. <p><strong>Heading</strong></p> to <h3>Heading</h3>)
     for p in list(main.find_all("p")):
@@ -202,6 +206,68 @@ def clean_private_job_html(html_content):
 # ═══════════════════════════════════════════════════════════════════════════
 #  LISTING EXTRACTORS — one per website
 # ═══════════════════════════════════════════════════════════════════════════
+
+
+def extract_linkedin_jobs_public(limit=25):
+    """Fetches job listings from LinkedIn's public guest search API using multiple search keywords."""
+    listings = []
+    seen = set()
+    
+    keywords_list = [
+        "Software Developer",
+        "Software Engineer",
+        "Frontend Developer",
+        "Backend Developer",
+        "Full Stack Developer",
+        "Python Developer",
+        "Java Developer",
+        "IT Internship",
+        "Web Developer",
+        "React Developer",
+        "Data Analyst",
+        "DevOps Engineer",
+        "Software Intern",
+        "Machine Learning Engineer",
+        "Cloud Engineer"
+    ]
+    
+    for kw in keywords_list:
+        if len(listings) >= limit:
+            break
+            
+        kw_encoded = requests.utils.quote(kw)
+        url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={kw_encoded}&location=India&start=0"
+        
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=15)
+            if resp.status_code != 200:
+                logging.warning(f"LinkedIn Guest API Error {resp.status_code} for query: {kw}")
+                continue
+            
+            soup = BeautifulSoup(resp.text, "html.parser")
+            cards = soup.find_all("li")
+            
+            for card in cards:
+                title_el = card.find("h3", class_="base-search-card__title")
+                link_el = card.find("a", class_="base-card__full-link")
+                company_el = card.find("h4", class_="base-search-card__subtitle")
+                
+                if title_el and link_el:
+                    title = title_el.get_text(strip=True)
+                    link = link_el.get("href").split("?")[0]
+                    company = company_el.get_text(strip=True) if company_el else "Top Company"
+                    
+                    if link not in seen:
+                        seen.add(link)
+                        listings.append((title, link, None, company))
+                        if len(listings) >= limit:
+                            break
+            # Add a brief delay between queries to respect rate limits
+            time.sleep(1.0)
+        except Exception as e:
+            logging.warning(f"LinkedIn public API fetch error for query '{kw}': {e}")
+            
+    return listings
 
 
 def extract_adzuna_jobs(limit=30):
@@ -699,8 +765,8 @@ def run_scraper(name, fetch_fn, recent_jobs, limit=25, delay=1.5, global_state=N
     logging.info(f"Found {len(listings)} listings from {name}.")
     count = 0
     for item in listings:
-        if name != "Adzuna API" and global_state["total_queued"] >= 5:
-            logging.info("🎯 Global limit of 5 jobs reached. Stopping scraper.")
+        if name != "Adzuna API" and global_state["total_queued"] >= 100:
+            logging.info("🎯 Global limit of 100 jobs reached. Stopping scraper.")
             break
 
         if len(item) == 4:
@@ -728,7 +794,7 @@ def run_scraper(name, fetch_fn, recent_jobs, limit=25, delay=1.5, global_state=N
 def main():
     logging.info("=" * 50)
     logging.info("💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)")
-    logging.info("   Sources: Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup")
+    logging.info("   Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup")
     logging.info("=" * 50)
 
     get_auth_token()
@@ -739,22 +805,25 @@ def main():
 
     global_state = {"total_queued": 0}
 
-    if global_state["total_queued"] < 5:
+    if global_state["total_queued"] < 100:
+        run_scraper("LinkedIn Official", extract_linkedin_jobs_public, recent_jobs, limit=100, delay=1.5, global_state=global_state)
+
+    if global_state["total_queued"] < 100:
         run_scraper("Adzuna API", extract_adzuna_jobs, recent_jobs, limit=15, delay=1.5, global_state=global_state)
 
-    if global_state["total_queued"] < 5:
+    if global_state["total_queued"] < 100:
         run_scraper("Internshala", extract_internshala_listings, recent_jobs, limit=15, delay=1.5, global_state=global_state)
 
-    if global_state["total_queued"] < 5:
+    if global_state["total_queued"] < 100:
         run_scraper("WeWorkRemotely", extract_weworkremotely_rss, recent_jobs, limit=15, delay=1.5, global_state=global_state)
 
-    if global_state["total_queued"] < 5:
+    if global_state["total_queued"] < 100:
         run_scraper("Freshersworld", extract_freshersworld_listings, recent_jobs, limit=10, delay=1.5, global_state=global_state)
 
-    if global_state["total_queued"] < 5:
+    if global_state["total_queued"] < 100:
         run_scraper("WorkAtAStartup", extract_workatastartup_listings, recent_jobs, limit=10, delay=1.5, global_state=global_state)
 
-    logging.info(f"\n✅ All private job sources processed. Total Queued: {global_state['total_queued']}/5")
+    logging.info(f"\n✅ All private job sources processed. Total Queued: {global_state['total_queued']}/100")
 
 
 if __name__ == "__main__":

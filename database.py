@@ -287,5 +287,56 @@ def log_linkedin_govt_post():
     finally:
         conn.close()
 
+def get_queue_breakdown():
+    """Returns a dictionary showing count of jobs in queue grouped by source/website."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    breakdown = {}
+    try:
+        cursor.execute("SELECT job_data, is_government FROM job_queue")
+        rows = cursor.fetchall()
+        for row in rows:
+            try:
+                job = json.loads(row[0])
+                is_govt = row[1]
+                
+                # Try to get the source website or channel name
+                source = job.get("sourceWebsite") or job.get("sourceUrl") or ""
+                if not source:
+                    # Maybe it's a telegram channel message? Let's check for channel info
+                    source = job.get("telegramChannel") or ("Government Job" if is_govt else "Private Job")
+                
+                # Clean up / group common sources
+                source_lower = source.lower()
+                if "linkedin" in source_lower:
+                    source = "LinkedIn"
+                elif "telegram" in source_lower or source.startswith("@") or "t.me" in source_lower:
+                    source = "Telegram"
+                elif "weworkremotely" in source_lower:
+                    source = "WeWorkRemotely"
+                elif "internshala" in source_lower:
+                    source = "Internshala"
+                elif "freshersworld" in source_lower:
+                    source = "Freshersworld"
+                elif "workatastartup" in source_lower:
+                    source = "WorkAtAStartup"
+                elif "adzuna" in source_lower:
+                    source = "Adzuna"
+                elif "govtjobsalert" in source_lower:
+                    source = "GovtJobsAlert"
+                elif is_govt:
+                    source = "Government Scrapers"
+                else:
+                    source = "Other Private"
+                    
+                breakdown[source] = breakdown.get(source, 0) + 1
+            except Exception:
+                pass
+    except Exception as e:
+        print(f"Error getting queue breakdown: {e}")
+    finally:
+        conn.close()
+    return breakdown
+
 # Initialize DB on import
 init_db()

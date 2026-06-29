@@ -172,6 +172,83 @@ SOURCE_CHANNELS = [
     "offcampus_phodenge",
     "jobxx",
     "PrepTrain",
+    # ── Additional Tech & Placement Channels ──
+    "geeksgod",
+    "prepinstajobs",
+    "prepinstashare",
+    "careersbywell",
+    "freshersvoice_updates",
+    "freshersjob_alert",
+    "offcampusjobsindia",
+    "itjobsforfreshers",
+    "placementdrives_fresher",
+    "mnc_offcampus_drives",
+    "fresherjobs_india",
+    "offcampusdrives_india",
+    "placement_season",
+    "freshersworld_official",
+    "walkin_interview_india",
+    "walkindrives_fresher",
+    "freshersoffcampus_drives",
+    "geeksgod_jobs",
+    "placement_express_jobs",
+    "offcampusplacement_updates",
+    "itjobupdate_india",
+    "placementpoint_jobs",
+    "fresher_zone_jobs",
+    "placement_alert_india",
+    "job_seeker_india_jobs",
+    "softwareengineering_jobs_india",
+    "tech_careers_india",
+    "cs_it_jobs_india",
+    "hire_freshers",
+    "offcampus_hiring",
+    "it_placement_drives",
+    "coders_placement",
+    "developer_jobs_india",
+    "freshersjobalert",
+    "offcampusjobs_freshers",
+    "placement_drives_2026",
+    "internshala_internships",
+    "free_placement_prep",
+    "placement_support",
+    "engineering_jobs_india",
+    "it_companies_hiring",
+    "fresher_offcampus_jobs",
+    "placement_prep_group",
+    # ── Expanded Batch (IT, Software, Placements & Internships) ──
+    "jobsinternshipswale",
+    "internfreak",
+    "heavenforcoders",
+    "cpwithabhinav",
+    "gocareers",
+    "kodeverse",
+    "placementlelo",
+    "coders_hub",
+    "internshala_freshers",
+    "it_jobs_2026",
+    "engineering_placement",
+    "freshers_walkin",
+    "jobs_and_internships",
+    "free_job_alert_fresher",
+    "offcampusdriveofficial",
+    "software_developer_jobs",
+    "placement_guide",
+    "career_path",
+    "software_engineers",
+    "coders_lounge",
+    "hiring_alert",
+    "tech_hiring_india",
+    "dev_jobs_india",
+    "freelance_jobs_india",
+    "career_accelerator",
+    "job_seeker_india_tech",
+    "it_jobs_hub",
+    "jobs_in_pune",
+    "jobs_in_bangalore",
+    "jobs_in_hyderabad",
+    "freshers_jobs_bangalore",
+    "fresher_walkins_hub",
 ]
 
 TARGET_CHANNEL = os.getenv("TELEGRAM_CHANNEL", "@nextjobpost")
@@ -2524,7 +2601,9 @@ async def scheduler_task():
                         # All jobs in this batch were invalid, try next batch immediately!
                         continue
                     
-                    logging.info(f"\n📤 [SCHEDULER] Dequeued {len(valid_jobs)} valid job(s) concurrently. Remaining in queue: {database.get_queue_size()}")
+                    breakdown = database.get_queue_breakdown()
+                    breakdown_str = ", ".join(f"{source}: {count}" for source, count in breakdown.items())
+                    logging.info(f"\n📤 [SCHEDULER] Dequeued {len(valid_jobs)} valid job(s) concurrently. Remaining in queue: {database.get_queue_size()} ({breakdown_str})")
                 
                     async def process_with_error_handling(jd):
                         try:
@@ -2555,7 +2634,9 @@ async def scheduler_task():
                     logging.info("🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...")
 
                 if posted_any:
-                    print(f"⏳ [SCHEDULER] Next post in {POST_INTERVAL//60} min. Queue size: {database.get_queue_size()}")
+                    breakdown = database.get_queue_breakdown()
+                    breakdown_str = ", ".join(f"{source}: {count}" for source, count in breakdown.items())
+                    print(f"⏳ [SCHEDULER] Next post in {POST_INTERVAL//60} min. Queue size: {database.get_queue_size()} ({breakdown_str})")
                 elif database.get_queue_size() == 0:
                     print(f"📭 [SCHEDULER] Queue empty (or only contained invalid/aborted jobs). Waiting... (checked at {time.strftime('%H:%M:%S')})")
         

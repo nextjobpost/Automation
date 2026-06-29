@@ -15,3 +15,448 @@
 2026-06-16 09:57:09,201 - INFO - 
 📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 35
 2026-06-21 11:03:56,559 - ERROR - CRITICAL: Invalid API_ID in .env file! Found: 'your_telegram_api_id'. Please replace it with your actual numeric Telegram API ID.
+2026-06-29 18:11:01,469 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 18:11:01,616 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-29 18:11:06,851 - INFO - 🕒 Scheduler started. Posting every 1800s (30 min).
+2026-06-29 18:11:06,852 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-06-29 18:11:06,852 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-06-29 18:11:09,618 - INFO - [HEALTH] ─── Results: 7/7 checks passed (2.8s) ───
+2026-06-29 18:11:09,618 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-06-29 18:11:09,618 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-06-29 18:11:09,618 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-06-29 18:11:09,618 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-06-29 18:11:09,618 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-06-29 18:11:09,619 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-06-29 18:11:09,619 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-06-29 18:11:09,619 - INFO - [HEALTH] ✅ All checks passed!
+2026-06-29 18:11:09,619 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-06-29 18:11:09,620 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-06-29 18:11:09,620 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-06-29 18:11:09,622 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-06-29 18:11:09,622 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-06-29 18:11:09,859 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-06-29 18:11:10,649 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-06-29 18:11:10,810 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-06-29 18:11:12,489 - INFO - [GSC-Crawler] 🎯 Identified 32 technical SEO opportunities.
+2026-06-29 18:11:12,496 - INFO - [GSC] 💾 Saved 32 SEO opportunities to DB
+2026-06-29 18:11:12,496 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-06-29 18:11:13,139 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-06-29 18:11:13,139 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-06-29 18:11:13,140 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-06-29 18:11:13,140 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-06-29 18:11:13,735 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-06-29 18:11:13,736 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-06-29 18:11:14,326 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-06-29 18:11:15,482 - INFO - [INDEX-TRACKER] Discovered 959 total portal URLs
+2026-06-29 18:11:17,556 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-06-29 18:11:17,556 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-06-29 18:11:17,557 - INFO - [INDEX-TRACKER] Generated 163 index updates to sync
+2026-06-29 18:11:17,557 - INFO - [INDEX-TRACKER] Posting 163 status updates to MongoDB backend...
+2026-06-29 18:11:19,042 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-06-29 18:11:19,044 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-06-29 18:11:19,045 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-06-29 18:11:19,046 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-06-29 18:11:19,050 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-06-29 18:11:19,050 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-06-29 18:11:19,050 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-06-29 18:11:19,050 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-06-29 18:11:19,050 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-06-29 18:11:19,093 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-06-29 18:11:19,701 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-06-29 18:11:20,463 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-06-29 18:11:20,594 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-06-29 18:11:20,969 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-06-29 18:11:20,970 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-06-29 18:11:22,298 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-06-29 18:11:22,298 - ERROR - [REFRESH] Error refreshing older jobs: module 'seo_engine' has no attribute 'inject_internal_links'
+2026-06-29 18:11:22,299 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-06-29 18:11:22,300 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-06-29 18:11:22,300 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-06-29 18:11:22,302 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-06-29 18:11:22,302 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-06-29 18:11:22,306 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-06-29 18:11:22,307 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-06-29 18:11:22,307 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-06-29 18:11:22,307 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-06-29 18:11:22,307 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-06-29 18:11:22,308 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-06-29 18:11:22,308 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-06-29 18:11:22,404 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 155
+2026-06-29 18:11:23,164 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-06-29 18:11:23,403 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-06-29 18:12:03,250 - INFO - [SEO] 🚀 Starting SEO pipeline for: CG Vyapam OT Technician Recruitment 2026: for 15 Operation Theatre Technician Posts, Last Date 3 July
+2026-06-29 18:12:03,250 - INFO - [SEO] Using rule-based fallback for 'CG Vyapam OT Technician Recruitment 2026: for 15 Operation Theatre Technician Posts, Last Date 3 July'
+2026-06-29 18:12:03,250 - INFO - [SEO] 📝 metaTitle: CG Vyapam OT Technician Recruitment 2026: for 2026 | Apply Now
+2026-06-29 18:12:03,250 - INFO - [SEO] 📝 metaDesc:  Apply for CG Vyapam OT Technician Recruitment 2026: for 15 Operation Theatre Technician Posts, Last Date 3 July 2026. Eligibility: BE, 12TH. Salary: Rs....
+2026-06-29 18:12:03,251 - INFO - [SEO] 🔑 Keywords:  ['CG Vyapam OT Technician Recruitment 2026: for 15 Operation Theatre Technician Posts, Last Date 3 July', 'CG Vyapam OT Technician Recruitment 2026: for 15 Operation Theatre Technician Posts, Last Date 3 July 2026', 'CG Jobs', 'Jobs in India', 'BE, 12TH Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-06-29 18:12:04,591 - WARNING - [SEO] Cannot patch — missing job_id or API_TOKEN
+2026-06-29 18:12:04,592 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /cg-vyapam-ot-technician-recruitment-2026-for-15-operation-theatre-technician-posts-last-date-3-july
+2026-06-29 18:12:04,592 - INFO - [SEO] 🔍 Extracted keywords: ['12th Pass Jobs', 'CG Jobs', 'CG Recruitment 2026', 'CG Vyapam OT Technician Recruitment 2026: for 15 Operation Theatre Technician Posts, Last Date 3 July', 'CG Vyapam OT Technician Recruitment 2026: for 15 Operation Theatre Technician Posts, Last Date 3 July 2026', 'CG Vyapam OT Technician Recruitment 2026: for 15 Operation Theatre Technician Posts, Last Date 3 July India', 'CG Vyapam OT Technician Recruitment 2026: for 15 Operation Theatre Technician Posts, Last Date 3 July Recruitment 2026', 'Government Jobs in India', 'Govt Jobs India', 'Jobs in India']
+2026-06-29 18:12:04,596 - INFO - [PING] 📡 Pinging search engines at 2026-06-29 18:12:04...
+2026-06-29 18:12:05,017 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-06-29 18:12:05,156 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-06-29 18:12:05,156 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-06-29 18:25:42,832 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 18:25:42,988 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-29 18:25:45,603 - INFO - 🕒 Scheduler started. Posting every 1800s (30 min).
+2026-06-29 18:25:45,603 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-06-29 18:25:45,603 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-06-29 18:25:49,091 - INFO - [HEALTH] ─── Results: 7/7 checks passed (3.5s) ───
+2026-06-29 18:25:49,092 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-06-29 18:25:49,092 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-06-29 18:25:49,092 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-06-29 18:25:49,092 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-06-29 18:25:49,092 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-06-29 18:25:49,092 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-06-29 18:25:49,092 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-06-29 18:25:49,093 - INFO - [HEALTH] ✅ All checks passed!
+2026-06-29 18:25:49,093 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-06-29 18:25:49,093 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-06-29 18:25:49,093 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-06-29 18:25:49,098 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-06-29 18:25:49,098 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-06-29 18:25:49,327 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-06-29 18:25:49,966 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-06-29 18:25:50,578 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-06-29 18:25:52,605 - INFO - [GSC-Crawler] 🎯 Identified 34 technical SEO opportunities.
+2026-06-29 18:25:52,610 - INFO - [GSC] 💾 Saved 34 SEO opportunities to DB
+2026-06-29 18:25:52,610 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-06-29 18:25:53,231 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-06-29 18:25:53,231 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-06-29 18:25:53,231 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-06-29 18:25:53,232 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-06-29 18:25:53,693 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-06-29 18:25:53,827 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-06-29 18:25:53,984 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-06-29 18:25:54,788 - INFO - [INDEX-TRACKER] Discovered 960 total portal URLs
+2026-06-29 18:25:56,815 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-06-29 18:25:56,815 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-06-29 18:25:56,816 - INFO - [INDEX-TRACKER] Generated 128 index updates to sync
+2026-06-29 18:25:56,817 - INFO - [INDEX-TRACKER] Posting 128 status updates to MongoDB backend...
+2026-06-29 18:25:58,110 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-06-29 18:25:58,111 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-06-29 18:25:58,111 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-06-29 18:25:58,111 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-06-29 18:25:58,115 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-06-29 18:25:58,115 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-06-29 18:25:58,115 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-06-29 18:25:58,115 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-06-29 18:25:58,115 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-06-29 18:25:58,159 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-06-29 18:25:58,760 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-06-29 18:25:59,162 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-06-29 18:25:59,511 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-06-29 18:25:59,512 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-06-29 18:25:59,514 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-06-29 18:25:59,925 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-06-29 18:25:59,925 - ERROR - [REFRESH] Error refreshing older jobs: module 'seo_engine' has no attribute 'inject_internal_links'
+2026-06-29 18:25:59,926 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-06-29 18:25:59,926 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-06-29 18:25:59,927 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-06-29 18:25:59,930 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-06-29 18:25:59,930 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-06-29 18:25:59,933 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-06-29 18:25:59,934 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-06-29 18:25:59,934 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-06-29 18:25:59,934 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-06-29 18:25:59,934 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-06-29 18:25:59,934 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-06-29 18:25:59,934 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-06-29 18:25:59,943 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Senior Independent AI Engineer / Architect' - Reason: Banned keyword detected in 'company'
+2026-06-29 18:25:59,951 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Senior Independent Software Developer ($90-$170/hr)' - Reason: Banned keyword detected in 'company'
+2026-06-29 18:25:59,957 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Founding Engineer' - Reason: Banned keyword detected in 'company'
+2026-06-29 18:25:59,984 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 156
+2026-06-29 18:26:00,671 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-06-29 18:26:00,685 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-06-29 18:26:08,410 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-29 18:26:08,419 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Web Applications Developer - Sacramento, CA' - Reason: Banned keyword detected in 'jobDescription'
+2026-06-29 18:26:08,507 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 154
+2026-06-29 18:26:22,630 - INFO - [SEO] 🚀 Starting SEO pipeline for: MSC Bank Trainee Officer & Driver Recruitment 2026: for 139 Posts (Officer, Associate, Typist, Driver
+2026-06-29 18:26:22,630 - INFO - [SEO] Using rule-based fallback for 'MSC Bank Trainee Officer & Driver Recruitment 2026: for 139 Posts (Officer, Associate, Typist, Driver'
+2026-06-29 18:26:22,630 - INFO - [SEO] 📝 metaTitle: MSC Bank Trainee Officer & Driver Recruitment 2026 | Apply Now
+2026-06-29 18:26:22,630 - INFO - [SEO] 📝 metaDesc:  Apply for MSC Bank Trainee Officer & Driver Recruitment 2026: for 139 Posts (Officer, Associate, Typist, Driver 2026. Eligibility: BE, MSC, GRADUATE, 10...
+2026-06-29 18:26:22,630 - INFO - [SEO] 🔑 Keywords:  ['MSC Bank Trainee Officer & Driver Recruitment 2026: for 139 Posts (Officer, Associate, Typist, Driver', 'MSC Bank Trainee Officer & Driver Recruitment 2026: for 139 Posts (Officer, Associate, Typist, Driver 2026', 'MSC Jobs', 'Jobs in India', 'BE, MSC, GRADUATE, 10TH Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-06-29 18:26:23,989 - WARNING - [SEO] Cannot patch — missing job_id or API_TOKEN
+2026-06-29 18:26:23,990 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /msc-bank-trainee-officer-and-driver-recruitment-2026-for-139-posts-officer-associate-typist-driver
+2026-06-29 18:26:23,990 - INFO - [SEO] 🔍 Extracted keywords: ['10th Pass Jobs', 'Government Jobs in India', 'Govt Jobs India', 'Jobs in India', 'MSC Bank Trainee Officer & Driver Recruitment 2026: for 139 Posts (Officer, Associate, Typist, Driver', 'MSC Bank Trainee Officer & Driver Recruitment 2026: for 139 Posts (Officer, Associate, Typist, Driver 2026', 'MSC Bank Trainee Officer & Driver Recruitment 2026: for 139 Posts (Officer, Associate, Typist, Driver India', 'MSC Bank Trainee Officer & Driver Recruitment 2026: for 139 Posts (Officer, Associate, Typist, Driver Recruitment 2026', 'MSC Jobs', 'MSC Recruitment 2026']
+2026-06-29 18:26:23,992 - INFO - [PING] 📡 Pinging search engines at 2026-06-29 18:26:23...
+2026-06-29 18:26:24,427 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-06-29 18:26:24,629 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-06-29 18:26:24,630 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-06-29 18:27:14,069 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 18:27:14,231 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-29 18:27:15,259 - INFO - 🕒 Scheduler started. Posting every 1800s (30 min).
+2026-06-29 18:27:15,259 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-06-29 18:27:15,259 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-06-29 18:27:16,646 - INFO - [HEALTH] ─── Results: 7/7 checks passed (1.4s) ───
+2026-06-29 18:27:16,647 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-06-29 18:27:16,647 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-06-29 18:27:16,647 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-06-29 18:27:16,647 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-06-29 18:27:16,647 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-06-29 18:27:16,647 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-06-29 18:27:16,647 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-06-29 18:27:16,647 - INFO - [HEALTH] ✅ All checks passed!
+2026-06-29 18:27:16,647 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-06-29 18:27:16,648 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-06-29 18:27:16,648 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-06-29 18:27:16,651 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-06-29 18:27:16,651 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-06-29 18:27:16,829 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-06-29 18:27:17,153 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-06-29 18:27:17,424 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-06-29 18:27:18,499 - INFO - [GSC-Crawler] 🎯 Identified 34 technical SEO opportunities.
+2026-06-29 18:27:18,504 - INFO - [GSC] 💾 Saved 34 SEO opportunities to DB
+2026-06-29 18:27:18,504 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-06-29 18:27:19,664 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-06-29 18:27:19,666 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-06-29 18:27:19,666 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-06-29 18:27:19,666 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-06-29 18:27:20,096 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-06-29 18:27:20,393 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-06-29 18:27:20,874 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-06-29 18:27:21,186 - INFO - [INDEX-TRACKER] Discovered 960 total portal URLs
+2026-06-29 18:27:23,547 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-06-29 18:27:23,547 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-06-29 18:27:23,549 - INFO - [INDEX-TRACKER] Generated 120 index updates to sync
+2026-06-29 18:27:23,550 - INFO - [INDEX-TRACKER] Posting 120 status updates to MongoDB backend...
+2026-06-29 18:27:24,504 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-06-29 18:27:24,505 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-06-29 18:27:24,506 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-06-29 18:27:24,506 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-06-29 18:27:24,511 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-06-29 18:27:24,511 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-06-29 18:27:24,512 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-06-29 18:27:24,512 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-06-29 18:27:24,512 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-06-29 18:27:24,562 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-06-29 18:27:24,888 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-06-29 18:27:25,265 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-06-29 18:27:25,267 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-06-29 18:27:25,268 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-06-29 18:27:25,269 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-06-29 18:27:26,175 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-06-29 18:27:26,176 - ERROR - [REFRESH] Error refreshing older jobs: module 'seo_engine' has no attribute 'inject_internal_links'
+2026-06-29 18:27:26,178 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-06-29 18:27:26,178 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-06-29 18:27:26,178 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-06-29 18:27:26,184 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-06-29 18:27:26,184 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-06-29 18:27:26,188 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-06-29 18:27:26,188 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-06-29 18:27:26,189 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-06-29 18:27:26,189 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-06-29 18:27:26,189 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-06-29 18:27:26,190 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-06-29 18:27:26,190 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-06-29 18:27:26,198 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Founding Product Engineer (m/w/d)' - Reason: Banned keyword detected in 'company'
+2026-06-29 18:27:26,206 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Senior Shopify Web Developer' - Reason: Banned keyword detected in 'company'
+2026-06-29 18:27:26,232 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Technical Advisor - Training & Quality (M/W/D' - Reason: Job title 'Technical Advisor - Training & Quality (M/W/D' contains training/certification keyword
+2026-06-29 18:27:26,335 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'NALCO Non Executive Recruitment 2026 — for 268 Operator, Technician, Foreman Vacancies (Last Date Extended to 17 June 2026' - Reason: Job has expired. Last date '2026-06-17' is in the past (today is 2026-06-29).
+2026-06-29 18:27:26,406 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Coal India Management Trainee Recruitment 2026: 660 MT Vacancies for Civil, Electrical, Mechanical & 6 Other Disciplines — (Last Date Extended to 21 June 2026' - Reason: Job has expired. Last date '2026-06-21' is in the past (today is 2026-06-29).
+2026-06-29 18:27:26,459 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 151
+2026-06-29 18:27:27,262 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-06-29 18:27:27,683 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-06-29 18:27:35,448 - INFO - [SEO] 🚀 Starting SEO pipeline for: DRDO DESIDOC Apprentice Recruitment 2026 – 20 Posts in Delhi, Stipend up to ₹12,300
+2026-06-29 18:27:35,448 - INFO - [SEO] Using rule-based fallback for 'DRDO DESIDOC Apprentice Recruitment 2026 – 20 Posts in Delhi, Stipend up to ₹12,300'
+2026-06-29 18:27:35,449 - INFO - [SEO] 📝 metaTitle: DRDO DESIDOC Apprentice Recruitment 2026 – 20 2026 | Apply Now
+2026-06-29 18:27:35,449 - INFO - [SEO] 📝 metaDesc:  Apply for DRDO DESIDOC Apprentice Recruitment 2026 – 20 Posts in Delhi, Stipend up to ₹12,300 2026. Eligibility: ITI, B.E, GRADUATION, DIPLOMA. Salary: ...
+2026-06-29 18:27:35,449 - INFO - [SEO] 🔑 Keywords:  ['DRDO DESIDOC Apprentice Recruitment 2026 – 20 Posts in Delhi, Stipend up to ₹12,300', 'DRDO DESIDOC Apprentice Recruitment 2026 – 20 Posts in Delhi, Stipend up to ₹12,300 2026', 'DRDO Jobs', 'Jobs in India', 'ITI, B.E, GRADUATION, DIPLOMA Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-06-29 18:27:35,874 - WARNING - [SEO] Cannot patch — missing job_id or API_TOKEN
+2026-06-29 18:27:35,875 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /drdo-desidoc-apprentice-recruitment-2026-20-posts-in-delhi-stipend-up-to-indian-rupee12300
+2026-06-29 18:27:35,875 - INFO - [SEO] 🔍 Extracted keywords: ['BE Jobs', 'DRDO DESIDOC Apprentice Recruitment 2026 – 20 Posts in Delhi, Stipend up to ₹12,300', 'DRDO DESIDOC Apprentice Recruitment 2026 – 20 Posts in Delhi, Stipend up to ₹12,300 2026', 'DRDO DESIDOC Apprentice Recruitment 2026 – 20 Posts in Delhi, Stipend up to ₹12,300 India', 'DRDO DESIDOC Apprentice Recruitment 2026 – 20 Posts in Delhi, Stipend up to ₹12,300 Recruitment 2026', 'DRDO Jobs', 'DRDO Recruitment 2026', 'Government Jobs in India', 'Govt Jobs India', 'Jobs in India']
+2026-06-29 18:27:35,878 - INFO - [PING] 📡 Pinging search engines at 2026-06-29 18:27:35...
+2026-06-29 18:27:36,545 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-06-29 18:27:36,688 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-06-29 18:27:36,689 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-06-29 18:40:28,898 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 18:40:29,045 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-29 18:40:30,575 - INFO - 🕒 Scheduler started. Posting every 1800s (30 min).
+2026-06-29 18:40:30,575 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-06-29 18:40:30,575 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-06-29 18:40:33,583 - INFO - [HEALTH] ─── Results: 7/7 checks passed (3.0s) ───
+2026-06-29 18:40:33,583 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-06-29 18:40:33,583 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-06-29 18:40:33,583 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-06-29 18:40:33,583 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-06-29 18:40:33,583 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-06-29 18:40:33,583 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-06-29 18:40:33,583 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-06-29 18:40:33,583 - INFO - [HEALTH] ✅ All checks passed!
+2026-06-29 18:40:33,583 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-06-29 18:40:33,584 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-06-29 18:40:33,584 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-06-29 18:40:33,586 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-06-29 18:40:33,587 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-06-29 18:40:33,781 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-06-29 18:40:34,842 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-06-29 18:40:34,870 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-06-29 18:40:36,283 - INFO - [GSC-Crawler] 🎯 Identified 34 technical SEO opportunities.
+2026-06-29 18:40:36,289 - INFO - [GSC] 💾 Saved 34 SEO opportunities to DB
+2026-06-29 18:40:36,289 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-06-29 18:40:36,913 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-06-29 18:40:36,914 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-06-29 18:40:36,915 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-06-29 18:40:36,916 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-06-29 18:40:37,414 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-06-29 18:40:37,511 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-06-29 18:40:38,167 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-06-29 18:40:38,995 - INFO - [INDEX-TRACKER] Discovered 962 total portal URLs
+2026-06-29 18:40:41,751 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-06-29 18:40:41,752 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-06-29 18:40:41,754 - INFO - [INDEX-TRACKER] Generated 118 index updates to sync
+2026-06-29 18:40:41,755 - INFO - [INDEX-TRACKER] Posting 118 status updates to MongoDB backend...
+2026-06-29 18:40:42,931 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-06-29 18:40:42,932 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-06-29 18:40:42,933 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-06-29 18:40:42,933 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-06-29 18:40:42,950 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-06-29 18:40:42,951 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-06-29 18:40:42,951 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-06-29 18:40:42,951 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-06-29 18:40:42,951 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-06-29 18:40:42,995 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-06-29 18:40:43,606 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-06-29 18:40:43,609 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-06-29 18:40:43,997 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-06-29 18:40:44,341 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-06-29 18:40:44,343 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-06-29 18:40:45,578 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-06-29 18:40:45,579 - ERROR - [REFRESH] Error refreshing older jobs: module 'seo_engine' has no attribute 'inject_internal_links'
+2026-06-29 18:40:45,581 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-06-29 18:40:45,581 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-06-29 18:40:45,581 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-06-29 18:40:45,582 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-06-29 18:40:45,583 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-06-29 18:40:45,585 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-06-29 18:40:45,585 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-06-29 18:40:45,585 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-06-29 18:40:45,586 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-06-29 18:40:45,586 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-06-29 18:40:45,586 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-06-29 18:40:45,586 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-06-29 18:40:45,592 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'It Sales Executive Jobs Opening In Mithi Software Technologies Pvt Ltd At Baner Pune' - Reason: Banned keyword detected in 'company'
+2026-06-29 18:40:45,685 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 150
+2026-06-29 18:40:46,373 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-06-29 18:40:46,428 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-06-29 18:40:57,443 - INFO - [SEO] 🚀 Starting SEO pipeline for: Punjab & Haryana High Court Safai Sewak & Mali Recruitment 2026 – 167 Posts
+2026-06-29 18:40:57,443 - INFO - [SEO] Using rule-based fallback for 'Punjab & Haryana High Court Safai Sewak & Mali Recruitment 2026 – 167 Posts'
+2026-06-29 18:40:57,443 - INFO - [SEO] 📝 metaTitle: Punjab & Haryana High Court Safai Sewak & Mal 2026 | Apply Now
+2026-06-29 18:40:57,443 - INFO - [SEO] 📝 metaDesc:  Apply for Punjab & Haryana High Court Safai Sewak & Mali Recruitment 2026 – 167 Posts 2026. Eligibility: BE, DIPLOMA, 10TH, DEGREE. Salary: Rs. 700. Las...
+2026-06-29 18:40:57,443 - INFO - [SEO] 🔑 Keywords:  ['Punjab & Haryana High Court Safai Sewak & Mali Recruitment 2026 – 167 Posts', 'Punjab & Haryana High Court Safai Sewak & Mali Recruitment 2026 – 167 Posts 2026', 'Punjab Jobs', 'Jobs in India', 'BE, DIPLOMA, 10TH, DEGREE Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-06-29 18:40:58,775 - WARNING - [SEO] Cannot patch — missing job_id or API_TOKEN
+2026-06-29 18:40:58,776 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /punjab-and-haryana-high-court-clerk-recruitment-2026-1265-clerk-vacancies-in-haryana-subordinate-courts-last-date-extended-to-9-july-2026
+2026-06-29 18:40:58,776 - INFO - [SEO] 🔍 Extracted keywords: ['10th Pass Jobs', 'Government Jobs in India', 'Govt Jobs India', 'Jobs in India', 'Punjab & Haryana High Court Safai Sewak & Mali Recruitment 2026 – 167 Posts', 'Punjab & Haryana High Court Safai Sewak & Mali Recruitment 2026 – 167 Posts 2026', 'Punjab & Haryana High Court Safai Sewak & Mali Recruitment 2026 – 167 Posts India', 'Punjab & Haryana High Court Safai Sewak & Mali Recruitment 2026 – 167 Posts Recruitment 2026', 'Punjab Jobs', 'Punjab Recruitment 2026']
+2026-06-29 18:40:58,777 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-29 18:40:58,817 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 149
+2026-06-29 18:41:08,715 - INFO - [SEO] 🚀 Starting SEO pipeline for: Cabinet Secretariat Senior Field Officer Recruitment 2026 – 25 Group A Posts, Apply Now
+2026-06-29 18:41:08,715 - INFO - [SEO] Using rule-based fallback for 'Cabinet Secretariat Senior Field Officer Recruitment 2026 – 25 Group A Posts, Apply Now'
+2026-06-29 18:41:08,715 - INFO - [SEO] 📝 metaTitle: Cabinet Secretariat Senior Field Officer Recr 2026 | Apply Now
+2026-06-29 18:41:08,715 - INFO - [SEO] 📝 metaDesc:  Apply for Cabinet Secretariat Senior Field Officer Recruitment 2026 – 25 Group A Posts, Apply Now 2026. Eligibility: BE, MASTER, DEGREE. Salary: Rs. 1,3...
+2026-06-29 18:41:08,715 - INFO - [SEO] 🔑 Keywords:  ['Cabinet Secretariat Senior Field Officer Recruitment 2026 – 25 Group A Posts, Apply Now', 'Cabinet Secretariat Senior Field Officer Recruitment 2026 – 25 Group A Posts, Apply Now 2026', 'Cabinet Jobs', 'Jobs in India', 'BE, MASTER, DEGREE Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-06-29 18:41:09,116 - WARNING - [SEO] Cannot patch — missing job_id or API_TOKEN
+2026-06-29 18:41:09,116 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /cabinet-secretariat-senior-field-officer-recruitment-2026-25-group-a-posts-apply-now
+2026-06-29 18:41:09,116 - INFO - [SEO] 🔍 Extracted keywords: ['Cabinet Jobs', 'Cabinet Recruitment 2026', 'Cabinet Secretariat Senior Field Officer Recruitment 2026 – 25 Group A Posts, Apply Now', 'Cabinet Secretariat Senior Field Officer Recruitment 2026 – 25 Group A Posts, Apply Now 2026', 'Cabinet Secretariat Senior Field Officer Recruitment 2026 – 25 Group A Posts, Apply Now India', 'Cabinet Secretariat Senior Field Officer Recruitment 2026 – 25 Group A Posts, Apply Now Recruitment 2026', 'Government Jobs in India', 'Govt Jobs India', 'Jobs in India', 'Sarkari Naukri']
+2026-06-29 18:41:09,119 - INFO - [PING] 📡 Pinging search engines at 2026-06-29 18:41:09...
+2026-06-29 18:41:09,547 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-06-29 18:41:09,673 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-06-29 18:41:09,674 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-06-29 18:45:11,331 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 18:45:11,474 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-29 18:45:12,765 - INFO - 🕒 Scheduler started. Posting every 1800s (30 min).
+2026-06-29 18:45:12,765 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-06-29 18:45:12,765 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-06-29 18:45:14,049 - INFO - [HEALTH] ─── Results: 7/7 checks passed (1.3s) ───
+2026-06-29 18:45:14,049 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-06-29 18:45:14,049 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-06-29 18:45:14,049 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-06-29 18:45:14,049 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-06-29 18:45:14,049 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-06-29 18:45:14,049 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-06-29 18:45:14,049 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-06-29 18:45:14,049 - INFO - [HEALTH] ✅ All checks passed!
+2026-06-29 18:45:14,049 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-06-29 18:45:14,050 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-06-29 18:45:14,050 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-06-29 18:45:14,053 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-06-29 18:45:14,053 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-06-29 18:45:14,255 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-06-29 18:45:14,894 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-06-29 18:45:15,109 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-06-29 18:45:16,610 - INFO - [GSC-Crawler] 🎯 Identified 34 technical SEO opportunities.
+2026-06-29 18:45:16,616 - INFO - [GSC] 💾 Saved 34 SEO opportunities to DB
+2026-06-29 18:45:16,617 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-06-29 18:45:17,246 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-06-29 18:45:17,247 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-06-29 18:45:17,248 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-06-29 18:45:17,248 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-06-29 18:45:17,740 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-06-29 18:45:17,849 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-06-29 18:45:18,050 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-06-29 18:45:18,363 - INFO - [INDEX-TRACKER] Discovered 962 total portal URLs
+2026-06-29 18:45:21,079 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-06-29 18:45:21,079 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-06-29 18:45:21,080 - INFO - [INDEX-TRACKER] Generated 103 index updates to sync
+2026-06-29 18:45:21,081 - INFO - [INDEX-TRACKER] Posting 103 status updates to MongoDB backend...
+2026-06-29 18:45:21,983 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-06-29 18:45:21,984 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-06-29 18:45:21,984 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-06-29 18:45:21,984 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-06-29 18:45:21,989 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-06-29 18:45:21,990 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-06-29 18:45:21,990 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-06-29 18:45:21,990 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-06-29 18:45:21,990 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-06-29 18:45:22,036 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-06-29 18:45:22,340 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-06-29 18:45:22,842 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-06-29 18:45:22,844 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-06-29 18:45:22,845 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-06-29 18:45:22,845 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-06-29 18:45:25,032 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-06-29 18:45:25,033 - ERROR - [REFRESH] Error refreshing older jobs: module 'seo_engine' has no attribute 'inject_internal_links'
+2026-06-29 18:45:25,035 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-06-29 18:45:25,035 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-06-29 18:45:25,037 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-06-29 18:45:25,041 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-06-29 18:45:25,041 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-06-29 18:45:25,046 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-06-29 18:45:25,047 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-06-29 18:45:25,047 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-06-29 18:45:25,047 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-06-29 18:45:25,047 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-06-29 18:45:25,047 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-06-29 18:45:25,047 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-06-29 18:45:25,142 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 148
+2026-06-29 18:45:25,870 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-06-29 18:45:26,316 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-06-29 18:45:34,838 - INFO - [SEO] 🚀 Starting SEO pipeline for: TNPSC Group 4 2025: Hall Ticket Released — Download Now
+2026-06-29 18:45:34,838 - INFO - [SEO] Using rule-based fallback for 'TNPSC Group 4 2025: Hall Ticket Released — Download Now'
+2026-06-29 18:45:34,838 - INFO - [SEO] 📝 metaTitle: TNPSC Group 4 2025: Hall Ticket Released — Do 2026 | Apply Now
+2026-06-29 18:45:34,838 - INFO - [SEO] 📝 metaDesc:  Download TNPSC Group 4 2025: Hall Ticket Released — Download Now admit card 2026.
+2026-06-29 18:45:34,838 - INFO - [SEO] 🔑 Keywords:  ['TNPSC Group 4 2025: Hall Ticket Released — Download Now', 'TNPSC Group 4 2025: Hall Ticket Released — Download Now 2026', 'HAL Jobs', 'Jobs in India', 'BE, DEGREE, 10TH Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-06-29 18:45:35,298 - WARNING - [SEO] Cannot patch — missing job_id or API_TOKEN
+2026-06-29 18:45:35,298 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /tnpsc-group-4-2025-hall-ticket-released-download-now-recruitment-2026
+2026-06-29 18:45:35,298 - INFO - [SEO] 🔍 Extracted keywords: ['10th Pass Jobs', 'Government Jobs in India', 'Govt Jobs India', 'HAL Jobs', 'HAL Recruitment 2026', 'Jobs in India', 'Sarkari Naukri', 'Sarkari Naukri 2026', 'TNPSC Group 4 2025: Hall Ticket Released — Download Now', 'TNPSC Group 4 2025: Hall Ticket Released — Download Now 2026']
+2026-06-29 18:45:35,299 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-29 18:45:35,338 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 147
+2026-06-29 18:45:46,885 - INFO - [SEO] 🚀 Starting SEO pipeline for: DRDO ARDE Pune Paid Internship 2026 – 40 Slots for Engineering Students, Stipend ₹5,000
+2026-06-29 18:45:46,886 - INFO - [SEO] Using rule-based fallback for 'DRDO ARDE Pune Paid Internship 2026 – 40 Slots for Engineering Students, Stipend ₹5,000'
+2026-06-29 18:45:46,886 - INFO - [SEO] 📝 metaTitle: DRDO ARDE Pune Paid Internship 2026 – 40 Slot 2026 | Apply Now
+2026-06-29 18:45:46,886 - INFO - [SEO] 📝 metaDesc:  Apply for DRDO ARDE Pune Paid Internship 2026 – 40 Slots for Engineering Students, Stipend ₹5,000 2026. Eligibility: BE, GRADUATE, ME, POST GRADUATE. Sa...
+2026-06-29 18:45:46,886 - INFO - [SEO] 🔑 Keywords:  ['DRDO ARDE Pune Paid Internship 2026 – 40 Slots for Engineering Students, Stipend ₹5,000', 'DRDO ARDE Pune Paid Internship 2026 – 40 Slots for Engineering Students, Stipend ₹5,000 2026', 'DRDO Jobs', 'Jobs in India', 'BE, GRADUATE, ME, POST GRADUATE Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-06-29 18:45:47,288 - WARNING - [SEO] Cannot patch — missing job_id or API_TOKEN
+2026-06-29 18:45:47,289 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /drdo-arde-pune-paid-internship-2026-40-slots-for-engineering-students-stipend-indian-rupee5000
+2026-06-29 18:45:47,289 - INFO - [SEO] 🔍 Extracted keywords: ['DRDO ARDE Pune Paid Internship 2026 – 40 Slots for Engineering Students, Stipend ₹5,000', 'DRDO ARDE Pune Paid Internship 2026 – 40 Slots for Engineering Students, Stipend ₹5,000 2026', 'DRDO ARDE Pune Paid Internship 2026 – 40 Slots for Engineering Students, Stipend ₹5,000 India', 'DRDO ARDE Pune Paid Internship 2026 – 40 Slots for Engineering Students, Stipend ₹5,000 Recruitment 2026', 'DRDO Jobs', 'DRDO Recruitment 2026', 'Government Jobs in India', 'Govt Jobs India', 'Graduate Jobs', 'Jobs in India']
+2026-06-29 18:45:47,292 - INFO - [PING] 📡 Pinging search engines at 2026-06-29 18:45:47...
+2026-06-29 18:45:47,720 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-06-29 18:45:47,967 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-06-29 18:45:47,968 - INFO - [PING] ✅ 0/2 engines pinged successfully
