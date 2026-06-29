@@ -249,7 +249,7 @@ async def refresh_older_job_posts():
                     updated_desc = job.get("jobDescription", "")
                     if SEO_ENGINE_LOADED:
                         # Re-run BeautifulSoup link injector to add links to recently posted jobs
-                        updated_desc = await seo_engine.inject_internal_links(updated_desc, session=session)
+                        updated_desc = await seo_engine.auto_inject_internal_links(job_id, updated_desc, session=session)
                         
                     # 2. Update FAQs or text blocks (Simulated update or minor touch)
                     # We send a PATCH request to let the search crawler know the page was updated

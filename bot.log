@@ -460,3 +460,279 @@
 2026-06-29 18:45:47,720 - INFO - [PING] ⚠️ Google: HTTP 404
 2026-06-29 18:45:47,967 - INFO - [PING] ⚠️ Bing: HTTP 410
 2026-06-29 18:45:47,968 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-06-29 18:49:51,621 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 18:49:51,790 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-29 18:49:52,954 - INFO - 🕒 Scheduler started. Posting every 1800s (30 min).
+2026-06-29 18:49:52,954 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-06-29 18:49:52,955 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-06-29 18:49:55,763 - INFO - [HEALTH] ─── Results: 7/7 checks passed (2.8s) ───
+2026-06-29 18:49:55,763 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-06-29 18:49:55,763 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-06-29 18:49:55,763 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-06-29 18:49:55,763 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-06-29 18:49:55,763 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-06-29 18:49:55,763 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-06-29 18:49:55,764 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-06-29 18:49:55,764 - INFO - [HEALTH] ✅ All checks passed!
+2026-06-29 18:49:55,764 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-06-29 18:49:55,764 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-06-29 18:49:55,764 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-06-29 18:49:55,767 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-06-29 18:49:55,767 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-06-29 18:49:55,945 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-06-29 18:49:56,583 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-06-29 18:49:56,727 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-06-29 18:49:58,328 - INFO - [GSC-Crawler] 🎯 Identified 32 technical SEO opportunities.
+2026-06-29 18:49:58,338 - INFO - [GSC] 💾 Saved 32 SEO opportunities to DB
+2026-06-29 18:49:58,339 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-06-29 18:49:59,127 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-06-29 18:49:59,127 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-06-29 18:49:59,128 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-06-29 18:49:59,128 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-06-29 18:49:59,767 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-06-29 18:50:00,661 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-06-29 18:50:00,962 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-06-29 18:50:01,774 - INFO - [INDEX-TRACKER] Discovered 964 total portal URLs
+2026-06-29 18:50:03,881 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-06-29 18:50:03,882 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-06-29 18:50:03,884 - INFO - [INDEX-TRACKER] Generated 99 index updates to sync
+2026-06-29 18:50:03,884 - INFO - [INDEX-TRACKER] Posting 99 status updates to MongoDB backend...
+2026-06-29 18:50:04,812 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-06-29 18:50:04,812 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-06-29 18:50:04,812 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-06-29 18:50:04,812 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-06-29 18:50:04,819 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-06-29 18:50:04,819 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-06-29 18:50:04,819 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-06-29 18:50:04,820 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-06-29 18:50:04,820 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-06-29 18:50:04,868 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-06-29 18:50:05,541 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-06-29 18:50:05,727 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-06-29 18:50:05,889 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-06-29 18:50:06,246 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-06-29 18:50:06,247 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-06-29 18:50:06,687 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-06-29 18:50:06,687 - ERROR - [REFRESH] Error refreshing older jobs: module 'seo_engine' has no attribute 'inject_internal_links'
+2026-06-29 18:50:06,687 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-06-29 18:50:06,687 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-06-29 18:50:06,688 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-06-29 18:50:06,690 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-06-29 18:50:06,690 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-06-29 18:50:06,692 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-06-29 18:50:06,693 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-06-29 18:50:06,693 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-06-29 18:50:06,693 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-06-29 18:50:06,693 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-06-29 18:50:06,693 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-06-29 18:50:06,693 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-06-29 18:50:06,769 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 147 (GovtJobsAlert: 26, Government Scrapers: 121)
+2026-06-29 18:50:07,435 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-06-29 18:50:07,478 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-06-29 18:50:17,067 - INFO - [SEO] 🚀 Starting SEO pipeline for: Software Engineer - 3
+2026-06-29 18:50:17,067 - INFO - [SEO] Using rule-based fallback for 'Software Engineer - 3'
+2026-06-29 18:50:17,068 - INFO - [SEO] 📝 metaTitle: Software Engineer - 3 2026 | Apply Online
+2026-06-29 18:50:17,068 - INFO - [SEO] 📝 metaDesc:  Apply for Software Engineer - 3 2026. Eligibility: Any Graduate. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now.
+2026-06-29 18:50:17,068 - INFO - [SEO] 🔑 Keywords:  ['Software Engineer - 3', 'Software Engineer - 3 2026', 'ESAB Corporation Jobs', 'Any Graduate Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-29 18:50:19,338 - WARNING - [SEO] Cannot patch — missing job_id or API_TOKEN
+2026-06-29 18:50:19,339 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /esab-corporation-software-engineer-3-hiring-2026
+2026-06-29 18:50:19,339 - INFO - [SEO] 🔍 Extracted keywords: ['ESAB Corporation Jobs', 'ESAB Corporation Recruitment 2026', 'Graduate Jobs', 'Jobs Apply Online 2026', 'Private Jobs India', 'Software Engineer - 3', 'Software Engineer - 3 2026', 'Software Engineer - 3 Recruitment 2026']
+2026-06-29 18:50:19,342 - INFO - [PING] 📡 Pinging search engines at 2026-06-29 18:50:19...
+2026-06-29 18:50:19,767 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-06-29 18:50:19,976 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-06-29 18:50:19,977 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-06-29 19:05:49,030 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 19:05:49,196 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-29 19:05:50,446 - INFO - 🕒 Scheduler started. Posting every 1800s (30 min).
+2026-06-29 19:05:50,446 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-06-29 19:05:50,446 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-06-29 19:05:54,152 - INFO - [HEALTH] ─── Results: 7/7 checks passed (3.7s) ───
+2026-06-29 19:05:54,152 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-06-29 19:05:54,152 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-06-29 19:05:54,152 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-06-29 19:05:54,152 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-06-29 19:05:54,152 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-06-29 19:05:54,152 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-06-29 19:05:54,153 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-06-29 19:05:54,153 - INFO - [HEALTH] ✅ All checks passed!
+2026-06-29 19:05:54,153 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-06-29 19:05:54,153 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-06-29 19:05:54,153 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-06-29 19:05:54,160 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-06-29 19:05:54,160 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-06-29 19:05:54,376 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-06-29 19:05:54,976 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-06-29 19:05:55,162 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-06-29 19:05:56,749 - INFO - [GSC-Crawler] 🎯 Identified 34 technical SEO opportunities.
+2026-06-29 19:05:56,756 - INFO - [GSC] 💾 Saved 34 SEO opportunities to DB
+2026-06-29 19:05:56,757 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-06-29 19:05:57,853 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-06-29 19:05:57,855 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-06-29 19:05:57,855 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-06-29 19:05:57,855 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-06-29 19:05:58,460 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-06-29 19:05:59,418 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-06-29 19:05:59,737 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-06-29 19:06:00,505 - INFO - [INDEX-TRACKER] Discovered 965 total portal URLs
+2026-06-29 19:06:02,656 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-06-29 19:06:02,657 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-06-29 19:06:02,659 - INFO - [INDEX-TRACKER] Generated 98 index updates to sync
+2026-06-29 19:06:02,659 - INFO - [INDEX-TRACKER] Posting 98 status updates to MongoDB backend...
+2026-06-29 19:06:03,582 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-06-29 19:06:03,585 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-06-29 19:06:03,586 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-06-29 19:06:03,586 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-06-29 19:06:03,595 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-06-29 19:06:03,595 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-06-29 19:06:03,595 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-06-29 19:06:03,596 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-06-29 19:06:03,596 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-06-29 19:06:03,641 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-06-29 19:06:04,253 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-06-29 19:06:04,259 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-06-29 19:06:04,656 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-06-29 19:06:05,050 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-06-29 19:06:05,051 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-06-29 19:06:05,653 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-06-29 19:06:05,653 - ERROR - [REFRESH] Error refreshing older jobs: module 'seo_engine' has no attribute 'inject_internal_links'
+2026-06-29 19:06:05,654 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-06-29 19:06:05,654 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-06-29 19:06:05,654 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-06-29 19:06:05,656 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-06-29 19:06:05,656 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-06-29 19:06:05,658 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-06-29 19:06:05,659 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-06-29 19:06:05,659 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-06-29 19:06:05,659 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-06-29 19:06:05,659 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-06-29 19:06:05,659 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-06-29 19:06:05,660 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-06-29 19:06:05,786 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 171 (GovtJobsAlert: 26, Government Scrapers: 121, LinkedIn: 24)
+2026-06-29 19:06:06,481 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-06-29 19:06:06,836 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-06-29 19:06:17,900 - INFO - [SEO] 🚀 Starting SEO pipeline for: Back End Developer -E6
+2026-06-29 19:06:17,901 - INFO - [SEO] Using rule-based fallback for 'Back End Developer -E6'
+2026-06-29 19:06:17,901 - INFO - [SEO] 📝 metaTitle: Back End Developer -E6 2026 | Apply Online
+2026-06-29 19:06:17,901 - INFO - [SEO] 📝 metaDesc:  Apply for Back End Developer -E6 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now.
+2026-06-29 19:06:17,901 - INFO - [SEO] 🔑 Keywords:  ['Back End Developer -E6', 'Back End Developer -E6 2026', 'Whatfix Jobs', 'Jobs in Work From Home', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-29 19:06:19,634 - WARNING - [SEO] Cannot patch — missing job_id or API_TOKEN
+2026-06-29 19:06:19,634 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /whatfix-back-end-developer-e6-hiring-2026
+2026-06-29 19:06:19,634 - INFO - [SEO] 🔍 Extracted keywords: ['Back End Developer -E6', 'Back End Developer -E6 2026', 'Back End Developer -E6 Recruitment 2026', 'Back End Developer -E6 Work From Home', 'Jobs Apply Online 2026', 'Jobs in Work From Home', 'Private Jobs India', 'Private Jobs in Work From Home', 'Whatfix Jobs', 'Whatfix Recruitment 2026']
+2026-06-29 19:06:19,636 - INFO - [PING] 📡 Pinging search engines at 2026-06-29 19:06:19...
+2026-06-29 19:06:20,062 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-06-29 19:06:20,271 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-06-29 19:06:20,272 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-06-29 19:07:55,638 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 19:07:55,795 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-29 19:07:57,050 - INFO - 🕒 Scheduler started. Posting every 1800s (30 min).
+2026-06-29 19:07:57,050 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-06-29 19:07:57,051 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-06-29 19:07:59,423 - INFO - [HEALTH] ─── Results: 7/7 checks passed (2.4s) ───
+2026-06-29 19:07:59,423 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-06-29 19:07:59,424 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-06-29 19:07:59,424 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-06-29 19:07:59,424 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-06-29 19:07:59,424 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-06-29 19:07:59,424 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-06-29 19:07:59,424 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-06-29 19:07:59,425 - INFO - [HEALTH] ✅ All checks passed!
+2026-06-29 19:07:59,425 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-06-29 19:07:59,425 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-06-29 19:07:59,426 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-06-29 19:07:59,431 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-06-29 19:07:59,431 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-06-29 19:07:59,593 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-06-29 19:08:00,698 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-06-29 19:08:01,369 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-06-29 19:08:02,889 - INFO - [GSC-Crawler] 🎯 Identified 34 technical SEO opportunities.
+2026-06-29 19:08:02,897 - INFO - [GSC] 💾 Saved 34 SEO opportunities to DB
+2026-06-29 19:08:02,898 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-06-29 19:08:03,538 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-06-29 19:08:03,539 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-06-29 19:08:03,539 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-06-29 19:08:03,539 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-06-29 19:08:04,003 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-06-29 19:08:04,166 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-06-29 19:08:04,274 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-06-29 19:08:05,081 - INFO - [INDEX-TRACKER] Discovered 967 total portal URLs
+2026-06-29 19:08:07,129 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-06-29 19:08:07,129 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-06-29 19:08:07,132 - INFO - [INDEX-TRACKER] Generated 125 index updates to sync
+2026-06-29 19:08:07,133 - INFO - [INDEX-TRACKER] Posting 125 status updates to MongoDB backend...
+2026-06-29 19:08:08,622 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-06-29 19:08:08,623 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-06-29 19:08:08,624 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-06-29 19:08:08,625 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-06-29 19:08:08,636 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-06-29 19:08:08,636 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-06-29 19:08:08,636 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-06-29 19:08:08,637 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-06-29 19:08:08,637 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-06-29 19:08:08,675 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-06-29 19:08:09,321 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-06-29 19:08:09,359 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-06-29 19:08:09,682 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-06-29 19:08:10,061 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-06-29 19:08:10,061 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-06-29 19:08:11,614 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-06-29 19:08:14,359 - INFO - [REFRESH] Updated content for job: ICSIL MTS Recruitment 2026: for 75 Helper/MTS Posts in Delhi (10th Pass
+2026-06-29 19:08:16,693 - INFO - [REFRESH] Updated content for job: Indian Air Force Pharmacist Online Form 2026 Recruitment 2026
+2026-06-29 19:08:19,171 - INFO - [REFRESH] Updated content for job: CSIR NIO Apprentice Recruitment 2026: 27 Walk-in Posts in Goa, Stipend Up to ₹12,300
+2026-06-29 19:08:21,158 - INFO - [REFRESH] Updated content for job: NIT Silchar Faculty Recruitment 2026 - for 35 Posts | Last Date 04-07-2026
+2026-06-29 19:08:23,930 - INFO - [REFRESH] Updated content for job: SDSC SHAR Teacher Recruitment 2026 - for 10 Posts | Last Date 07-07-2026
+2026-06-29 19:08:26,147 - INFO - [REFRESH] Updated content for job: NEIGRIHMS Faculty Recruitment 2026 - Apply for 52 Posts | Last Date 03-08-2026
+2026-06-29 19:08:28,178 - INFO - [REFRESH] Updated content for job: DRDO DESIDOC Recruitment 2026
+2026-06-29 19:08:30,331 - INFO - [REFRESH] Updated content for job: Top Company Senior Linux System Engineer (M/W/D Hiring 2026
+2026-06-29 19:08:32,275 - INFO - [REFRESH] Updated content for job: Full-Stack Developer (Node.js) | Website Builder | Based in Poland Hiring 2026
+2026-06-29 19:08:34,312 - INFO - [REFRESH] Updated content for job: NBEMS Recruitment 2026: for 53 Junior Assistant, Stenographer, Junior Accountant & Other Posts, Salary Up to Rs 2.08 Lakh
+2026-06-29 19:08:36,248 - INFO - [REFRESH] Updated content for job: Top Company Senior Lead Software Engineer II Hiring 2026
+2026-06-29 19:08:38,194 - INFO - [REFRESH] Updated content for job: Full-Stack JavaScript Engineer (Remote - LATAM or Europe Hiring 2026
+2026-06-29 19:08:40,501 - INFO - [REFRESH] Updated content for job: CSIR CEERI Technical Officer & Technician Recruitment 2026: for 22 Posts at Pilani, Salary Up to Rs 1,42,400 (Last Date Extended to 08 July 2026
+2026-06-29 19:08:42,466 - INFO - [REFRESH] Updated content for job: Manipur Horticulture Recruitment 2026
+2026-06-29 19:08:44,499 - INFO - [REFRESH] Updated content for job: DRDO HEMRL Pune Paid Internship 2026: 40 Slots for Engineering & Science Students, ₹5,000 Stipend
+2026-06-29 19:08:46,538 - INFO - [REFRESH] Updated content for job: Manipur Horticulture Department Recruitment 2026: Apply for 282 Asst Agriculture Officer, LDC, Field Assistant & Group D Posts
+2026-06-29 19:08:48,492 - INFO - [REFRESH] Updated content for job: Company Honeywell Hiring 2026
+2026-06-29 19:08:50,502 - INFO - [REFRESH] Updated content for job: BEML Operator Recruitment 2026: for 362 ITI Fitter, Turner, Welder, Machinist & Electrician Posts
+2026-06-29 19:08:52,525 - INFO - [REFRESH] Updated content for job: Chhattisgarh High Court Library Assistant Recruitment 2026: Apply for 20 Junior Judicial Assistant Posts, Salary Up to Rs 62,000
+2026-06-29 19:08:54,516 - INFO - [REFRESH] Updated content for job: IISc Bangalore Recruitment 2026: for 34 Teaching Assistant, System Administrator, Instructor & Project Scientist Posts
+2026-06-29 19:08:54,518 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-06-29 19:08:54,518 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-06-29 19:08:54,519 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-06-29 19:08:54,524 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-06-29 19:08:54,524 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-06-29 19:08:54,529 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-06-29 19:08:54,529 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-06-29 19:08:54,529 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-06-29 19:08:54,529 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-06-29 19:08:54,530 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-06-29 19:08:54,530 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-06-29 19:08:54,530 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-06-29 19:08:54,632 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 170 (GovtJobsAlert: 26, Government Scrapers: 121, LinkedIn: 23)
+2026-06-29 19:08:55,305 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-06-29 19:08:55,319 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-06-29 19:09:03,327 - INFO - [SEO] 🚀 Starting SEO pipeline for: Software Engineer
+2026-06-29 19:09:03,327 - INFO - [SEO] Using rule-based fallback for 'Software Engineer'
+2026-06-29 19:09:03,327 - INFO - [SEO] 📝 metaTitle: Software Engineer 2026 | Apply Online
+2026-06-29 19:09:03,327 - INFO - [SEO] 📝 metaDesc:  Apply for Software Engineer 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now. Check eligibili...
+2026-06-29 19:09:03,327 - INFO - [SEO] 🔑 Keywords:  ['Software Engineer', 'Software Engineer 2026', 'Microsoft Jobs', 'Jobs in Remote', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-29 19:09:04,684 - WARNING - [SEO] Cannot patch — missing job_id or API_TOKEN
+2026-06-29 19:09:04,685 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /microsoft-software-engineer-hiring-2026
+2026-06-29 19:09:04,685 - INFO - [SEO] 🔍 Extracted keywords: ['Jobs Apply Online 2026', 'Jobs in Remote', 'Microsoft Jobs', 'Microsoft Recruitment 2026', 'Private Jobs India', 'Private Jobs in Remote', 'Software Engineer', 'Software Engineer 2026', 'Software Engineer Recruitment 2026', 'Software Engineer Remote']
+2026-06-29 19:09:04,686 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-29 19:09:04,725 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 170 (GovtJobsAlert: 26, Government Scrapers: 121, LinkedIn: 23)
+2026-06-29 19:09:14,127 - INFO - [SEO] 🚀 Starting SEO pipeline for: Software Engineer, Backend
+2026-06-29 19:09:14,127 - INFO - [SEO] Using rule-based fallback for 'Software Engineer, Backend'
+2026-06-29 19:09:14,127 - INFO - [SEO] 📝 metaTitle: Software Engineer, Backend 2026 | Apply Online
+2026-06-29 19:09:14,127 - INFO - [SEO] 📝 metaDesc:  Apply for Software Engineer, Backend 2026. Eligibility: B.Tech. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now.
+2026-06-29 19:09:14,127 - INFO - [SEO] 🔑 Keywords:  ['Software Engineer, Backend', 'Software Engineer, Backend 2026', 'DoorDash Jobs', 'Jobs in Remote', 'B.Tech Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-29 19:09:14,511 - WARNING - [SEO] Cannot patch — missing job_id or API_TOKEN
+2026-06-29 19:09:14,511 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /doordash-software-engineer-backend-hiring-2026
+2026-06-29 19:09:14,511 - INFO - [SEO] 🔍 Extracted keywords: ['BTech Jobs', 'DoorDash Jobs', 'DoorDash Recruitment 2026', 'Jobs Apply Online 2026', 'Jobs in Remote', 'Private Jobs India', 'Private Jobs in Remote', 'Software Engineer, Backend', 'Software Engineer, Backend 2026', 'Software Engineer, Backend Recruitment 2026']
+2026-06-29 19:09:14,513 - INFO - [PING] 📡 Pinging search engines at 2026-06-29 19:09:14...
+2026-06-29 19:09:14,933 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-06-29 19:09:15,149 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-06-29 19:09:15,150 - INFO - [PING] ✅ 0/2 engines pinged successfully

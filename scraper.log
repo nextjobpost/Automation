@@ -9142,3 +9142,116 @@
 2026-06-29 18:58:56,079 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
 2026-06-29 18:58:56,080 - INFO - 
 ✅ All private job sources processed. Total Queued: 21/100
+2026-06-29 19:06:08,417 - INFO - ==================================================
+2026-06-29 19:06:08,417 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-06-29 19:06:08,417 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-06-29 19:06:08,417 - INFO - ==================================================
+2026-06-29 19:06:08,439 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-29 19:06:08,464 - INFO -    ✔ Preloaded 150 live jobs.
+2026-06-29 19:06:08,464 - INFO - 
+================================================
+2026-06-29 19:06:08,464 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-29 19:06:08,464 - INFO - ================================================
+2026-06-29 19:06:33,134 - INFO - Found 100 listings from LinkedIn Official.
+2026-06-29 19:06:34,656 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:06:35,750 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:06:38,815 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:06:39,838 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:06:41,342 - INFO -   🚀 [LinkedIn Official] SDE - 1 - Backend
+2026-06-29 19:06:42,405 - INFO -   ⏭️ Skipping: Not an internship or remote role ('SDE - 1 - Backend...')
+2026-06-29 19:06:43,918 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:06:45,332 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:06:48,353 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:06:49,236 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:06:50,751 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:06:51,634 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:06:53,150 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:06:54,152 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:06:55,664 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:06:56,953 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:06:58,502 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:06:59,822 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:07:01,333 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:07:02,357 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:07:03,869 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-29 19:07:05,012 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-29 19:07:06,530 - INFO -   🚀 [LinkedIn Official] SDE II / III - Frontend Developer
+2026-06-29 19:07:08,763 - INFO -   ⏭️ Skipping: Not an internship or remote role ('SDE II / III - Frontend Developer...')
+2026-06-29 19:07:10,270 - INFO -   🚀 [LinkedIn Official] Junior Developers Backend and Frontend
+2026-06-29 19:07:11,397 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Junior Developers Backend and Frontend...')
+2026-06-29 19:07:12,904 - INFO -   🚀 [LinkedIn Official] Front-End Developer - SCG India
+2026-06-29 19:07:14,014 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer - SCG India...')
+2026-06-29 19:07:15,525 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-29 19:07:16,982 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-29 19:07:18,495 - INFO -   🚀 [LinkedIn Official] React Developer
+2026-06-29 19:07:19,486 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React Developer...')
+2026-06-29 19:07:20,991 - INFO -   🚀 [LinkedIn Official] React JS Developer
+2026-06-29 19:07:22,340 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React JS Developer...')
+2026-06-29 19:07:23,845 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-29 19:07:26,119 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-29 19:07:27,623 - INFO -   🚀 [LinkedIn Official] Fresher - Front End Developer
+2026-06-29 19:07:28,687 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Fresher - Front End Developer...')
+2026-06-29 19:07:30,197 - INFO -   🚀 [LinkedIn Official] ReactJS developer
+2026-06-29 19:07:31,339 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJS developer...')
+2026-06-29 19:07:32,852 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-29 19:07:34,277 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-29 19:07:35,786 - INFO -   🚀 [LinkedIn Official] Back End Developer
+2026-06-29 19:07:36,734 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Back End Developer...')
+2026-06-29 19:07:39,752 - INFO -   🚀 [LinkedIn Official] Associate
+2026-06-29 19:07:40,747 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Associate...')
+2026-06-29 19:07:42,260 - INFO -   🚀 [LinkedIn Official] Back End Developer
+2026-06-29 19:08:16,073 - INFO - ==================================================
+2026-06-29 19:08:16,073 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-06-29 19:08:16,074 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-06-29 19:08:16,074 - INFO - ==================================================
+2026-06-29 19:08:16,089 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-29 19:08:16,112 - INFO -    ✔ Preloaded 150 live jobs.
+2026-06-29 19:08:16,112 - INFO - 
+================================================
+2026-06-29 19:08:16,113 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-29 19:08:16,113 - INFO - ================================================
+2026-06-29 19:08:40,755 - INFO - Found 100 listings from LinkedIn Official.
+2026-06-29 19:08:42,274 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:08:43,251 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:08:46,283 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:08:47,587 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:08:49,091 - INFO -   🚀 [LinkedIn Official] SDE - 1 - Backend
+2026-06-29 19:08:50,304 - INFO -   ⏭️ Skipping: Not an internship or remote role ('SDE - 1 - Backend...')
+2026-06-29 19:08:51,820 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:08:52,810 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:08:55,832 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:08:56,763 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:08:58,276 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:08:59,241 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:09:00,750 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:09:01,848 - INFO -   📥 Queued private job from LinkedIn Official: Software Engineer
+2026-06-29 19:09:03,373 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:09:05,423 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:09:06,942 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:09:07,919 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:09:09,430 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:09:10,462 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:09:11,970 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-29 19:09:12,918 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-29 19:09:14,434 - INFO -   🚀 [LinkedIn Official] SDE II / III - Frontend Developer
+2026-06-29 19:09:15,461 - INFO -   ⏭️ Skipping: Not an internship or remote role ('SDE II / III - Frontend Developer...')
+2026-06-29 19:09:16,972 - INFO -   🚀 [LinkedIn Official] Junior Developers Backend and Frontend
+2026-06-29 19:09:19,066 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Junior Developers Backend and Frontend...')
+2026-06-29 19:09:20,579 - INFO -   🚀 [LinkedIn Official] Front-End Developer - SCG India
+2026-06-29 19:09:21,894 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer - SCG India...')
+2026-06-29 19:09:23,405 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-29 19:09:24,555 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-29 19:09:26,064 - INFO -   🚀 [LinkedIn Official] React Developer
+2026-06-29 19:09:27,224 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React Developer...')
+2026-06-29 19:09:28,735 - INFO -   🚀 [LinkedIn Official] React JS Developer
+2026-06-29 19:09:29,701 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React JS Developer...')
+2026-06-29 19:09:31,219 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-29 19:09:32,754 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-29 19:09:34,263 - INFO -   🚀 [LinkedIn Official] Fresher - Front End Developer
+2026-06-29 19:09:35,423 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Fresher - Front End Developer...')
+2026-06-29 19:09:36,937 - INFO -   🚀 [LinkedIn Official] ReactJS developer
+2026-06-29 19:09:38,064 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJS developer...')
+2026-06-29 19:09:39,581 - INFO -   🚀 [LinkedIn Official] Sr. Backend Developer
+2026-06-29 19:09:40,660 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Backend Developer...')

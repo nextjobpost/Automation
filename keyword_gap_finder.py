@@ -65,51 +65,7 @@ async def fetch_my_ranked_keywords() -> list:
 
 async def find_gaps_via_gemini(my_keywords: list) -> list:
     """Asks Gemini to compare our keywords against competitor niches and find high-traffic gaps."""
-    if not API_KEY:
-        return []
-        
-    try:
-        from google import genai
-        client = None  # Disabled Gemini Integration
-        
-        my_kws_str = ", ".join(my_keywords[:80]) if my_keywords else "None tracked yet"
-        
-        prompt = f"""
-You are an expert SEO data analyst for NextJobPost, an Indian job portal.
-We want to perform a keyword gap analysis comparing our site against major competitors: FreeJobAlert, Sarkari Result, and Freshersworld.
-
-Our site currently ranks for these keywords:
-[{my_kws_str}]
-
-Identify exactly 7 highly searched keywords (minimum 30,000 monthly searches in India) that competitors rank for but we DO NOT rank for.
-For each gap keyword, suggest:
-1. "query": The exact keyword query.
-2. "volume": Estimated monthly search volume (number).
-3. "page": The recommended clean URL slug on NextJobPost (e.g. "/ssc-cgl-admit-card").
-4. "suggestion": A concrete content creation strategy to outrank competitors.
-
-Return ONLY a raw JSON array of objects (no markdown, no ```json backticks) with keys:
-"query", "volume", "page", "suggestion"
-"""
-        logging.info("[GAP-FINDER] 🤖 Asking Gemini to analyze competitor keyword gaps...")
-        response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
-            contents=prompt,
-            config=dict(response_mime_type="application/json")
-        )
-        raw = response.text.strip()
-        if raw.startswith("```json"):
-            raw = raw[7:-3].strip()
-        elif raw.startswith("```"):
-            raw = raw[3:-3].strip()
-            
-        gaps = json.loads(raw)
-        if isinstance(gaps, list) and len(gaps) > 0:
-            logging.info(f"[GAP-FINDER] ✅ Gemini found {len(gaps)} high-impact keyword gaps")
-            return gaps
-    except Exception as e:
-        logging.warning(f"[GAP-FINDER] Gemini gap finder error: {e}")
-        
+    # Gemini integration is disabled
     return []
 
 # ═══════════════════════════════════════════════════════════════════════════════

@@ -17,10 +17,23 @@ import logging
 import aiohttp
 from datetime import datetime
 
+from dotenv import load_dotenv
+load_dotenv(override=True)
+
 # ── Config ────────────────────────────────────────────────────────────────────
 SITE_BASE_URL = os.getenv("SITE_BASE_URL", "https://nextjobpost.in")
-API_URL = os.getenv("API_URL", "https://nextjobpost-backend.onrender.com/api/jobs")
+
+# Detect environment to set appropriate default API url
+IS_PRODUCTION = os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RENDER") or os.getenv("PORT") is not None
+DEFAULT_API_URL = "https://nextjobpost-backend.onrender.com/api/jobs" if IS_PRODUCTION else "http://localhost:4000/api/jobs"
+API_URL = os.getenv("API_URL", DEFAULT_API_URL)
+
 API_TOKEN = os.getenv("API_TOKEN", "")
+OLD_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZjFhM2I0YzllOGE3ZDZlNWY0YzNiMiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.ts-o1us7bsOOJunK2dL4HNmz1ONh3tywCLj0D079k4M"
+NEW_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZjFhM2I0YzllOGE3ZDZlNWY0YzNiMiIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODAxOTU0NDB9.QVqxcZLumH_FOjPG2xgvlCoVfSuzJVd-4uEHe8UI7ok"
+if not API_TOKEN or API_TOKEN == OLD_TOKEN:
+    API_TOKEN = NEW_TOKEN
+
 API_KEY = os.getenv("API_KEY", "")  # Google Gemini API key
 
 # ── Gemini client (reuse from bot1 if possible, else create here) ─────────────
