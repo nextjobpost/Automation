@@ -231,45 +231,42 @@ def extract_linkedin_jobs_public(limit=100):
         "Cloud Engineer"
     ]
     
-    for kw in keywords_list:
-        if len(listings) >= limit:
-            break
-            
-        kw_encoded = requests.utils.quote(kw)
-        # Use remote filter WT=2 (Remote) for generic keywords, or normal search for internships
-        if "intern" in kw.lower():
-            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={kw_encoded}&location=India&start=0"
-        else:
-            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={kw_encoded}&location=India&f_WT=2&start=0"
+    import random
+    # Select one random keyword from the list to prevent rate-limiting when run frequently
+    kw = random.choice(keywords_list)
+    kw_encoded = requests.utils.quote(kw)
+    # Use remote filter WT=2 (Remote) for generic keywords, or normal search for internships
+    if "intern" in kw.lower():
+        url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={kw_encoded}&location=India&start=0"
+    else:
+        url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={kw_encoded}&location=India&f_WT=2&start=0"
+    
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=15)
+        if resp.status_code != 200:
+            logging.warning(f"LinkedIn Guest API Error {resp.status_code} for query: {kw}")
+            return listings
         
-        try:
-            resp = requests.get(url, headers=HEADERS, timeout=15)
-            if resp.status_code != 200:
-                logging.warning(f"LinkedIn Guest API Error {resp.status_code} for query: {kw}")
-                continue
+        soup = BeautifulSoup(resp.text, "html.parser")
+        cards = soup.find_all("li")
+        
+        for card in cards:
+            title_el = card.find("h3", class_="base-search-card__title")
+            link_el = card.find("a", class_="base-card__full-link")
+            company_el = card.find("h4", class_="base-search-card__subtitle")
             
-            soup = BeautifulSoup(resp.text, "html.parser")
-            cards = soup.find_all("li")
-            
-            for card in cards:
-                title_el = card.find("h3", class_="base-search-card__title")
-                link_el = card.find("a", class_="base-card__full-link")
-                company_el = card.find("h4", class_="base-search-card__subtitle")
+            if title_el and link_el:
+                title = title_el.get_text(strip=True)
+                link = link_el.get("href").split("?")[0]
+                company = company_el.get_text(strip=True) if company_el else "Top Company"
                 
-                if title_el and link_el:
-                    title = title_el.get_text(strip=True)
-                    link = link_el.get("href").split("?")[0]
-                    company = company_el.get_text(strip=True) if company_el else "Top Company"
-                    
-                    if link not in seen:
-                        seen.add(link)
-                        listings.append((title, link, None, company))
-                        if len(listings) >= limit:
-                            break
-            # Add a brief delay between queries to respect rate limits
-            time.sleep(1.0)
-        except Exception as e:
-            logging.warning(f"LinkedIn public API fetch error for query '{kw}': {e}")
+                if link not in seen:
+                    seen.add(link)
+                    listings.append((title, link, None, company))
+                    if len(listings) >= limit:
+                        break
+    except Exception as e:
+        logging.warning(f"LinkedIn public API fetch error for query '{kw}': {e}")
             
     return listings
 

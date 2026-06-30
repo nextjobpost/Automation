@@ -10619,3 +10619,164 @@
 2026-06-30 23:08:52,423 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
 2026-06-30 23:08:52,423 - INFO - 
 ✅ All private job sources processed. Total Queued: 23/100
+2026-06-30 23:08:52,893 - INFO -   ⚠️ Semantic duplicate: 'Remote Python Developer'. Skipping.
+2026-06-30 23:08:54,404 - INFO -   🚀 [LinkedIn Official] Remote Python Developer
+2026-06-30 23:08:55,828 - INFO -   ⚠️ Semantic duplicate: 'Remote Python Developer'. Skipping.
+2026-06-30 23:08:57,347 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:08:58,903 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:09:00,424 - INFO -   🚀 [LinkedIn Official] Java
+2026-06-30 23:09:02,103 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java...')
+2026-06-30 23:09:03,618 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:09:04,956 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:09:06,465 - INFO -   🚀 [LinkedIn Official] Java Spring Boot Web Developer
+2026-06-30 23:09:08,122 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Spring Boot Web Developer...')
+2026-06-30 23:09:11,141 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:09:12,635 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:09:15,655 - INFO -   🚀 [LinkedIn Official] Software Development Engineer- II [Backend, Java]
+2026-06-30 23:09:16,854 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Development Engineer- II [Backe...')
+2026-06-30 23:09:36,508 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:09:37,894 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:09:39,418 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:09:40,611 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:09:42,130 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:09:43,429 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:09:44,956 - INFO -   🚀 [LinkedIn Official] Tech Support
+2026-06-30 23:09:46,197 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Tech Support...')
+2026-06-30 23:09:47,702 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:09:49,646 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:09:51,171 - INFO -   🚀 [LinkedIn Official] 01 Web Developer
+2026-06-30 23:09:52,203 - INFO -   ⏭️ Skipping: Not an internship or remote role ('01 Web Developer...')
+2026-06-30 23:09:53,718 - INFO -   🚀 [LinkedIn Official] Web Developer Job Vacancy in Kohima, Nagaland
+2026-06-30 23:09:55,182 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer Job Vacancy in Kohima, Nag...')
+2026-06-30 23:09:56,695 - INFO -   🚀 [LinkedIn Official] Wordpress
+2026-06-30 23:09:58,108 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Wordpress...')
+2026-06-30 23:10:01,151 - INFO -   🚀 [LinkedIn Official] Web-Developer - IT Engineer-Sales & Application Engineering Support
+2026-06-30 23:10:02,445 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web-Developer - IT Engineer-Sales & Appl...')
+2026-06-30 23:10:05,455 - INFO -   🚀 [LinkedIn Official] React Developer
+2026-06-30 23:10:06,700 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React Developer...')
+2026-06-30 23:10:08,208 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:10:09,542 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:10:11,059 - INFO -   🚀 [LinkedIn Official] React.js Developer
+2026-06-30 23:10:12,145 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React.js Developer...')
+2026-06-30 23:10:15,167 - INFO -   🚀 [LinkedIn Official] REACT JS  DEVELOPER
+2026-06-30 23:10:16,432 - INFO -   ⏭️ Skipping: Not an internship or remote role ('REACT JS  DEVELOPER...')
+2026-06-30 23:10:17,941 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:10:19,233 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:10:20,747 - INFO -   🚀 [LinkedIn Official] ReactJs Developers
+2026-06-30 23:10:22,032 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJs Developers...')
+2026-06-30 23:10:23,559 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:10:24,771 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:10:26,287 - INFO -   🚀 [LinkedIn Official] Javascript/React Developer
+2026-06-30 23:10:27,519 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Javascript/React Developer...')
+2026-06-30 23:10:29,036 - INFO -   🚀 [LinkedIn Official] Analytics Practitioner
+2026-06-30 23:10:30,456 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Analytics Practitioner...')
+2026-06-30 23:10:35,003 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-30 23:10:36,523 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-30 23:10:39,568 - INFO - ✅ LinkedIn Official: Queued 7 new private jobs.
+2026-06-30 23:10:39,570 - INFO - 
+================================================
+2026-06-30 23:10:39,570 - INFO - 🌐 Scraping: Adzuna API
+2026-06-30 23:10:39,570 - INFO - ================================================
+2026-06-30 23:10:39,570 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-06-30 23:10:39,570 - INFO - Found 0 listings from Adzuna API.
+2026-06-30 23:10:39,570 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-06-30 23:10:39,571 - INFO - 
+================================================
+2026-06-30 23:10:39,571 - INFO - 🌐 Scraping: Internshala
+2026-06-30 23:10:39,571 - INFO - ================================================
+2026-06-30 23:10:44,020 - INFO - Found 0 listings from Internshala.
+2026-06-30 23:10:44,020 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-06-30 23:10:44,020 - INFO - 
+================================================
+2026-06-30 23:10:44,020 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-06-30 23:10:44,020 - INFO - ================================================
+2026-06-30 23:10:45,348 - INFO - Found 15 listings from WeWorkRemotely.
+2026-06-30 23:11:08,026 - INFO - ✅ WeWorkRemotely: Queued 0 new private jobs.
+2026-06-30 23:11:08,026 - INFO - 
+================================================
+2026-06-30 23:11:08,026 - INFO - 🌐 Scraping: Freshersworld
+2026-06-30 23:11:08,026 - INFO - ================================================
+2026-06-30 23:11:12,661 - INFO - Found 10 listings from Freshersworld.
+2026-06-30 23:11:12,663 - INFO -   🚀 [Freshersworld] Hardware And Networks Other In Valsad For Kyndryl Solutions Private Li
+2026-06-30 23:11:15,799 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Hardware And Networks Other In Valsad Fo...')
+2026-06-30 23:11:18,811 - INFO -   🚀 [Freshersworld] Desktop Engineer In Bengaluru For Wipro Limited
+2026-06-30 23:11:21,801 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Bengaluru For Wipro ...')
+2026-06-30 23:11:23,312 - INFO -   🚀 [Freshersworld] It Executive In Bharuch For Kyndryl Solutions Private Limited
+2026-06-30 23:11:26,821 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Executive In Bharuch For Kyndryl Solu...')
+2026-06-30 23:11:28,327 - INFO -   🚀 [Freshersworld] Business Analyst In Ahmedabad For Adani Green Energy Limited
+2026-06-30 23:11:32,288 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Analyst In Ahmedabad For Adani ...')
+2026-06-30 23:11:33,801 - INFO -   🚀 [Freshersworld] It Project Management Jobs Opening In Magiva Technologies Private Limi
+2026-06-30 23:11:37,393 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Project Management Jobs Opening In Ma...')
+2026-06-30 23:11:38,902 - INFO -   🚀 [Freshersworld] Technical Support Voice  Blended In Hyderabad For Goldman Sachs Servic
+2026-06-30 23:11:42,352 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Support Voice  Blended In Hyde...')
+2026-06-30 23:11:45,379 - INFO -   🚀 [Freshersworld] It Asset Management In Gautam Buddha Nagar For For A Client Of Teamlea
+2026-06-30 23:11:48,545 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Asset Management In Gautam Buddha Nag...')
+2026-06-30 23:11:50,078 - INFO -   🚀 [Freshersworld] Desktop Engineer In Gautam Buddha Nagar For For A Client Of Teamlease 
+2026-06-30 23:11:53,227 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Gautam Buddha Nagar ...')
+2026-06-30 23:11:54,739 - INFO - ✅ Freshersworld: Queued 0 new private jobs.
+2026-06-30 23:11:54,740 - INFO - 
+================================================
+2026-06-30 23:11:54,740 - INFO - 🌐 Scraping: WorkAtAStartup
+2026-06-30 23:11:54,741 - INFO - ================================================
+2026-06-30 23:11:57,022 - WARNING - WorkAtAStartup 404
+2026-06-30 23:11:57,023 - INFO - Found 0 listings from WorkAtAStartup.
+2026-06-30 23:11:57,023 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
+2026-06-30 23:11:57,023 - INFO - 
+✅ All private job sources processed. Total Queued: 7/100
+2026-06-30 23:20:21,856 - INFO - ==================================================
+2026-06-30 23:20:21,856 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-06-30 23:20:21,856 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-06-30 23:20:21,856 - INFO - ==================================================
+2026-06-30 23:20:21,860 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-30 23:20:22,406 - INFO -    ✔ Preloaded 150 live jobs.
+2026-06-30 23:20:22,406 - INFO - 
+================================================
+2026-06-30 23:20:22,406 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-30 23:20:22,406 - INFO - ================================================
+2026-06-30 23:20:23,225 - INFO - Found 10 listings from LinkedIn Official.
+2026-06-30 23:20:38,329 - INFO - ✅ LinkedIn Official: Queued 0 new private jobs.
+2026-06-30 23:20:38,329 - INFO - 
+================================================
+2026-06-30 23:20:38,329 - INFO - 🌐 Scraping: Adzuna API
+2026-06-30 23:20:38,329 - INFO - ================================================
+2026-06-30 23:20:38,329 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-06-30 23:20:38,329 - INFO - Found 0 listings from Adzuna API.
+2026-06-30 23:20:38,329 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-06-30 23:20:38,330 - INFO - 
+================================================
+2026-06-30 23:20:38,330 - INFO - 🌐 Scraping: Internshala
+2026-06-30 23:20:38,330 - INFO - ================================================
+2026-06-30 23:20:43,503 - INFO - Found 0 listings from Internshala.
+2026-06-30 23:20:43,503 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-06-30 23:20:43,503 - INFO - 
+================================================
+2026-06-30 23:20:43,503 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-06-30 23:20:43,503 - INFO - ================================================
+2026-06-30 23:20:45,277 - INFO - Found 15 listings from WeWorkRemotely.
+2026-06-30 23:21:07,930 - INFO - ✅ WeWorkRemotely: Queued 0 new private jobs.
+2026-06-30 23:21:07,930 - INFO - 
+================================================
+2026-06-30 23:21:07,930 - INFO - 🌐 Scraping: Freshersworld
+2026-06-30 23:21:07,930 - INFO - ================================================
+2026-06-30 23:21:42,445 - INFO - ==================================================
+2026-06-30 23:21:42,446 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-06-30 23:21:42,446 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-06-30 23:21:42,446 - INFO - ==================================================
+2026-06-30 23:21:42,462 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-30 23:21:42,480 - INFO -    ✔ Preloaded 150 live jobs.
+2026-06-30 23:21:42,480 - INFO - 
+================================================
+2026-06-30 23:21:42,480 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-30 23:21:42,480 - INFO - ================================================
+2026-06-30 23:21:43,234 - INFO - Found 9 listings from LinkedIn Official.
+2026-06-30 23:21:43,236 - INFO -   🚀 [LinkedIn Official] Python Developer + Django
+2026-06-30 23:21:44,656 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer + Django...')
+2026-06-30 23:21:46,163 - INFO -   🚀 [LinkedIn Official] Python and Django Developer
+2026-06-30 23:21:47,382 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python and Django Developer...')
+2026-06-30 23:21:48,886 - INFO -   🚀 [LinkedIn Official] Senior Python Engineer - Django Framework
+2026-06-30 23:21:49,889 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior Python Engineer - Django Framewor...')
+2026-06-30 23:21:51,398 - INFO -   🚀 [LinkedIn Official] Sr. Python Developer
+2026-06-30 23:21:52,659 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Python Developer...')
+2026-06-30 23:21:54,164 - INFO -   🚀 [LinkedIn Official] Senior Python developer

@@ -2390,24 +2390,7 @@ async def process_and_post_job(job_data):
         return True, was_posted
 
 
-def peek_next_job():
-    """Peeks at the next job in the queue without dequeuing it."""
-    try:
-        conn = database.get_connection()
-        cursor = conn.cursor()
-        # Peek at private jobs first (is_government = 0)
-        cursor.execute("SELECT job_data FROM job_queue WHERE is_government = 0 ORDER BY priority DESC, timestamp ASC LIMIT 1")
-        row = cursor.fetchone()
-        if not row:
-            # If no private jobs, peek at govt jobs
-            cursor.execute("SELECT job_data FROM job_queue WHERE is_government = 1 ORDER BY priority DESC, timestamp ASC LIMIT 1")
-            row = cursor.fetchone()
-        conn.close()
-        if row:
-            return json.loads(row[0])
-    except Exception as e:
-        print(f"⚠️ Error peeking next job: {e}")
-    return None
+
 
 
 async def scheduler_task():
@@ -2541,20 +2524,8 @@ async def scheduler_task():
 
             time_since_last = now - last_post_time
 
-            # Enforce 10 seconds for LinkedIn jobs, POST_INTERVAL for others
-            next_job = peek_next_job()
-            is_linkedin_job = False
-            if next_job:
-                source = (next_job.get("sourceWebsite") or next_job.get("sourceUrl") or "").lower()
-                if "linkedin" in source:
-                    is_linkedin_job = True
-
-            effective_interval = 10 if is_linkedin_job else POST_INTERVAL
-
             # Only post if enough time has passed since last post
-            if time_since_last >= effective_interval:
-                if is_linkedin_job and time_since_last < POST_INTERVAL:
-                    logging.info("⚡ [SCHEDULER] LinkedIn job detected. Posting immediately (10s interval).")
+            if time_since_last >= POST_INTERVAL:
                 posted_any = False
             
                 while True:
@@ -2741,6 +2712,29 @@ async def run_scraper_periodically():
         await asyncio.sleep(21600)
 
 
+async def run_private_scraper_periodically():
+    """Background task that runs the private jobs scraper (which fetches LinkedIn guest API) every 10 seconds."""
+    # Start after bot has booted
+    await asyncio.sleep(25)
+    while True:
+        try:
+            queue_size = database.get_queue_size()
+            if queue_size < 250:
+                print("\n🔄 [SCRAPER] Running private job scraper (LinkedIn) in the background...")
+                process = await asyncio.create_subprocess_exec(
+                    sys.executable, "scrape_private_jobs.py",
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
+                stdout, stderr = await process.communicate()
+                print(f"✅ [SCRAPER] Background scrape_private_jobs.py finished with exit code {process.returncode}")
+        except Exception as e:
+            print(f"❌ [SCRAPER] Failed to execute background private scraper: {e}")
+        
+        # Sleep for 10 seconds before running again
+        await asyncio.sleep(10)
+
+
 # =========================
 # RUN
 # =========================
@@ -2894,6 +2888,9 @@ async def main():
     
     # Start the government scraper in the background
     asyncio.create_task(run_scraper_periodically())
+    
+    # Start the private jobs scraper (LinkedIn) in the background every 10 seconds
+    asyncio.create_task(run_private_scraper_periodically())
     
     # Global Reconnection Loop
     while True:
