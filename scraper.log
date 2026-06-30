@@ -9255,3 +9255,1367 @@
 2026-06-29 19:09:38,064 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJS developer...')
 2026-06-29 19:09:39,581 - INFO -   🚀 [LinkedIn Official] Sr. Backend Developer
 2026-06-29 19:09:40,660 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Backend Developer...')
+2026-06-29 19:10:10,229 - INFO - ==================================================
+2026-06-29 19:10:10,229 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-06-29 19:10:10,229 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-06-29 19:10:10,229 - INFO - ==================================================
+2026-06-29 19:10:10,251 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-29 19:10:10,278 - INFO -    ✔ Preloaded 150 live jobs.
+2026-06-29 19:10:10,278 - INFO - 
+================================================
+2026-06-29 19:10:10,278 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-29 19:10:10,278 - INFO - ================================================
+2026-06-29 19:10:32,681 - INFO - Found 100 listings from LinkedIn Official.
+2026-06-29 19:10:34,191 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:10:35,071 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:10:38,104 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:10:39,200 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:10:40,706 - INFO -   🚀 [LinkedIn Official] SDE - 1 - Backend
+2026-06-29 19:10:41,791 - INFO -   ⏭️ Skipping: Not an internship or remote role ('SDE - 1 - Backend...')
+2026-06-29 19:10:43,307 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:10:44,872 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:10:47,888 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:10:49,636 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:10:51,151 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:10:53,079 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:10:56,113 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:10:57,047 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:10:58,567 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:10:59,788 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:11:01,298 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-29 19:11:02,999 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-29 19:11:04,520 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-29 19:11:05,656 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-29 19:11:07,167 - INFO -   🚀 [LinkedIn Official] SDE II / III - Frontend Developer
+2026-06-29 19:11:08,478 - INFO -   ⏭️ Skipping: Not an internship or remote role ('SDE II / III - Frontend Developer...')
+2026-06-29 19:11:09,985 - INFO -   🚀 [LinkedIn Official] Junior Developers Backend and Frontend
+2026-06-29 19:11:11,184 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Junior Developers Backend and Frontend...')
+2026-06-29 19:11:12,694 - INFO -   🚀 [LinkedIn Official] Front-End Developer - SCG India
+2026-06-29 19:11:13,671 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer - SCG India...')
+2026-06-29 19:11:15,182 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-29 19:11:16,303 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-29 19:11:17,813 - INFO -   🚀 [LinkedIn Official] React Developer
+2026-06-29 19:11:18,897 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React Developer...')
+2026-06-29 19:11:20,402 - INFO -   🚀 [LinkedIn Official] React JS Developer
+2026-06-29 19:11:21,646 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React JS Developer...')
+2026-06-29 19:11:23,149 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-29 19:11:24,108 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-29 19:11:25,614 - INFO -   🚀 [LinkedIn Official] Fresher - Front End Developer
+2026-06-29 19:11:26,687 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Fresher - Front End Developer...')
+2026-06-29 19:11:28,199 - INFO -   🚀 [LinkedIn Official] ReactJS developer
+2026-06-29 19:11:29,571 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJS developer...')
+2026-06-29 19:11:31,081 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-29 19:11:32,407 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-29 19:11:33,923 - INFO -   🚀 [LinkedIn Official] Back End Developer
+2026-06-29 19:11:35,134 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Back End Developer...')
+2026-06-29 19:11:38,155 - INFO -   🚀 [LinkedIn Official] Associate
+2026-06-29 19:11:39,186 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Associate...')
+2026-06-29 19:11:40,718 - INFO -   🚀 [LinkedIn Official] Back End Developer
+2026-06-29 19:11:41,718 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Back End Developer...')
+2026-06-29 19:11:43,235 - INFO -   🚀 [LinkedIn Official] Software Backend Engineer
+2026-06-29 19:11:44,403 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Backend Engineer...')
+2026-06-29 19:11:45,921 - INFO -   🚀 [LinkedIn Official] Software Developer (Java,Python,Golang)
+2026-06-29 19:11:47,103 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer (Java,Python,Golang)...')
+2026-06-29 19:11:50,127 - INFO -   🚀 [LinkedIn Official] Dainik Bhaskar - Lead Software Engineer - Backend Development
+2026-06-29 19:11:51,226 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Dainik Bhaskar - Lead Software Engineer ...')
+2026-06-29 19:11:54,238 - INFO -   🚀 [LinkedIn Official] Full Stack Engineer
+2026-06-29 19:11:55,739 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Engineer...')
+2026-06-29 19:11:57,252 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-29 19:11:58,286 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-29 19:11:59,803 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-29 19:12:00,785 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-29 19:12:02,296 - INFO -   🚀 [LinkedIn Official] Full Stack Engineer
+2026-06-29 19:12:03,237 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Engineer...')
+2026-06-29 19:12:04,745 - INFO -   🚀 [LinkedIn Official] Full Stack Developer Job Vacancy in Kohima, Nagaland
+2026-06-29 19:12:05,634 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer Job Vacancy in Kohi...')
+2026-06-29 19:12:07,144 - INFO -   🚀 [LinkedIn Official] Full Stack / DevOps Developer
+2026-06-29 19:12:08,166 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack / DevOps Developer...')
+2026-06-29 19:12:09,682 - INFO -   🚀 [LinkedIn Official] Full Stack Engineer
+2026-06-29 19:12:11,207 - INFO -   📥 Queued private job from LinkedIn Official: Full Stack Engineer
+2026-06-29 19:12:12,732 - INFO -   🚀 [LinkedIn Official] Full-Stack Engineer (AI-Native Development)
+2026-06-29 19:12:13,742 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full-Stack Engineer (AI-Native Developme...')
+2026-06-29 19:12:15,256 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-29 19:12:17,179 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-29 19:12:18,687 - INFO -   🚀 [LinkedIn Official] Software Developer
+2026-06-29 19:12:20,676 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer...')
+2026-06-29 19:12:22,184 - INFO -   🚀 [LinkedIn Official] PYTHON DEVELOPER
+2026-06-29 19:12:23,557 - INFO -   📥 Queued private job from LinkedIn Official: PYTHON DEVELOPER
+2026-06-29 19:12:25,071 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-29 19:12:26,235 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-29 19:12:27,749 - INFO -   🚀 [LinkedIn Official] Python Developer (202510-J1000002)
+2026-06-29 19:12:28,869 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer (202510-J1000002)...')
+2026-06-29 19:12:30,379 - INFO -   🚀 [LinkedIn Official] Python Engineer
+2026-06-29 19:12:31,579 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Engineer...')
+2026-06-29 19:12:33,108 - INFO -   🚀 [LinkedIn Official] Python Backend Developer
+2026-06-29 19:12:34,682 - INFO -   📥 Queued private job from LinkedIn Official: Python Backend Developer
+2026-06-29 19:12:36,213 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-29 19:12:37,361 - INFO -   📥 Queued private job from LinkedIn Official: Python Developer
+2026-06-29 19:12:38,913 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-29 19:12:40,309 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-29 19:12:41,828 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-29 19:12:42,952 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-29 19:12:44,465 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-29 19:12:45,477 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-29 19:12:46,988 - INFO -   🚀 [LinkedIn Official] Python Developer -Software Engineer
+2026-06-29 19:12:47,956 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer -Software Engineer...')
+2026-06-29 19:12:49,468 - INFO -   🚀 [LinkedIn Official] JAVA
+2026-06-29 19:12:50,555 - INFO -   ⏭️ Skipping: Not an internship or remote role ('JAVA...')
+2026-06-29 19:12:53,582 - INFO -   🚀 [LinkedIn Official] Java-Software Engineer II
+2026-06-29 19:12:54,827 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java-Software Engineer II...')
+2026-06-29 19:12:56,346 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-29 19:12:59,100 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-29 19:13:00,617 - INFO -   🚀 [LinkedIn Official] Java Software Engineer
+2026-06-29 19:13:02,153 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Software Engineer...')
+2026-06-29 19:13:03,664 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-29 19:13:04,798 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-29 19:13:06,313 - INFO -   🚀 [LinkedIn Official] Java-Software Engineer II
+2026-06-29 19:13:07,668 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java-Software Engineer II...')
+2026-06-29 19:13:09,181 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-29 19:13:10,533 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-29 19:13:12,044 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-29 19:13:13,096 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-29 19:13:14,603 - INFO -   🚀 [LinkedIn Official] IT Support Engineer - Intern
+2026-06-29 19:13:16,427 - INFO -   📥 Queued private job from LinkedIn Official: IT Support Engineer - Intern
+2026-06-29 19:13:17,957 - INFO -   🚀 [LinkedIn Official] Intern - Cyber Security
+2026-06-29 19:13:19,043 - INFO -   📥 Queued private job from LinkedIn Official: Intern - Cyber Security
+2026-06-29 19:13:20,560 - INFO -   🚀 [LinkedIn Official] Intern - Data Management
+2026-06-29 19:13:21,557 - INFO -   📥 Queued private job from LinkedIn Official: Intern - Data Management
+2026-06-29 19:13:23,088 - INFO -   🚀 [LinkedIn Official] Software Development Engineer - Fresher
+2026-06-29 19:13:24,568 - INFO -   📥 Queued private job from LinkedIn Official: Software Development Engineer - Fresher
+2026-06-29 19:13:26,088 - INFO -   🚀 [LinkedIn Official] Software Engineer Intern
+2026-06-29 19:13:27,104 - INFO -   📥 Queued private job from LinkedIn Official: Software Engineer Intern
+2026-06-29 19:13:28,620 - INFO -   🚀 [LinkedIn Official] Software Development Engineer - Fresher
+2026-06-29 19:13:30,385 - INFO -   📥 Queued private job from LinkedIn Official: Software Development Engineer - Fresher
+2026-06-29 19:13:31,913 - INFO -   🚀 [LinkedIn Official] Desktop Support Intern
+2026-06-29 19:13:32,970 - INFO -   📥 Queued private job from LinkedIn Official: Desktop Support Intern
+2026-06-29 19:13:34,511 - INFO -   🚀 [LinkedIn Official] Software Engineer Intern
+2026-06-29 19:13:35,773 - INFO -   📥 Queued private job from LinkedIn Official: Software Engineer Intern
+2026-06-29 19:13:37,303 - INFO -   🚀 [LinkedIn Official] Data Engineer Intern
+2026-06-29 19:13:38,815 - INFO -   📥 Queued private job from LinkedIn Official: Data Engineer Intern
+2026-06-29 19:13:40,339 - INFO -   🚀 [LinkedIn Official] Software Trainee
+2026-06-29 19:13:41,370 - INFO -   📥 Queued private job from LinkedIn Official: Software Trainee
+2026-06-29 19:13:42,896 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-29 19:13:44,201 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-29 19:13:45,708 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-29 19:13:47,218 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-29 19:13:48,734 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-29 19:13:49,827 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-29 19:13:51,344 - INFO -   🚀 [LinkedIn Official] Tech Support
+2026-06-29 19:13:52,393 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Tech Support...')
+2026-06-29 19:13:53,900 - INFO -   🚀 [LinkedIn Official] 01 Web Developer
+2026-06-29 19:13:55,329 - INFO -   ⏭️ Skipping: Not an internship or remote role ('01 Web Developer...')
+2026-06-29 19:13:56,842 - INFO -   🚀 [LinkedIn Official] Wordpress
+2026-06-29 19:13:57,809 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Wordpress...')
+2026-06-29 19:13:59,314 - INFO -   🚀 [LinkedIn Official] Website Developer and Programmer
+2026-06-29 19:14:00,304 - INFO -   📥 Queued private job from LinkedIn Official: Website Developer and Programmer
+2026-06-29 19:14:01,833 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-29 19:14:02,980 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-29 19:14:04,488 - INFO -   🚀 [LinkedIn Official] Web-Developer - IT Engineer-Sales & Application Engineering Support
+2026-06-29 19:14:06,039 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web-Developer - IT Engineer-Sales & Appl...')
+2026-06-29 19:14:07,547 - INFO -   🚀 [LinkedIn Official] Reactjs Developer
+2026-06-29 19:14:09,976 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Reactjs Developer...')
+2026-06-29 19:14:11,485 - INFO -   🚀 [LinkedIn Official] Senior Front-end Developer
+2026-06-29 19:14:13,558 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior Front-end Developer...')
+2026-06-29 19:14:16,588 - INFO -   🚀 [LinkedIn Official] Udaan Data Analyst
+2026-06-29 19:14:17,663 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Udaan Data Analyst...')
+2026-06-29 19:14:19,176 - INFO -   🚀 [LinkedIn Official] Udaan - Data Analyst
+2026-06-29 19:14:20,316 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Udaan - Data Analyst...')
+2026-06-29 19:14:21,824 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-29 19:14:22,967 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-29 19:14:24,479 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-29 19:14:26,158 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-29 19:14:27,662 - INFO -   🚀 [LinkedIn Official] Business Data Analyst
+2026-06-29 19:14:28,843 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Data Analyst...')
+2026-06-29 19:14:30,354 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-29 19:14:31,641 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-29 19:14:33,159 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-29 19:14:34,307 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-29 19:14:37,336 - INFO -   🚀 [LinkedIn Official] Business Data Analyst
+2026-06-29 19:14:38,341 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Data Analyst...')
+2026-06-29 19:14:41,363 - INFO -   🚀 [LinkedIn Official] Senior DevOps Engineer
+2026-06-29 19:14:42,576 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior DevOps Engineer...')
+2026-06-29 19:14:44,080 - INFO -   🚀 [LinkedIn Official] DevOps Engineer (Permanent WFH)
+2026-06-29 19:14:46,054 - INFO -   📥 Queued private job from LinkedIn Official: DevOps Engineer (Permanent WFH)
+2026-06-29 19:14:47,572 - INFO -   🚀 [LinkedIn Official] DevOps Engineer
+2026-06-29 19:14:48,795 - INFO -   ⏭️ Skipping: Not an internship or remote role ('DevOps Engineer...')
+2026-06-29 19:14:50,299 - INFO -   🚀 [LinkedIn Official] DEVOPS ENGINEER L4
+2026-06-29 19:14:51,662 - INFO -   📥 Queued private job from LinkedIn Official: DEVOPS ENGINEER L4
+2026-06-29 19:14:53,187 - INFO -   🚀 [LinkedIn Official] Cloud Engineer / Cloud DevOps Engineer
+2026-06-29 19:14:54,097 - INFO -   📥 Queued private job from LinkedIn Official: Cloud Engineer / Cloud DevOps Engineer
+2026-06-29 19:14:55,616 - INFO -   🚀 [LinkedIn Official] Software Engineer - DevOps
+2026-06-29 19:14:56,931 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer - DevOps...')
+2026-06-29 19:14:58,443 - INFO - ✅ LinkedIn Official: Queued 18 new private jobs.
+2026-06-29 19:14:58,443 - INFO - 
+================================================
+2026-06-29 19:14:58,443 - INFO - 🌐 Scraping: Adzuna API
+2026-06-29 19:14:58,443 - INFO - ================================================
+2026-06-29 19:14:58,443 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-06-29 19:14:58,443 - INFO - Found 0 listings from Adzuna API.
+2026-06-29 19:14:58,443 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-06-29 19:14:58,444 - INFO - 
+================================================
+2026-06-29 19:14:58,444 - INFO - 🌐 Scraping: Internshala
+2026-06-29 19:14:58,444 - INFO - ================================================
+2026-06-29 19:15:02,441 - INFO - Found 0 listings from Internshala.
+2026-06-29 19:15:02,441 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-06-29 19:15:02,441 - INFO - 
+================================================
+2026-06-29 19:15:02,441 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-06-29 19:15:02,441 - INFO - ================================================
+2026-06-29 19:15:02,780 - INFO - Found 15 listings from WeWorkRemotely.
+2026-06-29 19:15:25,473 - INFO - ✅ WeWorkRemotely: Queued 0 new private jobs.
+2026-06-29 19:15:25,474 - INFO - 
+================================================
+2026-06-29 19:15:25,474 - INFO - 🌐 Scraping: Freshersworld
+2026-06-29 19:15:25,474 - INFO - ================================================
+2026-06-29 19:15:30,710 - INFO - Found 10 listings from Freshersworld.
+2026-06-29 19:15:30,711 - INFO -   🚀 [Freshersworld] Hardware And Networks Other In Valsad For Kyndryl Solutions Private Li
+2026-06-29 19:15:33,834 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Hardware And Networks Other In Valsad Fo...')
+2026-06-29 19:15:35,350 - INFO -   🚀 [Freshersworld] Trainee Software Engineer In Belagavi For For A Client Of Teamlease Di
+2026-06-29 19:15:40,012 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Trainee Software Engineer In Belagavi Fo...')
+2026-06-29 19:15:41,527 - INFO -   🚀 [Freshersworld] It Project Manager In Mumbai For Nvent Electrical Products India Priva
+2026-06-29 19:15:44,474 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Project Manager In Mumbai For Nvent E...')
+2026-06-29 19:15:47,513 - INFO -   🚀 [Freshersworld] It Audit In Hyderabad For For A Client Of Teamlease Digital
+2026-06-29 19:15:52,477 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Audit In Hyderabad For For A Client O...')
+2026-06-29 19:15:53,997 - INFO -   🚀 [Freshersworld] Desktop Engineer In Bengaluru For Wipro Limited
+2026-06-29 19:15:57,081 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Bengaluru For Wipro ...')
+2026-06-29 19:15:58,590 - INFO -   🚀 [Freshersworld] It Project Management Jobs Opening In Magiva Technologies Private Limi
+2026-06-29 19:16:03,759 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Project Management Jobs Opening In Ma...')
+2026-06-29 19:16:05,276 - INFO -   🚀 [Freshersworld] Business Analyst In Karnataka For Tevapharm India Pvt Ltd
+2026-06-29 19:16:10,712 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Analyst In Karnataka For Tevaph...')
+2026-06-29 19:16:12,216 - INFO -   🚀 [Freshersworld] It Executive In Bharuch For Kyndryl Solutions Private Limited
+2026-06-29 19:16:15,147 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Executive In Bharuch For Kyndryl Solu...')
+2026-06-29 19:16:16,663 - INFO -   🚀 [Freshersworld] It Support Other In Tamil Nadu For Cognizant Technology Solutions Indi
+2026-06-29 19:16:19,557 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Support Other In Tamil Nadu For Cogni...')
+2026-06-29 19:16:21,062 - INFO - ✅ Freshersworld: Queued 0 new private jobs.
+2026-06-29 19:16:21,063 - INFO - 
+================================================
+2026-06-29 19:16:21,063 - INFO - 🌐 Scraping: WorkAtAStartup
+2026-06-29 19:16:21,063 - INFO - ================================================
+2026-06-29 19:16:21,813 - WARNING - WorkAtAStartup 404
+2026-06-29 19:16:21,818 - INFO - Found 0 listings from WorkAtAStartup.
+2026-06-29 19:16:21,818 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
+2026-06-29 19:16:21,819 - INFO - 
+✅ All private job sources processed. Total Queued: 18/100
+2026-06-30 10:38:02,761 - INFO - ==================================================
+2026-06-30 10:38:02,761 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-06-30 10:38:02,762 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-06-30 10:38:02,762 - INFO - ==================================================
+2026-06-30 10:38:02,766 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-30 10:38:02,778 - INFO -    ✔ Preloaded 150 live jobs.
+2026-06-30 10:38:02,778 - INFO - 
+================================================
+2026-06-30 10:38:02,778 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-30 10:38:02,778 - INFO - ================================================
+2026-06-30 10:38:23,035 - INFO - Found 100 listings from LinkedIn Official.
+2026-06-30 10:38:23,037 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 10:38:24,367 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 10:38:25,876 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 10:38:26,987 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 10:38:28,527 - INFO -   🚀 [LinkedIn Official] Software Engineer - 3
+2026-06-30 10:38:29,943 - INFO -   ⚠️ Already on website: 'Software Engineer - 3'. Skipping.
+2026-06-30 10:38:31,476 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 10:38:32,993 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 10:38:34,513 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 10:38:35,648 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 10:38:37,166 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 10:38:38,411 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 10:38:39,931 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 10:38:41,167 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 10:38:42,687 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 10:38:43,825 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 10:38:45,347 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 10:38:46,843 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 10:38:48,356 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 10:38:49,645 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 10:38:54,187 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 10:38:55,264 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 10:38:56,780 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 10:38:58,370 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 10:38:59,887 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 10:39:00,958 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 10:39:02,479 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 10:39:03,956 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 10:39:05,476 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 10:39:06,552 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 10:39:08,070 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 10:39:09,197 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 10:39:10,704 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 10:39:11,991 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 10:39:13,510 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 10:39:14,652 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 10:39:16,173 - INFO -   🚀 [LinkedIn Official] Software Engineer - Front End
+2026-06-30 10:39:17,208 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer - Front End...')
+2026-06-30 10:39:18,728 - INFO -   🚀 [LinkedIn Official] Front-End Developer
+2026-06-30 10:39:20,148 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer...')
+2026-06-30 10:39:21,662 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 10:39:22,875 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 10:39:24,393 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 10:39:25,513 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 10:39:27,035 - INFO -   🚀 [LinkedIn Official] UI Engineer / Frontend Developer
+2026-06-30 10:39:28,006 - INFO -   ⏭️ Skipping: Not an internship or remote role ('UI Engineer / Frontend Developer...')
+2026-06-30 10:39:29,526 - INFO -   🚀 [LinkedIn Official] UI Engineer (Outbound/Selfservice)
+2026-06-30 10:39:31,108 - INFO -   📥 Queued private job from LinkedIn Official: UI Engineer (Outbound/Selfservice)
+2026-06-30 10:39:32,629 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 10:39:33,706 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 10:39:36,722 - INFO -   🚀 [LinkedIn Official] Fronted Developer
+2026-06-30 10:39:38,044 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Fronted Developer...')
+2026-06-30 10:39:39,560 - INFO -   🚀 [LinkedIn Official] Frontend Engineer
+2026-06-30 10:39:41,006 - INFO -   📥 Queued private job from LinkedIn Official: Frontend Engineer
+2026-06-30 10:39:42,530 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 10:39:43,658 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 10:39:45,171 - INFO -   🚀 [LinkedIn Official] Back End Developer
+2026-06-30 10:39:46,559 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Back End Developer...')
+2026-06-30 10:39:49,581 - INFO -   🚀 [LinkedIn Official] Associate
+2026-06-30 10:39:51,079 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Associate...')
+2026-06-30 10:39:52,585 - INFO -   🚀 [LinkedIn Official] Back End Developer
+2026-06-30 10:39:54,053 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Back End Developer...')
+2026-06-30 10:39:57,074 - INFO -   🚀 [LinkedIn Official] Dainik Bhaskar - Lead Software Engineer - Backend Development
+2026-06-30 10:39:58,468 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Dainik Bhaskar - Lead Software Engineer ...')
+2026-06-30 10:40:02,995 - INFO -   🚀 [LinkedIn Official] Software Developer (Java,Python,Golang)
+2026-06-30 10:40:04,212 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer (Java,Python,Golang)...')
+2026-06-30 10:40:05,722 - INFO -   🚀 [LinkedIn Official] Full Stack Engineer
+2026-06-30 10:40:06,686 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Engineer...')
+2026-06-30 10:40:08,193 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 10:40:09,354 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 10:40:10,874 - INFO -   🚀 [LinkedIn Official] Full Stack Engineer
+2026-06-30 10:40:12,083 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Engineer...')
+2026-06-30 10:40:13,595 - INFO -   🚀 [LinkedIn Official] Full Stack Developer Job Vacancy in Kohima, Nagaland
+2026-06-30 10:40:14,977 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer Job Vacancy in Kohi...')
+2026-06-30 10:40:16,498 - INFO -   🚀 [LinkedIn Official] Full Stack / DevOps Developer
+2026-06-30 10:40:17,483 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack / DevOps Developer...')
+2026-06-30 10:40:20,517 - INFO -   🚀 [LinkedIn Official] Full-Stack Engineer (AI-Native Development)
+2026-06-30 10:40:22,023 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full-Stack Engineer (AI-Native Developme...')
+2026-06-30 10:40:23,543 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 10:40:24,599 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 10:40:26,107 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 10:40:27,521 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 10:40:29,030 - INFO -   🚀 [LinkedIn Official] Software Developer
+2026-06-30 10:40:30,179 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer...')
+2026-06-30 10:40:31,685 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 10:40:33,072 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 10:40:34,593 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 10:40:35,719 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 10:40:37,229 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 10:40:38,490 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 10:40:40,006 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 10:40:41,676 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 10:40:43,192 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 10:40:44,428 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 10:40:45,943 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 10:40:47,170 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 10:40:48,691 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 10:40:50,118 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 10:40:51,635 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 10:40:53,181 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 10:40:54,690 - INFO -   🚀 [LinkedIn Official] Associate - Python Data Engineer - GDC
+2026-06-30 10:40:56,279 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Associate - Python Data Engineer - GDC...')
+2026-06-30 10:40:57,802 - INFO -   🚀 [LinkedIn Official] Junior Python Developer
+2026-06-30 10:40:59,038 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Junior Python Developer...')
+2026-06-30 10:41:00,552 - INFO -   🚀 [LinkedIn Official] JAVA
+2026-06-30 10:41:02,137 - INFO -   ⏭️ Skipping: Not an internship or remote role ('JAVA...')
+2026-06-30 10:41:03,658 - INFO -   🚀 [LinkedIn Official] Java-Software Engineer II
+2026-06-30 10:41:05,399 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java-Software Engineer II...')
+2026-06-30 10:41:06,919 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 10:41:08,196 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 10:41:09,711 - INFO -   🚀 [LinkedIn Official] Java Software Engineer
+2026-06-30 10:41:10,759 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Software Engineer...')
+2026-06-30 10:41:12,276 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 10:41:14,023 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 10:41:15,541 - INFO -   🚀 [LinkedIn Official] Java-Software Engineer II
+2026-06-30 10:41:17,394 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java-Software Engineer II...')
+2026-06-30 10:41:18,909 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 10:41:19,955 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 10:41:21,461 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 10:41:22,490 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 10:41:27,071 - INFO -   🚀 [LinkedIn Official] Intern, IT Operations (6-Month Term)
+2026-06-30 10:41:28,433 - INFO -   📥 Queued private job from LinkedIn Official: Intern, IT Operations (6-Month Term)
+2026-06-30 10:41:34,473 - INFO -   🚀 [LinkedIn Official] Cloud Infrastructure Intern (India)
+2026-06-30 10:41:35,751 - INFO -   📥 Queued private job from LinkedIn Official: Cloud Infrastructure Intern (India)
+2026-06-30 10:41:38,777 - INFO -   🚀 [LinkedIn Official] AWS Cloud Intern
+2026-06-30 10:41:40,346 - INFO -   📥 Queued private job from LinkedIn Official: AWS Cloud Intern
+2026-06-30 10:41:41,872 - INFO -   🚀 [LinkedIn Official] Cloud Engineer Intern || June 2026
+2026-06-30 10:41:42,981 - INFO -   📥 Queued private job from LinkedIn Official: Cloud Engineer Intern || June 2026
+2026-06-30 10:41:44,498 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 10:41:45,477 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 10:41:46,989 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 10:41:48,448 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 10:41:49,960 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 10:41:50,903 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 10:41:52,420 - INFO -   🚀 [LinkedIn Official] Tech Support
+2026-06-30 10:41:54,087 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Tech Support...')
+2026-06-30 10:41:55,605 - INFO -   🚀 [LinkedIn Official] 01 Web Developer
+2026-06-30 10:41:56,602 - INFO -   ⏭️ Skipping: Not an internship or remote role ('01 Web Developer...')
+2026-06-30 10:41:58,119 - INFO -   🚀 [LinkedIn Official] Wordpress
+2026-06-30 10:41:59,124 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Wordpress...')
+2026-06-30 10:42:02,140 - INFO -   🚀 [LinkedIn Official] Web-Developer - IT Engineer-Sales & Application Engineering Support
+2026-06-30 10:42:03,349 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web-Developer - IT Engineer-Sales & Appl...')
+2026-06-30 10:42:04,857 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 10:42:05,826 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 10:42:07,344 - INFO -   🚀 [LinkedIn Official] React Developer
+2026-06-30 10:42:09,334 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React Developer...')
+2026-06-30 10:42:10,853 - INFO -   🚀 [LinkedIn Official] React.js Developer
+2026-06-30 10:42:11,828 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React.js Developer...')
+2026-06-30 10:42:14,848 - INFO -   🚀 [LinkedIn Official] REACT JS  DEVELOPER
+2026-06-30 10:42:16,358 - INFO -   ⏭️ Skipping: Not an internship or remote role ('REACT JS  DEVELOPER...')
+2026-06-30 10:42:17,873 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 10:42:18,886 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 10:42:20,405 - INFO -   🚀 [LinkedIn Official] ReactJs Developers
+2026-06-30 10:42:21,347 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJs Developers...')
+2026-06-30 10:42:22,858 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 10:42:23,948 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 10:42:25,462 - INFO -   🚀 [LinkedIn Official] Javascript/React Developer
+2026-06-30 10:42:26,748 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Javascript/React Developer...')
+2026-06-30 10:42:28,256 - INFO -   🚀 [LinkedIn Official] Analytics Practitioner
+2026-06-30 10:42:29,153 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Analytics Practitioner...')
+2026-06-30 10:42:30,671 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-30 10:42:31,618 - INFO -   📥 Queued private job from LinkedIn Official: Data Analyst
+2026-06-30 10:42:33,143 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-30 10:42:34,293 - INFO -   📥 Queued private job from LinkedIn Official: Data Analyst
+2026-06-30 10:42:35,817 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-30 10:42:37,224 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-30 10:42:38,728 - INFO -   🚀 [LinkedIn Official] Drilling Data Analyst
+2026-06-30 10:42:39,649 - INFO -   📥 Queued private job from LinkedIn Official: Drilling Data Analyst
+2026-06-30 10:42:41,173 - INFO - ✅ LinkedIn Official: Queued 9 new private jobs.
+2026-06-30 10:42:41,174 - INFO - 
+================================================
+2026-06-30 10:42:41,174 - INFO - 🌐 Scraping: Adzuna API
+2026-06-30 10:42:41,174 - INFO - ================================================
+2026-06-30 10:42:41,174 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-06-30 10:42:41,174 - INFO - Found 0 listings from Adzuna API.
+2026-06-30 10:42:41,174 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-06-30 10:42:41,174 - INFO - 
+================================================
+2026-06-30 10:42:41,174 - INFO - 🌐 Scraping: Internshala
+2026-06-30 10:42:41,174 - INFO - ================================================
+2026-06-30 10:42:44,107 - INFO - Found 0 listings from Internshala.
+2026-06-30 10:42:44,107 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-06-30 10:42:44,107 - INFO - 
+================================================
+2026-06-30 10:42:44,107 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-06-30 10:42:44,108 - INFO - ================================================
+2026-06-30 10:42:44,509 - INFO - Found 15 listings from WeWorkRemotely.
+2026-06-30 10:42:44,516 - INFO -   🚀 [WeWorkRemotely] DevOps Engineer
+2026-06-30 10:42:45,520 - INFO -   📥 Queued private job from WeWorkRemotely: DevOps Engineer
+2026-06-30 10:43:08,160 - INFO - ✅ WeWorkRemotely: Queued 1 new private jobs.
+2026-06-30 10:43:08,161 - INFO - 
+================================================
+2026-06-30 10:43:08,161 - INFO - 🌐 Scraping: Freshersworld
+2026-06-30 10:43:08,161 - INFO - ================================================
+2026-06-30 10:43:12,094 - INFO - Found 10 listings from Freshersworld.
+2026-06-30 10:43:12,096 - INFO -   🚀 [Freshersworld] Hardware And Networks Other In Valsad For Kyndryl Solutions Private Li
+2026-06-30 10:43:14,915 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Hardware And Networks Other In Valsad Fo...')
+2026-06-30 10:43:17,935 - INFO -   🚀 [Freshersworld] Desktop Engineer In Bengaluru For Wipro Limited
+2026-06-30 10:43:20,569 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Bengaluru For Wipro ...')
+2026-06-30 10:43:22,072 - INFO -   🚀 [Freshersworld] It Project Management Jobs Opening In Magiva Technologies Private Limi
+2026-06-30 10:43:25,495 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Project Management Jobs Opening In Ma...')
+2026-06-30 10:43:27,003 - INFO -   🚀 [Freshersworld] It Executive In Bharuch For Kyndryl Solutions Private Limited
+2026-06-30 10:43:29,911 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Executive In Bharuch For Kyndryl Solu...')
+2026-06-30 10:43:31,421 - INFO -   🚀 [Freshersworld] Business Analyst In Ahmedabad For Adani Green Energy Limited
+2026-06-30 10:43:34,341 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Analyst In Ahmedabad For Adani ...')
+2026-06-30 10:43:35,861 - INFO -   🚀 [Freshersworld] Technical Support Voice  Blended In Hyderabad For Goldman Sachs Servic
+2026-06-30 10:43:38,539 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Support Voice  Blended In Hyde...')
+2026-06-30 10:43:40,057 - INFO -   🚀 [Freshersworld] It Sales Executive Jobs Opening In Skyyvera Recruitment At Baner Pune
+2026-06-30 10:43:43,062 - INFO -   📥 Queued private job from Freshersworld: It Sales Executive Jobs Opening In Skyyvera Recruitment At Baner Pune
+2026-06-30 10:43:44,589 - INFO -   🚀 [Freshersworld] It Asset Management In Gautam Buddha Nagar For For A Client Of Teamlea
+2026-06-30 10:43:47,383 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Asset Management In Gautam Buddha Nag...')
+2026-06-30 10:43:48,900 - INFO -   🚀 [Freshersworld] Desktop Engineer In Gautam Buddha Nagar For For A Client Of Teamlease 
+2026-06-30 10:43:51,612 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Gautam Buddha Nagar ...')
+2026-06-30 10:43:53,121 - INFO - ✅ Freshersworld: Queued 1 new private jobs.
+2026-06-30 10:43:53,121 - INFO - 
+================================================
+2026-06-30 10:43:53,122 - INFO - 🌐 Scraping: WorkAtAStartup
+2026-06-30 10:43:53,122 - INFO - ================================================
+2026-06-30 10:43:54,738 - WARNING - WorkAtAStartup 404
+2026-06-30 10:43:54,742 - INFO - Found 0 listings from WorkAtAStartup.
+2026-06-30 10:43:54,743 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
+2026-06-30 10:43:54,743 - INFO - 
+✅ All private job sources processed. Total Queued: 11/100
+2026-06-30 22:55:59,972 - INFO - ==================================================
+2026-06-30 22:55:59,973 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-06-30 22:55:59,973 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-06-30 22:55:59,973 - INFO - ==================================================
+2026-06-30 22:56:04,078 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-30 22:56:09,944 - INFO -    ✔ Preloaded 150 live jobs.
+2026-06-30 22:56:09,944 - INFO - 
+================================================
+2026-06-30 22:56:09,944 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-30 22:56:09,944 - INFO - ================================================
+2026-06-30 22:56:31,371 - INFO - Found 100 listings from LinkedIn Official.
+2026-06-30 22:56:31,390 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:56:32,769 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:56:34,290 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:56:35,726 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:56:37,252 - INFO -   🚀 [LinkedIn Official] Software Developer Job Vacancy in Kohima Nagaland
+2026-06-30 22:56:38,434 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer Job Vacancy in Kohima...')
+2026-06-30 22:56:41,460 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:56:42,895 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:56:44,423 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:56:45,684 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:56:47,196 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:56:48,906 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:56:50,418 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:56:51,640 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:56:53,148 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:56:54,613 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:56:56,125 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:56:57,461 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:57:00,525 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:57:01,762 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:57:04,795 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:57:05,883 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:57:07,413 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:57:08,588 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:57:10,108 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:57:11,473 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:57:12,981 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:57:14,450 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:57:15,953 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:57:16,998 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:57:20,012 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:57:21,160 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:57:22,678 - INFO -   🚀 [LinkedIn Official] Front-End Developer
+2026-06-30 22:57:23,963 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer...')
+2026-06-30 22:57:25,480 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 22:57:26,656 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 22:57:28,174 - INFO -   🚀 [LinkedIn Official] Junior Developers Backend and Frontend
+2026-06-30 22:57:29,404 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Junior Developers Backend and Frontend...')
+2026-06-30 22:57:30,919 - INFO -   🚀 [LinkedIn Official] Front-End Developer - SCG India
+2026-06-30 22:57:32,371 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer - SCG India...')
+2026-06-30 22:57:33,885 - INFO -   🚀 [LinkedIn Official] React Developer
+2026-06-30 22:57:35,405 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React Developer...')
+2026-06-30 22:57:36,913 - INFO -   🚀 [LinkedIn Official] ReactJS developer
+2026-06-30 22:57:38,251 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJS developer...')
+2026-06-30 22:57:39,769 - INFO -   🚀 [LinkedIn Official] Frontend developers
+2026-06-30 22:57:41,088 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend developers...')
+2026-06-30 22:57:42,598 - INFO -   🚀 [LinkedIn Official] Reactjs Developer
+2026-06-30 22:57:43,910 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Reactjs Developer...')
+2026-06-30 22:57:45,421 - INFO -   🚀 [LinkedIn Official] Fresher - Front End Developer
+2026-06-30 22:57:46,668 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Fresher - Front End Developer...')
+2026-06-30 22:57:48,177 - INFO -   🚀 [LinkedIn Official] Frontend developers
+2026-06-30 22:57:49,403 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend developers...')
+2026-06-30 22:57:50,934 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:57:52,453 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:57:53,972 - INFO -   🚀 [LinkedIn Official] Software Engineer (Backend Engineer)
+2026-06-30 22:57:55,141 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer (Backend Engineer)...')
+2026-06-30 22:57:56,663 - INFO -   🚀 [LinkedIn Official] Backend Developer
+2026-06-30 22:57:57,787 - INFO -   📥 Queued private job from LinkedIn Official: Backend Developer
+2026-06-30 22:57:59,313 - INFO -   🚀 [LinkedIn Official] Software Developer - Golang
+2026-06-30 22:58:00,437 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer - Golang...')
+2026-06-30 22:58:01,956 - INFO -   🚀 [LinkedIn Official] Software Developer - Golang
+2026-06-30 22:58:03,142 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer - Golang...')
+2026-06-30 22:58:04,647 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:58:05,774 - INFO -   ⚠️ Already on website: 'Software Engineer'. Skipping.
+2026-06-30 22:58:07,300 - INFO -   🚀 [LinkedIn Official] Sr. Back-End Engineer
+2026-06-30 22:58:07,487 - INFO - ==================================================
+2026-06-30 22:58:07,487 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-06-30 22:58:07,487 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-06-30 22:58:07,488 - INFO - ==================================================
+2026-06-30 22:58:07,539 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-30 22:58:08,045 - INFO -    ✔ Preloaded 150 live jobs.
+2026-06-30 22:58:08,045 - INFO - 
+================================================
+2026-06-30 22:58:08,045 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-30 22:58:08,045 - INFO - ================================================
+2026-06-30 22:58:08,873 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Back-End Engineer...')
+2026-06-30 22:58:10,391 - INFO -   🚀 [LinkedIn Official] Backend Engineer
+2026-06-30 22:58:11,829 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Backend Engineer...')
+2026-06-30 22:58:13,334 - INFO -   🚀 [LinkedIn Official] Software Developer 2
+2026-06-30 22:58:14,408 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer 2...')
+2026-06-30 22:58:15,939 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:58:17,378 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:58:18,886 - INFO -   🚀 [LinkedIn Official] Full Stack Engineer
+2026-06-30 22:58:20,324 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Engineer...')
+2026-06-30 22:58:21,835 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 22:58:23,229 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 22:58:24,733 - INFO -   🚀 [LinkedIn Official] Full Stack Engineer
+2026-06-30 22:58:26,204 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Engineer...')
+2026-06-30 22:58:27,716 - INFO -   🚀 [LinkedIn Official] Full Stack Developer Job Vacancy in Kohima, Nagaland
+2026-06-30 22:58:28,866 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer Job Vacancy in Kohi...')
+2026-06-30 22:58:30,372 - INFO -   🚀 [LinkedIn Official] Full-Stack Software Engineer
+2026-06-30 22:58:31,807 - INFO -   📥 Queued private job from LinkedIn Official: Full-Stack Software Engineer
+2026-06-30 22:58:33,332 - INFO -   🚀 [LinkedIn Official] Full Stack / DevOps Developer
+2026-06-30 22:58:34,706 - INFO - Found 100 listings from LinkedIn Official.
+2026-06-30 22:58:34,747 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack / DevOps Developer...')
+2026-06-30 22:58:36,222 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:58:36,254 - INFO -   🚀 [LinkedIn Official] Full-Stack Engineer (AI-Native Development)
+2026-06-30 22:58:37,511 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:58:37,847 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full-Stack Engineer (AI-Native Developme...')
+2026-06-30 22:58:39,018 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:58:39,357 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 22:58:40,105 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:58:40,379 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 22:58:41,882 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 22:58:43,033 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 22:58:43,125 - INFO -   🚀 [LinkedIn Official] SDE - 1 - Backend
+2026-06-30 22:58:44,480 - INFO -   ⏭️ Skipping: Not an internship or remote role ('SDE - 1 - Backend...')
+2026-06-30 22:58:44,546 - INFO -   🚀 [LinkedIn Official] Software Developer
+2026-06-30 22:58:45,673 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer...')
+2026-06-30 22:58:45,995 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:58:47,185 - INFO -   🚀 [LinkedIn Official] Python Developer + Django
+2026-06-30 22:58:47,312 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:58:48,532 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer + Django...')
+2026-06-30 22:58:48,829 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:58:50,040 - INFO -   🚀 [LinkedIn Official] Python and Django Developer
+2026-06-30 22:58:50,189 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:58:51,349 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python and Django Developer...')
+2026-06-30 22:58:51,699 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:58:52,858 - INFO -   🚀 [LinkedIn Official] Senior Python Engineer - Django Framework
+2026-06-30 22:58:52,994 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:58:53,937 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior Python Engineer - Django Framewor...')
+2026-06-30 22:58:55,440 - INFO -   🚀 [LinkedIn Official] Sr. Python Developer
+2026-06-30 22:58:56,011 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:58:56,772 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Python Developer...')
+2026-06-30 22:58:57,053 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:58:58,281 - INFO -   🚀 [LinkedIn Official] Senior Python developer
+2026-06-30 22:58:58,561 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:58:59,454 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior Python developer...')
+2026-06-30 22:58:59,716 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:59:00,970 - INFO -   🚀 [LinkedIn Official] Sr. Python Developer
+2026-06-30 22:59:01,218 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 22:59:02,223 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Python Developer...')
+2026-06-30 22:59:02,264 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 22:59:03,739 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 22:59:03,770 - INFO -   🚀 [LinkedIn Official] Frontend Engineer
+2026-06-30 22:59:04,918 - INFO -   📥 Queued private job from LinkedIn Official: Frontend Engineer
+2026-06-30 22:59:04,978 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 22:59:06,446 - INFO -   🚀 [LinkedIn Official] Frontend Developers
+2026-06-30 22:59:06,492 - INFO -   🚀 [LinkedIn Official] Python Programmer
+2026-06-30 22:59:07,780 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developers...')
+2026-06-30 22:59:07,834 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Programmer...')
+2026-06-30 22:59:09,296 - INFO -   🚀 [LinkedIn Official] Software Engineer - Front End
+2026-06-30 22:59:09,340 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 22:59:10,570 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer - Front End...')
+2026-06-30 22:59:10,630 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 22:59:12,087 - INFO -   🚀 [LinkedIn Official] Front-End Developer
+2026-06-30 22:59:12,133 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:59:13,349 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer...')
+2026-06-30 22:59:13,509 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:59:14,867 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 22:59:15,022 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 22:59:16,208 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 22:59:16,272 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 22:59:17,724 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 22:59:17,783 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 22:59:18,892 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 22:59:18,943 - INFO -   ⚠️ Already on website: 'Java Developer'. Skipping.
+2026-06-30 22:59:20,419 - INFO -   🚀 [LinkedIn Official] UI Engineer / Frontend Developer
+2026-06-30 22:59:20,464 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 22:59:21,549 - INFO -   ⏭️ Skipping: Not an internship or remote role ('UI Engineer / Frontend Developer...')
+2026-06-30 22:59:21,569 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 22:59:23,077 - INFO -   🚀 [LinkedIn Official] Java Software Developer
+2026-06-30 22:59:24,437 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Software Developer...')
+2026-06-30 22:59:24,577 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:59:25,854 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:59:25,946 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 22:59:27,148 - INFO -   ⚠️ Already on website: 'Java Developer'. Skipping.
+2026-06-30 22:59:28,676 - INFO -   🚀 [LinkedIn Official] Java Software Engineer
+2026-06-30 22:59:28,877 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:59:29,770 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Software Engineer...')
+2026-06-30 22:59:30,206 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:59:31,280 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 22:59:31,714 - INFO -   🚀 [LinkedIn Official] Software Engineer (Backend Engineer)
+2026-06-30 22:59:32,430 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 22:59:32,879 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer (Backend Engineer)...')
+2026-06-30 22:59:33,935 - INFO -   🚀 [LinkedIn Official] Java Developer & Support
+2026-06-30 22:59:35,268 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer & Support...')
+2026-06-30 22:59:35,887 - INFO -   🚀 [LinkedIn Official] Software Developer - Golang
+2026-06-30 22:59:37,089 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer - Golang...')
+2026-06-30 22:59:38,598 - INFO -   🚀 [LinkedIn Official] Software Developer - Golang
+2026-06-30 22:59:39,919 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer - Golang...')
+2026-06-30 22:59:42,951 - INFO -   🚀 [LinkedIn Official] Sr. Back-End Engineer
+2026-06-30 22:59:44,379 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Back-End Engineer...')
+2026-06-30 22:59:45,831 - INFO -   🚀 [LinkedIn Official] Web Developer - Fresher
+2026-06-30 22:59:45,891 - INFO -   🚀 [LinkedIn Official] Backend Engineer
+2026-06-30 22:59:47,063 - INFO -   📥 Queued private job from LinkedIn Official: Web Developer - Fresher
+2026-06-30 22:59:47,105 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Backend Engineer...')
+2026-06-30 22:59:48,618 - INFO -   🚀 [LinkedIn Official] Software Developer 2
+2026-06-30 22:59:49,741 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer 2...')
+2026-06-30 22:59:50,116 - INFO -   🚀 [LinkedIn Official] Software Engineer Intern
+2026-06-30 22:59:51,249 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 22:59:51,389 - INFO -   ⚠️ Already on website: 'Software Engineer Intern'. Skipping.
+2026-06-30 22:59:52,568 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 22:59:54,078 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 22:59:54,432 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 22:59:55,330 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 22:59:55,582 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 22:59:56,840 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 22:59:57,089 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 22:59:58,118 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 22:59:58,297 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 22:59:59,633 - INFO -   🚀 [LinkedIn Official] Junior Developers Backend and Frontend
+2026-06-30 22:59:59,803 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:00:00,759 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Junior Developers Backend and Frontend...')
+2026-06-30 23:00:00,892 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:00:02,268 - INFO -   🚀 [LinkedIn Official] Front-End Developer
+2026-06-30 23:00:02,406 - INFO -   🚀 [LinkedIn Official] Tech Support
+2026-06-30 23:00:03,467 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Tech Support...')
+2026-06-30 23:00:03,640 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer...')
+2026-06-30 23:00:04,982 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:00:06,289 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:00:06,665 - INFO -   🚀 [LinkedIn Official] Front-End Developer - SCG India
+2026-06-30 23:00:07,798 - INFO -   🚀 [LinkedIn Official] 01 Web Developer
+2026-06-30 23:00:08,227 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer - SCG India...')
+2026-06-30 23:00:09,004 - INFO -   ⏭️ Skipping: Not an internship or remote role ('01 Web Developer...')
+2026-06-30 23:00:09,732 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:00:10,523 - INFO -   🚀 [LinkedIn Official] Web Developer Job Vacancy in Kohima, Nagaland
+2026-06-30 23:00:10,995 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:00:11,932 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer Job Vacancy in Kohima, Nag...')
+2026-06-30 23:00:12,504 - INFO -   🚀 [LinkedIn Official] Software Development Engineer 2
+2026-06-30 23:00:13,444 - INFO -   🚀 [LinkedIn Official] Wordpress
+2026-06-30 23:00:13,989 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Development Engineer 2...')
+2026-06-30 23:00:14,638 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Wordpress...')
+2026-06-30 23:00:15,507 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:00:16,694 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:00:17,661 - INFO -   🚀 [LinkedIn Official] Web-Developer - IT Engineer-Sales & Application Engineering Support
+2026-06-30 23:00:18,206 - INFO -   🚀 [LinkedIn Official] Fullstack (React JS + Node JS) Developer
+2026-06-30 23:00:19,267 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web-Developer - IT Engineer-Sales & Appl...')
+2026-06-30 23:00:19,754 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Fullstack (React JS + Node JS) Developer...')
+2026-06-30 23:00:21,269 - INFO -   🚀 [LinkedIn Official] Python Developer + Django
+2026-06-30 23:00:22,293 - INFO -   🚀 [LinkedIn Official] React Developer
+2026-06-30 23:00:23,106 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer + Django...')
+2026-06-30 23:00:23,730 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React Developer...')
+2026-06-30 23:00:24,624 - INFO -   🚀 [LinkedIn Official] Python and Django Developer
+2026-06-30 23:00:25,235 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:00:25,785 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python and Django Developer...')
+2026-06-30 23:00:26,535 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:00:27,290 - INFO -   🚀 [LinkedIn Official] Senior Python Engineer - Django Framework
+2026-06-30 23:00:28,050 - INFO -   🚀 [LinkedIn Official] React.js Developer
+2026-06-30 23:00:28,122 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior Python Engineer - Django Framewor...')
+2026-06-30 23:00:29,100 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React.js Developer...')
+2026-06-30 23:00:29,636 - INFO -   🚀 [LinkedIn Official] Sr. Python Developer
+2026-06-30 23:00:30,871 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Python Developer...')
+2026-06-30 23:00:32,118 - INFO -   🚀 [LinkedIn Official] REACT JS  DEVELOPER
+2026-06-30 23:00:32,381 - INFO -   🚀 [LinkedIn Official] Senior Python developer
+2026-06-30 23:00:33,612 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior Python developer...')
+2026-06-30 23:00:33,660 - INFO -   ⏭️ Skipping: Not an internship or remote role ('REACT JS  DEVELOPER...')
+2026-06-30 23:00:34,739 - INFO - ==================================================
+2026-06-30 23:00:34,740 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-06-30 23:00:34,740 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-06-30 23:00:34,740 - INFO - ==================================================
+2026-06-30 23:00:34,764 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-30 23:00:34,789 - INFO -    ✔ Preloaded 150 live jobs.
+2026-06-30 23:00:34,789 - INFO - 
+================================================
+2026-06-30 23:00:34,789 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-30 23:00:34,789 - INFO - ================================================
+2026-06-30 23:00:35,120 - INFO -   🚀 [LinkedIn Official] Sr. Python Developer
+2026-06-30 23:00:35,167 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:00:36,476 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:00:36,614 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Python Developer...')
+2026-06-30 23:00:37,985 - INFO -   🚀 [LinkedIn Official] ReactJs Developers
+2026-06-30 23:00:38,124 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 23:00:39,158 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJs Developers...')
+2026-06-30 23:00:39,562 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 23:00:40,676 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:00:41,078 - INFO -   🚀 [LinkedIn Official] Python Programmer
+2026-06-30 23:00:41,870 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:00:42,135 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Programmer...')
+2026-06-30 23:00:43,377 - INFO -   🚀 [LinkedIn Official] Javascript/React Developer
+2026-06-30 23:00:43,641 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 23:00:44,600 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Javascript/React Developer...')
+2026-06-30 23:00:44,754 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 23:00:46,117 - INFO -   🚀 [LinkedIn Official] Udaan Data Analyst
+2026-06-30 23:00:46,271 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:00:47,714 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:00:47,890 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Udaan Data Analyst...')
+2026-06-30 23:00:49,225 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:00:49,395 - INFO -   🚀 [LinkedIn Official] Udaan - Data Analyst
+2026-06-30 23:00:50,448 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:00:50,931 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Udaan - Data Analyst...')
+2026-06-30 23:00:52,448 - INFO - ✅ LinkedIn Official: Queued 3 new private jobs.
+2026-06-30 23:00:52,448 - INFO - 
+================================================
+2026-06-30 23:00:52,448 - INFO - 🌐 Scraping: Adzuna API
+2026-06-30 23:00:52,449 - INFO - ================================================
+2026-06-30 23:00:52,449 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-06-30 23:00:52,449 - INFO - Found 0 listings from Adzuna API.
+2026-06-30 23:00:52,449 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-06-30 23:00:52,449 - INFO - 
+================================================
+2026-06-30 23:00:52,449 - INFO - 🌐 Scraping: Internshala
+2026-06-30 23:00:52,450 - INFO - ================================================
+2026-06-30 23:00:53,469 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:00:54,728 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:00:56,131 - INFO - Found 100 listings from LinkedIn Official.
+2026-06-30 23:00:56,240 - INFO -   🚀 [LinkedIn Official] Java Software Developer
+2026-06-30 23:00:57,304 - INFO - Found 0 listings from Internshala.
+2026-06-30 23:00:57,304 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-06-30 23:00:57,304 - INFO - 
+================================================
+2026-06-30 23:00:57,304 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-06-30 23:00:57,304 - INFO - ================================================
+2026-06-30 23:00:57,451 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Software Developer...')
+2026-06-30 23:00:57,647 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 23:00:58,722 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 23:01:00,237 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 23:01:00,469 - INFO -   🚀 [LinkedIn Official] Java Software Engineer
+2026-06-30 23:01:00,778 - INFO - Found 15 listings from WeWorkRemotely.
+2026-06-30 23:01:00,780 - INFO -   🚀 [WeWorkRemotely] GxP Instrument Systems Engineer- Norwood, MA
+2026-06-30 23:01:01,618 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 23:01:01,774 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Software Engineer...')
+2026-06-30 23:01:03,287 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:01:03,856 - INFO -   📥 Queued private job from WeWorkRemotely: GxP Instrument Systems Engineer- Norwood, MA
+2026-06-30 23:01:04,447 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:01:04,653 - INFO -   🚀 [LinkedIn Official] SDE - 1 - Backend
+2026-06-30 23:01:05,378 - INFO -   🚀 [WeWorkRemotely] Facilities Maintenance Coordinator - Tonawanda, NY
+2026-06-30 23:01:05,965 - INFO -   🚀 [LinkedIn Official] Java Developer & Support
+2026-06-30 23:01:06,197 - INFO -   ⏭️ Skipping: Not an internship or remote role ('SDE - 1 - Backend...')
+2026-06-30 23:01:07,408 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer & Support...')
+2026-06-30 23:01:07,714 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 23:01:07,844 - INFO -   📥 Queued private job from WeWorkRemotely: Facilities Maintenance Coordinator - Tonawanda, NY
+2026-06-30 23:01:08,929 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 23:01:09,370 - INFO -   🚀 [WeWorkRemotely] Senior Frontend Web Developer
+2026-06-30 23:01:10,472 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 23:01:11,066 - INFO -   📥 Queued private job from WeWorkRemotely: Senior Frontend Web Developer
+2026-06-30 23:01:11,620 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 23:01:13,128 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 23:01:14,103 - INFO -   🚀 [WeWorkRemotely] Web Developer
+2026-06-30 23:01:14,537 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 23:01:17,570 - INFO -   🚀 [LinkedIn Official] Software Engineer
+2026-06-30 23:01:17,758 - INFO -   📥 Queued private job from WeWorkRemotely: Web Developer
+2026-06-30 23:01:18,609 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer...')
+2026-06-30 23:01:20,130 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:01:21,528 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:01:23,038 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:01:24,091 - INFO -   🚀 [LinkedIn Official] Web Application Engineer
+2026-06-30 23:01:24,365 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:01:25,330 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Application Engineer...')
+2026-06-30 23:01:26,846 - INFO -   🚀 [LinkedIn Official] Senior Front-end Developer
+2026-06-30 23:01:27,397 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:01:28,213 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior Front-end Developer...')
+2026-06-30 23:01:28,754 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:01:29,725 - INFO -   🚀 [LinkedIn Official] Web Application Engineer
+2026-06-30 23:01:30,262 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:01:30,936 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Application Engineer...')
+2026-06-30 23:01:31,545 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:01:32,442 - INFO -   🚀 [LinkedIn Official] Fresher - Front End Developer
+2026-06-30 23:01:33,065 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:01:33,687 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Fresher - Front End Developer...')
+2026-06-30 23:01:34,408 - INFO - ✅ WeWorkRemotely: Queued 4 new private jobs.
+2026-06-30 23:01:34,408 - INFO - 
+================================================
+2026-06-30 23:01:34,408 - INFO - 🌐 Scraping: Freshersworld
+2026-06-30 23:01:34,408 - INFO - ================================================
+2026-06-30 23:01:34,420 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:01:35,197 - INFO -   🚀 [LinkedIn Official] ReactJS developer
+2026-06-30 23:01:35,949 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:01:36,495 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJS developer...')
+2026-06-30 23:01:37,178 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:01:38,010 - INFO -   🚀 [LinkedIn Official] Reactjs Developer
+2026-06-30 23:01:38,709 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:01:38,931 - INFO - Found 10 listings from Freshersworld.
+2026-06-30 23:01:38,946 - INFO -   🚀 [Freshersworld] Hardware And Networks Other In Valsad For Kyndryl Solutions Private Li
+2026-06-30 23:01:39,199 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Reactjs Developer...')
+2026-06-30 23:01:39,946 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:01:40,716 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:01:41,461 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:01:42,039 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:01:42,534 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Hardware And Networks Other In Valsad Fo...')
+2026-06-30 23:01:42,578 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:01:43,544 - INFO -   🚀 [LinkedIn Official] React Developer
+2026-06-30 23:01:44,089 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:01:44,771 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React Developer...')
+2026-06-30 23:01:45,549 - INFO -   🚀 [Freshersworld] Desktop Engineer In Bengaluru For Wipro Limited
+2026-06-30 23:01:45,662 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:01:46,273 - INFO -   🚀 [LinkedIn Official] Front End Engineer
+2026-06-30 23:01:47,174 - INFO -   🚀 [LinkedIn Official] Front-End Developer
+2026-06-30 23:01:47,479 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front End Engineer...')
+2026-06-30 23:01:48,510 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer...')
+2026-06-30 23:01:48,986 - INFO -   🚀 [LinkedIn Official] Udaan Data Analyst
+2026-06-30 23:01:49,050 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Bengaluru For Wipro ...')
+2026-06-30 23:01:50,025 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:01:50,412 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Udaan Data Analyst...')
+2026-06-30 23:01:50,567 - INFO -   🚀 [Freshersworld] It Executive In Bharuch For Kyndryl Solutions Private Limited
+2026-06-30 23:01:51,677 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:01:51,926 - INFO -   🚀 [LinkedIn Official] Udaan - Data Analyst
+2026-06-30 23:01:53,183 - INFO -   🚀 [LinkedIn Official] Junior Developers Backend and Frontend
+2026-06-30 23:01:53,258 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Udaan - Data Analyst...')
+2026-06-30 23:01:54,481 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Executive In Bharuch For Kyndryl Solu...')
+2026-06-30 23:01:54,573 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Junior Developers Backend and Frontend...')
+2026-06-30 23:01:54,762 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-30 23:01:55,986 - INFO -   🚀 [Freshersworld] Business Analyst In Ahmedabad For Adani Green Energy Limited
+2026-06-30 23:01:56,078 - INFO -   🚀 [LinkedIn Official] Front-End Developer - SCG India
+2026-06-30 23:01:56,171 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-30 23:01:57,259 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer - SCG India...')
+2026-06-30 23:01:57,690 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-30 23:01:58,771 - INFO -   🚀 [LinkedIn Official] React Developer
+2026-06-30 23:01:59,033 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-30 23:01:59,846 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Analyst In Ahmedabad For Adani ...')
+2026-06-30 23:01:59,972 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React Developer...')
+2026-06-30 23:02:00,546 - INFO -   🚀 [LinkedIn Official] Business Data Analyst
+2026-06-30 23:02:01,352 - INFO -   🚀 [Freshersworld] It Project Management Jobs Opening In Magiva Technologies Private Limi
+2026-06-30 23:02:01,490 - INFO -   🚀 [LinkedIn Official] ReactJS developer
+2026-06-30 23:02:01,798 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Data Analyst...')
+2026-06-30 23:02:02,786 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJS developer...')
+2026-06-30 23:02:03,316 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-30 23:02:04,290 - INFO -   🚀 [LinkedIn Official] Frontend developers
+2026-06-30 23:02:05,006 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-30 23:02:05,586 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend developers...')
+2026-06-30 23:02:06,513 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-30 23:02:07,103 - INFO -   🚀 [LinkedIn Official] Reactjs Developer
+2026-06-30 23:02:07,797 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-30 23:02:08,527 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Reactjs Developer...')
+2026-06-30 23:02:10,048 - INFO -   🚀 [LinkedIn Official] Fresher - Front End Developer
+2026-06-30 23:02:10,807 - INFO -   🚀 [LinkedIn Official] Business Data Analyst
+2026-06-30 23:02:11,774 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Fresher - Front End Developer...')
+2026-06-30 23:02:12,175 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Project Management Jobs Opening In Ma...')
+2026-06-30 23:02:12,201 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Data Analyst...')
+2026-06-30 23:02:13,284 - INFO -   🚀 [LinkedIn Official] Frontend developers
+2026-06-30 23:02:13,683 - INFO -   🚀 [Freshersworld] Technical Support Voice  Blended In Hyderabad For Goldman Sachs Servic
+2026-06-30 23:02:14,486 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend developers...')
+2026-06-30 23:02:15,218 - INFO -   🚀 [LinkedIn Official] DevOps Engineer
+2026-06-30 23:02:15,990 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:02:16,566 - INFO -   ⏭️ Skipping: Not an internship or remote role ('DevOps Engineer...')
+2026-06-30 23:02:16,818 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Support Voice  Blended In Hyde...')
+2026-06-30 23:02:17,337 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:02:18,848 - INFO -   🚀 [LinkedIn Official] Software Engineer (Backend Engineer)
+2026-06-30 23:02:19,827 - INFO -   🚀 [Freshersworld] It Asset Management In Gautam Buddha Nagar For For A Client Of Teamlea
+2026-06-30 23:02:20,893 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer (Backend Engineer)...')
+2026-06-30 23:02:21,091 - INFO -   🚀 [LinkedIn Official] Associate Engineer- AWS Devops
+2026-06-30 23:02:22,364 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Associate Engineer- AWS Devops...')
+2026-06-30 23:02:23,317 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Asset Management In Gautam Buddha Nag...')
+2026-06-30 23:02:23,890 - INFO -   🚀 [LinkedIn Official] Devops Engineer
+2026-06-30 23:02:23,919 - INFO -   🚀 [LinkedIn Official] Software Developer - Golang
+2026-06-30 23:02:24,834 - INFO -   🚀 [Freshersworld] Desktop Engineer In Gautam Buddha Nagar For For A Client Of Teamlease 
+2026-06-30 23:02:25,178 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer - Golang...')
+2026-06-30 23:02:25,380 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Devops Engineer...')
+2026-06-30 23:02:26,693 - INFO -   🚀 [LinkedIn Official] Software Developer - Golang
+2026-06-30 23:02:26,892 - INFO -   🚀 [LinkedIn Official] DevOps engineer
+2026-06-30 23:02:27,920 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer - Golang...')
+2026-06-30 23:02:28,100 - INFO -   ⏭️ Skipping: Not an internship or remote role ('DevOps engineer...')
+2026-06-30 23:02:28,653 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Gautam Buddha Nagar ...')
+2026-06-30 23:02:29,616 - INFO -   🚀 [LinkedIn Official] AWS DevOps Engineer
+2026-06-30 23:02:30,155 - INFO - ✅ Freshersworld: Queued 0 new private jobs.
+2026-06-30 23:02:30,155 - INFO - 
+================================================
+2026-06-30 23:02:30,156 - INFO - 🌐 Scraping: WorkAtAStartup
+2026-06-30 23:02:30,156 - INFO - ================================================
+2026-06-30 23:02:30,947 - INFO -   🚀 [LinkedIn Official] Sr. Back-End Engineer
+2026-06-30 23:02:30,972 - INFO -   ⏭️ Skipping: Not an internship or remote role ('AWS DevOps Engineer...')
+2026-06-30 23:02:32,385 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Back-End Engineer...')
+2026-06-30 23:02:32,491 - INFO -   🚀 [LinkedIn Official] AWS Devops Engineer
+2026-06-30 23:02:32,518 - WARNING - WorkAtAStartup 404
+2026-06-30 23:02:32,519 - INFO - Found 0 listings from WorkAtAStartup.
+2026-06-30 23:02:32,519 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
+2026-06-30 23:02:32,519 - INFO - 
+✅ All private job sources processed. Total Queued: 7/100
+2026-06-30 23:02:33,892 - INFO -   🚀 [LinkedIn Official] Backend Engineer
+2026-06-30 23:02:33,938 - INFO -   ⏭️ Skipping: Not an internship or remote role ('AWS Devops Engineer...')
+2026-06-30 23:02:35,199 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Backend Engineer...')
+2026-06-30 23:02:36,719 - INFO -   🚀 [LinkedIn Official] Software Developer 2
+2026-06-30 23:02:37,976 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer 2...')
+2026-06-30 23:02:39,493 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:02:40,728 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:02:42,236 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 23:02:42,827 - INFO - ==================================================
+2026-06-30 23:02:42,828 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-06-30 23:02:42,828 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-06-30 23:02:42,828 - INFO - ==================================================
+2026-06-30 23:02:42,853 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-30 23:02:43,191 - INFO -    ✔ Preloaded 150 live jobs.
+2026-06-30 23:02:43,191 - INFO - 
+================================================
+2026-06-30 23:02:43,191 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-30 23:02:43,191 - INFO - ================================================
+2026-06-30 23:02:43,667 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 23:02:46,690 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:02:48,109 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:02:49,615 - INFO -   🚀 [LinkedIn Official] Software Development Engineer 2
+2026-06-30 23:02:50,860 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Development Engineer 2...')
+2026-06-30 23:02:52,366 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:02:53,746 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:02:55,256 - INFO -   🚀 [LinkedIn Official] Fullstack (React JS + Node JS) Developer
+2026-06-30 23:02:56,575 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Fullstack (React JS + Node JS) Developer...')
+2026-06-30 23:02:58,087 - INFO -   🚀 [LinkedIn Official] Python Developer + Django
+2026-06-30 23:02:59,370 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer + Django...')
+2026-06-30 23:03:00,877 - INFO -   🚀 [LinkedIn Official] Python and Django Developer
+2026-06-30 23:03:02,144 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python and Django Developer...')
+2026-06-30 23:03:03,381 - INFO - Found 100 listings from LinkedIn Official.
+2026-06-30 23:03:03,383 - INFO -   🚀 [LinkedIn Official] Junior JavaScript Developer - Remote work | REF#283752
+2026-06-30 23:03:03,661 - INFO -   🚀 [LinkedIn Official] Senior Python Engineer - Django Framework
+2026-06-30 23:03:04,512 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior Python Engineer - Django Framewor...')
+2026-06-30 23:03:04,677 - INFO -   📥 Queued private job from LinkedIn Official: Junior JavaScript Developer - Remote work | REF#283752
+2026-06-30 23:03:06,023 - INFO -   🚀 [LinkedIn Official] Sr. Python Developer
+2026-06-30 23:03:07,207 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Python Developer...')
+2026-06-30 23:03:07,697 - INFO -   🚀 [LinkedIn Official] Junior JavaScript Developer - Remote work | REF#283755
+2026-06-30 23:03:08,723 - INFO -   🚀 [LinkedIn Official] Senior Python developer
+2026-06-30 23:03:09,051 - INFO -   📥 Queued private job from LinkedIn Official: Junior JavaScript Developer - Remote work | REF#283755
+2026-06-30 23:03:10,122 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior Python developer...')
+2026-06-30 23:03:10,563 - INFO -   🚀 [LinkedIn Official] Junior JavaScript Developer - Remote work | REF#283767
+2026-06-30 23:03:11,634 - INFO -   🚀 [LinkedIn Official] Sr. Python Developer
+2026-06-30 23:03:12,322 - INFO -   📥 Queued private job from LinkedIn Official: Junior JavaScript Developer - Remote work | REF#283767
+2026-06-30 23:03:12,885 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Python Developer...')
+2026-06-30 23:03:13,847 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:03:14,398 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 23:03:15,077 - INFO -   📥 Queued private job from LinkedIn Official: Web Developer
+2026-06-30 23:03:15,620 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 23:03:16,595 - INFO -   🚀 [LinkedIn Official] Software Developer
+2026-06-30 23:03:17,133 - INFO -   🚀 [LinkedIn Official] Python Programmer
+2026-06-30 23:03:17,837 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer...')
+2026-06-30 23:03:18,258 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Programmer...')
+2026-06-30 23:03:19,354 - INFO -   🚀 [LinkedIn Official] Junior JavaScript Developer - Remote work | REF#283759
+2026-06-30 23:03:19,766 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 23:03:20,628 - INFO -   📥 Queued private job from LinkedIn Official: Junior JavaScript Developer - Remote work | REF#283759
+2026-06-30 23:03:20,845 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 23:03:22,142 - INFO -   🚀 [LinkedIn Official] Junior JavaScript Developer - Remote work | REF#283757
+2026-06-30 23:03:22,357 - INFO -   🚀 [LinkedIn Official] JAVA
+2026-06-30 23:03:23,573 - INFO -   ⏭️ Skipping: Not an internship or remote role ('JAVA...')
+2026-06-30 23:03:23,616 - INFO -   📥 Queued private job from LinkedIn Official: Junior JavaScript Developer - Remote work | REF#283757
+2026-06-30 23:03:25,140 - INFO -   🚀 [LinkedIn Official] Junior JavaScript Developer - Remote work | REF#283751
+2026-06-30 23:03:26,369 - INFO -   📥 Queued private job from LinkedIn Official: Junior JavaScript Developer - Remote work | REF#283751
+2026-06-30 23:03:26,591 - INFO -   🚀 [LinkedIn Official] Java-Software Engineer II
+2026-06-30 23:03:27,886 - INFO -   🚀 [LinkedIn Official] Junior JavaScript Developer - Remote work | REF#283761
+2026-06-30 23:03:28,024 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java-Software Engineer II...')
+2026-06-30 23:03:29,370 - INFO -   📥 Queued private job from LinkedIn Official: Junior JavaScript Developer - Remote work | REF#283761
+2026-06-30 23:03:29,529 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:03:30,898 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:03:31,048 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:03:32,142 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:03:32,557 - INFO -   🚀 [LinkedIn Official] Java Software Engineer
+2026-06-30 23:03:33,659 - INFO -   🚀 [LinkedIn Official] Junior JavaScript Developer - Remote work | REF#283760
+2026-06-30 23:03:34,119 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Software Engineer...')
+2026-06-30 23:03:34,951 - INFO -   📥 Queued private job from LinkedIn Official: Junior JavaScript Developer - Remote work | REF#283760
+2026-06-30 23:03:35,686 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:03:36,477 - INFO -   🚀 [LinkedIn Official] Junior JavaScript Developer - Remote work | REF#283748
+2026-06-30 23:03:36,947 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:03:37,679 - INFO -   📥 Queued private job from LinkedIn Official: Junior JavaScript Developer - Remote work | REF#283748
+2026-06-30 23:03:38,456 - INFO -   🚀 [LinkedIn Official] Java-Software Engineer II
+2026-06-30 23:03:39,213 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:03:39,810 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java-Software Engineer II...')
+2026-06-30 23:03:40,840 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:03:41,315 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:03:42,499 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:03:43,869 - INFO -   🚀 [LinkedIn Official] Frontend Developers
+2026-06-30 23:03:44,010 - INFO -   🚀 [LinkedIn Official] Java Consultant
+2026-06-30 23:03:45,030 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developers...')
+2026-06-30 23:03:45,399 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Consultant...')
+2026-06-30 23:03:46,537 - INFO -   🚀 [LinkedIn Official] Software Engineer - Front End
+2026-06-30 23:03:47,826 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer - Front End...')
+2026-06-30 23:03:49,336 - INFO -   🚀 [LinkedIn Official] Front-End Developer
+2026-06-30 23:03:50,594 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Front-End Developer...')
+2026-06-30 23:03:52,103 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:03:53,338 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:03:54,846 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:03:56,276 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:03:57,803 - INFO -   🚀 [LinkedIn Official] UI Engineer / Frontend Developer
+2026-06-30 23:03:59,316 - INFO -   ⏭️ Skipping: Not an internship or remote role ('UI Engineer / Frontend Developer...')
+2026-06-30 23:04:02,012 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:04:02,340 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:04:03,480 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:04:03,703 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:04:04,986 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:04:06,248 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:04:06,720 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:04:07,756 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:04:08,052 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:04:09,032 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:04:09,567 - INFO -   🚀 [LinkedIn Official] Software Engineer (Backend Engineer)
+2026-06-30 23:04:10,545 - INFO -   🚀 [LinkedIn Official] Tech Support
+2026-06-30 23:04:10,663 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer (Backend Engineer)...')
+2026-06-30 23:04:11,622 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Tech Support...')
+2026-06-30 23:04:13,129 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:04:13,684 - INFO -   🚀 [LinkedIn Official] Software Developer - Golang
+2026-06-30 23:04:14,377 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:04:14,921 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer - Golang...')
+2026-06-30 23:04:15,895 - INFO -   🚀 [LinkedIn Official] 01 Web Developer
+2026-06-30 23:04:16,439 - INFO -   🚀 [LinkedIn Official] Software Developer - Golang
+2026-06-30 23:04:17,727 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer - Golang...')
+2026-06-30 23:04:17,949 - INFO -   ⏭️ Skipping: Not an internship or remote role ('01 Web Developer...')
+2026-06-30 23:04:19,461 - INFO -   🚀 [LinkedIn Official] Web Developer Job Vacancy in Kohima, Nagaland
+2026-06-30 23:04:20,612 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer Job Vacancy in Kohima, Nag...')
+2026-06-30 23:04:20,753 - INFO -   🚀 [LinkedIn Official] Sr. Back-End Engineer
+2026-06-30 23:04:21,837 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Back-End Engineer...')
+2026-06-30 23:04:22,118 - INFO -   🚀 [LinkedIn Official] Wordpress
+2026-06-30 23:04:23,351 - INFO -   🚀 [LinkedIn Official] Backend Engineer
+2026-06-30 23:04:23,381 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Wordpress...')
+2026-06-30 23:04:24,597 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Backend Engineer...')
+2026-06-30 23:04:26,110 - INFO -   🚀 [LinkedIn Official] Software Developer 2
+2026-06-30 23:04:26,387 - INFO -   🚀 [LinkedIn Official] Web-Developer - IT Engineer-Sales & Application Engineering Support
+2026-06-30 23:04:27,234 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer 2...')
+2026-06-30 23:04:27,537 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web-Developer - IT Engineer-Sales & Appl...')
+2026-06-30 23:04:28,743 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:04:29,920 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:04:30,559 - INFO -   🚀 [LinkedIn Official] React Developer
+2026-06-30 23:04:31,435 - INFO -   🚀 [LinkedIn Official] Full Stack Engineer
+2026-06-30 23:04:31,810 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React Developer...')
+2026-06-30 23:04:32,712 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Engineer...')
+2026-06-30 23:04:33,327 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:04:34,221 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 23:04:35,488 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:04:35,544 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 23:04:37,003 - INFO -   🚀 [LinkedIn Official] React.js Developer
+2026-06-30 23:04:37,051 - INFO -   🚀 [LinkedIn Official] Full Stack Engineer
+2026-06-30 23:04:38,193 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React.js Developer...')
+2026-06-30 23:04:38,216 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Engineer...')
+2026-06-30 23:04:39,725 - INFO -   🚀 [LinkedIn Official] Full Stack Developer Job Vacancy in Kohima, Nagaland
+2026-06-30 23:04:40,855 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer Job Vacancy in Kohi...')
+2026-06-30 23:04:41,217 - INFO -   🚀 [LinkedIn Official] REACT JS  DEVELOPER
+2026-06-30 23:04:42,429 - INFO -   ⏭️ Skipping: Not an internship or remote role ('REACT JS  DEVELOPER...')
+2026-06-30 23:04:43,864 - INFO -   🚀 [LinkedIn Official] Full Stack / DevOps Developer
+2026-06-30 23:04:43,940 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:04:44,965 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack / DevOps Developer...')
+2026-06-30 23:04:46,471 - INFO -   🚀 [LinkedIn Official] Full-Stack Engineer (AI-Native Development)
+2026-06-30 23:04:47,641 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full-Stack Engineer (AI-Native Developme...')
+2026-06-30 23:04:49,147 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 23:04:49,229 - WARNING -   ⚠️ HTTP 500: https://in.linkedin.com/jobs/view/custom-software-engineer-at-accenture-in-india-4425940602
+2026-06-30 23:04:50,331 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 23:04:50,735 - INFO -   🚀 [LinkedIn Official] ReactJs Developers
+2026-06-30 23:04:51,836 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 23:04:51,899 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJs Developers...')
+2026-06-30 23:04:53,095 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 23:04:53,415 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:04:54,607 - INFO -   🚀 [LinkedIn Official] Software Developer
+2026-06-30 23:04:55,701 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:04:55,806 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer...')
+2026-06-30 23:04:57,216 - INFO -   🚀 [LinkedIn Official] Javascript/React Developer
+2026-06-30 23:04:57,309 - INFO -   🚀 [LinkedIn Official] Python Developer + Django
+2026-06-30 23:04:58,730 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer + Django...')
+2026-06-30 23:04:59,318 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Javascript/React Developer...')
+2026-06-30 23:05:00,243 - INFO -   🚀 [LinkedIn Official] Python and Django Developer
+2026-06-30 23:05:00,828 - INFO -   🚀 [LinkedIn Official] Udaan Data Analyst
+2026-06-30 23:05:02,008 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python and Django Developer...')
+2026-06-30 23:05:02,536 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Udaan Data Analyst...')
+2026-06-30 23:05:03,512 - INFO -   🚀 [LinkedIn Official] Senior Python Engineer - Django Framework
+2026-06-30 23:05:04,054 - INFO -   🚀 [LinkedIn Official] Udaan - Data Analyst
+2026-06-30 23:05:04,413 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior Python Engineer - Django Framewor...')
+2026-06-30 23:05:05,403 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Udaan - Data Analyst...')
+2026-06-30 23:05:05,928 - INFO -   🚀 [LinkedIn Official] Sr. Python Developer
+2026-06-30 23:05:06,912 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-30 23:05:07,440 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Python Developer...')
+2026-06-30 23:05:08,277 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-30 23:05:08,954 - INFO -   🚀 [LinkedIn Official] Senior Python developer
+2026-06-30 23:05:09,791 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-30 23:05:10,529 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Senior Python developer...')
+2026-06-30 23:05:11,102 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Data Analyst...')
+2026-06-30 23:05:12,038 - INFO -   🚀 [LinkedIn Official] Sr. Python Developer
+2026-06-30 23:05:12,604 - INFO -   🚀 [LinkedIn Official] Business Data Analyst
+2026-06-30 23:05:13,246 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sr. Python Developer...')
+2026-06-30 23:05:14,752 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 23:05:16,079 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 23:05:17,589 - INFO -   🚀 [LinkedIn Official] Python Programmer
+2026-06-30 23:05:18,915 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Programmer...')
+2026-06-30 23:05:20,431 - INFO -   🚀 [LinkedIn Official] Python Developer
+2026-06-30 23:05:21,701 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Python Developer...')
+2026-06-30 23:05:23,234 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:05:24,774 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:05:26,277 - INFO -   🚀 [LinkedIn Official] Java
+2026-06-30 23:05:27,519 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java...')
+2026-06-30 23:05:29,033 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:05:30,461 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:05:31,965 - INFO -   🚀 [LinkedIn Official] Java Spring Boot Web Developer
+2026-06-30 23:05:33,459 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Spring Boot Web Developer...')
+2026-06-30 23:05:34,962 - INFO -   🚀 [LinkedIn Official] Junior Java Developer
+2026-06-30 23:05:36,500 - INFO -   📥 Queued private job from LinkedIn Official: Junior Java Developer
+2026-06-30 23:05:38,017 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:05:39,483 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Java Developer...')
+2026-06-30 23:05:40,999 - INFO -   🚀 [LinkedIn Official] Java Developer
+2026-06-30 23:05:42,243 - INFO -   📥 Queued private job from LinkedIn Official: Java Developer
+2026-06-30 23:05:43,769 - INFO -   🚀 [LinkedIn Official] Software Development Engineer- II [Backend, Java]
+2026-06-30 23:05:45,133 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Development Engineer- II [Backe...')
+2026-06-30 23:05:46,643 - INFO -   🚀 [LinkedIn Official] Java Developer | $80/hr Remote
+2026-06-30 23:05:47,976 - INFO -   📥 Queued private job from LinkedIn Official: Java Developer | $80/hr Remote
+2026-06-30 23:05:49,495 - INFO -   🚀 [LinkedIn Official] Java Software Engineer | $90/hr Remote
+2026-06-30 23:05:51,015 - INFO -   📥 Queued private job from LinkedIn Official: Java Software Engineer | $90/hr Remote
+2026-06-30 23:06:06,216 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:06:07,558 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:06:09,086 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:06:10,407 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:06:11,914 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:06:13,503 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:06:15,010 - INFO -   🚀 [LinkedIn Official] Tech Support
+2026-06-30 23:06:15,246 - INFO - ==================================================
+2026-06-30 23:06:15,246 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-06-30 23:06:15,246 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-06-30 23:06:15,246 - INFO - ==================================================
+2026-06-30 23:06:15,250 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-06-30 23:06:15,278 - INFO -    ✔ Preloaded 150 live jobs.
+2026-06-30 23:06:15,279 - INFO - 
+================================================
+2026-06-30 23:06:15,279 - INFO - 🌐 Scraping: LinkedIn Official
+2026-06-30 23:06:15,279 - INFO - ================================================
+2026-06-30 23:06:16,153 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Tech Support...')
+2026-06-30 23:06:17,659 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:06:18,730 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:06:20,247 - INFO -   🚀 [LinkedIn Official] 01 Web Developer
+2026-06-30 23:06:21,340 - INFO -   ⏭️ Skipping: Not an internship or remote role ('01 Web Developer...')
+2026-06-30 23:06:22,845 - INFO -   🚀 [LinkedIn Official] Web Developer Job Vacancy in Kohima, Nagaland
+2026-06-30 23:06:24,177 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer Job Vacancy in Kohima, Nag...')
+2026-06-30 23:06:25,690 - INFO -   🚀 [LinkedIn Official] Wordpress
+2026-06-30 23:06:26,893 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Wordpress...')
+2026-06-30 23:06:29,933 - INFO -   🚀 [LinkedIn Official] Web-Developer - IT Engineer-Sales & Application Engineering Support
+2026-06-30 23:06:31,494 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web-Developer - IT Engineer-Sales & Appl...')
+2026-06-30 23:06:34,515 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:06:35,783 - INFO - Found 100 listings from LinkedIn Official.
+2026-06-30 23:06:35,785 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:06:35,856 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:06:37,066 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:06:37,372 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:06:38,570 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:06:38,734 - INFO -   📥 Queued private job from LinkedIn Official: Frontend Developer
+2026-06-30 23:06:39,759 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:06:40,262 - INFO -   🚀 [LinkedIn Official] Frontend Developer (React) (Remote India)
+2026-06-30 23:06:41,265 - INFO -   🚀 [LinkedIn Official] Software Developer Job Vacancy in Kohima Nagaland
+2026-06-30 23:06:41,420 - INFO -   📥 Queued private job from LinkedIn Official: Frontend Developer (React) (Remote India)
+2026-06-30 23:06:42,619 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer Job Vacancy in Kohima...')
+2026-06-30 23:06:42,946 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:06:44,933 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:06:45,650 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:06:46,440 - INFO -   🚀 [LinkedIn Official] ReactJs Developers
+2026-06-30 23:06:46,989 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:06:47,821 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJs Developers...')
+2026-06-30 23:06:48,493 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:06:49,333 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:06:50,010 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:06:50,527 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:06:51,515 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:06:52,040 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:06:53,116 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:06:53,789 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:06:54,644 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:06:55,300 - INFO -   🚀 [LinkedIn Official] frontend developer
+2026-06-30 23:06:55,986 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:06:56,589 - INFO -   📥 Queued private job from LinkedIn Official: frontend developer
+2026-06-30 23:06:57,504 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:06:58,120 - INFO -   🚀 [LinkedIn Official] Junior Data Analyst
+2026-06-30 23:06:58,868 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:06:59,527 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Junior Data Analyst...')
+2026-06-30 23:07:00,382 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-06-30 23:07:01,046 - INFO -   🚀 [LinkedIn Official] Data Analyst (Freelancer)
+2026-06-30 23:07:01,759 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-06-30 23:07:02,354 - INFO -   📥 Queued private job from LinkedIn Official: Data Analyst (Freelancer)
+2026-06-30 23:07:03,278 - INFO -   🚀 [LinkedIn Official] Software Developer
+2026-06-30 23:07:03,877 - INFO -   🚀 [LinkedIn Official] Data Analyst (Excel) | $55/hr Remote
+2026-06-30 23:07:04,546 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer...')
+2026-06-30 23:07:05,285 - INFO -   📥 Queued private job from LinkedIn Official: Data Analyst (Excel) | $55/hr Remote
+2026-06-30 23:07:06,805 - INFO -   🚀 [LinkedIn Official] Data Analyst
+2026-06-30 23:07:07,576 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-06-30 23:07:08,403 - INFO -   📥 Queued private job from LinkedIn Official: Data Analyst
+2026-06-30 23:07:08,791 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-06-30 23:07:09,927 - INFO -   🚀 [LinkedIn Official] Data Analyst | Remote
+2026-06-30 23:07:11,336 - INFO -   📥 Queued private job from LinkedIn Official: Data Analyst | Remote
+2026-06-30 23:07:12,850 - INFO -   🚀 [LinkedIn Official] Remote Data Analyst
+2026-06-30 23:07:15,141 - INFO -   📥 Queued private job from LinkedIn Official: Remote Data Analyst
+2026-06-30 23:07:16,664 - INFO -   🚀 [LinkedIn Official] Data Analyst (Freelancer)
+2026-06-30 23:07:18,050 - INFO -   ⚠️ Semantic duplicate: 'Data Analyst (Freelancer)'. Skipping.
+2026-06-30 23:07:19,386 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:07:19,572 - INFO -   🚀 [LinkedIn Official] Data Analyst (SQL / Python) | $15/hr Remote
+2026-06-30 23:07:20,726 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:07:20,798 - INFO -   📥 Queued private job from LinkedIn Official: Data Analyst (SQL / Python) | $15/hr Remote
+2026-06-30 23:07:22,324 - INFO -   🚀 [LinkedIn Official] Data Analyst (Freelancer)
+2026-06-30 23:07:23,459 - INFO -   ⚠️ Semantic duplicate: 'Data Analyst (Freelancer)'. Skipping.
+2026-06-30 23:07:23,750 - INFO -   🚀 [LinkedIn Official] Frontend Developer (Freelancer)
+2026-06-30 23:07:24,925 - INFO -   📥 Queued private job from LinkedIn Official: Frontend Developer (Freelancer)
+2026-06-30 23:07:24,995 - INFO - ✅ LinkedIn Official: Queued 23 new private jobs.
+2026-06-30 23:07:24,995 - INFO - 
+================================================
+2026-06-30 23:07:24,995 - INFO - 🌐 Scraping: Adzuna API
+2026-06-30 23:07:24,995 - INFO - ================================================
+2026-06-30 23:07:24,995 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-06-30 23:07:24,995 - INFO - Found 0 listings from Adzuna API.
+2026-06-30 23:07:24,996 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-06-30 23:07:24,996 - INFO - 
+================================================
+2026-06-30 23:07:24,996 - INFO - 🌐 Scraping: Internshala
+2026-06-30 23:07:24,996 - INFO - ================================================
+2026-06-30 23:07:26,450 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:07:27,694 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:07:29,868 - INFO - Found 0 listings from Internshala.
+2026-06-30 23:07:29,868 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-06-30 23:07:29,868 - INFO - 
+================================================
+2026-06-30 23:07:29,868 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-06-30 23:07:29,868 - INFO - ================================================
+2026-06-30 23:07:30,709 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:07:32,448 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:07:33,958 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-06-30 23:07:35,424 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-06-30 23:07:36,154 - INFO - Found 15 listings from WeWorkRemotely.
+2026-06-30 23:07:36,930 - INFO -   🚀 [LinkedIn Official] Frontend Developer (Freelancer)
+2026-06-30 23:07:38,357 - INFO -   ⚠️ Semantic duplicate: 'Frontend Developer (Freelancer)'. Skipping.
+2026-06-30 23:07:42,892 - INFO -   🚀 [LinkedIn Official] Backend Developer - Fully Remote | Upto $85/hr
+2026-06-30 23:07:44,030 - INFO -   ⚠️ Already on website: 'Backend Developer - Fully Remote | Upto $85/hr'. Skipping.
+2026-06-30 23:07:45,545 - INFO -   🚀 [LinkedIn Official] NodeJS Developer
+2026-06-30 23:07:47,193 - INFO -   📥 Queued private job from LinkedIn Official: NodeJS Developer
+2026-06-30 23:07:48,705 - INFO -   🚀 [LinkedIn Official] Backend Developer (Golang)
+2026-06-30 23:07:50,054 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Backend Developer (Golang)...')
+2026-06-30 23:07:51,561 - INFO -   🚀 [LinkedIn Official] Back End Developer
+2026-06-30 23:07:53,287 - INFO -   📥 Queued private job from LinkedIn Official: Back End Developer
+2026-06-30 23:07:54,801 - INFO -   🚀 [LinkedIn Official] Backend Developer
+2026-06-30 23:07:56,064 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Backend Developer...')
+2026-06-30 23:07:57,574 - INFO -   🚀 [LinkedIn Official] back end developer
+2026-06-30 23:07:58,852 - INFO - ✅ WeWorkRemotely: Queued 0 new private jobs.
+2026-06-30 23:07:58,852 - INFO - 
+================================================
+2026-06-30 23:07:58,852 - INFO - 🌐 Scraping: Freshersworld
+2026-06-30 23:07:58,852 - INFO - ================================================
+2026-06-30 23:07:59,013 - INFO -   📥 Queued private job from LinkedIn Official: back end developer
+2026-06-30 23:08:00,546 - INFO -   🚀 [LinkedIn Official] Full Stack Engineer
+2026-06-30 23:08:01,982 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Engineer...')
+2026-06-30 23:08:03,489 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 23:08:04,704 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 23:08:05,050 - INFO - Found 10 listings from Freshersworld.
+2026-06-30 23:08:05,053 - INFO -   🚀 [Freshersworld] Hardware And Networks Other In Valsad For Kyndryl Solutions Private Li
+2026-06-30 23:08:06,215 - INFO -   🚀 [LinkedIn Official] Full Stack Engineer
+2026-06-30 23:08:07,867 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Engineer...')
+2026-06-30 23:08:09,382 - INFO -   🚀 [LinkedIn Official] Full Stack Developer Job Vacancy in Kohima, Nagaland
+2026-06-30 23:08:09,733 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Hardware And Networks Other In Valsad Fo...')
+2026-06-30 23:08:10,874 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer Job Vacancy in Kohi...')
+2026-06-30 23:08:12,780 - INFO -   🚀 [Freshersworld] Desktop Engineer In Bengaluru For Wipro Limited
+2026-06-30 23:08:13,901 - INFO -   🚀 [LinkedIn Official] Full Stack / DevOps Developer
+2026-06-30 23:08:15,045 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack / DevOps Developer...')
+2026-06-30 23:08:16,183 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Bengaluru For Wipro ...')
+2026-06-30 23:08:16,561 - INFO -   🚀 [LinkedIn Official] Full-Stack Engineer (AI-Native Development)
+2026-06-30 23:08:17,704 - INFO -   🚀 [Freshersworld] It Executive In Bharuch For Kyndryl Solutions Private Limited
+2026-06-30 23:08:17,915 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full-Stack Engineer (AI-Native Developme...')
+2026-06-30 23:08:19,426 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 23:08:20,579 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 23:08:21,534 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Executive In Bharuch For Kyndryl Solu...')
+2026-06-30 23:08:22,090 - INFO -   🚀 [LinkedIn Official] Full Stack Developer
+2026-06-30 23:08:23,041 - INFO -   🚀 [Freshersworld] Business Analyst In Ahmedabad For Adani Green Energy Limited
+2026-06-30 23:08:23,400 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Full Stack Developer...')
+2026-06-30 23:08:24,919 - INFO -   🚀 [LinkedIn Official] Software Developer
+2026-06-30 23:08:26,303 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer...')
+2026-06-30 23:08:26,710 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Analyst In Ahmedabad For Adani ...')
+2026-06-30 23:08:27,820 - INFO -   🚀 [LinkedIn Official] Remote Python Programmer
+2026-06-30 23:08:28,225 - INFO -   🚀 [Freshersworld] It Project Management Jobs Opening In Magiva Technologies Private Limi
+2026-06-30 23:08:29,263 - INFO -   📥 Queued private job from LinkedIn Official: Remote Python Programmer
+2026-06-30 23:08:30,784 - INFO -   🚀 [LinkedIn Official] Remote Python Programmer
+2026-06-30 23:08:31,759 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Project Management Jobs Opening In Ma...')
+2026-06-30 23:08:32,272 - INFO -   ⚠️ Semantic duplicate: 'Remote Python Programmer'. Skipping.
+2026-06-30 23:08:33,266 - INFO -   🚀 [Freshersworld] Technical Support Voice  Blended In Hyderabad For Goldman Sachs Servic
+2026-06-30 23:08:33,799 - INFO -   🚀 [LinkedIn Official] Remote Python Programmer
+2026-06-30 23:08:35,136 - INFO -   ⚠️ Semantic duplicate: 'Remote Python Programmer'. Skipping.
+2026-06-30 23:08:36,670 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Support Voice  Blended In Hyde...')
+2026-06-30 23:08:36,673 - INFO -   🚀 [LinkedIn Official] Remote Python Developer
+2026-06-30 23:08:38,338 - INFO -   📥 Queued private job from LinkedIn Official: Remote Python Developer
+2026-06-30 23:08:39,683 - INFO -   🚀 [Freshersworld] It Asset Management In Gautam Buddha Nagar For For A Client Of Teamlea
+2026-06-30 23:08:39,869 - INFO -   🚀 [LinkedIn Official] Remote Python Developer
+2026-06-30 23:08:41,218 - INFO -   ⚠️ Semantic duplicate: 'Remote Python Developer'. Skipping.
+2026-06-30 23:08:42,739 - INFO -   🚀 [LinkedIn Official] Remote Python Programmer
+2026-06-30 23:08:43,105 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Asset Management In Gautam Buddha Nag...')
+2026-06-30 23:08:44,159 - INFO -   ⚠️ Semantic duplicate: 'Remote Python Programmer'. Skipping.
+2026-06-30 23:08:44,640 - INFO -   🚀 [Freshersworld] Desktop Engineer In Gautam Buddha Nagar For For A Client Of Teamlease 
+2026-06-30 23:08:45,668 - INFO -   🚀 [LinkedIn Official] Remote Python Developer
+2026-06-30 23:08:47,198 - INFO -   ⚠️ Semantic duplicate: 'Remote Python Developer'. Skipping.
+2026-06-30 23:08:48,342 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Gautam Buddha Nagar ...')
+2026-06-30 23:08:48,741 - INFO -   🚀 [LinkedIn Official] Python Developer - Fully Remote | Upto $50/hr
+2026-06-30 23:08:49,849 - INFO - ✅ Freshersworld: Queued 0 new private jobs.
+2026-06-30 23:08:49,849 - INFO - 
+================================================
+2026-06-30 23:08:49,849 - INFO - 🌐 Scraping: WorkAtAStartup
+2026-06-30 23:08:49,849 - INFO - ================================================
+2026-06-30 23:08:49,908 - INFO -   📥 Queued private job from LinkedIn Official: Python Developer - Fully Remote | Upto $50/hr
+2026-06-30 23:08:51,434 - INFO -   🚀 [LinkedIn Official] Remote Python Developer
+2026-06-30 23:08:52,422 - WARNING - WorkAtAStartup 404
+2026-06-30 23:08:52,423 - INFO - Found 0 listings from WorkAtAStartup.
+2026-06-30 23:08:52,423 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
+2026-06-30 23:08:52,423 - INFO - 
+✅ All private job sources processed. Total Queued: 23/100

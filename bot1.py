@@ -207,7 +207,7 @@ SITE_BASE_URL = os.getenv("SITE_BASE_URL", "https://nextjobpost.in")
 # ── Queue Setup ──
 QUEUE_FILE = "job_queue.json"
 # Default 30 minutes (1800 seconds) between posts. Capped at 3600 (1 hour) to guarantee at least 24 posts a day.
-POST_INTERVAL = min(int(os.getenv("POST_INTERVAL", 1800)), 3600)
+POST_INTERVAL = int(os.getenv("POST_INTERVAL", 3600))
 PENDING_IMAGES_DIR = "pending_images"
 
 if not os.path.exists(PENDING_IMAGES_DIR):
@@ -2390,6 +2390,26 @@ async def process_and_post_job(job_data):
         return True, was_posted
 
 
+def peek_next_job():
+    """Peeks at the next job in the queue without dequeuing it."""
+    try:
+        conn = database.get_connection()
+        cursor = conn.cursor()
+        # Peek at private jobs first (is_government = 0)
+        cursor.execute("SELECT job_data FROM job_queue WHERE is_government = 0 ORDER BY priority DESC, timestamp ASC LIMIT 1")
+        row = cursor.fetchone()
+        if not row:
+            # If no private jobs, peek at govt jobs
+            cursor.execute("SELECT job_data FROM job_queue WHERE is_government = 1 ORDER BY priority DESC, timestamp ASC LIMIT 1")
+            row = cursor.fetchone()
+        conn.close()
+        if row:
+            return json.loads(row[0])
+    except Exception as e:
+        print(f"⚠️ Error peeking next job: {e}")
+    return None
+
+
 async def scheduler_task():
     """Background loop that posts one job every POST_INTERVAL seconds (default 30 min)."""
     logging.info(f"🕒 Scheduler started. Posting every {POST_INTERVAL}s ({POST_INTERVAL//60} min).")
@@ -2521,8 +2541,20 @@ async def scheduler_task():
 
             time_since_last = now - last_post_time
 
+            # Enforce 10 seconds for LinkedIn jobs, POST_INTERVAL for others
+            next_job = peek_next_job()
+            is_linkedin_job = False
+            if next_job:
+                source = (next_job.get("sourceWebsite") or next_job.get("sourceUrl") or "").lower()
+                if "linkedin" in source:
+                    is_linkedin_job = True
+
+            effective_interval = 10 if is_linkedin_job else POST_INTERVAL
+
             # Only post if enough time has passed since last post
-            if time_since_last >= POST_INTERVAL:
+            if time_since_last >= effective_interval:
+                if is_linkedin_job and time_since_last < POST_INTERVAL:
+                    logging.info("⚡ [SCHEDULER] LinkedIn job detected. Posting immediately (10s interval).")
                 posted_any = False
             
                 while True:

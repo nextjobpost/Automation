@@ -208,7 +208,7 @@ def clean_private_job_html(html_content):
 # ═══════════════════════════════════════════════════════════════════════════
 
 
-def extract_linkedin_jobs_public(limit=25):
+def extract_linkedin_jobs_public(limit=100):
     """Fetches job listings from LinkedIn's public guest search API using multiple search keywords."""
     listings = []
     seen = set()
@@ -236,7 +236,11 @@ def extract_linkedin_jobs_public(limit=25):
             break
             
         kw_encoded = requests.utils.quote(kw)
-        url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={kw_encoded}&location=India&start=0"
+        # Use remote filter WT=2 (Remote) for generic keywords, or normal search for internships
+        if "intern" in kw.lower():
+            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={kw_encoded}&location=India&start=0"
+        else:
+            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={kw_encoded}&location=India&f_WT=2&start=0"
         
         try:
             resp = requests.get(url, headers=HEADERS, timeout=15)

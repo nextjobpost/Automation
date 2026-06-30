@@ -736,3 +736,462 @@
 2026-06-29 19:09:14,933 - INFO - [PING] ⚠️ Google: HTTP 404
 2026-06-29 19:09:15,149 - INFO - [PING] ⚠️ Bing: HTTP 410
 2026-06-29 19:09:15,150 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-06-29 19:09:50,709 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 19:09:50,880 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-29 19:09:52,216 - INFO - 🕒 Scheduler started. Posting every 1800s (30 min).
+2026-06-29 19:09:52,216 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-06-29 19:09:52,217 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-06-29 19:09:55,096 - INFO - [HEALTH] ─── Results: 7/7 checks passed (2.9s) ───
+2026-06-29 19:09:55,096 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-06-29 19:09:55,097 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-06-29 19:09:55,097 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-06-29 19:09:55,097 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-06-29 19:09:55,097 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-06-29 19:09:55,097 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-06-29 19:09:55,097 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-06-29 19:09:55,097 - INFO - [HEALTH] ✅ All checks passed!
+2026-06-29 19:09:55,097 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-06-29 19:09:55,097 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-06-29 19:09:55,097 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-06-29 19:09:55,101 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-06-29 19:09:55,101 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-06-29 19:09:55,292 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-06-29 19:09:55,944 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-06-29 19:09:56,082 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-06-29 19:09:57,644 - INFO - [GSC-Crawler] 🎯 Identified 34 technical SEO opportunities.
+2026-06-29 19:09:57,649 - INFO - [GSC] 💾 Saved 34 SEO opportunities to DB
+2026-06-29 19:09:57,649 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-06-29 19:09:58,823 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-06-29 19:09:58,824 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-06-29 19:09:58,825 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-06-29 19:09:58,825 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-06-29 19:09:59,448 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-06-29 19:09:59,458 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-06-29 19:09:59,735 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-06-29 19:10:00,512 - INFO - [INDEX-TRACKER] Discovered 968 total portal URLs
+2026-06-29 19:10:02,541 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-06-29 19:10:02,541 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-06-29 19:10:02,543 - INFO - [INDEX-TRACKER] Generated 95 index updates to sync
+2026-06-29 19:10:02,544 - INFO - [INDEX-TRACKER] Posting 95 status updates to MongoDB backend...
+2026-06-29 19:10:03,857 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-06-29 19:10:03,859 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-06-29 19:10:03,859 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-06-29 19:10:03,859 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-06-29 19:10:03,871 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-06-29 19:10:03,871 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-06-29 19:10:03,871 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-06-29 19:10:03,871 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-06-29 19:10:03,871 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-06-29 19:10:03,911 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-06-29 19:10:04,545 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-06-29 19:10:04,593 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-06-29 19:10:04,960 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-06-29 19:10:05,316 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-06-29 19:10:05,317 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-06-29 19:10:06,584 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-06-29 19:10:07,590 - INFO - [REFRESH] Updated content for job: ICSIL MTS Recruitment 2026: for 75 Helper/MTS Posts in Delhi (10th Pass
+2026-06-29 19:10:08,756 - INFO - [REFRESH] Updated content for job: Indian Air Force Pharmacist Online Form 2026 Recruitment 2026
+2026-06-29 19:10:10,144 - INFO - [REFRESH] Updated content for job: CSIR NIO Apprentice Recruitment 2026: 27 Walk-in Posts in Goa, Stipend Up to ₹12,300
+2026-06-29 19:10:10,963 - INFO - [REFRESH] Updated content for job: NIT Silchar Faculty Recruitment 2026 - for 35 Posts | Last Date 04-07-2026
+2026-06-29 19:10:11,777 - INFO - [REFRESH] Updated content for job: SDSC SHAR Teacher Recruitment 2026 - for 10 Posts | Last Date 07-07-2026
+2026-06-29 19:10:12,577 - INFO - [REFRESH] Updated content for job: NEIGRIHMS Faculty Recruitment 2026 - Apply for 52 Posts | Last Date 03-08-2026
+2026-06-29 19:10:13,381 - INFO - [REFRESH] Updated content for job: DRDO DESIDOC Recruitment 2026
+2026-06-29 19:10:14,148 - INFO - [REFRESH] Updated content for job: Top Company Senior Linux System Engineer (M/W/D Hiring 2026
+2026-06-29 19:10:14,923 - INFO - [REFRESH] Updated content for job: Full-Stack Developer (Node.js) | Website Builder | Based in Poland Hiring 2026
+2026-06-29 19:10:15,770 - INFO - [REFRESH] Updated content for job: NBEMS Recruitment 2026: for 53 Junior Assistant, Stenographer, Junior Accountant & Other Posts, Salary Up to Rs 2.08 Lakh
+2026-06-29 19:10:16,536 - INFO - [REFRESH] Updated content for job: Top Company Senior Lead Software Engineer II Hiring 2026
+2026-06-29 19:10:17,316 - INFO - [REFRESH] Updated content for job: Full-Stack JavaScript Engineer (Remote - LATAM or Europe Hiring 2026
+2026-06-29 19:10:18,697 - INFO - [REFRESH] Updated content for job: CSIR CEERI Technical Officer & Technician Recruitment 2026: for 22 Posts at Pilani, Salary Up to Rs 1,42,400 (Last Date Extended to 08 July 2026
+2026-06-29 19:10:19,457 - INFO - [REFRESH] Updated content for job: Manipur Horticulture Recruitment 2026
+2026-06-29 19:10:20,295 - INFO - [REFRESH] Updated content for job: DRDO HEMRL Pune Paid Internship 2026: 40 Slots for Engineering & Science Students, ₹5,000 Stipend
+2026-06-29 19:10:21,208 - INFO - [REFRESH] Updated content for job: Manipur Horticulture Department Recruitment 2026: Apply for 282 Asst Agriculture Officer, LDC, Field Assistant & Group D Posts
+2026-06-29 19:10:21,957 - INFO - [REFRESH] Updated content for job: Company Honeywell Hiring 2026
+2026-06-29 19:10:22,766 - INFO - [REFRESH] Updated content for job: BEML Operator Recruitment 2026: for 362 ITI Fitter, Turner, Welder, Machinist & Electrician Posts
+2026-06-29 19:10:23,573 - INFO - [REFRESH] Updated content for job: Chhattisgarh High Court Library Assistant Recruitment 2026: Apply for 20 Junior Judicial Assistant Posts, Salary Up to Rs 62,000
+2026-06-29 19:10:24,380 - INFO - [REFRESH] Updated content for job: IISc Bangalore Recruitment 2026: for 34 Teaching Assistant, System Administrator, Instructor & Project Scientist Posts
+2026-06-29 19:10:24,383 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-06-29 19:10:24,384 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-06-29 19:10:24,384 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-06-29 19:10:24,390 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-06-29 19:10:24,390 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-06-29 19:10:24,394 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-06-29 19:10:24,394 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-06-29 19:10:24,395 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-06-29 19:10:24,395 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-06-29 19:10:24,395 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-06-29 19:10:24,395 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-06-29 19:10:24,395 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-06-29 19:10:24,482 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 169 (GovtJobsAlert: 26, Government Scrapers: 121, LinkedIn: 22)
+2026-06-29 19:10:25,148 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-06-29 19:10:25,165 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-06-29 19:10:35,170 - INFO - [SEO] 🚀 Starting SEO pipeline for: SDE-1
+2026-06-29 19:10:35,171 - INFO - [SEO] Using rule-based fallback for 'SDE-1'
+2026-06-29 19:10:35,171 - INFO - [SEO] 📝 metaTitle: SDE-1 2026 | Apply Online
+2026-06-29 19:10:35,171 - INFO - [SEO] 📝 metaDesc:  Apply for SDE-1 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now. Check eligibility & apply now.
+2026-06-29 19:10:35,172 - INFO - [SEO] 🔑 Keywords:  ['SDE-1', 'SDE-1 2026', 'Amazon Jobs', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-29 19:10:35,472 - INFO - [SEO] ✅ Patched SEO metadata for job 6a4275d3feb2039959525872
+2026-06-29 19:10:35,473 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /amazon-sde-1-hiring-2026
+2026-06-29 19:10:35,473 - INFO - [SEO] 🔍 Extracted keywords: ['Amazon Jobs', 'Amazon Recruitment 2026', 'Jobs Apply Online 2026', 'Private Jobs India', 'SDE-1', 'SDE-1 2026', 'SDE-1 Recruitment 2026']
+2026-06-29 19:10:35,477 - INFO - [PING] 📡 Pinging search engines at 2026-06-29 19:10:35...
+2026-06-29 19:10:35,900 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-06-29 19:10:36,028 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-06-29 19:10:36,029 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-06-29 22:06:57,614 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-06-29 22:06:57,687 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-06-29 22:06:58,157 - WARNING - [HEALTH] Could not check for jobs missing SEO: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-06-29 22:06:58,162 - INFO - [HEALTH] ─── Results: 0/7 checks passed (0.5s) ───
+2026-06-29 22:06:58,163 - INFO - [HEALTH]   • sitemap: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-06-29 22:06:58,163 - INFO - [HEALTH]   • robots.txt: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-06-29 22:06:58,163 - INFO - [HEALTH]   • sitemap-jobs: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-06-29 22:06:58,163 - INFO - [HEALTH]   • sitemap-results: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-06-29 22:06:58,163 - INFO - [HEALTH]   • sitemap-admitcards: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-06-29 22:06:58,163 - INFO - [HEALTH]   • sitemap-pages: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-06-29 22:06:58,163 - INFO - [HEALTH]   • job_pages: ❌ API Error: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-06-29 22:06:58,164 - WARNING - [HEALTH] ⚠️  7 check(s) FAILED — see above for details
+2026-06-29 22:06:58,164 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-06-29 22:06:58,454 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 186 (GovtJobsAlert: 26, Government Scrapers: 121, LinkedIn: 39)
+2026-06-29 22:06:58,605 - WARNING - [SEO-LOGGER] Could not post log for 'health_checker': Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-06-29 22:07:18,027 - WARNING - Server closed the connection: [WinError 121] The semaphore timeout period has expired
+2026-06-29 22:07:18,050 - INFO - Connection closed while receiving data: [WinError 121] The semaphore timeout period has expired
+2026-06-29 22:07:18,051 - INFO - Closing current connection to begin reconnect...
+2026-06-29 22:07:18,062 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 22:07:18,079 - INFO - <class 'OSError'> during disconnect: [WinError 121] The semaphore timeout period has expired
+2026-06-29 22:07:18,080 - WARNING - Attempt 1 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:19,087 - WARNING - Attempt 2 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:20,091 - WARNING - Attempt 3 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:21,102 - WARNING - Attempt 4 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:22,114 - WARNING - Attempt 5 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:23,128 - WARNING - Attempt 6 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:24,141 - INFO - Failed reconnection attempt 1 with ConnectionError
+2026-06-29 22:07:25,140 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 22:07:25,143 - WARNING - Attempt 1 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:26,157 - WARNING - Attempt 2 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:27,169 - WARNING - Attempt 3 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:28,175 - WARNING - Attempt 4 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:29,189 - WARNING - Attempt 5 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:30,211 - WARNING - Attempt 6 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:31,225 - INFO - Failed reconnection attempt 2 with ConnectionError
+2026-06-29 22:07:32,233 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 22:07:32,234 - WARNING - Attempt 1 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:33,236 - WARNING - Attempt 2 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:34,242 - WARNING - Attempt 3 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:35,244 - WARNING - Attempt 4 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:36,249 - WARNING - Attempt 5 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:37,265 - WARNING - Attempt 6 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:38,266 - INFO - Failed reconnection attempt 3 with ConnectionError
+2026-06-29 22:07:39,269 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 22:07:39,271 - WARNING - Attempt 1 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:40,288 - WARNING - Attempt 2 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:41,293 - WARNING - Attempt 3 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:42,295 - WARNING - Attempt 4 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:43,305 - WARNING - Attempt 5 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:44,308 - WARNING - Attempt 6 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:45,316 - INFO - Failed reconnection attempt 4 with ConnectionError
+2026-06-29 22:07:46,320 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-29 22:07:46,323 - WARNING - Attempt 1 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:47,325 - WARNING - Attempt 2 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:48,328 - WARNING - Attempt 3 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:49,331 - WARNING - Attempt 4 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:50,339 - WARNING - Attempt 5 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:51,354 - WARNING - Attempt 6 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-06-29 22:07:52,357 - INFO - Failed reconnection attempt 5 with ConnectionError
+2026-06-29 22:07:53,360 - ERROR - Automatic reconnection failed 5 time(s)
+2026-06-29 22:07:53,364 - INFO - Disconnecting from 149.154.167.51:443/TcpFull...
+2026-06-29 22:07:53,365 - INFO - Disconnection from 149.154.167.51:443/TcpFull complete!
+2026-06-29 22:07:53,371 - ERROR - Future exception was never retrieved
+future: <Future finished exception=ConnectionError('Connection to Telegram failed 5 time(s)')>
+ConnectionError: Connection to Telegram failed 5 time(s)
+2026-06-30 23:00:02,703 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-06-30 23:00:02,985 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-06-30 23:00:04,767 - INFO - 🕒 Scheduler started. Posting every 3600s (60 min).
+2026-06-30 23:00:04,767 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-06-30 23:00:04,767 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-06-30 23:00:22,342 - WARNING - [HEALTH] Could not check page https://nextjobpost.in/arcgate-data-analyst-hiring-2026: 
+2026-06-30 23:00:24,031 - INFO - [HEALTH] ─── Results: 7/7 checks passed (19.3s) ───
+2026-06-30 23:00:24,031 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-06-30 23:00:24,031 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-06-30 23:00:24,032 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-06-30 23:00:24,032 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-06-30 23:00:24,032 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-06-30 23:00:24,032 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-06-30 23:00:24,032 - INFO - [HEALTH]   • job_pages: ✅ 4/4 pages have meta tags
+2026-06-30 23:00:24,032 - INFO - [HEALTH] ✅ All checks passed!
+2026-06-30 23:00:24,033 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-06-30 23:00:24,033 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-06-30 23:00:24,033 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-06-30 23:00:24,035 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-06-30 23:00:24,036 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-06-30 23:00:24,329 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-06-30 23:00:24,989 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-06-30 23:00:25,190 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-06-30 23:00:27,309 - INFO - [GSC-Crawler] 🎯 Identified 40 technical SEO opportunities.
+2026-06-30 23:00:27,313 - INFO - [GSC] 💾 Saved 40 SEO opportunities to DB
+2026-06-30 23:00:27,313 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-06-30 23:00:27,969 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-06-30 23:00:27,970 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-06-30 23:00:27,970 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-06-30 23:00:27,970 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-06-30 23:00:29,065 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-06-30 23:00:29,104 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-06-30 23:00:29,456 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-06-30 23:00:30,355 - INFO - [INDEX-TRACKER] Discovered 979 total portal URLs
+2026-06-30 23:00:32,742 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-06-30 23:00:32,742 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-06-30 23:00:32,745 - INFO - [INDEX-TRACKER] Generated 130 index updates to sync
+2026-06-30 23:00:32,745 - INFO - [INDEX-TRACKER] Posting 130 status updates to MongoDB backend...
+2026-06-30 23:00:33,729 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-06-30 23:00:33,731 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-06-30 23:00:33,732 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-06-30 23:00:33,733 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-06-30 23:00:33,744 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-06-30 23:00:33,744 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-06-30 23:00:33,745 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-06-30 23:00:33,745 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-06-30 23:00:33,745 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-06-30 23:00:33,784 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-06-30 23:00:34,414 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-06-30 23:00:34,470 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-06-30 23:00:34,872 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-06-30 23:00:35,276 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-06-30 23:00:35,278 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-06-30 23:00:36,722 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-06-30 23:00:39,021 - WARNING - [SEO] Error fetching jobs for link map: Cannot connect to host localhost:4000 ssl:default [The remote computer refused the network connection]
+2026-06-30 23:00:39,790 - INFO - [REFRESH] Updated content for job: Deloitte is hiring | 2026
+2026-06-30 23:00:42,793 - INFO - [REFRESH] Updated content for job: Freshers Hiring | Adani Off Campus Drive 2026 – Hiring Graduate Engineer Trainee | 5 5 LPA to 6 5 LPA
+2026-06-30 23:00:43,595 - INFO - [REFRESH] Updated content for job: Internship Apprentice Opportunities Program 2026
+2026-06-30 23:00:44,513 - INFO - [REFRESH] Updated content for job: 5000 Members from this channel Got Jobs till now and next might be you
+2026-06-30 23:00:45,353 - INFO - [REFRESH] Updated content for job: FREE AWS Cloud Deployment Workshop Hiring 2026
+2026-06-30 23:00:46,142 - INFO - [REFRESH] Updated content for job: Top Companies Hiring Freshers Interns
+2026-06-30 23:00:47,433 - INFO - [REFRESH] Updated content for job: Data Engineer Data Scientist Opportunities Hiring 2026
+2026-06-30 23:00:48,393 - INFO - [REFRESH] Updated content for job: Top Tech Opportunities For Freshers Hiring 2026
+2026-06-30 23:00:49,178 - INFO - [REFRESH] Updated content for job: Direct Interview On 27th June 2026 No resume Shortlisting | GWC-DATA-AI Off Campus Drive 2026 Hiring Freshers For AI ML
+2026-06-30 23:00:49,993 - INFO - [REFRESH] Updated content for job: Citi is hiring | 2026
+2026-06-30 23:00:50,766 - INFO - [REFRESH] Updated content for job: PHILIPS Hiring Software Developer in India
+2026-06-30 23:00:51,827 - INFO - [REFRESH] Updated content for job: CSIR ASO Recruitment 2026 – 100 Assistant Section Officer Posts for UPSC CSE-2024 Candidates, Pay Level 7
+2026-06-30 23:00:52,715 - INFO - [REFRESH] Updated content for job: ISRO ISTRAC Apprentice Recruitment 2026 – 94 Graduate, Diploma & ITI Apprentice Posts, Stipend up to ₹12,300, Apply by Email
+2026-06-30 23:00:53,622 - INFO - [REFRESH] Updated content for job: NIACL Apprentice Recruitment 2026 – 550 Posts in New India Assurance, Stipend ₹12,300
+2026-06-30 23:00:54,624 - INFO - [REFRESH] Updated content for job: DRDO DEAL Apprentice Recruitment 2026 – 77 Graduate, Diploma & ITI Apprentice Posts in Dehradun
+2026-06-30 23:00:55,583 - INFO - [REFRESH] Updated content for job: Indian Navy SSC Officer June 2027 Entry Recruitment 2026 – 275 Posts for Pilot, ATC, Logistics, Engineering & More
+2026-06-30 23:00:56,929 - INFO - [REFRESH] Updated content for job: UPSSSC Excise Constable Recruitment 2026: for 820 Posts (Vacancy Increased), Salary ₹19,900-₹63,200
+2026-06-30 23:00:57,784 - INFO - [REFRESH] Updated content for job: NEEPCO Executive Recruitment 2026 – 38 Posts in Civil, Finance, Medical, Law & More, Salary up to ₹1,66,000
+2026-06-30 23:00:58,727 - INFO - [REFRESH] Updated content for job: AMC Assistant Senior Clerk Recruitment 2026 – 250 Posts in Ahmedabad Municipal Corporation
+2026-06-30 23:00:59,557 - INFO - [REFRESH] Updated content for job: TNPSC Group I Recruitment 2026 – 26 Deputy Collector, DSP & Other Civil Service Posts
+2026-06-30 23:00:59,558 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-06-30 23:00:59,558 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-06-30 23:00:59,558 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-06-30 23:00:59,559 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-06-30 23:00:59,559 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-06-30 23:00:59,563 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-06-30 23:00:59,563 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-06-30 23:00:59,563 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-06-30 23:00:59,563 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-06-30 23:00:59,563 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-06-30 23:00:59,563 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-06-30 23:00:59,563 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-06-30 23:00:59,670 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 209 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 51, WeWorkRemotely: 1, Freshersworld: 1)
+2026-06-30 23:01:00,407 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-06-30 23:01:00,439 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-06-30 23:01:07,570 - INFO - [SEO] 🚀 Starting SEO pipeline for: Junior Full Stack Developer
+2026-06-30 23:01:07,570 - INFO - [SEO] Using rule-based fallback for 'Junior Full Stack Developer'
+2026-06-30 23:01:07,570 - INFO - [SEO] 📝 metaTitle: Junior Full Stack Developer 2026 | Apply Online
+2026-06-30 23:01:07,570 - INFO - [SEO] 📝 metaDesc:  Apply for Junior Full Stack Developer 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now.
+2026-06-30 23:01:07,570 - INFO - [SEO] 🔑 Keywords:  ['Junior Full Stack Developer', 'Junior Full Stack Developer 2026', 'Epiroc Jobs', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:01:08,047 - INFO - [SEO] ✅ Patched SEO metadata for job 6a427e4caeebd5b8960d9bd8
+2026-06-30 23:01:08,048 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /epiroc-junior-full-stack-developer-hiring-2026
+2026-06-30 23:01:08,048 - INFO - [SEO] 🔍 Extracted keywords: ['Epiroc Jobs', 'Epiroc Recruitment 2026', 'Jobs Apply Online 2026', 'Junior Full Stack Developer', 'Junior Full Stack Developer 2026', 'Junior Full Stack Developer Recruitment 2026', 'Private Jobs India']
+2026-06-30 23:01:08,050 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:01:08,160 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 210 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 50, WeWorkRemotely: 3, Freshersworld: 1)
+2026-06-30 23:01:16,344 - INFO - [SEO] 🚀 Starting SEO pipeline for: Backend Developer - Fully Remote | Upto $85/hr
+2026-06-30 23:01:16,344 - INFO - [SEO] Using rule-based fallback for 'Backend Developer - Fully Remote | Upto $85/hr'
+2026-06-30 23:01:16,344 - INFO - [SEO] 📝 metaTitle: Backend Developer - Fully Remote | Upto $85/h 2026 | Apply Now
+2026-06-30 23:01:16,345 - INFO - [SEO] 📝 metaDesc:  Apply for Backend Developer - Fully Remote | Upto $85/hr 2026. Eligibility: be. Salary: 85 LPA. Apply online at NextJobPost. Check eligibility & apply now.
+2026-06-30 23:01:16,345 - INFO - [SEO] 🔑 Keywords:  ['Backend Developer - Fully Remote | Upto $85/hr', 'Backend Developer - Fully Remote | Upto $85/hr 2026', 'Mercor Jobs', 'Jobs in Remote', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:01:16,677 - INFO - [SEO] ✅ Patched SEO metadata for job 6a428566aeebd5b8960d9c96
+2026-06-30 23:01:16,677 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /mercor-backend-developer-fully-remote-or-upto-dollar85hr-hiring-2026
+2026-06-30 23:01:16,678 - INFO - [SEO] 🔍 Extracted keywords: ['Backend Developer - Fully Remote | Upto $85/hr', 'Backend Developer - Fully Remote | Upto $85/hr 2026', 'Backend Developer - Fully Remote | Upto $85/hr Recruitment 2026', 'Backend Developer - Fully Remote | Upto $85/hr Remote', 'Jobs Apply Online 2026', 'Jobs in Remote', 'Mercor Jobs', 'Mercor Recruitment 2026', 'Private Jobs India', 'Private Jobs in Remote']
+2026-06-30 23:01:16,679 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:01:16,773 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 210 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 49, WeWorkRemotely: 4, Freshersworld: 1)
+2026-06-30 23:01:25,167 - INFO - [SEO] 🚀 Starting SEO pipeline for: Frontend Developer - Fully Remote | Upto $85/hr
+2026-06-30 23:01:25,168 - INFO - [SEO] Using rule-based fallback for 'Frontend Developer - Fully Remote | Upto $85/hr'
+2026-06-30 23:01:25,168 - INFO - [SEO] 📝 metaTitle: Frontend Developer - Fully Remote | Upto $85/ 2026 | Apply Now
+2026-06-30 23:01:25,169 - INFO - [SEO] 📝 metaDesc:  Apply for Frontend Developer - Fully Remote | Upto $85/hr 2026. Eligibility: be. Salary: 85 LPA. Apply online at NextJobPost. Check eligibility & apply ...
+2026-06-30 23:01:25,169 - INFO - [SEO] 🔑 Keywords:  ['Frontend Developer - Fully Remote | Upto $85/hr', 'Frontend Developer - Fully Remote | Upto $85/hr 2026', 'Mercor Jobs', 'Jobs in Remote', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:01:25,551 - INFO - [SEO] ✅ Patched SEO metadata for job 6a428c81aeebd5b8960d9da8
+2026-06-30 23:01:25,552 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /mercor-frontend-developer-fully-remote-or-upto-dollar85hr-hiring-2026
+2026-06-30 23:01:25,553 - INFO - [SEO] 🔍 Extracted keywords: ['Frontend Developer - Fully Remote | Upto $85/hr', 'Frontend Developer - Fully Remote | Upto $85/hr 2026', 'Frontend Developer - Fully Remote | Upto $85/hr Recruitment 2026', 'Frontend Developer - Fully Remote | Upto $85/hr Remote', 'Jobs Apply Online 2026', 'Jobs in Remote', 'Mercor Jobs', 'Mercor Recruitment 2026', 'Private Jobs India', 'Private Jobs in Remote']
+2026-06-30 23:01:25,556 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:01:25,616 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 210 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 48, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:01:34,118 - INFO - [SEO] 🚀 Starting SEO pipeline for: Frontend Developer(React/SolidJS) (3 to 7 Years
+2026-06-30 23:01:34,119 - INFO - [SEO] Using rule-based fallback for 'Frontend Developer(React/SolidJS) (3 to 7 Years'
+2026-06-30 23:01:34,119 - INFO - [SEO] 📝 metaTitle: Frontend Developer(React/SolidJS) (3 to 7 Yea 2026 | Apply Now
+2026-06-30 23:01:34,119 - INFO - [SEO] 📝 metaDesc:  Apply for Frontend Developer(React/SolidJS) (3 to 7 Years 2026. Eligibility: Any Graduate. Salary: Best in Industry. Apply online at NextJobPost.
+2026-06-30 23:01:34,119 - INFO - [SEO] 🔑 Keywords:  ['Frontend Developer(React/SolidJS) (3 to 7 Years', 'Frontend Developer(React/SolidJS) (3 to 7 Years 2026', 'Airtel Digital Jobs', 'Any Graduate Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:01:34,444 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42939baeebd5b8960d9e1c
+2026-06-30 23:01:34,444 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /airtel-digital-frontend-developerreactsolidjs-3-to-7-years-hiring-2026
+2026-06-30 23:01:34,444 - INFO - [SEO] 🔍 Extracted keywords: ['Airtel Digital Jobs', 'Airtel Digital Recruitment 2026', 'Frontend Developer(React/SolidJS) (3 to 7 Years', 'Frontend Developer(React/SolidJS) (3 to 7 Years 2026', 'Frontend Developer(React/SolidJS) (3 to 7 Years Recruitment 2026', 'Graduate Jobs', 'Jobs Apply Online 2026', 'Private Jobs India']
+2026-06-30 23:01:34,445 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:01:34,502 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 209 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 47, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:01:41,825 - INFO - [SEO] 🚀 Starting SEO pipeline for: Java Developer
+2026-06-30 23:01:41,825 - INFO - [SEO] Using rule-based fallback for 'Java Developer'
+2026-06-30 23:01:41,825 - INFO - [SEO] 📝 metaTitle: Java Developer 2026 | Apply Online
+2026-06-30 23:01:41,841 - INFO - [SEO] 📝 metaDesc:  Apply for Java Developer 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now. Check eligibility ...
+2026-06-30 23:01:41,842 - INFO - [SEO] 🔑 Keywords:  ['Java Developer', 'Java Developer 2026', 'Infosys Jobs', 'Jobs in Remote', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:01:42,218 - INFO - [SEO] ✅ Patched SEO metadata for job 6a429ab6aeebd5b8960d9e6b
+2026-06-30 23:01:42,218 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /infosys-java-developer-hiring-2026
+2026-06-30 23:01:42,218 - INFO - [SEO] 🔍 Extracted keywords: ['Infosys Jobs', 'Infosys Recruitment 2026', 'Java Developer', 'Java Developer 2026', 'Java Developer Recruitment 2026', 'Java Developer Remote', 'Jobs Apply Online 2026', 'Jobs in Remote', 'Private Jobs India', 'Private Jobs in Remote']
+2026-06-30 23:01:42,219 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:01:42,291 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 208 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 46, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:01:50,444 - INFO - [SEO] 🚀 Starting SEO pipeline for: IT Support & Network Technician
+2026-06-30 23:01:50,444 - INFO - [SEO] Using rule-based fallback for 'IT Support & Network Technician'
+2026-06-30 23:01:50,444 - INFO - [SEO] 📝 metaTitle: IT Support & Network Technician 2026 | Apply Online
+2026-06-30 23:01:50,444 - INFO - [SEO] 📝 metaDesc:  Apply for IT Support & Network Technician 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now.
+2026-06-30 23:01:50,444 - INFO - [SEO] 🔑 Keywords:  ['IT Support & Network Technician', 'IT Support & Network Technician 2026', 'AAPIL Planning Consultancy Jobs', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:01:50,756 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42a1cfaeebd5b8960d9ef9
+2026-06-30 23:01:50,757 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /aapil-planning-consultancy-it-support-and-network-technician-hiring-2026
+2026-06-30 23:01:50,757 - INFO - [SEO] 🔍 Extracted keywords: ['AAPIL Planning Consultancy Jobs', 'AAPIL Planning Consultancy Recruitment 2026', 'IT Support & Network Technician', 'IT Support & Network Technician 2026', 'IT Support & Network Technician Recruitment 2026', 'Jobs Apply Online 2026', 'Private Jobs India']
+2026-06-30 23:01:50,759 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:01:50,818 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 207 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 45, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:01:59,125 - INFO - [SEO] 🚀 Starting SEO pipeline for: Computer Application Intern
+2026-06-30 23:01:59,125 - INFO - [SEO] Using rule-based fallback for 'Computer Application Intern'
+2026-06-30 23:01:59,125 - INFO - [SEO] 📝 metaTitle: Computer Application Intern 2026 | Apply Online
+2026-06-30 23:01:59,125 - INFO - [SEO] 📝 metaDesc:  Apply for Computer Application Intern 2026. Eligibility: MCA. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now.
+2026-06-30 23:01:59,125 - INFO - [SEO] 🔑 Keywords:  ['Computer Application Intern', 'Computer Application Intern 2026', 'Baker & Grey Jobs', 'MCA Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:01:59,481 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42a8e9aeebd5b8960d9fa3
+2026-06-30 23:01:59,481 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /baker-and-grey-computer-application-intern-hiring-2026
+2026-06-30 23:01:59,481 - INFO - [SEO] 🔍 Extracted keywords: ['Baker & Grey Jobs', 'Baker & Grey Recruitment 2026', 'Computer Application Intern', 'Computer Application Intern 2026', 'Computer Application Intern Recruitment 2026', 'Jobs Apply Online 2026', 'Private Jobs India']
+2026-06-30 23:01:59,482 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:01:59,524 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 206 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 44, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:02:07,658 - INFO - [SEO] 🚀 Starting SEO pipeline for: IT Admin Internship in Bhopal
+2026-06-30 23:02:07,658 - INFO - [SEO] Using rule-based fallback for 'IT Admin Internship in Bhopal'
+2026-06-30 23:02:07,658 - INFO - [SEO] 📝 metaTitle: IT Admin Internship in Bhopal 2026 | Apply Online
+2026-06-30 23:02:07,658 - INFO - [SEO] 📝 metaDesc:  Apply for IT Admin Internship in Bhopal 2026. Eligibility: Any Graduate. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & appl...
+2026-06-30 23:02:07,658 - INFO - [SEO] 🔑 Keywords:  ['IT Admin Internship in Bhopal', 'IT Admin Internship in Bhopal 2026', 'IT Jobs', 'Any Graduate Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:02:07,973 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42b004aeebd5b8960da005
+2026-06-30 23:02:07,974 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /it-admin-internship-in-bhopal
+2026-06-30 23:02:07,974 - INFO - [SEO] 🔍 Extracted keywords: ['Graduate Jobs', 'IT Admin Internship in Bhopal', 'IT Admin Internship in Bhopal 2026', 'IT Admin Internship in Bhopal Recruitment 2026', 'IT Jobs', 'IT Recruitment 2026', 'Jobs Apply Online 2026', 'Private Jobs India']
+2026-06-30 23:02:07,974 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:02:07,979 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Intern - Governance & Cybersecurity' - Reason: Banned keyword detected in 'jobDescription'
+2026-06-30 23:02:08,017 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 204 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 42, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:02:16,014 - INFO - [SEO] 🚀 Starting SEO pipeline for: Information Technology Internship in Delhi
+2026-06-30 23:02:16,014 - INFO - [SEO] Using rule-based fallback for 'Information Technology Internship in Delhi'
+2026-06-30 23:02:16,014 - INFO - [SEO] 📝 metaTitle: Information Technology Internship in Delhi 2026 | Apply Online
+2026-06-30 23:02:16,014 - INFO - [SEO] 📝 metaDesc:  Apply for Information Technology Internship in Delhi 2026. Eligibility: Any Graduate. Salary: Best in Industry. Apply online at NextJobPost.
+2026-06-30 23:02:16,014 - INFO - [SEO] 🔑 Keywords:  ['Information Technology Internship in Delhi', 'Information Technology Internship in Delhi 2026', 'FinTram Global Jobs', 'Any Graduate Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:02:16,378 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42b71eaeebd5b8960da07f
+2026-06-30 23:02:16,378 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /information-technology-internship-in-delhi
+2026-06-30 23:02:16,378 - INFO - [SEO] 🔍 Extracted keywords: ['FinTram Global Jobs', 'FinTram Global Recruitment 2026', 'Graduate Jobs', 'Information Technology Internship in Delhi', 'Information Technology Internship in Delhi 2026', 'Information Technology Internship in Delhi Recruitment 2026', 'Jobs Apply Online 2026', 'Private Jobs India']
+2026-06-30 23:02:16,379 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:02:16,432 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 203 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 41, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:02:23,697 - INFO - [SEO] 🚀 Starting SEO pipeline for: IT Help Desk Intern
+2026-06-30 23:02:23,698 - INFO - [SEO] Using rule-based fallback for 'IT Help Desk Intern'
+2026-06-30 23:02:23,698 - INFO - [SEO] 📝 metaTitle: IT Help Desk Intern 2026 | Apply Online
+2026-06-30 23:02:23,698 - INFO - [SEO] 📝 metaDesc:  Apply for IT Help Desk Intern 2026. Eligibility: Any Graduate. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now.
+2026-06-30 23:02:23,698 - INFO - [SEO] 🔑 Keywords:  ['IT Help Desk Intern', 'IT Help Desk Intern 2026', 'Sol-Millennium Medical Group Jobs', 'Jobs in Remote', 'Any Graduate Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:02:24,041 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42be3caeebd5b8960da109
+2026-06-30 23:02:24,042 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /sol-millennium-medical-group-it-help-desk-intern-hiring-2026
+2026-06-30 23:02:24,043 - INFO - [SEO] 🔍 Extracted keywords: ['Graduate Jobs', 'IT Help Desk Intern', 'IT Help Desk Intern 2026', 'IT Help Desk Intern Recruitment 2026', 'IT Help Desk Intern Remote', 'Jobs Apply Online 2026', 'Jobs in Remote', 'Private Jobs India', 'Private Jobs in Remote', 'Sol-Millennium Medical Group Jobs']
+2026-06-30 23:02:24,045 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:02:24,087 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 202 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 40, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:02:31,604 - INFO - [SEO] 🚀 Starting SEO pipeline for: Desktop Engineer Intern
+2026-06-30 23:02:31,604 - INFO - [SEO] Using rule-based fallback for 'Desktop Engineer Intern'
+2026-06-30 23:02:31,604 - INFO - [SEO] 📝 metaTitle: Desktop Engineer Intern 2026 | Apply Online
+2026-06-30 23:02:31,604 - INFO - [SEO] 📝 metaDesc:  Apply for Desktop Engineer Intern 2026. Eligibility: Any Graduate. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now.
+2026-06-30 23:02:31,604 - INFO - [SEO] 🔑 Keywords:  ['Desktop Engineer Intern', 'Desktop Engineer Intern 2026', 'Dhyey Consulting Jobs', 'Any Graduate Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:02:31,947 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42c557aeebd5b8960da1e8
+2026-06-30 23:02:31,947 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /dhyey-consulting-desktop-engineer-intern-hiring-2026
+2026-06-30 23:02:31,947 - INFO - [SEO] 🔍 Extracted keywords: ['Desktop Engineer Intern', 'Desktop Engineer Intern 2026', 'Desktop Engineer Intern Recruitment 2026', 'Dhyey Consulting Jobs', 'Dhyey Consulting Recruitment 2026', 'Graduate Jobs', 'Jobs Apply Online 2026', 'Private Jobs India']
+2026-06-30 23:02:31,949 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:02:32,009 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 201 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 39, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:02:40,363 - INFO - [SEO] 🚀 Starting SEO pipeline for: Cyber Security - Intern
+2026-06-30 23:02:40,363 - INFO - [SEO] Using rule-based fallback for 'Cyber Security - Intern'
+2026-06-30 23:02:40,363 - INFO - [SEO] 📝 metaTitle: Cyber Security - Intern 2026 | Apply Online
+2026-06-30 23:02:40,363 - INFO - [SEO] 📝 metaDesc:  Apply for Cyber Security - Intern 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now.
+2026-06-30 23:02:40,363 - INFO - [SEO] 🔑 Keywords:  ['Cyber Security - Intern', 'Cyber Security - Intern 2026', 'xIoTz Private Limited Jobs', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:02:40,693 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42cc71aeebd5b8960da21d
+2026-06-30 23:02:40,694 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /xiotz-private-limited-cyber-security-intern-hiring-2026
+2026-06-30 23:02:40,694 - INFO - [SEO] 🔍 Extracted keywords: ['Cyber Security - Intern', 'Cyber Security - Intern 2026', 'Cyber Security - Intern Recruitment 2026', 'Jobs Apply Online 2026', 'Private Jobs India', 'xIoTz Private Limited Jobs', 'xIoTz Private Limited Recruitment 2026']
+2026-06-30 23:02:40,695 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:02:40,741 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 200 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 38, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:02:49,142 - INFO - [SEO] 🚀 Starting SEO pipeline for: Information Technology Support Intern
+2026-06-30 23:02:49,142 - INFO - [SEO] Using rule-based fallback for 'Information Technology Support Intern'
+2026-06-30 23:02:49,142 - INFO - [SEO] 📝 metaTitle: Information Technology Support Intern 2026 | Apply Online
+2026-06-30 23:02:49,142 - INFO - [SEO] 📝 metaDesc:  Apply for Information Technology Support Intern 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply ...
+2026-06-30 23:02:49,142 - INFO - [SEO] 🔑 Keywords:  ['Information Technology Support Intern', 'Information Technology Support Intern 2026', 'Information Jobs', 'Jobs in Mumbai', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:02:49,448 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42d38caeebd5b8960da292
+2026-06-30 23:02:49,448 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /information-technology-support-intern-hiring-2026
+2026-06-30 23:02:49,450 - INFO - [SEO] 🔍 Extracted keywords: ['Information Jobs', 'Information Recruitment 2026', 'Information Technology Support Intern', 'Information Technology Support Intern 2026', 'Information Technology Support Intern Mumbai', 'Information Technology Support Intern Recruitment 2026', 'Jobs Apply Online 2026', 'Jobs in Mumbai', 'Private Jobs India', 'Private Jobs in Mumbai']
+2026-06-30 23:02:49,450 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:02:49,481 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Service Now Engineer' - Reason: Banned keyword detected in 'jobDescription'
+2026-06-30 23:02:49,526 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 198 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 36, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:02:57,584 - INFO - [SEO] 🚀 Starting SEO pipeline for: Software Engineer - React JS
+2026-06-30 23:02:57,584 - INFO - [SEO] Using rule-based fallback for 'Software Engineer - React JS'
+2026-06-30 23:02:57,584 - INFO - [SEO] 📝 metaTitle: Software Engineer - React JS 2026 | Apply Online
+2026-06-30 23:02:57,584 - INFO - [SEO] 📝 metaDesc:  Apply for Software Engineer - React JS 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now.
+2026-06-30 23:02:57,584 - INFO - [SEO] 🔑 Keywords:  ['Software Engineer - React JS', 'Software Engineer - React JS 2026', 'Onstro Jobs', 'Jobs in Work From Home', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:02:57,943 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42e1c3aeebd5b8960da349
+2026-06-30 23:02:57,943 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /onstro-software-engineer-react-js-hiring-2026
+2026-06-30 23:02:57,943 - INFO - [SEO] 🔍 Extracted keywords: ['Jobs Apply Online 2026', 'Jobs in Work From Home', 'Onstro Jobs', 'Onstro Recruitment 2026', 'Private Jobs India', 'Private Jobs in Work From Home', 'Software Engineer - React JS', 'Software Engineer - React JS 2026', 'Software Engineer - React JS Recruitment 2026', 'Software Engineer - React JS Work From Home']
+2026-06-30 23:02:57,944 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:02:57,990 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 197 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 35, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:03:05,365 - INFO - [SEO] 🚀 Starting SEO pipeline for: SDE-2 Frontend
+2026-06-30 23:03:05,365 - INFO - [SEO] Using rule-based fallback for 'SDE-2 Frontend'
+2026-06-30 23:03:05,365 - INFO - [SEO] 📝 metaTitle: SDE-2 Frontend 2026 | Apply Online
+2026-06-30 23:03:05,365 - INFO - [SEO] 📝 metaDesc:  Apply for SDE-2 Frontend 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now. Check eligibility ...
+2026-06-30 23:03:05,365 - INFO - [SEO] 🔑 Keywords:  ['SDE-2 Frontend', 'SDE-2 Frontend 2026', 'Saleshandy Jobs', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:03:05,784 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42e8ddaeebd5b8960da375
+2026-06-30 23:03:05,785 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /saleshandy-sde-2-frontend-hiring-2026
+2026-06-30 23:03:05,785 - INFO - [SEO] 🔍 Extracted keywords: ['Jobs Apply Online 2026', 'Private Jobs India', 'SDE-2 Frontend', 'SDE-2 Frontend 2026', 'SDE-2 Frontend Recruitment 2026', 'Saleshandy Jobs', 'Saleshandy Recruitment 2026']
+2026-06-30 23:03:05,786 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:03:05,857 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 197 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 35, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:03:13,895 - INFO - [SEO] 🚀 Starting SEO pipeline for: Data Analyst
+2026-06-30 23:03:13,895 - INFO - [SEO] Using rule-based fallback for 'Data Analyst'
+2026-06-30 23:03:13,896 - INFO - [SEO] 📝 metaTitle: Data Analyst 2026 | Apply Online
+2026-06-30 23:03:13,896 - INFO - [SEO] 📝 metaDesc:  Apply for Data Analyst 2026. Eligibility: B.Tech. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now. Check eligibilit...
+2026-06-30 23:03:13,896 - INFO - [SEO] 🔑 Keywords:  ['Data Analyst', 'Data Analyst 2026', 'airtel Jobs', 'Jobs in Gurgaon', 'B.Tech Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:03:14,293 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42eff7aeebd5b8960da3b7
+2026-06-30 23:03:14,294 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /airtel-data-analyst-hiring-2026
+2026-06-30 23:03:14,294 - INFO - [SEO] 🔍 Extracted keywords: ['BTech Jobs', 'Data Analyst', 'Data Analyst 2026', 'Data Analyst Gurgaon', 'Data Analyst Recruitment 2026', 'Jobs Apply Online 2026', 'Jobs in Gurgaon', 'Private Jobs India', 'Private Jobs in Gurgaon', 'airtel Jobs']
+2026-06-30 23:03:14,296 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:03:14,345 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 198 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 36, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:03:21,940 - INFO - [SEO] 🚀 Starting SEO pipeline for: Analyst - III
+2026-06-30 23:03:21,940 - INFO - [SEO] Using rule-based fallback for 'Analyst - III'
+2026-06-30 23:03:21,941 - INFO - [SEO] 📝 metaTitle: Analyst - III 2026 | Apply Online
+2026-06-30 23:03:21,941 - INFO - [SEO] 📝 metaDesc:  Apply for Analyst - III 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now. Check eligibility &...
+2026-06-30 23:03:21,941 - INFO - [SEO] 🔑 Keywords:  ['Analyst - III', 'Analyst - III 2026', 'Nykaa Jobs', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:03:22,274 - INFO - [SEO] ✅ Patched SEO metadata for job 6a42f711aeebd5b8960da400
+2026-06-30 23:03:22,274 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /nykaa-analyst-iii-hiring-2026
+2026-06-30 23:03:22,274 - INFO - [SEO] 🔍 Extracted keywords: ['Analyst - III', 'Analyst - III 2026', 'Analyst - III Recruitment 2026', 'Jobs Apply Online 2026', 'Nykaa Jobs', 'Nykaa Recruitment 2026', 'Private Jobs India']
+2026-06-30 23:03:22,275 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-06-30 23:03:22,316 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 199 (GovtJobsAlert: 35, Government Scrapers: 121, LinkedIn: 37, WeWorkRemotely: 5, Freshersworld: 1)
+2026-06-30 23:03:30,531 - INFO - [SEO] 🚀 Starting SEO pipeline for: DevOps/SRE Engineer - Remote Work | REF#284466
+2026-06-30 23:03:30,532 - INFO - [SEO] Using rule-based fallback for 'DevOps/SRE Engineer - Remote Work | REF#284466'
+2026-06-30 23:03:30,532 - INFO - [SEO] 📝 metaTitle: DevOps/SRE Engineer - Remote Work | REF#28446 2026 | Apply Now
+2026-06-30 23:03:30,532 - INFO - [SEO] 📝 metaDesc:  Apply for DevOps/SRE Engineer - Remote Work | REF#284466 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility...
+2026-06-30 23:03:30,532 - INFO - [SEO] 🔑 Keywords:  ['DevOps/SRE Engineer - Remote Work | REF#284466', 'DevOps/SRE Engineer - Remote Work | REF#284466 2026', 'BairesDev Jobs', 'Jobs in Remote', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-06-30 23:03:30,899 - INFO - [SEO] ✅ Patched SEO metadata for job 6a43fdea0b1c6d15f9e84534
+2026-06-30 23:03:30,900 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /bairesdev-devopssre-engineer-remote-work-or-ref284466-hiring-2026
+2026-06-30 23:03:30,900 - INFO - [SEO] 🔍 Extracted keywords: ['BairesDev Jobs', 'BairesDev Recruitment 2026', 'DevOps/SRE Engineer - Remote Work | REF#284466', 'DevOps/SRE Engineer - Remote Work | REF#284466 2026', 'DevOps/SRE Engineer - Remote Work | REF#284466 Recruitment 2026', 'DevOps/SRE Engineer - Remote Work | REF#284466 Remote', 'Jobs Apply Online 2026', 'Jobs in Remote', 'Private Jobs India', 'Private Jobs in Remote']
+2026-06-30 23:03:30,907 - INFO - [PING] 📡 Pinging search engines at 2026-06-30 23:03:30...
+2026-06-30 23:03:31,470 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-06-30 23:03:31,733 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-06-30 23:03:31,734 - INFO - [PING] ✅ 0/2 engines pinged successfully
