@@ -2719,7 +2719,7 @@ async def run_private_scraper_periodically():
     while True:
         try:
             queue_size = database.get_queue_size()
-            if queue_size < 250:
+            if queue_size < 10000:
                 print("\n🔄 [SCRAPER] Running private job scraper (LinkedIn) in the background...")
                 process = await asyncio.create_subprocess_exec(
                     sys.executable, "scrape_private_jobs.py",
@@ -2731,8 +2731,8 @@ async def run_private_scraper_periodically():
         except Exception as e:
             print(f"❌ [SCRAPER] Failed to execute background private scraper: {e}")
         
-        # Sleep for 10 seconds before running again
-        await asyncio.sleep(10)
+        # Sleep for 1 second before running again
+        await asyncio.sleep(1)
 
 
 # =========================

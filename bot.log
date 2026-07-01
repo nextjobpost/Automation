@@ -2670,3 +2670,207 @@ ConnectionError: Connection to Telegram failed 5 time(s)
 2026-07-01 18:36:31,607 - INFO - [PING] ⚠️ Google: HTTP 404
 2026-07-01 18:36:31,816 - INFO - [PING] ⚠️ Bing: HTTP 410
 2026-07-01 18:36:31,816 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-07-01 18:49:22,047 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-07-01 18:49:22,189 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-07-01 18:49:23,307 - INFO - 🕒 Scheduler started. Posting every 2700s (45 min).
+2026-07-01 18:49:23,308 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-01 18:49:23,308 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-01 18:49:26,048 - INFO - [HEALTH] ─── Results: 7/7 checks passed (2.7s) ───
+2026-07-01 18:49:26,048 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-07-01 18:49:26,048 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-07-01 18:49:26,049 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-07-01 18:49:26,049 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-07-01 18:49:26,049 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-07-01 18:49:26,049 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-07-01 18:49:26,049 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-07-01 18:49:26,049 - INFO - [HEALTH] ✅ All checks passed!
+2026-07-01 18:49:26,049 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-01 18:49:26,049 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-07-01 18:49:26,049 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-07-01 18:49:26,052 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-07-01 18:49:26,053 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-07-01 18:49:26,113 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-07-01 18:49:27,216 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-07-01 18:49:27,395 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-07-01 18:49:29,147 - INFO - [GSC-Crawler] 🎯 Identified 40 technical SEO opportunities.
+2026-07-01 18:49:29,153 - INFO - [GSC] 💾 Saved 40 SEO opportunities to DB
+2026-07-01 18:49:29,153 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-07-01 18:49:29,804 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-07-01 18:49:29,805 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-07-01 18:49:29,805 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-07-01 18:49:29,805 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-07-01 18:49:30,208 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-07-01 18:49:30,459 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-07-01 18:49:30,642 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-07-01 18:49:31,438 - INFO - [INDEX-TRACKER] Discovered 1034 total portal URLs
+2026-07-01 18:49:33,509 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-07-01 18:49:33,509 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-07-01 18:49:33,513 - INFO - [INDEX-TRACKER] Generated 163 index updates to sync
+2026-07-01 18:49:33,514 - INFO - [INDEX-TRACKER] Posting 163 status updates to MongoDB backend...
+2026-07-01 18:49:35,041 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-07-01 18:49:35,042 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-07-01 18:49:35,042 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-07-01 18:49:35,042 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-07-01 18:49:35,050 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-07-01 18:49:35,050 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-07-01 18:49:35,050 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-07-01 18:49:35,050 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-07-01 18:49:35,050 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-07-01 18:49:35,101 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-07-01 18:49:35,764 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-07-01 18:49:35,770 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-07-01 18:49:36,156 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-07-01 18:49:36,657 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-07-01 18:49:36,659 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-07-01 18:49:37,684 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-07-01 18:49:39,961 - WARNING - [SEO] Error fetching jobs for link map: Cannot connect to host localhost:4000 ssl:default [The remote computer refused the network connection]
+2026-07-01 18:49:40,710 - INFO - [REFRESH] Updated content for job: Deloitte is hiring | 2026
+2026-07-01 18:49:43,619 - INFO - [REFRESH] Updated content for job: Freshers Hiring | Adani Off Campus Drive 2026 – Hiring Graduate Engineer Trainee | 5 5 LPA to 6 5 LPA
+2026-07-01 18:49:44,364 - INFO - [REFRESH] Updated content for job: Internship Apprentice Opportunities Program 2026
+2026-07-01 18:49:45,110 - INFO - [REFRESH] Updated content for job: 5000 Members from this channel Got Jobs till now and next might be you
+2026-07-01 18:49:45,874 - INFO - [REFRESH] Updated content for job: FREE AWS Cloud Deployment Workshop Hiring 2026
+2026-07-01 18:49:46,685 - INFO - [REFRESH] Updated content for job: Top Companies Hiring Freshers Interns
+2026-07-01 18:49:47,448 - INFO - [REFRESH] Updated content for job: Data Engineer Data Scientist Opportunities Hiring 2026
+2026-07-01 18:49:48,205 - INFO - [REFRESH] Updated content for job: Top Tech Opportunities For Freshers Hiring 2026
+2026-07-01 18:49:49,195 - INFO - [REFRESH] Updated content for job: Direct Interview On 27th June 2026 No resume Shortlisting | GWC-DATA-AI Off Campus Drive 2026 Hiring Freshers For AI ML
+2026-07-01 18:49:50,418 - INFO - [REFRESH] Updated content for job: Citi is hiring | 2026
+2026-07-01 18:49:51,160 - INFO - [REFRESH] Updated content for job: PHILIPS Hiring Software Developer in India
+2026-07-01 18:49:51,989 - INFO - [REFRESH] Updated content for job: CSIR ASO Recruitment 2026 – 100 Assistant Section Officer Posts for UPSC CSE-2024 Candidates, Pay Level 7
+2026-07-01 18:49:52,839 - INFO - [REFRESH] Updated content for job: ISRO ISTRAC Apprentice Recruitment 2026 – 94 Graduate, Diploma & ITI Apprentice Posts, Stipend up to ₹12,300, Apply by Email
+2026-07-01 18:49:53,641 - INFO - [REFRESH] Updated content for job: NIACL Apprentice Recruitment 2026 – 550 Posts in New India Assurance, Stipend ₹12,300
+2026-07-01 18:49:54,437 - INFO - [REFRESH] Updated content for job: DRDO DEAL Apprentice Recruitment 2026 – 77 Graduate, Diploma & ITI Apprentice Posts in Dehradun
+2026-07-01 18:49:55,746 - INFO - [REFRESH] Updated content for job: Indian Navy SSC Officer June 2027 Entry Recruitment 2026 – 275 Posts for Pilot, ATC, Logistics, Engineering & More
+2026-07-01 18:49:57,025 - INFO - [REFRESH] Updated content for job: UPSSSC Excise Constable Recruitment 2026: for 820 Posts (Vacancy Increased), Salary ₹19,900-₹63,200
+2026-07-01 18:49:58,089 - INFO - [REFRESH] Updated content for job: NEEPCO Executive Recruitment 2026 – 38 Posts in Civil, Finance, Medical, Law & More, Salary up to ₹1,66,000
+2026-07-01 18:49:58,952 - INFO - [REFRESH] Updated content for job: AMC Assistant Senior Clerk Recruitment 2026 – 250 Posts in Ahmedabad Municipal Corporation
+2026-07-01 18:49:59,904 - INFO - [REFRESH] Updated content for job: TNPSC Group I Recruitment 2026 – 26 Deputy Collector, DSP & Other Civil Service Posts
+2026-07-01 18:49:59,908 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-07-01 18:49:59,908 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-07-01 18:49:59,909 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-07-01 18:49:59,912 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-07-01 18:49:59,912 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-07-01 18:49:59,926 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-07-01 18:49:59,926 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-07-01 18:49:59,926 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-07-01 18:49:59,926 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-07-01 18:49:59,926 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-07-01 18:49:59,927 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-07-01 18:49:59,927 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-07-01 18:50:00,319 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 77 (GovtJobsAlert: 6, Freshersworld: 2, LinkedIn: 9, Government Scrapers: 59)
+2026-07-01 18:50:01,056 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-07-01 18:50:01,063 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-07-01 18:50:08,598 - INFO - [SEO] 🚀 Starting SEO pipeline for: Java Fullstack Developer (WFH
+2026-07-01 18:50:08,598 - INFO - [SEO] Using rule-based fallback for 'Java Fullstack Developer (WFH'
+2026-07-01 18:50:08,599 - INFO - [SEO] 📝 metaTitle: Java Fullstack Developer (WFH 2026 | Apply Online
+2026-07-01 18:50:08,599 - INFO - [SEO] 📝 metaDesc:  Apply for Java Fullstack Developer (WFH 2026. Eligibility: be. Salary: LPA. Apply online at NextJobPost. Check eligibility & apply now. Check eligibilit...
+2026-07-01 18:50:08,600 - INFO - [SEO] 🔑 Keywords:  ['Java Fullstack Developer (WFH', 'Java Fullstack Developer (WFH 2026', 'Zemoso Technologies Jobs', 'Jobs in Remote', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-07-01 18:50:09,089 - INFO - [SEO] ✅ Patched SEO metadata for job 6a451408b96b1a2c0736ccf1
+2026-07-01 18:50:09,090 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /zemoso-technologies-java-fullstack-developer-wfh-hiring-2026
+2026-07-01 18:50:09,090 - INFO - [SEO] 🔍 Extracted keywords: ['Java Fullstack Developer (WFH', 'Java Fullstack Developer (WFH 2026', 'Java Fullstack Developer (WFH Recruitment 2026', 'Java Fullstack Developer (WFH Remote', 'Jobs Apply Online 2026', 'Jobs in Remote', 'Private Jobs India', 'Private Jobs in Remote', 'Zemoso Technologies Jobs', 'Zemoso Technologies Recruitment 2026']
+2026-07-01 18:50:09,094 - INFO - [PING] 📡 Pinging search engines at 2026-07-01 18:50:09...
+2026-07-01 18:50:09,532 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-07-01 18:50:09,665 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-07-01 18:50:09,666 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-07-01 18:54:53,856 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-07-01 18:54:53,999 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-07-01 18:54:54,815 - INFO - 🕒 Scheduler started. Posting every 2700s (45 min).
+2026-07-01 18:54:54,815 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-01 18:54:54,815 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-01 18:54:58,220 - INFO - [HEALTH] ─── Results: 7/7 checks passed (3.4s) ───
+2026-07-01 18:54:58,220 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-07-01 18:54:58,220 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-07-01 18:54:58,220 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-07-01 18:54:58,220 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-07-01 18:54:58,221 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-07-01 18:54:58,221 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-07-01 18:54:58,221 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-07-01 18:54:58,221 - INFO - [HEALTH] ✅ All checks passed!
+2026-07-01 18:54:58,221 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-01 18:54:58,221 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-07-01 18:54:58,221 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-07-01 18:54:58,224 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-07-01 18:54:58,224 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-07-01 18:54:58,290 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-07-01 18:54:58,925 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-07-01 18:54:59,081 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-07-01 18:55:00,561 - INFO - [GSC-Crawler] 🎯 Identified 40 technical SEO opportunities.
+2026-07-01 18:55:00,567 - INFO - [GSC] 💾 Saved 40 SEO opportunities to DB
+2026-07-01 18:55:00,567 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-07-01 18:55:01,205 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-07-01 18:55:01,207 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-07-01 18:55:01,207 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-07-01 18:55:01,208 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-07-01 18:55:01,605 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-07-01 18:55:01,854 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-07-01 18:55:01,901 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-07-01 18:55:02,680 - INFO - [INDEX-TRACKER] Discovered 1036 total portal URLs
+2026-07-01 18:55:04,823 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-07-01 18:55:04,825 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-07-01 18:55:04,826 - INFO - [INDEX-TRACKER] Generated 139 index updates to sync
+2026-07-01 18:55:04,826 - INFO - [INDEX-TRACKER] Posting 139 status updates to MongoDB backend...
+2026-07-01 18:55:05,806 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-07-01 18:55:05,807 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-07-01 18:55:05,807 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-07-01 18:55:05,808 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-07-01 18:55:05,815 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-07-01 18:55:05,815 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-07-01 18:55:05,815 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-07-01 18:55:05,816 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-07-01 18:55:05,816 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-07-01 18:55:05,861 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-07-01 18:55:06,479 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-07-01 18:55:06,576 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-07-01 18:55:06,888 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-07-01 18:55:07,577 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-07-01 18:55:07,580 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-07-01 18:55:08,849 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-07-01 18:55:11,144 - WARNING - [SEO] Error fetching jobs for link map: Cannot connect to host localhost:4000 ssl:default [The remote computer refused the network connection]
+2026-07-01 18:55:11,894 - INFO - [REFRESH] Updated content for job: Deloitte is hiring | 2026
+2026-07-01 18:55:14,594 - INFO - [REFRESH] Updated content for job: Freshers Hiring | Adani Off Campus Drive 2026 – Hiring Graduate Engineer Trainee | 5 5 LPA to 6 5 LPA
+2026-07-01 18:55:15,369 - INFO - [REFRESH] Updated content for job: Internship Apprentice Opportunities Program 2026
+2026-07-01 18:55:16,127 - INFO - [REFRESH] Updated content for job: 5000 Members from this channel Got Jobs till now and next might be you
+2026-07-01 18:55:16,883 - INFO - [REFRESH] Updated content for job: FREE AWS Cloud Deployment Workshop Hiring 2026
+2026-07-01 18:55:17,670 - INFO - [REFRESH] Updated content for job: Top Companies Hiring Freshers Interns
+2026-07-01 18:55:18,432 - INFO - [REFRESH] Updated content for job: Data Engineer Data Scientist Opportunities Hiring 2026
+2026-07-01 18:55:19,189 - INFO - [REFRESH] Updated content for job: Top Tech Opportunities For Freshers Hiring 2026
+2026-07-01 18:55:19,964 - INFO - [REFRESH] Updated content for job: Direct Interview On 27th June 2026 No resume Shortlisting | GWC-DATA-AI Off Campus Drive 2026 Hiring Freshers For AI ML
+2026-07-01 18:55:20,708 - INFO - [REFRESH] Updated content for job: Citi is hiring | 2026
+2026-07-01 18:55:21,477 - INFO - [REFRESH] Updated content for job: PHILIPS Hiring Software Developer in India
+2026-07-01 18:55:22,773 - INFO - [REFRESH] Updated content for job: CSIR ASO Recruitment 2026 – 100 Assistant Section Officer Posts for UPSC CSE-2024 Candidates, Pay Level 7
+2026-07-01 18:55:23,610 - INFO - [REFRESH] Updated content for job: ISRO ISTRAC Apprentice Recruitment 2026 – 94 Graduate, Diploma & ITI Apprentice Posts, Stipend up to ₹12,300, Apply by Email
+2026-07-01 18:55:24,447 - INFO - [REFRESH] Updated content for job: NIACL Apprentice Recruitment 2026 – 550 Posts in New India Assurance, Stipend ₹12,300
+2026-07-01 18:55:25,286 - INFO - [REFRESH] Updated content for job: DRDO DEAL Apprentice Recruitment 2026 – 77 Graduate, Diploma & ITI Apprentice Posts in Dehradun
+2026-07-01 18:55:26,141 - INFO - [REFRESH] Updated content for job: Indian Navy SSC Officer June 2027 Entry Recruitment 2026 – 275 Posts for Pilot, ATC, Logistics, Engineering & More
+2026-07-01 18:55:27,313 - INFO - [REFRESH] Updated content for job: UPSSSC Excise Constable Recruitment 2026: for 820 Posts (Vacancy Increased), Salary ₹19,900-₹63,200
+2026-07-01 18:55:28,264 - INFO - [REFRESH] Updated content for job: NEEPCO Executive Recruitment 2026 – 38 Posts in Civil, Finance, Medical, Law & More, Salary up to ₹1,66,000
+2026-07-01 18:55:29,166 - INFO - [REFRESH] Updated content for job: AMC Assistant Senior Clerk Recruitment 2026 – 250 Posts in Ahmedabad Municipal Corporation
+2026-07-01 18:55:30,009 - INFO - [REFRESH] Updated content for job: TNPSC Group I Recruitment 2026 – 26 Deputy Collector, DSP & Other Civil Service Posts
+2026-07-01 18:55:30,010 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-07-01 18:55:30,010 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-07-01 18:55:30,011 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-07-01 18:55:30,013 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-07-01 18:55:30,013 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-07-01 18:55:30,016 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-07-01 18:55:30,016 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-07-01 18:55:30,016 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-07-01 18:55:30,016 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-07-01 18:55:30,016 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-07-01 18:55:30,017 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-07-01 18:55:30,017 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-07-01 18:55:30,887 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 135 (GovtJobsAlert: 30, LinkedIn: 21, Freshersworld: 1, Government Scrapers: 83)
+2026-07-01 18:55:31,628 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-07-01 18:55:32,069 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-07-01 18:55:39,696 - INFO - [SEO] 🚀 Starting SEO pipeline for: IBPS PO 2026 Notification Out: 6715 Bank PO Vacancies
+2026-07-01 18:55:39,697 - INFO - [SEO] Using rule-based fallback for 'IBPS PO 2026 Notification Out: 6715 Bank PO Vacancies'
+2026-07-01 18:55:39,697 - INFO - [SEO] 📝 metaTitle: IBPS PO 2026 Notification Out: 6715 Bank PO V 2026 | Apply Now
+2026-07-01 18:55:39,697 - INFO - [SEO] 📝 metaDesc:  Apply for IBPS PO 2026 Notification Out: 6715 Bank PO Vacancies 2026. Eligibility: GRADUATE. Salary: Rs. 48,480. Last Date: 2026-07-21. Apply online at ...
+2026-07-01 18:55:39,697 - INFO - [SEO] 🔑 Keywords:  ['IBPS PO 2026 Notification Out: 6715 Bank PO Vacancies', 'IBPS PO 2026 Notification Out: 6715 Bank PO Vacancies 2026', 'IBPS Jobs', 'Jobs in India', 'GRADUATE Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-07-01 18:55:40,012 - INFO - [SEO] ✅ Patched SEO metadata for job 6a451553b1bd094c06ac72d4
+2026-07-01 18:55:40,013 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /ibps-po-2026-notification-out-6715-bank-po-vacancies-recruitment-2026
+2026-07-01 18:55:40,013 - INFO - [SEO] 🔍 Extracted keywords: ['Government Jobs in India', 'Govt Jobs India', 'Graduate Jobs', 'IBPS Jobs', 'IBPS PO 2026 Notification Out: 6715 Bank PO Vacancies', 'IBPS PO 2026 Notification Out: 6715 Bank PO Vacancies 2026', 'IBPS PO 2026 Notification Out: 6715 Bank PO Vacancies India', 'IBPS PO 2026 Notification Out: 6715 Bank PO Vacancies Recruitment 2026', 'IBPS Recruitment 2026', 'Jobs in India']
+2026-07-01 18:55:40,018 - INFO - [PING] 📡 Pinging search engines at 2026-07-01 18:55:40...
+2026-07-01 18:55:40,441 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-07-01 18:55:40,569 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-07-01 18:55:40,570 - INFO - [PING] ✅ 0/2 engines pinged successfully

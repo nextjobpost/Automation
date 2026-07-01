@@ -806,25 +806,25 @@ def main():
 
     global_state = {"total_queued": 0}
 
-    if global_state["total_queued"] < 100:
-        run_scraper("LinkedIn Official", extract_linkedin_jobs_public, recent_jobs, limit=100, delay=1.5, global_state=global_state)
+    if global_state["total_queued"] < 10000:
+        run_scraper("LinkedIn Official", extract_linkedin_jobs_public, recent_jobs, limit=10000, delay=1.5, global_state=global_state)
 
-    if global_state["total_queued"] < 100:
-        run_scraper("Adzuna API", extract_adzuna_jobs, recent_jobs, limit=15, delay=1.5, global_state=global_state)
+    if global_state["total_queued"] < 10000:
+        run_scraper("Adzuna API", extract_adzuna_jobs, recent_jobs, limit=1000, delay=1.5, global_state=global_state)
 
-    if global_state["total_queued"] < 100:
-        run_scraper("Internshala", extract_internshala_listings, recent_jobs, limit=15, delay=1.5, global_state=global_state)
+    if global_state["total_queued"] < 10000:
+        run_scraper("Internshala", extract_internshala_listings, recent_jobs, limit=1000, delay=1.5, global_state=global_state)
 
-    if global_state["total_queued"] < 100:
-        run_scraper("WeWorkRemotely", extract_weworkremotely_rss, recent_jobs, limit=15, delay=1.5, global_state=global_state)
+    if global_state["total_queued"] < 10000:
+        run_scraper("WeWorkRemotely", extract_weworkremotely_rss, recent_jobs, limit=1000, delay=1.5, global_state=global_state)
 
-    if global_state["total_queued"] < 100:
-        run_scraper("Freshersworld", extract_freshersworld_listings, recent_jobs, limit=10, delay=1.5, global_state=global_state)
+    if global_state["total_queued"] < 10000:
+        run_scraper("Freshersworld", extract_freshersworld_listings, recent_jobs, limit=1000, delay=1.5, global_state=global_state)
 
-    if global_state["total_queued"] < 100:
-        run_scraper("WorkAtAStartup", extract_workatastartup_listings, recent_jobs, limit=10, delay=1.5, global_state=global_state)
+    if global_state["total_queued"] < 10000:
+        run_scraper("WorkAtAStartup", extract_workatastartup_listings, recent_jobs, limit=1000, delay=1.5, global_state=global_state)
 
-    logging.info(f"\n✅ All private job sources processed. Total Queued: {global_state['total_queued']}/100")
+    logging.info(f"\n✅ All private job sources processed. Total Queued: {global_state['total_queued']}/10000")
 
 
 if __name__ == "__main__":
