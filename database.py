@@ -1,342 +1,164 @@
-import sqlite3
+import os
 import json
 import time
-import os
-import shutil
+import requests
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
 
 # Allow overriding the data directory via environment variable for cloud persistent storage
 DATA_DIR = os.getenv("DATA_DIR", ".")
 DB_PATH = os.path.join(DATA_DIR, "automation.db")
-LOCAL_DB = "automation.db"
 
-# Seed the persistent volume if it is fresh and we shipped a local DB via git
-if DATA_DIR != "." and not os.path.exists(DB_PATH) and os.path.exists(LOCAL_DB):
-    try:
-        shutil.copy2(LOCAL_DB, DB_PATH)
-        print(f"📦 Copied bundled {LOCAL_DB} to persistent volume at {DB_PATH}")
-    except Exception as e:
-        print(f"⚠️ Failed to copy bundled DB: {e}")
+# Detect environment to determine the backend base url
+IS_PRODUCTION = os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RENDER") or os.getenv("PORT") is not None
+DEFAULT_JOBS_URL = "https://nextjobpost-backend.onrender.com/api/jobs" if IS_PRODUCTION else "http://localhost:4000/api/jobs"
+JOBS_URL = os.getenv("API_URL", DEFAULT_JOBS_URL)
+
+# Expose base URL for /api/queue
+BASE_API_URL = JOBS_URL.rsplit("/jobs", 1)[0]
+QUEUE_API_URL = f"{BASE_API_URL}/queue"
+
+API_TOKEN = os.getenv("API_TOKEN")
+OLD_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZjFhM2I0YzllOGE3ZDZlNWY0YzNiMiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.ts-o1us7bsOOJunK2dL4HNmz1ONh3tywCLj0D079k4M"
+NEW_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZjFhM2I0YzllOGE3ZDZlNWY0YzNiMiIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODAxOTU0NDB9.QVqxcZLumH_FOjPG2xgvlCoVfSuzJVd-4uEHe8UI7ok"
+if not API_TOKEN or API_TOKEN == OLD_TOKEN:
+    API_TOKEN = NEW_TOKEN
+
+HEADERS = {
+    "Authorization": f"Bearer {API_TOKEN}",
+    "Content-Type": "application/json"
+}
 
 def get_connection():
-    # timeout=20 ensures that if the DB is locked by another script, it waits up to 20 seconds before failing.
-    conn = sqlite3.connect(DB_PATH, timeout=20.0)
-    # Enable Write-Ahead Logging (WAL) for better concurrency
-    conn.execute('PRAGMA journal_mode=WAL;')
-    return conn
+    # Return None as we don't connect to SQLite for queue/seen jobs anymore.
+    # Keep function signature for backward compatibility.
+    return None
 
 def init_db():
-    """Initializes the SQLite database and creates necessary tables."""
-    conn = get_connection()
-    cursor = conn.cursor()
-    
-    # job_queue: Holds the pending jobs to be posted
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS job_queue (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            job_hash TEXT UNIQUE,
-            job_data TEXT,
-            image_path TEXT,
-            is_government BOOLEAN,
-            timestamp REAL,
-            retries INTEGER DEFAULT 0
-        )
-    ''')
-    
-    # seen_jobs: Tracks job hashes to avoid duplicate scraping
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS seen_jobs (
-            job_hash TEXT PRIMARY KEY,
-            timestamp REAL
-        )
-    ''')
-    
-    # failed_jobs: Dead-letter queue for jobs that exhausted retries
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS failed_jobs (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            job_hash TEXT,
-            job_data TEXT,
-            error_message TEXT,
-            timestamp REAL
-        )
-    ''')
-    
-    # Create an index on is_government for faster querying
-    cursor.execute('CREATE INDEX IF NOT EXISTS idx_is_govt ON job_queue(is_government)')
-    
-    # linkedin_govt_posts: Tracks timestamps of government jobs posted to LinkedIn to enforce daily limits
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS linkedin_govt_posts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp REAL
-        )
-    ''')
-    
-    # Add priority column to job_queue if it doesn't exist
-    try:
-        cursor.execute('ALTER TABLE job_queue ADD COLUMN priority INTEGER DEFAULT 0')
-    except sqlite3.OperationalError:
-        pass # Column already exists
-    
-    conn.commit()
-    conn.close()
+    # No-op since we initialize everything via MongoDB collections.
+    pass
 
 def add_job_to_queue(job_dict, job_hash, image_path="", is_government=False, retries=5):
-    """Inserts a new job into the queue. Ignores if hash already exists in queue."""
-    for attempt in range(1, retries + 1):
-        conn = get_connection()
-        cursor = conn.cursor()
-        
-        # Calculate Priority Score based on high-value keywords
-        priority = 0
-        job_text = json.dumps(job_dict).lower()
-        if any(kw in job_text for kw in [" ssc", " upsc", "army", "bank"]):
-            priority = 1
-            
-        try:
-            cursor.execute('''
-                INSERT OR IGNORE INTO job_queue (job_hash, job_data, image_path, is_government, timestamp, priority)
-                VALUES (?, ?, ?, ?, ?, ?)
-            ''', (job_hash, json.dumps(job_dict), image_path, is_government, time.time(), priority))
-            conn.commit()
-            return cursor.rowcount > 0
-        except sqlite3.OperationalError as e:
-            if "locked" in str(e).lower() and attempt < retries:
-                print(f"⚠️ [DB] Database locked, retrying attempt {attempt}/{retries}...")
-                time.sleep(0.5 * attempt)
-                continue
-            print(f"Database error adding job to queue: {e}")
-            return False
-        except Exception as e:
-            print(f"Database error adding job to queue: {e}")
-            return False
-        finally:
-            conn.close()
+    """Inserts a new job into the MongoDB queue via REST API."""
+    payload = {
+        "jobData": job_dict,
+        "jobHash": job_hash,
+        "imagePath": image_path,
+        "isGovernment": bool(is_government)
+    }
+    try:
+        resp = requests.post(f"{QUEUE_API_URL}/add", json=payload, headers=HEADERS, timeout=15)
+        if resp.status_code == 200:
+            return resp.json().get("created", False)
+    except Exception as e:
+        print(f"Error adding job to MongoDB queue: {e}")
     return False
 
 def get_jobs_batch(limit=1):
-    """Atomically retrieves and deletes up to `limit` jobs, prioritizing private jobs."""
-    conn = get_connection()
-    # Enable dict-like row access
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-    
-    jobs = []
+    """Atomically retrieves and deletes up to `limit` jobs from MongoDB queue."""
     try:
-        # Begin exclusive transaction
-        cursor.execute('BEGIN EXCLUSIVE')
-        
-        # 1. Fetch private jobs first
-        cursor.execute('''
-            SELECT id, job_hash, job_data, image_path, is_government, timestamp, retries 
-            FROM job_queue WHERE is_government = 0 ORDER BY priority DESC, timestamp ASC LIMIT ?
-        ''', (limit,))
-        private_rows = cursor.fetchall()
-        for row in private_rows:
-            jobs.append(dict(row))
-                
-        # 2. Fetch govt jobs if we haven't reached the limit
-        remaining_limit = limit - len(jobs)
-        if remaining_limit > 0:
-            cursor.execute('''
-                SELECT id, job_hash, job_data, image_path, is_government, timestamp, retries 
-                FROM job_queue WHERE is_government = 1 ORDER BY priority DESC, timestamp ASC LIMIT ?
-            ''', (remaining_limit,))
-            govt_rows = cursor.fetchall()
-            for row in govt_rows:
-                jobs.append(dict(row))
-                
-        # 3. Delete fetched jobs from queue so no other process can take them
-        if jobs:
-            ids_to_delete = [job['id'] for job in jobs]
-            placeholders = ','.join('?' for _ in ids_to_delete)
-            cursor.execute(f'DELETE FROM job_queue WHERE id IN ({placeholders})', ids_to_delete)
-            
-        conn.commit()
-        
-        # Parse JSON back into dictionaries and map job_hash to hash for backwards compatibility
-        for j in jobs:
-            j['job'] = json.loads(j['job_data'])
-            j['hash'] = j['job_hash']
-            
-        return jobs
+        resp = requests.post(f"{QUEUE_API_URL}/batch", json={"limit": limit}, headers=HEADERS, timeout=15)
+        if resp.status_code == 200:
+            jobs = resp.json().get("data", [])
+            for j in jobs:
+                j['job'] = json.loads(j['job_data'])
+                j['hash'] = j['job_hash']
+            return jobs
     except Exception as e:
-        conn.rollback()
-        print(f"Database error getting jobs: {e}")
-        return []
-    finally:
-        conn.close()
+        print(f"Error getting jobs from MongoDB queue: {e}")
+    return []
 
 def return_job_to_queue(job_row):
-    """Puts a job back in the queue (e.g. if it fails and needs retry)."""
-    conn = get_connection()
-    cursor = conn.cursor()
+    """Puts a job back in the MongoDB queue (e.g. if it fails and needs retry)."""
+    payload = {
+        "jobHash": job_row.get("job_hash") or job_row.get("hash"),
+        "jobData": job_row.get("job") or json.loads(job_row["job_data"]),
+        "imagePath": job_row.get("image_path", ""),
+        "isGovernment": bool(job_row.get("is_government", False)),
+        "retries": job_row.get("retries", 0)
+    }
     try:
-        cursor.execute('''
-            INSERT INTO job_queue (job_hash, job_data, image_path, is_government, timestamp, retries)
-            VALUES (?, ?, ?, ?, ?, ?)
-        ''', (job_row['job_hash'], job_row['job_data'], job_row['image_path'], job_row['is_government'], time.time(), job_row['retries']))
-        conn.commit()
+        resp = requests.post(f"{QUEUE_API_URL}/return", json=payload, headers=HEADERS, timeout=15)
+        return resp.status_code == 200
     except Exception as e:
-        print(f"Database error returning job to queue: {e}")
-    finally:
-        conn.close()
+        print(f"Error returning job to MongoDB queue: {e}")
+    return False
 
 def add_to_failed_queue(job_row, error_msg):
-    conn = get_connection()
-    cursor = conn.cursor()
+    payload = {
+        "jobHash": job_row.get("job_hash") or job_row.get("hash"),
+        "jobData": job_row.get("job") or json.loads(job_row["job_data"]),
+        "errorMessage": error_msg
+    }
     try:
-        cursor.execute('''
-            INSERT INTO failed_jobs (job_hash, job_data, error_message, timestamp)
-            VALUES (?, ?, ?, ?)
-        ''', (job_row['job_hash'], job_row['job_data'], error_msg, time.time()))
-        conn.commit()
+        resp = requests.post(f"{QUEUE_API_URL}/failed", json=payload, headers=HEADERS, timeout=15)
+        return resp.status_code == 200
     except Exception as e:
-        print(f"Database error logging failed job: {e}")
-    finally:
-        conn.close()
+        print(f"Error adding to failed queue in MongoDB: {e}")
+    return False
 
 def get_queue_size():
-    conn = get_connection()
-    cursor = conn.cursor()
     try:
-        cursor.execute('SELECT COUNT(*) FROM job_queue')
-        return cursor.fetchone()[0]
-    except:
-        return 0
-    finally:
-        conn.close()
-
-# ---- SEEN JOBS CACHE ----
+        resp = requests.get(f"{QUEUE_API_URL}/size", headers=HEADERS, timeout=15)
+        if resp.status_code == 200:
+            return resp.json().get("size", 0)
+    except Exception as e:
+        print(f"Error getting queue size: {e}")
+    return 0
 
 def mark_job_seen(job_hash):
-    conn = get_connection()
-    cursor = conn.cursor()
     try:
-        cursor.execute('''
-            INSERT OR REPLACE INTO seen_jobs (job_hash, timestamp)
-            VALUES (?, ?)
-        ''', (job_hash, time.time()))
-        conn.commit()
+        requests.post(f"{QUEUE_API_URL}/seen/mark", json={"jobHash": job_hash}, headers=HEADERS, timeout=15)
     except Exception as e:
-        pass
-    finally:
-        conn.close()
+        print(f"Error marking job seen: {e}")
 
 def is_job_seen(job_hash):
-    conn = get_connection()
-    cursor = conn.cursor()
     try:
-        cursor.execute('SELECT 1 FROM seen_jobs WHERE job_hash = ?', (job_hash,))
-        return cursor.fetchone() is not None
-    except:
-        return False
-    finally:
-        conn.close()
+        resp = requests.get(f"{QUEUE_API_URL}/seen/{job_hash}", headers=HEADERS, timeout=15)
+        if resp.status_code == 200:
+            return resp.json().get("seen", False)
+    except Exception as e:
+        print(f"Error checking is_job_seen: {e}")
+    return False
 
 def get_all_seen_hashes():
-    conn = get_connection()
-    cursor = conn.cursor()
     try:
-        cursor.execute('SELECT job_hash FROM seen_jobs')
-        return {row[0] for row in cursor.fetchall()}
-    except:
-        return set()
-    finally:
-        conn.close()
-
-def preload_seen_jobs(hash_list):
-    """Utility to quickly load a large list of hashes into the DB."""
-    conn = get_connection()
-    cursor = conn.cursor()
-    try:
-        now = time.time()
-        cursor.executemany('''
-            INSERT OR IGNORE INTO seen_jobs (job_hash, timestamp)
-            VALUES (?, ?)
-        ''', [(h, now) for h in hash_list])
-        conn.commit()
+        resp = requests.get(f"{QUEUE_API_URL}/seen/all", headers=HEADERS, timeout=15)
+        if resp.status_code == 200:
+            return set(resp.json().get("data", []))
     except Exception as e:
         print(f"Error preloading seen jobs: {e}")
-    finally:
-        conn.close()
+    return set()
+
+def preload_seen_jobs(hash_list):
+    """Utility to quickly mark a list of hashes as seen in the DB."""
+    for h in hash_list:
+        mark_job_seen(h)
 
 def count_linkedin_govt_posts_last_24h():
     """Returns the number of government jobs posted to LinkedIn in the last 24 hours."""
-    conn = get_connection()
-    cursor = conn.cursor()
     try:
-        twenty_four_hours_ago = time.time() - 86400
-        cursor.execute('SELECT COUNT(*) FROM linkedin_govt_posts WHERE timestamp > ?', (twenty_four_hours_ago,))
-        return cursor.fetchone()[0]
+        resp = requests.get(f"{QUEUE_API_URL}/linkedin-limit", headers=HEADERS, timeout=15)
+        if resp.status_code == 200:
+            return resp.json().get("count", 0)
     except Exception as e:
         print(f"Error counting linkedin govt posts: {e}")
-        return 0
-    finally:
-        conn.close()
+    return 0
 
 def log_linkedin_govt_post():
     """Logs a new government job post to LinkedIn to track daily limits."""
-    conn = get_connection()
-    cursor = conn.cursor()
     try:
-        cursor.execute('INSERT INTO linkedin_govt_posts (timestamp) VALUES (?)', (time.time(),))
-        conn.commit()
+        requests.post(f"{QUEUE_API_URL}/linkedin-limit/log", json={}, headers=HEADERS, timeout=15)
     except Exception as e:
         print(f"Error logging linkedin govt post: {e}")
-    finally:
-        conn.close()
 
 def get_queue_breakdown():
     """Returns a dictionary showing count of jobs in queue grouped by source/website."""
-    conn = get_connection()
-    cursor = conn.cursor()
-    breakdown = {}
     try:
-        cursor.execute("SELECT job_data, is_government FROM job_queue")
-        rows = cursor.fetchall()
-        for row in rows:
-            try:
-                job = json.loads(row[0])
-                is_govt = row[1]
-                
-                # Try to get the source website or channel name
-                source = job.get("sourceWebsite") or job.get("sourceUrl") or ""
-                if not source:
-                    # Maybe it's a telegram channel message? Let's check for channel info
-                    source = job.get("telegramChannel") or ("Government Job" if is_govt else "Private Job")
-                
-                # Clean up / group common sources
-                source_lower = source.lower()
-                if "linkedin" in source_lower:
-                    source = "LinkedIn"
-                elif "telegram" in source_lower or source.startswith("@") or "t.me" in source_lower:
-                    source = "Telegram"
-                elif "weworkremotely" in source_lower:
-                    source = "WeWorkRemotely"
-                elif "internshala" in source_lower:
-                    source = "Internshala"
-                elif "freshersworld" in source_lower:
-                    source = "Freshersworld"
-                elif "workatastartup" in source_lower:
-                    source = "WorkAtAStartup"
-                elif "adzuna" in source_lower:
-                    source = "Adzuna"
-                elif "govtjobsalert" in source_lower:
-                    source = "GovtJobsAlert"
-                elif is_govt:
-                    source = "Government Scrapers"
-                else:
-                    source = "Other Private"
-                    
-                breakdown[source] = breakdown.get(source, 0) + 1
-            except Exception:
-                pass
+        resp = requests.get(f"{QUEUE_API_URL}/breakdown", headers=HEADERS, timeout=15)
+        if resp.status_code == 200:
+            return resp.json().get("data", {})
     except Exception as e:
         print(f"Error getting queue breakdown: {e}")
-    finally:
-        conn.close()
-    return breakdown
-
-# Initialize DB on import
-init_db()
+    return {}

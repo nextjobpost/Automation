@@ -2790,7 +2790,6 @@ async def preload_website_jobs_into_seen():
                         semantic_hash = hashlib.md5(f"{title_str}::{company_str}".encode()).hexdigest()
                         if semantic_hash not in seen:
                             seen.add(semantic_hash)
-                            database.mark_job_seen(semantic_hash)
                             preloaded_count += 1
                             
                     # 2. Apply link hash
@@ -2799,7 +2798,6 @@ async def preload_website_jobs_into_seen():
                         apply_hash = hashlib.md5(apply_link.encode()).hexdigest()
                         if apply_hash not in seen:
                             seen.add(apply_hash)
-                            database.mark_job_seen(apply_hash)
                             preloaded_count += 1
                             
                     # 3. Source URL hash
@@ -2808,7 +2806,6 @@ async def preload_website_jobs_into_seen():
                         source_hash = hashlib.md5(source_url.encode()).hexdigest()
                         if source_hash not in seen:
                             seen.add(source_hash)
-                            database.mark_job_seen(source_hash)
                             preloaded_count += 1
                             
                 print(f"✅ Preloaded {preloaded_count} new hashes into local seen cache.")
