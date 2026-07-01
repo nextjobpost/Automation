@@ -22304,3 +22304,681 @@
 2026-07-01 18:40:01,759 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
 2026-07-01 18:40:01,759 - INFO - 
 ✅ All private job sources processed. Total Queued: 0/100
+2026-07-01 18:40:12,530 - INFO - ==================================================
+2026-07-01 18:40:12,530 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-07-01 18:40:12,530 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-07-01 18:40:12,530 - INFO - ==================================================
+2026-07-01 18:40:12,541 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-07-01 18:40:12,584 - INFO -    ✔ Preloaded 150 live jobs.
+2026-07-01 18:40:12,584 - INFO - 
+================================================
+2026-07-01 18:40:12,584 - INFO - 🌐 Scraping: LinkedIn Official
+2026-07-01 18:40:12,584 - INFO - ================================================
+2026-07-01 18:40:13,306 - INFO - Found 10 listings from LinkedIn Official.
+2026-07-01 18:40:13,372 - INFO -   🚀 [LinkedIn Official] Frontend Developers
+2026-07-01 18:40:14,386 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developers...')
+2026-07-01 18:40:15,955 - INFO -   🚀 [LinkedIn Official] Software Engineer - Front End
+2026-07-01 18:40:17,282 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer - Front End...')
+2026-07-01 18:40:18,852 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-07-01 18:40:19,772 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-07-01 18:40:21,358 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-07-01 18:40:22,454 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-07-01 18:40:24,023 - INFO -   🚀 [LinkedIn Official] UI Engineer (Outbound/Selfservice)
+2026-07-01 18:40:25,175 - INFO -   📥 Queued private job from LinkedIn Official: UI Engineer (Outbound/Selfservice)
+2026-07-01 18:40:26,892 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-01 18:40:27,929 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-07-01 18:40:31,066 - INFO -   🚀 [LinkedIn Official] Fronted Developer
+2026-07-01 18:40:31,969 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Fronted Developer...')
+2026-07-01 18:40:33,536 - INFO -   🚀 [LinkedIn Official] Javascript Developer - Remote Work | REF#296488
+2026-07-01 18:40:34,660 - INFO -   📥 Queued private job from LinkedIn Official: Javascript Developer - Remote Work | REF#296488
+2026-07-01 18:40:36,347 - INFO -   🚀 [LinkedIn Official] Javascript Developer - Remote Work | REF#296485
+2026-07-01 18:40:37,938 - INFO -   📥 Queued private job from LinkedIn Official: Javascript Developer - Remote Work | REF#296485
+2026-07-01 18:40:39,562 - INFO - ✅ LinkedIn Official: Queued 3 new private jobs.
+2026-07-01 18:40:39,562 - INFO - 
+================================================
+2026-07-01 18:40:39,562 - INFO - 🌐 Scraping: Adzuna API
+2026-07-01 18:40:39,562 - INFO - ================================================
+2026-07-01 18:40:39,562 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-07-01 18:40:39,562 - INFO - Found 0 listings from Adzuna API.
+2026-07-01 18:40:39,563 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-07-01 18:40:39,563 - INFO - 
+================================================
+2026-07-01 18:40:39,563 - INFO - 🌐 Scraping: Internshala
+2026-07-01 18:40:39,563 - INFO - ================================================
+2026-07-01 18:40:43,143 - INFO - Found 0 listings from Internshala.
+2026-07-01 18:40:43,143 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-07-01 18:40:43,144 - INFO - 
+================================================
+2026-07-01 18:40:43,144 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-07-01 18:40:43,144 - INFO - ================================================
+2026-07-01 18:40:43,507 - INFO - Found 15 listings from WeWorkRemotely.
+2026-07-01 18:41:06,883 - INFO - ✅ WeWorkRemotely: Queued 0 new private jobs.
+2026-07-01 18:41:06,883 - INFO - 
+================================================
+2026-07-01 18:41:06,883 - INFO - 🌐 Scraping: Freshersworld
+2026-07-01 18:41:06,883 - INFO - ================================================
+2026-07-01 18:41:22,593 - WARNING - Freshersworld fetch error: HTTPSConnectionPool(host='www.freshersworld.com', port=443): Read timed out. (read timeout=15)
+2026-07-01 18:41:23,537 - WARNING - Freshersworld 500: https://www.freshersworld.com/jobs/jobsearch/engineering-jobs-for-freshers
+2026-07-01 18:41:39,211 - WARNING - Freshersworld fetch error: HTTPSConnectionPool(host='www.freshersworld.com', port=443): Read timed out. (read timeout=15)
+2026-07-01 18:41:39,212 - INFO - Found 0 listings from Freshersworld.
+2026-07-01 18:41:39,212 - INFO - ✅ Freshersworld: Queued 0 new private jobs.
+2026-07-01 18:41:39,213 - INFO - 
+================================================
+2026-07-01 18:41:39,213 - INFO - 🌐 Scraping: WorkAtAStartup
+2026-07-01 18:41:39,214 - INFO - ================================================
+2026-07-01 18:41:40,145 - WARNING - WorkAtAStartup 404
+2026-07-01 18:41:40,147 - INFO - Found 0 listings from WorkAtAStartup.
+2026-07-01 18:41:40,147 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
+2026-07-01 18:41:40,147 - INFO - 
+✅ All private job sources processed. Total Queued: 3/100
+2026-07-01 18:41:50,799 - INFO - ==================================================
+2026-07-01 18:41:50,799 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-07-01 18:41:50,799 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-07-01 18:41:50,799 - INFO - ==================================================
+2026-07-01 18:41:50,808 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-07-01 18:41:50,834 - INFO -    ✔ Preloaded 150 live jobs.
+2026-07-01 18:41:50,834 - INFO - 
+================================================
+2026-07-01 18:41:50,834 - INFO - 🌐 Scraping: LinkedIn Official
+2026-07-01 18:41:50,834 - INFO - ================================================
+2026-07-01 18:41:51,493 - INFO - Found 8 listings from LinkedIn Official.
+2026-07-01 18:41:53,118 - INFO -   🚀 [LinkedIn Official] Web Developer
+2026-07-01 18:41:54,532 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Web Developer...')
+2026-07-01 18:41:56,091 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-07-01 18:41:57,234 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-07-01 18:41:58,798 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-07-01 18:42:00,177 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-07-01 18:42:01,737 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-07-01 18:42:02,782 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-07-01 18:42:04,345 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-07-01 18:42:05,691 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-07-01 18:42:10,339 - INFO - ✅ LinkedIn Official: Queued 0 new private jobs.
+2026-07-01 18:42:10,339 - INFO - 
+================================================
+2026-07-01 18:42:10,339 - INFO - 🌐 Scraping: Adzuna API
+2026-07-01 18:42:10,339 - INFO - ================================================
+2026-07-01 18:42:10,340 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-07-01 18:42:10,340 - INFO - Found 0 listings from Adzuna API.
+2026-07-01 18:42:10,340 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-07-01 18:42:10,340 - INFO - 
+================================================
+2026-07-01 18:42:10,340 - INFO - 🌐 Scraping: Internshala
+2026-07-01 18:42:10,340 - INFO - ================================================
+2026-07-01 18:42:13,607 - INFO - Found 0 listings from Internshala.
+2026-07-01 18:42:13,607 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-07-01 18:42:13,607 - INFO - 
+================================================
+2026-07-01 18:42:13,607 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-07-01 18:42:13,607 - INFO - ================================================
+2026-07-01 18:42:13,996 - INFO - Found 15 listings from WeWorkRemotely.
+2026-07-01 18:42:37,363 - INFO - ✅ WeWorkRemotely: Queued 0 new private jobs.
+2026-07-01 18:42:37,363 - INFO - 
+================================================
+2026-07-01 18:42:37,364 - INFO - 🌐 Scraping: Freshersworld
+2026-07-01 18:42:37,364 - INFO - ================================================
+2026-07-01 18:42:53,168 - WARNING - Freshersworld fetch error: HTTPSConnectionPool(host='www.freshersworld.com', port=443): Read timed out. (read timeout=15)
+2026-07-01 18:43:08,891 - WARNING - Freshersworld fetch error: HTTPSConnectionPool(host='www.freshersworld.com', port=443): Read timed out. (read timeout=15)
+2026-07-01 18:43:21,277 - INFO - Found 10 listings from Freshersworld.
+2026-07-01 18:43:21,322 - INFO -   🚀 [Freshersworld] Software Developer Jobs Opening In Kizzy Consulting Pvt Ltd At Panchku
+2026-07-01 18:43:24,791 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer Jobs Opening In Kizzy...')
+2026-07-01 18:43:26,369 - INFO -   🚀 [Freshersworld] Software Trainer Jobs Opening In Refinement Software Solutions Pvt Ltd
+2026-07-01 18:43:29,684 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Trainer Jobs Opening In Refinem...')
+2026-07-01 18:43:31,249 - INFO -   🚀 [Freshersworld] Sap Cloud Developer Trainee Jobs Opening In Crossover It Consulting Se
+2026-07-01 18:43:34,095 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sap Cloud Developer Trainee Jobs Opening...')
+2026-07-01 18:43:35,670 - INFO -   🚀 [Freshersworld] Placement Executive Jobs Opening In Shanti Business School Ahmedabad A
+2026-07-01 18:43:38,700 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Placement Executive Jobs Opening In Shan...')
+2026-07-01 18:43:40,266 - INFO -   🚀 [Freshersworld] Admin Executive Logistic Company Jobs Opening In Rkv Cargo Movers Pvt 
+2026-07-01 18:43:43,369 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Admin Executive Logistic Company Jobs Op...')
+2026-07-01 18:43:44,936 - INFO -   🚀 [Freshersworld] Admin And Hr Executive Jobs Opening In Ranvi Technologies At Ameerpet 
+2026-07-01 18:43:48,064 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Admin And Hr Executive Jobs Opening In R...')
+2026-07-01 18:43:49,628 - INFO -   🚀 [Freshersworld] Sap Ecc Jobs Opening In Client Of Teamlease At Delhi
+2026-07-01 18:43:52,624 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sap Ecc Jobs Opening In Client Of Teamle...')
+2026-07-01 18:43:54,188 - INFO -   🚀 [Freshersworld] Sap Ecc Jobs Opening In Company Name Confidential At Gurgaon
+2026-07-01 18:43:57,416 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sap Ecc Jobs Opening In Company Name Con...')
+2026-07-01 18:43:58,971 - INFO -   🚀 [Freshersworld] Full Stack Java Interns Jobs Opening In 33Abdcs3845C1Zn At Porur Chenn
+2026-07-01 18:44:02,032 - INFO -   📥 Queued private job from Freshersworld: Full Stack Java Interns Jobs Opening In 33Abdcs3845C1Zn At Porur Chennai
+2026-07-01 18:44:03,730 - INFO -   🚀 [Freshersworld] Technical Training Support Jobs Opening In Techciti Technologies At Ba
+2026-07-01 18:44:06,825 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Training Support Jobs Opening ...')
+2026-07-01 18:44:08,329 - INFO - ✅ Freshersworld: Queued 1 new private jobs.
+2026-07-01 18:44:08,329 - INFO - 
+================================================
+2026-07-01 18:44:08,329 - INFO - 🌐 Scraping: WorkAtAStartup
+2026-07-01 18:44:08,329 - INFO - ================================================
+2026-07-01 18:44:09,077 - WARNING - WorkAtAStartup 404
+2026-07-01 18:44:09,080 - INFO - Found 0 listings from WorkAtAStartup.
+2026-07-01 18:44:09,080 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
+2026-07-01 18:44:09,080 - INFO - 
+✅ All private job sources processed. Total Queued: 1/100
+2026-07-01 18:44:19,777 - INFO - ==================================================
+2026-07-01 18:44:19,777 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-07-01 18:44:19,777 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-07-01 18:44:19,777 - INFO - ==================================================
+2026-07-01 18:44:19,787 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-07-01 18:44:20,034 - INFO -    ✔ Preloaded 150 live jobs.
+2026-07-01 18:44:20,034 - INFO - 
+================================================
+2026-07-01 18:44:20,034 - INFO - 🌐 Scraping: LinkedIn Official
+2026-07-01 18:44:20,034 - INFO - ================================================
+2026-07-01 18:44:20,704 - INFO - Found 10 listings from LinkedIn Official.
+2026-07-01 18:44:20,740 - INFO -   🚀 [LinkedIn Official] DevOps Engineer
+2026-07-01 18:44:21,771 - INFO -   📥 Queued private job from LinkedIn Official: DevOps Engineer
+2026-07-01 18:44:23,423 - INFO -   🚀 [LinkedIn Official] DevOps Engineer
+2026-07-01 18:44:24,315 - INFO -   ⏭️ Skipping: Not an internship or remote role ('DevOps Engineer...')
+2026-07-01 18:44:25,903 - INFO -   🚀 [LinkedIn Official] DevOps Engineer
+2026-07-01 18:44:26,844 - INFO -   ⏭️ Skipping: Not an internship or remote role ('DevOps Engineer...')
+2026-07-01 18:44:28,393 - INFO -   🚀 [LinkedIn Official] DevOps Engineer
+2026-07-01 18:44:29,547 - INFO -   ⏭️ Skipping: Not an internship or remote role ('DevOps Engineer...')
+2026-07-01 18:44:31,111 - INFO -   🚀 [LinkedIn Official] DevOps Engineer
+2026-07-01 18:44:32,653 - INFO -   📥 Queued private job from LinkedIn Official: DevOps Engineer
+2026-07-01 18:44:34,314 - INFO -   🚀 [LinkedIn Official] DevOps Engineer
+2026-07-01 18:44:35,776 - INFO -   📥 Queued private job from LinkedIn Official: DevOps Engineer
+2026-07-01 18:44:39,068 - INFO -   🚀 [LinkedIn Official] DevOps Engineer
+2026-07-01 18:44:40,602 - INFO -   ⏭️ Skipping: Not an internship or remote role ('DevOps Engineer...')
+2026-07-01 18:44:42,168 - INFO -   🚀 [LinkedIn Official] DevOps Engineer
+2026-07-01 18:44:43,691 - INFO -   ⏭️ Skipping: Not an internship or remote role ('DevOps Engineer...')
+2026-07-01 18:44:45,233 - INFO -   🚀 [LinkedIn Official] DevOps Engineer
+2026-07-01 18:44:46,342 - INFO -   📥 Queued private job from LinkedIn Official: DevOps Engineer
+2026-07-01 18:44:47,958 - INFO - ✅ LinkedIn Official: Queued 4 new private jobs.
+2026-07-01 18:44:47,958 - INFO - 
+================================================
+2026-07-01 18:44:47,958 - INFO - 🌐 Scraping: Adzuna API
+2026-07-01 18:44:47,958 - INFO - ================================================
+2026-07-01 18:44:47,958 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-07-01 18:44:47,958 - INFO - Found 0 listings from Adzuna API.
+2026-07-01 18:44:47,958 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-07-01 18:44:47,958 - INFO - 
+================================================
+2026-07-01 18:44:47,958 - INFO - 🌐 Scraping: Internshala
+2026-07-01 18:44:47,958 - INFO - ================================================
+2026-07-01 18:44:51,496 - INFO - Found 0 listings from Internshala.
+2026-07-01 18:44:51,496 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-07-01 18:44:51,497 - INFO - 
+================================================
+2026-07-01 18:44:51,497 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-07-01 18:44:51,497 - INFO - ================================================
+2026-07-01 18:44:51,886 - INFO - Found 15 listings from WeWorkRemotely.
+2026-07-01 18:45:15,314 - INFO - ✅ WeWorkRemotely: Queued 0 new private jobs.
+2026-07-01 18:45:15,315 - INFO - 
+================================================
+2026-07-01 18:45:15,315 - INFO - 🌐 Scraping: Freshersworld
+2026-07-01 18:45:15,316 - INFO - ================================================
+2026-07-01 18:45:18,817 - INFO - Found 10 listings from Freshersworld.
+2026-07-01 18:45:18,862 - INFO -   🚀 [Freshersworld] Hardware And Networks Other In Valsad For Kyndryl Solutions Private Li
+2026-07-01 18:45:21,597 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Hardware And Networks Other In Valsad Fo...')
+2026-07-01 18:45:24,722 - INFO -   🚀 [Freshersworld] Desktop Engineer In Bengaluru For Wipro Limited
+2026-07-01 18:45:27,229 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Bengaluru For Wipro ...')
+2026-07-01 18:45:28,781 - INFO -   🚀 [Freshersworld] It Executive In Bharuch For Kyndryl Solutions Private Limited
+2026-07-01 18:45:31,765 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Executive In Bharuch For Kyndryl Solu...')
+2026-07-01 18:45:33,314 - INFO -   🚀 [Freshersworld] Business Analyst In Ahmedabad For Adani Green Energy Limited
+2026-07-01 18:45:36,139 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Analyst In Ahmedabad For Adani ...')
+2026-07-01 18:45:37,701 - INFO -   🚀 [Freshersworld] It Project Management Jobs Opening In Magiva Technologies Private Limi
+2026-07-01 18:45:40,396 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Project Management Jobs Opening In Ma...')
+2026-07-01 18:45:41,968 - INFO -   🚀 [Freshersworld] Technical Support Voice  Blended In Hyderabad For Goldman Sachs Servic
+2026-07-01 18:45:44,537 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Support Voice  Blended In Hyde...')
+2026-07-01 18:45:47,636 - INFO -   🚀 [Freshersworld] It Asset Management In Gautam Buddha Nagar For For A Client Of Teamlea
+2026-07-01 18:45:50,446 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Asset Management In Gautam Buddha Nag...')
+2026-07-01 18:45:51,996 - INFO -   🚀 [Freshersworld] Desktop Engineer In Gautam Buddha Nagar For For A Client Of Teamlease 
+2026-07-01 18:45:54,477 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Gautam Buddha Nagar ...')
+2026-07-01 18:45:55,987 - INFO - ✅ Freshersworld: Queued 0 new private jobs.
+2026-07-01 18:45:55,987 - INFO - 
+================================================
+2026-07-01 18:45:55,988 - INFO - 🌐 Scraping: WorkAtAStartup
+2026-07-01 18:45:55,988 - INFO - ================================================
+2026-07-01 18:45:56,927 - WARNING - WorkAtAStartup 404
+2026-07-01 18:45:56,929 - INFO - Found 0 listings from WorkAtAStartup.
+2026-07-01 18:45:56,929 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
+2026-07-01 18:45:56,929 - INFO - 
+✅ All private job sources processed. Total Queued: 4/100
+2026-07-01 18:46:07,486 - INFO - ==================================================
+2026-07-01 18:46:07,486 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-07-01 18:46:07,486 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-07-01 18:46:07,486 - INFO - ==================================================
+2026-07-01 18:46:07,495 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-07-01 18:46:07,533 - INFO -    ✔ Preloaded 150 live jobs.
+2026-07-01 18:46:07,533 - INFO - 
+================================================
+2026-07-01 18:46:07,533 - INFO - 🌐 Scraping: LinkedIn Official
+2026-07-01 18:46:07,533 - INFO - ================================================
+2026-07-01 18:46:08,202 - INFO - Found 10 listings from LinkedIn Official.
+2026-07-01 18:46:08,235 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-01 18:46:09,284 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-07-01 18:46:10,863 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-01 18:46:11,956 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-07-01 18:46:13,506 - INFO -   🚀 [LinkedIn Official] Software Developer Job Vacancy in Kohima Nagaland
+2026-07-01 18:46:14,367 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer Job Vacancy in Kohima...')
+2026-07-01 18:46:15,924 - INFO -   🚀 [LinkedIn Official] Software Engineer - 3
+2026-07-01 18:46:17,282 - INFO -   ⚠️ Already on website: 'Software Engineer - 3'. Skipping.
+2026-07-01 18:46:18,957 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-01 18:46:20,284 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-07-01 18:46:21,845 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-01 18:46:22,830 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-07-01 18:46:24,386 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-01 18:46:25,736 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-07-01 18:46:27,301 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-01 18:46:28,429 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-07-01 18:46:29,994 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-01 18:46:31,383 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-07-01 18:46:32,930 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-01 18:46:33,987 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-07-01 18:46:35,493 - INFO - ✅ LinkedIn Official: Queued 0 new private jobs.
+2026-07-01 18:46:35,494 - INFO - 
+================================================
+2026-07-01 18:46:35,494 - INFO - 🌐 Scraping: Adzuna API
+2026-07-01 18:46:35,494 - INFO - ================================================
+2026-07-01 18:46:35,495 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-07-01 18:46:35,495 - INFO - Found 0 listings from Adzuna API.
+2026-07-01 18:46:35,495 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-07-01 18:46:35,495 - INFO - 
+================================================
+2026-07-01 18:46:35,495 - INFO - 🌐 Scraping: Internshala
+2026-07-01 18:46:35,495 - INFO - ================================================
+2026-07-01 18:46:40,143 - INFO - Found 0 listings from Internshala.
+2026-07-01 18:46:40,144 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-07-01 18:46:40,144 - INFO - 
+================================================
+2026-07-01 18:46:40,144 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-07-01 18:46:40,144 - INFO - ================================================
+2026-07-01 18:46:40,530 - INFO - Found 15 listings from WeWorkRemotely.
+2026-07-01 18:47:03,840 - INFO - ✅ WeWorkRemotely: Queued 0 new private jobs.
+2026-07-01 18:47:03,841 - INFO - 
+================================================
+2026-07-01 18:47:03,841 - INFO - 🌐 Scraping: Freshersworld
+2026-07-01 18:47:03,842 - INFO - ================================================
+2026-07-01 18:47:08,229 - INFO - Found 10 listings from Freshersworld.
+2026-07-01 18:47:08,278 - INFO -   🚀 [Freshersworld] Hardware And Networks Other In Valsad For Kyndryl Solutions Private Li
+2026-07-01 18:47:11,307 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Hardware And Networks Other In Valsad Fo...')
+2026-07-01 18:47:14,441 - INFO -   🚀 [Freshersworld] Desktop Engineer In Bengaluru For Wipro Limited
+2026-07-01 18:47:18,819 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Bengaluru For Wipro ...')
+2026-07-01 18:47:20,353 - INFO -   🚀 [Freshersworld] It Project Management Jobs Opening In Magiva Technologies Private Limi
+2026-07-01 18:47:27,191 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Project Management Jobs Opening In Ma...')
+2026-07-01 18:47:28,750 - INFO -   🚀 [Freshersworld] It Executive In Bharuch For Kyndryl Solutions Private Limited
+2026-07-01 18:47:53,220 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Executive In Bharuch For Kyndryl Solu...')
+2026-07-01 18:47:54,775 - INFO -   🚀 [Freshersworld] Business Analyst In Ahmedabad For Adani Green Energy Limited
+2026-07-01 18:47:55,762 - WARNING -   ⚠️ HTTP 500: https://www.freshersworld.com/jobs/business-analyst-in-ahmedabad-for-adani-green-energy-limited-2865509
+2026-07-01 18:47:57,301 - INFO -   🚀 [Freshersworld] Technical Support Voice  Blended In Hyderabad For Goldman Sachs Servic
+2026-07-01 18:47:58,252 - WARNING -   ⚠️ HTTP 500: https://www.freshersworld.com/jobs/technical-support-voice--blended-in-hyderabad-for-goldman-sachs-services-pvt-ltd-2909923
+2026-07-01 18:48:01,345 - INFO -   🚀 [Freshersworld] Technical Support Non Voice In Gautam Buddha Nagar For Kyndryl Solutio
+2026-07-01 18:48:22,019 - WARNING -   ⚠️ Fetch error: HTTPSConnectionPool(host='www.freshersworld.com', port=443): Read timed out. (read timeout=20)
+2026-07-01 18:48:23,563 - INFO -   🚀 [Freshersworld] It Asset Management In Gautam Buddha Nagar For For A Client Of Teamlea
+2026-07-01 18:48:24,497 - WARNING -   ⚠️ HTTP 500: https://www.freshersworld.com/jobs/it-asset-management-in-gautam-buddha-nagar-for-for-a-client-of-teamlease-digital-2913996
+2026-07-01 18:48:26,014 - INFO - ✅ Freshersworld: Queued 0 new private jobs.
+2026-07-01 18:48:26,014 - INFO - 
+================================================
+2026-07-01 18:48:26,014 - INFO - 🌐 Scraping: WorkAtAStartup
+2026-07-01 18:48:26,014 - INFO - ================================================
+2026-07-01 18:48:27,158 - WARNING - WorkAtAStartup 404
+2026-07-01 18:48:27,159 - INFO - Found 0 listings from WorkAtAStartup.
+2026-07-01 18:48:27,159 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
+2026-07-01 18:48:27,159 - INFO - 
+✅ All private job sources processed. Total Queued: 0/100
+2026-07-01 18:48:37,833 - INFO - ==================================================
+2026-07-01 18:48:37,833 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-07-01 18:48:37,833 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-07-01 18:48:37,833 - INFO - ==================================================
+2026-07-01 18:48:37,863 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-07-01 18:48:37,892 - INFO -    ✔ Preloaded 150 live jobs.
+2026-07-01 18:48:37,893 - INFO - 
+================================================
+2026-07-01 18:48:37,893 - INFO - 🌐 Scraping: LinkedIn Official
+2026-07-01 18:48:37,893 - INFO - ================================================
+2026-07-01 18:48:38,510 - INFO - Found 10 listings from LinkedIn Official.
+2026-07-01 18:48:40,105 - INFO -   🚀 [LinkedIn Official] React Developer
+2026-07-01 18:48:41,148 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React Developer...')
+2026-07-01 18:48:42,720 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-01 18:48:44,225 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-07-01 18:48:45,788 - INFO -   🚀 [LinkedIn Official] React.js Developer
+2026-07-01 18:48:47,188 - INFO -   ⏭️ Skipping: Not an internship or remote role ('React.js Developer...')
+2026-07-01 18:48:50,307 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-07-01 18:48:51,786 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-07-01 18:48:53,329 - INFO -   🚀 [LinkedIn Official] REACT JS  DEVELOPER
+2026-07-01 18:48:54,640 - INFO -   ⏭️ Skipping: Not an internship or remote role ('REACT JS  DEVELOPER...')
+2026-07-01 18:48:55,048 - INFO - ========================================
+2026-07-01 18:48:55,049 - INFO - 🏛️ Scraper Extension for Additional Sites 🏛️
+2026-07-01 18:48:55,049 - INFO - ========================================
+2026-07-01 18:48:55,058 - INFO - 
+========================================
+🌐 Scraping Site: Sarkari Result (https://www.sarkariresult.com/latestjob/)
+========================================
+2026-07-01 18:48:55,766 - INFO - Found 1712 potential job listings.
+2026-07-01 18:48:55,766 - INFO - Processing the first 40 latest listings for updates.
+2026-07-01 18:48:55,845 - INFO - 
+🚀 New Listing Found: IBPS Specialist Officer 16th Online Form 2026 | Last Date : 21/07/2026
+2026-07-01 18:48:55,845 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/ibps-so-16th-june26/
+2026-07-01 18:48:56,198 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-01 18:48:56,269 - INFO - 📥 Queued government job from Sarkari Result: IBPS Specialist Officer 16th Online Form 2026 | Last Date : 21/07/2026
+2026-07-01 18:48:56,434 - INFO - 
+🚀 New Listing Found: IBPS Probationary Officer PO / MT 16th Online Form 2026 | Last Date : 21/07/2026
+2026-07-01 18:48:56,435 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/ibps-po-xvi-mt-june26/
+2026-07-01 18:48:56,835 - INFO - 📥 Queued government job from Sarkari Result: IBPS Probationary Officer PO / MT 16th Online Form 2026 | Last Date : 21/07/2026
+2026-07-01 18:48:57,016 - INFO - 
+🚀 New Listing Found: UPSSSC Forest Guard / Wild Life Guard Online Form 2026 | Last Date : 20/07/2026
+2026-07-01 18:48:57,016 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/upsssc/upsssc-forest-guard-12-exam-2026/
+2026-07-01 18:48:57,141 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Custom Software Engineer...')
+2026-07-01 18:48:57,373 - INFO - 📥 Queued government job from Sarkari Result: UPSSSC Forest Guard / Wild Life Guard Online Form 2026 | Last Date : 20/07/2026
+2026-07-01 18:48:57,529 - INFO - 
+🚀 New Listing Found: Railway RRB Technician CEN 02/2026 Online Form 2026 for 6557Post | Last Date : 29/07/2026
+2026-07-01 18:48:57,529 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/railway/rrb-technician-cen-02-2026/
+2026-07-01 18:48:57,899 - INFO - 📥 Queued government job from Sarkari Result: Railway RRB Technician CEN 02/2026 Online Form 2026 for 6557Post | Last Date : 29/07/2026
+2026-07-01 18:48:58,054 - INFO - 
+🚀 New Listing Found: Bank of India Credit Officers Online Form 2026 for 779
+2026-07-01 18:48:58,055 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/bank/boi-credit-officer-jun26/
+2026-07-01 18:48:58,432 - INFO - 📥 Queued government job from Sarkari Result: Bank of India Credit Officers Online Form 2026 for 779
+2026-07-01 18:48:58,578 - INFO - 
+🚀 New Listing Found: NBEMS Group A, B, C Various Post Online Form 2026 | Last Date : 31/07/2026
+2026-07-01 18:48:58,579 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/nbe-various-post-june26/
+2026-07-01 18:48:58,685 - INFO -   🚀 [LinkedIn Official] ReactJs Developers
+2026-07-01 18:48:58,985 - INFO - 📥 Queued government job from Sarkari Result: NBEMS Group A, B, C Various Post Online Form 2026 | Last Date : 31/07/2026
+2026-07-01 18:48:59,130 - INFO - 
+🚀 New Listing Found: NTPC Assistant Chemist Trainee Online Form 2026 | Last Date : 10/07/2026
+2026-07-01 18:48:59,131 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/ntpc-act-june26/
+2026-07-01 18:48:59,479 - INFO - 📥 Queued government job from Sarkari Result: NTPC Assistant Chemist Trainee Online Form 2026 | Last Date : 10/07/2026
+2026-07-01 18:48:59,600 - INFO - 
+🚀 New Listing Found: UP Siddharth Nagar ECCE Educator Online Form 2026 | Last Date : 30/06/2026
+2026-07-01 18:48:59,600 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/up-ecce-educator-june26/
+2026-07-01 18:48:59,777 - INFO - ⚠️ Skipping expired job: 'UP Siddharth Nagar ECCE Educator Online Form 2026 | Last Date : 30/06/2026'. Last date '2026-06-30' is in the past (today is 2026-07-01).
+2026-07-01 18:48:59,787 - INFO -   ⏭️ Skipping: Not an internship or remote role ('ReactJs Developers...')
+2026-07-01 18:48:59,851 - INFO - 
+🚀 New Listing Found: UP UPSSSC Lower PCS Correction / Edit Form 2026
+2026-07-01 18:48:59,851 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/upsssc/upsssc-lower-07-exam-2026/
+2026-07-01 18:49:00,102 - INFO - ⚠️ Skipping expired job: 'UP UPSSSC Lower PCS Correction / Edit Form 2026'. Last date '2026-06-25' is in the past (today is 2026-07-01).
+2026-07-01 18:49:00,200 - INFO - 
+🚀 New Listing Found: UP Anganwadi Helper Online Form 2026 | Last Date : District Wise
+2026-07-01 18:49:00,201 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/up-anganwadi-helper-june26/
+2026-07-01 18:49:00,382 - INFO - ⚠️ Skipping expired job: 'UP Anganwadi Helper Online Form 2026 | Last Date : District Wise'. Last date '2026-06-30' is in the past (today is 2026-07-01).
+2026-07-01 18:49:00,477 - INFO - 
+🚀 New Listing Found: UPSRTC Varanasi, Jaunpur Ghazipur, Chandauli, Sonbhadra, Sant Ravidas Nagar Conductor Online Form 2026
+2026-07-01 18:49:00,477 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/upsrtc-conductor-jun26/
+2026-07-01 18:49:00,780 - INFO - 📥 Queued government job from Sarkari Result: UPSRTC Varanasi, Jaunpur Ghazipur, Chandauli, Sonbhadra, Sant Ravidas Nagar Conductor Online Form 2026
+2026-07-01 18:49:00,943 - INFO - 
+🚀 New Listing Found: UP Bijnor Educator Online Form 2026 | बेसिक शिक्षा विभाग
+2026-07-01 18:49:00,944 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/up-bijnor-educator-jun26/
+2026-07-01 18:49:01,301 - INFO - 📥 Queued government job from Sarkari Result: UP Bijnor Educator Online Form 2026 | बेसिक शिक्षा विभाग
+2026-07-01 18:49:01,329 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-07-01 18:49:01,463 - INFO - 
+🚀 New Listing Found: UP Maharajganj ECCE Educator Online Form 2026 | बेसिक शिक्षा विभाग
+2026-07-01 18:49:01,463 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/ecece-educator-maharajganj-june26/
+2026-07-01 18:49:01,800 - INFO - 📥 Queued government job from Sarkari Result: UP Maharajganj ECCE Educator Online Form 2026 | बेसिक शिक्षा विभाग
+2026-07-01 18:49:01,955 - INFO - 
+🚀 New Listing Found: Naini Aerospace NAEL Operator, Junior Assistant Online Form 2026 | Last Date : 17/07/2026
+2026-07-01 18:49:01,956 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/nael-aerospace-june26/
+2026-07-01 18:49:02,352 - INFO - 📥 Queued government job from Sarkari Result: Naini Aerospace NAEL Operator, Junior Assistant Online Form 2026 | Last Date : 17/07/2026
+2026-07-01 18:49:02,398 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Frontend Developer...')
+2026-07-01 18:49:02,494 - INFO - 
+🚀 New Listing Found: ISRO ISTRAC Various Post Online Form 2026 | Last Date : 20/07/2026
+2026-07-01 18:49:02,494 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/isro-istrac-various-post-june26/
+2026-07-01 18:49:02,851 - INFO - 📥 Queued government job from Sarkari Result: ISRO ISTRAC Various Post Online Form 2026 | Last Date : 20/07/2026
+2026-07-01 18:49:03,009 - INFO - 
+🚀 New Listing Found: PM Shri School Navodaya Vidyalaya Prayagraj Recruitment 2026
+2026-07-01 18:49:03,009 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/pm-shri-school-jun26/
+2026-07-01 18:49:03,178 - INFO - ⚠️ Skipping expired job: 'PM Shri School Navodaya Vidyalaya Prayagraj Recruitment 2026'. Last date '2026-06-30' is in the past (today is 2026-07-01).
+2026-07-01 18:49:03,291 - INFO - 
+🚀 New Listing Found: BPSSC Bihar Police Company Commander Online Form 2026 | Last Date : 30/07/2026
+2026-07-01 18:49:03,292 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/bpssc-company-commander-08-2026/
+2026-07-01 18:49:03,634 - INFO - 📥 Queued government job from Sarkari Result: BPSSC Bihar Police Company Commander Online Form 2026 | Last Date : 30/07/2026
+2026-07-01 18:49:03,769 - INFO - 
+🚀 New Listing Found: Police Modern School Prayagraj TGT / PGT Recruitment 2026
+2026-07-01 18:49:03,769 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/police-modern-school-prayagraj-2026/
+2026-07-01 18:49:03,905 - INFO - ✅ LinkedIn Official: Queued 0 new private jobs.
+2026-07-01 18:49:03,905 - INFO - 
+================================================
+2026-07-01 18:49:03,906 - INFO - 🌐 Scraping: Adzuna API
+2026-07-01 18:49:03,906 - INFO - ================================================
+2026-07-01 18:49:03,906 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-07-01 18:49:03,907 - INFO - Found 0 listings from Adzuna API.
+2026-07-01 18:49:03,907 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-07-01 18:49:03,907 - INFO - 
+================================================
+2026-07-01 18:49:03,907 - INFO - 🌐 Scraping: Internshala
+2026-07-01 18:49:03,908 - INFO - ================================================
+2026-07-01 18:49:03,964 - INFO - ⚠️ Skipping expired job: 'Police Modern School Prayagraj TGT / PGT Recruitment 2026'. Last date '2026-06-29' is in the past (today is 2026-07-01).
+2026-07-01 18:49:04,045 - INFO - 
+🚀 New Listing Found: UP Bijnor, Kanpur Nagar & Lalitpur Anganwadi Worker Bharti Online Form 2026
+2026-07-01 18:49:04,045 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/up-anganwadi-worker/
+2026-07-01 18:49:04,258 - INFO - ⚠️ Skipping expired job: 'UP Bijnor, Kanpur Nagar & Lalitpur Anganwadi Worker Bharti Online Form 2026'. Last date '2026-06-27' is in the past (today is 2026-07-01).
+2026-07-01 18:49:04,328 - INFO - 
+🚀 New Listing Found: UPPSC Pre 2026 Online Form | Last Date : 27/07/2026
+2026-07-01 18:49:04,328 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/uppsc-2026-pre-exam/
+2026-07-01 18:49:04,673 - INFO - 📥 Queued government job from Sarkari Result: UPPSC Pre 2026 Online Form | Last Date : 27/07/2026
+2026-07-01 18:49:04,807 - INFO - 
+🚀 New Listing Found: Rajasthan RVUNL Junior Engineer & Other Post Online Form 2026
+2026-07-01 18:49:04,807 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/rvunl-june26/
+2026-07-01 18:49:04,979 - INFO - ⚠️ Skipping expired job: 'Rajasthan RVUNL Junior Engineer & Other Post Online Form 2026'. Last date '2026-06-25' is in the past (today is 2026-07-01).
+2026-07-01 18:49:05,075 - INFO - 
+🚀 New Listing Found: Jharkhand JHTET 2026 Online Form | Last Date : 20/07/2026
+2026-07-01 18:49:05,075 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/jac-jhtet-2026/
+2026-07-01 18:49:05,466 - INFO - 📥 Queued government job from Sarkari Result: Jharkhand JHTET 2026 Online Form | Last Date : 20/07/2026
+2026-07-01 18:49:05,592 - INFO - 
+🚀 New Listing Found: Kasturba Gandhi Balika Vidyalaya Varanasi Recruitment 2026 | Last Date : 10/07/2026
+2026-07-01 18:49:05,592 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/kgbv-varanasi-june26/
+2026-07-01 18:49:05,947 - INFO - 📥 Queued government job from Sarkari Result: Kasturba Gandhi Balika Vidyalaya Varanasi Recruitment 2026 | Last Date : 10/07/2026
+2026-07-01 18:49:06,071 - INFO - 
+🚀 New Listing Found: Indian Navy SSC Officers June 2027 AT27 Online Form 2026
+2026-07-01 18:49:06,072 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/indian-navy-ssc-june2027-at27/
+2026-07-01 18:49:06,452 - INFO - 📥 Queued government job from Sarkari Result: Indian Navy SSC Officers June 2027 AT27 Online Form 2026
+2026-07-01 18:49:06,616 - INFO - 
+🚀 New Listing Found: UP Gautam Buddh Nagar ECCE Educator Online Form 2026 | Last Date : 27/06/2026
+2026-07-01 18:49:06,617 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/up-ecce-educator-noida-june26/
+2026-07-01 18:49:06,804 - INFO - ⚠️ Skipping expired job: 'UP Gautam Buddh Nagar ECCE Educator Online Form 2026 | Last Date : 27/06/2026'. Last date '2026-06-27' is in the past (today is 2026-07-01).
+2026-07-01 18:49:06,882 - INFO - 
+🚀 New Listing Found: Rajasthan RSSB 10+2 Senior Secondary CET Online Form 2026 | Last Date : 23/07/2026
+2026-07-01 18:49:06,882 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/rssb-cet-june26/
+2026-07-01 18:49:07,054 - INFO - Found 0 listings from Internshala.
+2026-07-01 18:49:07,054 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-07-01 18:49:07,054 - INFO - 
+================================================
+2026-07-01 18:49:07,055 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-07-01 18:49:07,055 - INFO - ================================================
+2026-07-01 18:49:07,231 - INFO - 📥 Queued government job from Sarkari Result: Rajasthan RSSB 10+2 Senior Secondary CET Online Form 2026 | Last Date : 23/07/2026
+2026-07-01 18:49:07,365 - INFO - 
+🚀 New Listing Found: UP Praygaraj ECECE Educator Online Form 2026 | Last Date : 26/06/2026
+2026-07-01 18:49:07,365 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/ecece-educator-prayagraj-june26/
+2026-07-01 18:49:07,449 - INFO - Found 15 listings from WeWorkRemotely.
+2026-07-01 18:49:07,555 - INFO - ⚠️ Skipping expired job: 'UP Praygaraj ECECE Educator Online Form 2026 | Last Date : 26/06/2026'. Last date '2026-06-26' is in the past (today is 2026-07-01).
+2026-07-01 18:49:07,640 - INFO - 
+🚀 New Listing Found: HSSC Group C CET Phase II Online Form 2026 | Last Date : 30/06/2026
+2026-07-01 18:49:07,640 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/hssc-group-c-phase-ii-june26/
+2026-07-01 18:49:07,841 - INFO - ⚠️ Skipping expired job: 'HSSC Group C CET Phase II Online Form 2026 | Last Date : 30/06/2026'. Last date '2026-06-30' is in the past (today is 2026-07-01).
+2026-07-01 18:49:07,957 - INFO - 
+🚀 New Listing Found: SSC CGL Online Form 2026  Re Open | Last Date : 25/06/2026
+2026-07-01 18:49:07,957 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/ssc/ssc-cgl-2026/
+2026-07-01 18:49:08,178 - INFO - ⚠️ Skipping expired job: 'SSC CGL Online Form 2026  Re Open | Last Date : 25/06/2026'. Last date '2026-06-25' is in the past (today is 2026-07-01).
+2026-07-01 18:49:08,273 - INFO - 
+🚀 New Listing Found: UPPSC LT Grade Assistant Teacher Mains Online Form 2026 | Last Date : 07/07/2026
+2026-07-01 18:49:08,274 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2025/uppsc-lt-grade-teacher-2025/
+2026-07-01 18:49:08,487 - INFO - ⚠️ Skipping expired job: 'UPPSC LT Grade Assistant Teacher Mains Online Form 2026 | Last Date : 07/07/2026'. Last date '2025-08-28' is in the past (today is 2026-07-01).
+2026-07-01 18:49:08,559 - INFO - 
+🚀 New Listing Found: Railway RRB Section Controller CEN 03/2026 Online Form | Last Date : 14/08/2026
+2026-07-01 18:49:08,559 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/rrb-section-controller-03-2026/
+2026-07-01 18:49:08,918 - INFO - 📥 Queued government job from Sarkari Result: Railway RRB Section Controller CEN 03/2026 Online Form | Last Date : 14/08/2026
+2026-07-01 18:49:09,088 - INFO - 
+🚀 New Listing Found: CSIR Assistant Section Officer ASO Online Form 2026 | Last Date : 13/07/2026
+2026-07-01 18:49:09,089 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/csir-aso-june26/
+2026-07-01 18:49:09,528 - INFO - 📥 Queued government job from Sarkari Result: CSIR Assistant Section Officer ASO Online Form 2026 | Last Date : 13/07/2026
+2026-07-01 18:49:09,658 - INFO - 
+🚀 New Listing Found: New India Assurance NIACL Apprentices Online Form 2026 | Last Date : 06/07/2026
+2026-07-01 18:49:09,658 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/niacl-apprentices-june26/
+2026-07-01 18:49:10,085 - INFO - 📥 Queued government job from Sarkari Result: New India Assurance NIACL Apprentices Online Form 2026 | Last Date : 06/07/2026
+2026-07-01 18:49:10,213 - INFO - 
+🚀 New Listing Found: Central Bank of India Apprentice Online Form 2026
+2026-07-01 18:49:10,214 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/cbi-apprentice-june-2026/
+2026-07-01 18:49:10,437 - INFO - ⚠️ Skipping expired job: 'Central Bank of India Apprentice Online Form 2026'. Last date '2026-06-28' is in the past (today is 2026-07-01).
+2026-07-01 18:49:10,533 - INFO - 
+🚀 New Listing Found: CGPSC Assistant District Public Prosecution Officer (ADPPO) Online Form 2026 Last Date : 21/07/2026
+2026-07-01 18:49:10,534 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/cgpsc-adpo-june-2026/
+2026-07-01 18:49:10,901 - INFO - 📥 Queued government job from Sarkari Result: CGPSC Assistant District Public Prosecution Officer (ADPPO) Online Form 2026 Last Date : 21/07/2026
+2026-07-01 18:49:11,017 - INFO - 
+🚀 New Listing Found: NTA CSIR UGC NET Correction / Edit Form June 2026
+2026-07-01 18:49:11,017 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/nta-csir-net-june2026/
+2026-07-01 18:49:11,252 - INFO - ⚠️ Skipping expired job: 'NTA CSIR UGC NET Correction / Edit Form June 2026'. Last date '2026-06-19' is in the past (today is 2026-07-01).
+2026-07-01 18:49:11,345 - INFO - 
+🚀 New Listing Found: UPSRTC Lalitpur, Jhansi, Jalaun Conductor Online Form 2026 | Last Date 24/06/2026
+2026-07-01 18:49:11,345 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/upsrtc-conductor-june26/
+2026-07-01 18:49:11,561 - INFO - ⚠️ Skipping expired job: 'UPSRTC Lalitpur, Jhansi, Jalaun Conductor Online Form 2026 | Last Date 24/06/2026'. Last date '2026-06-24' is in the past (today is 2026-07-01).
+2026-07-01 18:49:11,651 - INFO - 
+🚀 New Listing Found: Kasturba Gandhi Balika Vidyalaya Sultanpur Various Post Recruitment 2026
+2026-07-01 18:49:11,652 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/kgbv-sultanpur-june26/
+2026-07-01 18:49:12,032 - INFO - 📥 Queued government job from Sarkari Result: Kasturba Gandhi Balika Vidyalaya Sultanpur Various Post Recruitment 2026
+2026-07-01 18:49:12,177 - INFO - 
+🚀 New Listing Found: Kasturba Gandhi Balika Vidyalaya Chitrakoot Various Post Recruitment 2026
+2026-07-01 18:49:12,177 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/kasturba-gandhi-chitrakoot-june26/
+2026-07-01 18:49:12,565 - INFO - 📥 Queued government job from Sarkari Result: Kasturba Gandhi Balika Vidyalaya Chitrakoot Various Post Recruitment 2026
+2026-07-01 18:49:12,720 - INFO - 
+🚀 New Listing Found: Kasturba Gandhi Balika Vidyalaya Ayodhya Various Post Recruitment 2026
+2026-07-01 18:49:12,720 - INFO - 🔗 Detail URL: https://www.sarkariresult.com/2026/kasturba-gandhi-ayodhya-june26/
+2026-07-01 18:49:13,156 - INFO - 📥 Queued government job from Sarkari Result: Kasturba Gandhi Balika Vidyalaya Ayodhya Various Post Recruitment 2026
+2026-07-01 18:49:13,237 - INFO - Finished scraping Sarkari Result. Queued 25 new job listings.
+2026-07-01 18:49:13,243 - INFO - 
+========================================
+🌐 Scraping Site: FreeJobAlert (https://www.freejobalert.com/)
+========================================
+2026-07-01 18:49:16,886 - INFO - Found 208 potential job listings.
+2026-07-01 18:49:16,886 - INFO - Processing the first 40 latest listings for updates.
+2026-07-01 18:49:16,935 - INFO - 
+🚀 New Listing Found: IBPS 6715 PO Online Form 2026
+2026-07-01 18:49:16,936 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/ibps-po-so-recruitment-2026-apply-online-for-probationary-officers-management-trainees-and-specialist-officers-posts-3055976
+2026-07-01 18:49:17,486 - INFO - 📥 Queued government job from FreeJobAlert: IBPS 6715 PO Online Form 2026
+2026-07-01 18:49:17,618 - INFO - 
+🚀 New Listing Found: RRB 6557 Technician Online Form 2026
+2026-07-01 18:49:17,619 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/rrb-technician-recruitment-2026-apply-online-for-6565-posts-3049539
+2026-07-01 18:49:18,073 - INFO - 📥 Queued government job from FreeJobAlert: RRB 6557 Technician Online Form 2026
+2026-07-01 18:49:18,178 - INFO - 
+🚀 New Listing Found: IOCL 1524 Apprentice Online Form 2026
+2026-07-01 18:49:18,179 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/iocl-apprentice-recruitment-2026-apply-online-for-1524-trade-technician-apprentice-posts-3055739
+2026-07-01 18:49:18,728 - INFO - 📥 Queued government job from FreeJobAlert: IOCL 1524 Apprentice Online Form 2026
+2026-07-01 18:49:18,852 - INFO - 
+🚀 New Listing Found: UPSC Advt No. 07/2026 Various Posts Online Form 2026
+2026-07-01 18:49:18,853 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/upsc-recruitment-2026-apply-online-for-450-drug-inspector-assistant-engineer-and-more-posts-3055477
+2026-07-01 18:49:19,593 - INFO - 📥 Queued government job from FreeJobAlert: UPSC Advt No. 07/2026 Various Posts Online Form 2026
+2026-07-01 18:49:19,738 - INFO - 
+🚀 New Listing Found: NIACL 550 Apprentice Online Form 2026
+2026-07-01 18:49:19,738 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/niacl-apprentices-recruitment-2026-apply-online-for-550-posts-3054317
+2026-07-01 18:49:23,142 - INFO - 📥 Queued government job from FreeJobAlert: NIACL 550 Apprentice Online Form 2026
+2026-07-01 18:49:23,341 - INFO - 
+🚀 New Listing Found: RRB Section Controller Online Form 2026 (Short Notice)
+2026-07-01 18:49:23,342 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/rrb-section-controller-recruitment-2026-apply-online-for-119-posts-3055121
+2026-07-01 18:49:23,977 - INFO - 📥 Queued government job from FreeJobAlert: RRB Section Controller Online Form 2026 (Short Notice)
+2026-07-01 18:49:24,152 - INFO - 
+🚀 New Listing Found: SBI 1,500 PO Online form 2026
+2026-07-01 18:49:24,152 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/sbi-po-recruitment-2026-apply-online-for-1500-probationary-officer-posts-3054494
+2026-07-01 18:49:24,750 - INFO - 📥 Queued government job from FreeJobAlert: SBI 1,500 PO Online form 2026
+2026-07-01 18:49:24,896 - INFO - 
+🚀 New Listing Found: KSP 1600 Armed Police Constable Online Form 2026
+2026-07-01 18:49:24,897 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/ksp-armed-police-constable-recruitment-2026-apply-online-for-1600-car-dar-posts-3054904
+2026-07-01 18:49:25,419 - INFO - 📥 Queued government job from FreeJobAlert: KSP 1600 Armed Police Constable Online Form 2026
+2026-07-01 18:49:25,559 - INFO - 
+🚀 New Listing Found: BEML 362 Operator Online Form 2026
+2026-07-01 18:49:25,559 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/beml-operator-recruitment-2026-apply-online-for-362-non-executive-posts-3054881
+2026-07-01 18:49:26,003 - INFO - 📥 Queued government job from FreeJobAlert: BEML 362 Operator Online Form 2026
+2026-07-01 18:49:26,125 - INFO - 
+🚀 New Listing Found: AIIMS CRE 5 Online Form 2026
+2026-07-01 18:49:26,125 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/aiims-cre-5-recruitment-2026-apply-online-for-1484-group-b-and-group-c-posts-3053829
+2026-07-01 18:49:26,765 - INFO - 📥 Queued government job from FreeJobAlert: AIIMS CRE 5 Online Form 2026
+2026-07-01 18:49:26,956 - INFO - 
+🚀 New Listing Found: RRB Group D Result 2026 Out
+2026-07-01 18:49:26,957 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/rrb-group-d-result-2026-3056099
+2026-07-01 18:49:27,361 - INFO - ⚠️ Skipping expired job: 'RRB Group D Result 2026 Out'. Last date '2026-02-10' is in the past (today is 2026-07-01).
+2026-07-01 18:49:27,450 - INFO - 
+🚀 New Listing Found: IBPS SO Online Form 2026
+2026-07-01 18:49:27,450 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/ibps-so-recruitment-2026-apply-online-for-745-it-officer-agricultural-field-officer-and-more-posts-3056055
+2026-07-01 18:49:28,625 - INFO - 📥 Queued government job from FreeJobAlert: IBPS SO Online Form 2026
+2026-07-01 18:49:28,792 - INFO - 
+🚀 New Listing Found: SBI CBO Result 2026 Out
+2026-07-01 18:49:28,793 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/sbi-cbo-result-2026-3056049
+2026-07-01 18:49:29,089 - INFO - ⚠️ Skipping expired job: 'SBI CBO Result 2026 Out'. Last date '2026-02-25' is in the past (today is 2026-07-01).
+2026-07-01 18:49:29,206 - INFO - 
+🚀 New Listing Found: IBPS RRB Clerk Reserve List 2026
+2026-07-01 18:49:29,206 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/ibps-rrb-clerk-reserve-list-2026-3055999
+2026-07-01 18:49:29,705 - INFO - 📥 Queued government job from FreeJobAlert: IBPS RRB Clerk Reserve List 2026
+2026-07-01 18:49:29,838 - INFO - 
+🚀 New Listing Found: SBI Apprentice Admit Card 2026 Out
+2026-07-01 18:49:29,838 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/sbi-apprentice-admit-card-2026-3055967
+2026-07-01 18:49:30,127 - INFO - ⚠️ Skipping expired job: 'SBI Apprentice Admit Card 2026 Out'. Last date '2026-06-30' is in the past (today is 2026-07-01).
+2026-07-01 18:49:30,204 - INFO - 
+🚀 New Listing Found: RRB JE CBT 2 Admit Card 2026 Out
+2026-07-01 18:49:30,205 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/rrb-je-cbt-2-admit-card-2026-3055751
+2026-07-01 18:49:30,655 - INFO - 📥 Queued government job from FreeJobAlert: RRB JE CBT 2 Admit Card 2026 Out
+2026-07-01 18:49:30,827 - INFO - 
+🚀 New Listing Found: UP Home Guard Result 2026 Out
+2026-07-01 18:49:30,828 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/up-home-guard-result-2026-3055705
+2026-07-01 18:49:31,036 - INFO - ⚠️ Skipping expired job: 'UP Home Guard Result 2026 Out'. Last date '2026-05-10' is in the past (today is 2026-07-01).
+2026-07-01 18:49:31,137 - INFO - 
+🚀 New Listing Found: SSC ASO Online Form 2026
+2026-07-01 18:49:31,137 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/ssc-aso-recruitment-2026-apply-online-for-341-assistant-section-officer-assistant-posts-3055500
+2026-07-01 18:49:33,076 - INFO - 📥 Queued government job from FreeJobAlert: SSC ASO Online Form 2026
+2026-07-01 18:49:33,222 - INFO - 
+🚀 New Listing Found: HPCL Junior Executive Online Form 2026
+2026-07-01 18:49:33,223 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/hpcl-junior-executive-recruitment-2026-apply-online-for-54-posts-3056233
+2026-07-01 18:49:34,066 - INFO - 📥 Queued government job from FreeJobAlert: HPCL Junior Executive Online Form 2026
+2026-07-01 18:49:34,210 - INFO - 
+🚀 New Listing Found: HPCL 116 Officers Online Form 2026
+2026-07-01 18:49:34,210 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/hpcl-recruitment-2026-apply-online-for-116-junior-executive-assistant-manager-and-more-posts-3056113
+2026-07-01 18:49:34,819 - INFO - 📥 Queued government job from FreeJobAlert: HPCL 116 Officers Online Form 2026
+2026-07-01 18:49:34,970 - INFO - 
+🚀 New Listing Found: Bank of India 779 Credit Officer Online Form 2026
+2026-07-01 18:49:34,970 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/bank-of-india-credit-officer-recruitment-2026-apply-online-for-779-posts-3055704
+2026-07-01 18:49:35,485 - INFO - 📥 Queued government job from FreeJobAlert: Bank of India 779 Credit Officer Online Form 2026
+2026-07-01 18:49:35,605 - INFO - 
+🚀 New Listing Found: UPSC Drug Inspector Online Form 2026
+2026-07-01 18:49:35,605 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/upsc-drug-inspector-recruitment-2026-apply-online-for-186-posts-3056132
+2026-07-01 18:49:42,754 - INFO - 📥 Queued government job from FreeJobAlert: UPSC Drug Inspector Online Form 2026
+2026-07-01 18:49:42,882 - INFO - 
+🚀 New Listing Found: Indian Army SSC Tech 68th Online Form 2026 (Short Notice)
+2026-07-01 18:49:42,882 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/indian-army-ssc-tech-68th-recruitment-2026-apply-online-3056090
+2026-07-01 18:49:43,311 - INFO - 📥 Queued government job from FreeJobAlert: Indian Army SSC Tech 68th Online Form 2026 (Short Notice)
+2026-07-01 18:49:43,423 - INFO - 
+🚀 New Listing Found: EIL Associate Engineer Online Form 2026
+2026-07-01 18:49:43,424 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/eil-associate-engineer-recruitment-2026-apply-online-for-41-posts-3054149
+2026-07-01 18:49:44,142 - INFO - 📥 Queued government job from FreeJobAlert: EIL Associate Engineer Online Form 2026
+2026-07-01 18:49:44,256 - INFO - 
+🚀 New Listing Found: NGEL Deputy General Manager, Assistant Manager Online Form 2026 (Short Notice)
+2026-07-01 18:49:44,256 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/ngel-recruitment-2026-apply-online-for-114-deputy-general-manager-assistant-manager-posts-3055902
+2026-07-01 18:49:44,731 - INFO - 📥 Queued government job from FreeJobAlert: NGEL Deputy General Manager, Assistant Manager Online Form 2026 (Short Notice)
+2026-07-01 18:49:44,865 - INFO - 
+🚀 New Listing Found: AVNL Executive and Non-Executive Online Form 2026  (Short Notice)
+2026-07-01 18:49:44,865 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/avnl-executive-and-non-executive-recruitment-2026-apply-online-for-1213-posts-3055808
+2026-07-01 18:49:45,159 - INFO - ⚠️ Skipping expired job: 'AVNL Executive and Non-Executive Online Form 2026  (Short Notice)'. Last date '1970-01-01' is in the past (today is 2026-07-01).
+2026-07-01 18:49:45,247 - INFO - 
+🚀 New Listing Found: Indian Navy Agniveer (Apprentice) Online Form 2026
+2026-07-01 18:49:45,248 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/indian-navy-agniveer-apprentice-recruitment-2026-3052277
+2026-07-01 18:49:45,737 - INFO - 📥 Queued government job from FreeJobAlert: Indian Navy Agniveer (Apprentice) Online Form 2026
+2026-07-01 18:49:45,869 - INFO - 
+🚀 New Listing Found: Aadhaar Supervisor/Operator Online Form 2026
+2026-07-01 18:49:45,869 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/aadhaar-supervisoroperator-recruitment-2026-apply-online-for-125-posts-3055717
+2026-07-01 18:49:46,420 - INFO - 📥 Queued government job from FreeJobAlert: Aadhaar Supervisor/Operator Online Form 2026
+2026-07-01 18:49:46,533 - INFO - 
+🚀 New Listing Found: RCFL Various Posts Online Form 2026
+2026-07-01 18:49:46,533 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/rcfl-recruitment-2026-apply-online-for-32-assistant-engineer-officer-and-more-posts-3055443
+2026-07-01 18:49:47,138 - INFO - 📥 Queued government job from FreeJobAlert: RCFL Various Posts Online Form 2026
+2026-07-01 18:49:47,287 - INFO - 
+🚀 New Listing Found: ISRO ISTRAC Various Vacancy Online form 2026
+2026-07-01 18:49:47,288 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/isro-istrac-recruitment-2026-notification-out-apply-online-for-26-technician-technical-assistant-and-more-posts-3055527
+2026-07-01 18:49:47,739 - INFO - 📥 Queued government job from FreeJobAlert: ISRO ISTRAC Various Vacancy Online form 2026
+2026-07-01 18:49:47,917 - INFO - 
+🚀 New Listing Found: Territorial Army 130 INF BN (TA) ECO KUMAON Rally 2026
+2026-07-01 18:49:47,917 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/territorial-army-130-inf-bn-ta-eco-kumaon-recruitment-rally-2026-3055552
+2026-07-01 18:49:48,407 - INFO - 📥 Queued government job from FreeJobAlert: Territorial Army 130 INF BN (TA) ECO KUMAON Rally 2026
+2026-07-01 18:49:48,507 - INFO - 
+🚀 New Listing Found: SSC SSA Online Form 2026
+2026-07-01 18:49:48,508 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/ssc-ssa-recruitment-2026-apply-online-for-65-senior-secretariat-assistant-upper-division-clerk-ldce-posts-3055509
+2026-07-01 18:49:48,821 - INFO - ==================================================
+2026-07-01 18:49:48,822 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-07-01 18:49:48,822 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-07-01 18:49:48,822 - INFO - ==================================================
+2026-07-01 18:49:48,832 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-07-01 18:49:48,848 - INFO -    ✔ Preloaded 150 live jobs.
+2026-07-01 18:49:48,848 - INFO - 
+================================================
+2026-07-01 18:49:48,848 - INFO - 🌐 Scraping: LinkedIn Official
+2026-07-01 18:49:48,849 - INFO - ================================================
+2026-07-01 18:49:48,977 - INFO - 📥 Queued government job from FreeJobAlert: SSC SSA Online Form 2026
+2026-07-01 18:49:49,158 - INFO - 
+🚀 New Listing Found: SSC JSA LDC DoPT LDCE Online Form 2026
+2026-07-01 18:49:49,158 - INFO - 🔗 Detail URL: https://www.freejobalert.com/articles/ssc-jsa-ldc-dopt-ldce-recruitment-2026-apply-online-for-49-junior-secretariat-assistant-lower-division-clerk-posts-3055503
+2026-07-01 18:49:49,669 - INFO - Found 10 listings from LinkedIn Official.
+2026-07-01 18:49:49,679 - INFO - 📥 Queued government job from FreeJobAlert: SSC JSA LDC DoPT LDCE Online Form 2026

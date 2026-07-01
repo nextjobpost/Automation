@@ -34,9 +34,7 @@ try:
         API_TOKEN,
         API_URL,
         ADMIN_URL,
-        client_gemini,
         clean_detail_html,
-        enrich_content_with_ai,
         enrich_content_basic,
         extract_govt_links,
         format_faq_html,
@@ -240,11 +238,8 @@ def scrape_site(site_name, site_url, extractor_func):
             logging.warning("⚠️ Entry content too short or empty. Skipping.")
             continue
             
-        # 3. Enrich page content using Gemini AI
-        ai_data = enrich_content_with_ai(detail_html, raw_title)
-        if not ai_data:
-            logging.warning("⚠️ AI Enrichment failed. Falling back to basic regex parser...")
-            ai_data = enrich_content_basic(detail_html, raw_title)
+        # 3. Enrich page content using basic regex parser
+        ai_data = enrich_content_basic(detail_html, raw_title)
             
         org = ai_data.get("organization", "Government Department")
         post_name = ai_data.get("postName", raw_title)
