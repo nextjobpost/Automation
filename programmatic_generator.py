@@ -27,8 +27,21 @@ if sys.stdout.encoding != 'utf-8':
     except AttributeError:
         pass
 
-# ── Config ────────────────────────────────────────────────────────────────────
-CLIENT_OUTPUT_PATH = "d:/job/client/src/utils/customProgrammaticContent.json"
+def resolve_programmatic_json_path():
+    env_path = os.getenv("PROGRAMMATIC_JSON_PATH")
+    if env_path:
+        return env_path
+    candidates = [
+        "d:/job/client/src/utils/customProgrammaticContent.json",
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "../job/client/src/utils/customProgrammaticContent.json")),
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "../client/src/utils/customProgrammaticContent.json")),
+    ]
+    for path in candidates:
+        if os.path.exists(path):
+            return path
+    return candidates[1]
+
+CLIENT_OUTPUT_PATH = resolve_programmatic_json_path()
 API_KEY = os.getenv("API_KEY", "")
 
 # Lists matching the server/seo.js sitemap definition

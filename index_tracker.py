@@ -100,20 +100,28 @@ async def fetch_job_urls() -> list:
 
 def get_gsc_service():
     """Initializes and returns authenticated GSC API service."""
-    if not GSC_CREDENTIALS_FILE or not os.path.exists(GSC_CREDENTIALS_FILE):
-        return None
+    creds_json = os.getenv("GSC_CREDENTIALS_JSON", "")
+    creds = None
     try:
         from google.oauth2 import service_account
         from googleapiclient.discovery import build
-        creds = service_account.Credentials.from_service_account_file(
-            GSC_CREDENTIALS_FILE,
-            scopes=["https://www.googleapis.com/auth/webmasters.readonly"],
-        )
-        service = build("searchconsole", "v1", credentials=creds)
-        return service
+        if creds_json:
+            import json
+            info = json.loads(creds_json)
+            creds = service_account.Credentials.from_service_account_info(
+                info,
+                scopes=["https://www.googleapis.com/auth/webmasters.readonly"],
+            )
+        elif GSC_CREDENTIALS_FILE and os.path.exists(GSC_CREDENTIALS_FILE):
+            creds = service_account.Credentials.from_service_account_file(
+                GSC_CREDENTIALS_FILE,
+                scopes=["https://www.googleapis.com/auth/webmasters.readonly"],
+            )
+        if creds:
+            return build("searchconsole", "v1", credentials=creds)
     except Exception as e:
         logging.error(f"[INDEX-TRACKER] GSC Auth Init error: {e}")
-        return None
+    return None
 
 def inspect_url_via_gsc(service, url: str) -> dict:
     """Queries GSC URL Inspection API for a single URL."""

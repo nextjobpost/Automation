@@ -2874,3 +2874,441 @@ ConnectionError: Connection to Telegram failed 5 time(s)
 2026-07-01 18:55:40,441 - INFO - [PING] ⚠️ Google: HTTP 404
 2026-07-01 18:55:40,569 - INFO - [PING] ⚠️ Bing: HTTP 410
 2026-07-01 18:55:40,570 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-07-01 18:56:03,520 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-07-01 18:56:03,671 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-07-01 18:56:04,548 - INFO - 🕒 Scheduler started. Posting every 2700s (45 min).
+2026-07-01 18:56:04,548 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-01 18:56:04,548 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-01 18:56:07,308 - INFO - [HEALTH] ─── Results: 7/7 checks passed (2.8s) ───
+2026-07-01 18:56:07,308 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-07-01 18:56:07,308 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-07-01 18:56:07,308 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-07-01 18:56:07,308 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-07-01 18:56:07,308 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-07-01 18:56:07,308 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-07-01 18:56:07,310 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-07-01 18:56:07,310 - INFO - [HEALTH] ✅ All checks passed!
+2026-07-01 18:56:07,310 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-01 18:56:07,310 - INFO - [SCHEDULER] [DAILY] Running all daily SEO automation tasks...
+2026-07-01 18:56:07,310 - INFO - [SCHEDULER] [DAILY] 1/5 GSC keyword sync...
+2026-07-01 18:56:07,313 - INFO - [GSC] ───────────── Daily Search Console Analysis ─────────────
+2026-07-01 18:56:07,313 - WARNING - [GSC] ⚠️ Google Search Console API credentials missing. Running Technical SEO Crawler Fallback...
+2026-07-01 18:56:07,426 - INFO - [GSC-Crawler] 🕵️ Starting Fallback Technical SEO Crawler...
+2026-07-01 18:56:08,054 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-07-01 18:56:08,201 - INFO - [GSC-Crawler] 🌐 Crawling 25 pages for technical SEO analysis...
+2026-07-01 18:56:09,776 - INFO - [GSC-Crawler] 🎯 Identified 40 technical SEO opportunities.
+2026-07-01 18:56:09,783 - INFO - [GSC] 💾 Saved 40 SEO opportunities to DB
+2026-07-01 18:56:09,783 - INFO - [GSC] 🔄 Attempting to sync 15 keyword rankings to backend...
+2026-07-01 18:56:10,868 - INFO - [GSC] ✅ Synced 15 keyword metrics to MongoDB backend
+2026-07-01 18:56:10,869 - INFO - [SCHEDULER] [DAILY] 2/5 Google Index Status Tracker...
+2026-07-01 18:56:10,869 - INFO - [INDEX-TRACKER] ────────── Google Index Tracking Audit ──────────
+2026-07-01 18:56:10,869 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-pages.xml
+2026-07-01 18:56:11,290 - INFO - [INDEX-TRACKER] Parsing sitemap: https://nextjobpost.in/sitemap-preparation.xml
+2026-07-01 18:56:11,502 - INFO - [SEO-LOGGER] Logged 'gsc_keyword_sync' -> success
+2026-07-01 18:56:11,577 - INFO - [INDEX-TRACKER] Fetching recent jobs from backend API...
+2026-07-01 18:56:12,374 - INFO - [INDEX-TRACKER] Discovered 1037 total portal URLs
+2026-07-01 18:56:14,661 - INFO - [INDEX-TRACKER] Retrieved 1000 existing tracked URLs from backend
+2026-07-01 18:56:14,662 - WARNING - [INDEX-TRACKER] ⚠️ GSC credentials JSON missing. Running in Simulated Index Tracking Mode.
+2026-07-01 18:56:14,666 - INFO - [INDEX-TRACKER] Generated 165 index updates to sync
+2026-07-01 18:56:14,667 - INFO - [INDEX-TRACKER] Posting 165 status updates to MongoDB backend...
+2026-07-01 18:56:15,670 - INFO - [INDEX-TRACKER] ✅ Index statuses synced successfully to MongoDB backend
+2026-07-01 18:56:15,672 - INFO - [INDEX-TRACKER] ──────────────────────────────────────────────────
+2026-07-01 18:56:15,673 - INFO - [SCHEDULER] [DAILY] 3/5 Search Console Auto-Optimizer...
+2026-07-01 18:56:15,674 - INFO - [AUTO-OPTIMIZER] ────────── Starting Search Console Auto-Optimizer ──────────
+2026-07-01 18:56:15,693 - INFO - [AUTO-OPTIMIZER] Found 0 low-performing pages to optimize
+2026-07-01 18:56:15,693 - INFO - [AUTO-OPTIMIZER] Completed optimization of 0 pages.
+2026-07-01 18:56:15,693 - INFO - [AUTO-OPTIMIZER] ─────────────────────────────────────────────────────────────
+2026-07-01 18:56:15,693 - INFO - [SCHEDULER] [DAILY] 4/5 Content Refresh Engine...
+2026-07-01 18:56:15,694 - INFO - [REFRESH] ────────── Starting Automatic Content Refresh Engine ──────────
+2026-07-01 18:56:15,732 - INFO - [REFRESH] Fetching active jobs database for stats compilation...
+2026-07-01 18:56:16,341 - INFO - [SEO-LOGGER] Logged 'index_tracker' -> success
+2026-07-01 18:56:16,352 - INFO - [SEO-LOGGER] Logged 'auto_optimizer' -> success
+2026-07-01 18:56:16,751 - INFO - [REFRESH] Recalculating job stats for 732 pages...
+2026-07-01 18:56:17,351 - INFO - [REFRESH] Saved fresh stats to d:/job/client/src/utils/customProgrammaticContent.json
+2026-07-01 18:56:17,352 - INFO - [REFRESH] Checking for older active jobs to update FAQs & internal links...
+2026-07-01 18:56:18,398 - INFO - [REFRESH] Found 20 candidates for refresh.
+2026-07-01 18:56:20,683 - WARNING - [SEO] Error fetching jobs for link map: Cannot connect to host localhost:4000 ssl:default [The remote computer refused the network connection]
+2026-07-01 18:56:21,416 - INFO - [REFRESH] Updated content for job: Deloitte is hiring | 2026
+2026-07-01 18:56:23,096 - INFO - [REFRESH] Updated content for job: Freshers Hiring | Adani Off Campus Drive 2026 – Hiring Graduate Engineer Trainee | 5 5 LPA to 6 5 LPA
+2026-07-01 18:56:23,868 - INFO - [REFRESH] Updated content for job: Internship Apprentice Opportunities Program 2026
+2026-07-01 18:56:24,624 - INFO - [REFRESH] Updated content for job: 5000 Members from this channel Got Jobs till now and next might be you
+2026-07-01 18:56:25,387 - INFO - [REFRESH] Updated content for job: FREE AWS Cloud Deployment Workshop Hiring 2026
+2026-07-01 18:56:26,139 - INFO - [REFRESH] Updated content for job: Top Companies Hiring Freshers Interns
+2026-07-01 18:56:26,896 - INFO - [REFRESH] Updated content for job: Data Engineer Data Scientist Opportunities Hiring 2026
+2026-07-01 18:56:27,668 - INFO - [REFRESH] Updated content for job: Top Tech Opportunities For Freshers Hiring 2026
+2026-07-01 18:56:28,444 - INFO - [REFRESH] Updated content for job: Direct Interview On 27th June 2026 No resume Shortlisting | GWC-DATA-AI Off Campus Drive 2026 Hiring Freshers For AI ML
+2026-07-01 18:56:29,195 - INFO - [REFRESH] Updated content for job: Citi is hiring | 2026
+2026-07-01 18:56:29,942 - INFO - [REFRESH] Updated content for job: PHILIPS Hiring Software Developer in India
+2026-07-01 18:56:30,777 - INFO - [REFRESH] Updated content for job: CSIR ASO Recruitment 2026 – 100 Assistant Section Officer Posts for UPSC CSE-2024 Candidates, Pay Level 7
+2026-07-01 18:56:31,582 - INFO - [REFRESH] Updated content for job: ISRO ISTRAC Apprentice Recruitment 2026 – 94 Graduate, Diploma & ITI Apprentice Posts, Stipend up to ₹12,300, Apply by Email
+2026-07-01 18:56:32,394 - INFO - [REFRESH] Updated content for job: NIACL Apprentice Recruitment 2026 – 550 Posts in New India Assurance, Stipend ₹12,300
+2026-07-01 18:56:33,195 - INFO - [REFRESH] Updated content for job: DRDO DEAL Apprentice Recruitment 2026 – 77 Graduate, Diploma & ITI Apprentice Posts in Dehradun
+2026-07-01 18:56:34,202 - INFO - [REFRESH] Updated content for job: Indian Navy SSC Officer June 2027 Entry Recruitment 2026 – 275 Posts for Pilot, ATC, Logistics, Engineering & More
+2026-07-01 18:56:35,337 - INFO - [REFRESH] Updated content for job: UPSSSC Excise Constable Recruitment 2026: for 820 Posts (Vacancy Increased), Salary ₹19,900-₹63,200
+2026-07-01 18:56:36,151 - INFO - [REFRESH] Updated content for job: NEEPCO Executive Recruitment 2026 – 38 Posts in Civil, Finance, Medical, Law & More, Salary up to ₹1,66,000
+2026-07-01 18:56:36,962 - INFO - [REFRESH] Updated content for job: AMC Assistant Senior Clerk Recruitment 2026 – 250 Posts in Ahmedabad Municipal Corporation
+2026-07-01 18:56:37,786 - INFO - [REFRESH] Updated content for job: TNPSC Group I Recruitment 2026 – 26 Deputy Collector, DSP & Other Civil Service Posts
+2026-07-01 18:56:37,787 - INFO - [REFRESH] ───────────────────────────────────────────────────────────────
+2026-07-01 18:56:37,788 - INFO - [SCHEDULER] [DAILY] 5/5 Competitor Keyword Gap Finder...
+2026-07-01 18:56:37,788 - INFO - [GAP-FINDER] ────────── Competitor Keyword Gap Finder ──────────
+2026-07-01 18:56:37,792 - INFO - [GAP-FINDER] Currently tracking 0 ranked keywords
+2026-07-01 18:56:37,792 - INFO - [GAP-FINDER] Using rule-based default high-traffic keyword gap database
+2026-07-01 18:56:37,797 - INFO - [GAP-FINDER] 💾 Saved 7 keyword gaps to SQLite DB
+2026-07-01 18:56:37,798 - INFO - [GAP-FINDER] 🎯 Top 3 Keyword Gaps identified:
+2026-07-01 18:56:37,798 - INFO -   • Keyword: 'SSC MTS Syllabus 2026' (Vol: 90,500) -> Target: /ssc-mts-syllabus
+2026-07-01 18:56:37,798 - INFO -   • Keyword: 'RRB NTPC Previous Year Papers' (Vol: 110,000) -> Target: /rrb-ntpc-previous-papers
+2026-07-01 18:56:37,798 - INFO -   • Keyword: 'SBI Clerk Cut Off State Wise' (Vol: 75,000) -> Target: /sbi-clerk-cut-off
+2026-07-01 18:56:37,798 - INFO - [GAP-FINDER] ───────────────────────────────────────────────────
+2026-07-01 18:56:37,799 - INFO - [SCHEDULER] [DAILY] All 5 SEO automation tasks dispatched.
+2026-07-01 18:56:38,325 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 135 (GovtJobsAlert: 29, LinkedIn: 22, Freshersworld: 1, Government Scrapers: 83)
+2026-07-01 18:56:39,040 - INFO - [SEO-LOGGER] Logged 'content_refresh' -> success
+2026-07-01 18:56:39,060 - INFO - [SEO-LOGGER] Logged 'keyword_gap_finder' -> success
+2026-07-01 18:56:46,920 - INFO - [SEO] 🚀 Starting SEO pipeline for: Indian Navy Agniveer (Apprentice) Recruitment 2026: for 01/2027 & 02/2027 Batches, Stipend Up to ₹40,000 (Last Date Extended to 05 July 2026
+2026-07-01 18:56:46,920 - INFO - [SEO] Using rule-based fallback for 'Indian Navy Agniveer (Apprentice) Recruitment 2026: for 01/2027 & 02/2027 Batches, Stipend Up to ₹40,000 (Last Date Extended to 05 July 2026'
+2026-07-01 18:56:46,920 - INFO - [SEO] 📝 metaTitle: Indian Navy Agniveer (Apprentice) Recruitment 2026 | Apply Now
+2026-07-01 18:56:46,921 - INFO - [SEO] 📝 metaDesc:  Apply for Indian Navy Agniveer (Apprentice) Recruitment 2026: for 01/2027 & 02/2027 Batches, Stipend Up to ₹40,000 (Last Date Extended to 05 July 2026 2...
+2026-07-01 18:56:46,921 - INFO - [SEO] 🔑 Keywords:  ['Indian Navy Agniveer (Apprentice) Recruitment 2026: for 01/2027 & 02/2027 Batches, Stipend Up to ₹40,000 (Last Date Extended to 05 July 2026', 'Indian Navy Agniveer (Apprentice) Recruitment 2026: for 01/2027 & 02/2027 Batches, Stipend Up to ₹40,000 (Last Date Extended to 05 July 2026 2026', 'Indian Jobs', 'Jobs in India', '10TH, DIPLOMA, MASTER Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-07-01 18:56:47,225 - INFO - [SEO] ✅ Patched SEO metadata for job 6a45159654223cb8c7d9bb3b
+2026-07-01 18:56:47,226 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /indian-navy-agniveer-apprentice-recruitment-2026-for-012027-and-022027-batches-stipend-up-to-indian-rupee40000-last-date-extended-to-05-july-2026
+2026-07-01 18:56:47,226 - INFO - [SEO] 🔍 Extracted keywords: ['10th Pass Jobs', 'Government Jobs in India', 'Govt Jobs India', 'Indian Jobs', 'Indian Navy Agniveer (Apprentice) Recruitment 2026: for 01/2027 & 02/2027 Batches, Stipend Up to ₹40,000 (Last Date Extended to 05 July 2026', 'Indian Navy Agniveer (Apprentice) Recruitment 2026: for 01/2027 & 02/2027 Batches, Stipend Up to ₹40,000 (Last Date Extended to 05 July 2026 2026', 'Indian Navy Agniveer (Apprentice) Recruitment 2026: for 01/2027 & 02/2027 Batches, Stipend Up to ₹40,000 (Last Date Extended to 05 July 2026 India', 'Indian Navy Agniveer (Apprentice) Recruitment 2026: for 01/2027 & 02/2027 Batches, Stipend Up to ₹40,000 (Last Date Extended to 05 July 2026 Recruitment 2026', 'Indian Recruitment 2026', 'Jobs in India']
+2026-07-01 18:56:47,230 - INFO - [PING] 📡 Pinging search engines at 2026-07-01 18:56:47...
+2026-07-01 18:56:47,658 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-07-01 18:56:47,797 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-07-01 18:56:47,799 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-07-01 19:14:56,659 - WARNING - Server closed the connection: [WinError 1236] The network connection was aborted by the local system
+2026-07-01 19:14:57,672 - INFO - Connection closed while receiving data: [WinError 1236] The network connection was aborted by the local system
+2026-07-01 19:14:57,673 - INFO - Closing current connection to begin reconnect...
+2026-07-01 19:14:57,683 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-07-01 19:14:57,699 - INFO - <class 'ConnectionAbortedError'> during disconnect: [WinError 1236] The network connection was aborted by the local system
+2026-07-01 19:14:57,859 - INFO - Connection to 149.154.167.51:443/TcpFull complete!
+2026-07-01 19:15:25,695 - WARNING - Server closed the connection: [WinError 1236] The network connection was aborted by the local system
+2026-07-01 19:15:25,695 - INFO - Connection closed while receiving data: [WinError 1236] The network connection was aborted by the local system
+2026-07-01 19:15:25,695 - INFO - Closing current connection to begin reconnect...
+2026-07-01 19:15:25,696 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-07-01 19:15:25,697 - INFO - <class 'ConnectionAbortedError'> during disconnect: [WinError 1236] The network connection was aborted by the local system
+2026-07-01 19:15:25,698 - WARNING - Attempt 1 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:26,717 - WARNING - Attempt 2 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:27,736 - WARNING - Attempt 3 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:28,745 - WARNING - Attempt 4 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:29,761 - WARNING - Attempt 5 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:30,766 - WARNING - Attempt 6 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:31,766 - INFO - Failed reconnection attempt 1 with ConnectionError
+2026-07-01 19:15:32,774 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-07-01 19:15:32,777 - WARNING - Attempt 1 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:33,783 - WARNING - Attempt 2 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:34,790 - WARNING - Attempt 3 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:35,806 - WARNING - Attempt 4 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:36,813 - WARNING - Attempt 5 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:37,802 - WARNING - Attempt 6 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:38,809 - INFO - Failed reconnection attempt 2 with ConnectionError
+2026-07-01 19:15:39,811 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-07-01 19:15:39,812 - WARNING - Attempt 1 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:40,815 - WARNING - Attempt 2 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:41,837 - WARNING - Attempt 3 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:42,852 - WARNING - Attempt 4 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:43,861 - WARNING - Attempt 5 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:44,864 - WARNING - Attempt 6 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:45,868 - INFO - Failed reconnection attempt 3 with ConnectionError
+2026-07-01 19:15:46,873 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-07-01 19:15:46,875 - WARNING - Attempt 1 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:47,880 - WARNING - Attempt 2 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:48,891 - WARNING - Attempt 3 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:49,906 - WARNING - Attempt 4 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:50,921 - WARNING - Attempt 5 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:51,933 - WARNING - Attempt 6 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:52,947 - INFO - Failed reconnection attempt 4 with ConnectionError
+2026-07-01 19:15:53,951 - INFO - Connecting to 149.154.167.51:443/TcpFull...
+2026-07-01 19:15:53,954 - WARNING - Attempt 1 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:54,959 - WARNING - Attempt 2 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:55,966 - WARNING - Attempt 3 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:56,968 - WARNING - Attempt 4 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:57,972 - WARNING - Attempt 5 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:58,976 - WARNING - Attempt 6 at connecting failed: OSError: [WinError 1232] The network location cannot be reached. For information about network troubleshooting, see Windows Help
+2026-07-01 19:15:59,982 - INFO - Failed reconnection attempt 5 with ConnectionError
+2026-07-01 19:16:00,986 - ERROR - Automatic reconnection failed 5 time(s)
+2026-07-01 19:16:01,022 - INFO - Disconnecting from 149.154.167.51:443/TcpFull...
+2026-07-01 19:16:01,022 - INFO - Disconnection from 149.154.167.51:443/TcpFull complete!
+2026-07-01 19:26:06,505 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-01 19:26:06,510 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-01 19:26:06,554 - WARNING - [HEALTH] Could not check for jobs missing SEO: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:26:06,556 - INFO - [HEALTH] ─── Results: 0/7 checks passed (0.0s) ───
+2026-07-01 19:26:06,557 - INFO - [HEALTH]   • sitemap: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:26:06,557 - INFO - [HEALTH]   • robots.txt: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:26:06,557 - INFO - [HEALTH]   • sitemap-jobs: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:26:06,557 - INFO - [HEALTH]   • sitemap-results: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:26:06,557 - INFO - [HEALTH]   • sitemap-admitcards: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:26:06,557 - INFO - [HEALTH]   • sitemap-pages: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:26:06,557 - INFO - [HEALTH]   • job_pages: ❌ API Error: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:26:06,557 - WARNING - [HEALTH] ⚠️  7 check(s) FAILED — see above for details
+2026-07-01 19:26:06,557 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-01 19:26:06,561 - WARNING - [SEO-LOGGER] Could not post log for 'health_checker': Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:56:25,425 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-01 19:56:25,433 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-01 19:56:25,489 - WARNING - [HEALTH] Could not check for jobs missing SEO: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:56:25,490 - INFO - [HEALTH] ─── Results: 0/7 checks passed (0.1s) ───
+2026-07-01 19:56:25,490 - INFO - [HEALTH]   • sitemap: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:56:25,490 - INFO - [HEALTH]   • robots.txt: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:56:25,490 - INFO - [HEALTH]   • sitemap-jobs: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:56:25,490 - INFO - [HEALTH]   • sitemap-results: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:56:25,490 - INFO - [HEALTH]   • sitemap-admitcards: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:56:25,491 - INFO - [HEALTH]   • sitemap-pages: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:56:25,491 - INFO - [HEALTH]   • job_pages: ❌ API Error: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-01 19:56:25,491 - WARNING - [HEALTH] ⚠️  7 check(s) FAILED — see above for details
+2026-07-01 19:56:25,491 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-01 19:56:45,558 - WARNING - [SEO-LOGGER] Could not post log for 'health_checker': Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 20:26:46,737 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-01 20:26:46,748 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-01 20:26:46,771 - WARNING - [HEALTH] Could not check for jobs missing SEO: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-01 20:26:46,772 - INFO - [HEALTH] ─── Results: 0/7 checks passed (0.0s) ───
+2026-07-01 20:26:46,772 - INFO - [HEALTH]   • sitemap: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 20:26:46,772 - INFO - [HEALTH]   • robots.txt: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 20:26:46,772 - INFO - [HEALTH]   • sitemap-jobs: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 20:26:46,772 - INFO - [HEALTH]   • sitemap-results: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 20:26:46,772 - INFO - [HEALTH]   • sitemap-admitcards: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 20:26:46,772 - INFO - [HEALTH]   • sitemap-pages: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 20:26:46,772 - INFO - [HEALTH]   • job_pages: ❌ API Error: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-01 20:26:46,773 - WARNING - [HEALTH] ⚠️  7 check(s) FAILED — see above for details
+2026-07-01 20:26:46,773 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-01 20:27:06,829 - WARNING - [SEO-LOGGER] Could not post log for 'health_checker': Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 20:29:21,474 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'IBPS Specialist Officer 16th Online Form 2026 | Last Date : 21/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:21,696 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'IBPS Probationary Officer PO / MT 16th Online Form 2026 | Last Date : 21/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:21,873 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'UPSSSC Forest Guard / Wild Life Guard Online Form 2026 | Last Date : 20/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:22,081 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Railway RRB Technician CEN 02/2026 Online Form 2026 for 6557Post | Last Date : 29/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:22,250 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Bank of India Credit Officers Online Form 2026 for 779' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:22,427 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'NBEMS Group A, B, C Various Post Online Form 2026 | Last Date : 31/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:22,626 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Naini Aerospace NAEL Operator, Junior Assistant Online Form 2026 | Last Date : 17/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:22,821 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'ISRO ISTRAC Various Post Online Form 2026 | Last Date : 20/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:23,032 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'UPPSC Pre 2026 Online Form | Last Date : 27/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:23,220 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Jharkhand JHTET 2026 Online Form | Last Date : 20/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:23,430 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Indian Navy SSC Officers June 2027 AT27 Online Form 2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:23,620 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Rajasthan RSSB 10+2 Senior Secondary CET Online Form 2026 | Last Date : 23/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:23,795 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Railway RRB Section Controller CEN 03/2026 Online Form | Last Date : 14/08/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:23,970 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'New India Assurance NIACL Apprentices Online Form 2026 | Last Date : 06/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:24,160 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'CGPSC Assistant District Public Prosecution Officer (ADPPO) Online Form 2026 Last Date : 21/07/2026' - Reason: Sarkari Result reference detected in 'sourceWebsite'
+2026-07-01 20:29:24,339 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'IBPS 6715 PO Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-01 20:29:24,507 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'RRB 6557 Technician Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-01 20:29:25,636 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 186 (GovtJobsAlert: 29, LinkedIn: 31, Government Scrapers: 65, WeWorkRemotely: 60, Other Private: 1)
+2026-07-01 20:29:34,964 - INFO - [SEO] 🚀 Starting SEO pipeline for: IOCL 1524 Apprentice Online Form 2026
+2026-07-01 20:29:34,967 - INFO - [SEO] Using rule-based fallback for 'IOCL 1524 Apprentice Online Form 2026'
+2026-07-01 20:29:34,971 - INFO - [SEO] 📝 metaTitle: IOCL 1524 Apprentice Online Form 2026 2026 | Apply Now
+2026-07-01 20:29:34,971 - INFO - [SEO] 📝 metaDesc:  Apply for IOCL 1524 Apprentice Online Form 2026 2026. Eligibility: GRADUATE, DIPLOMA, 10TH, B.TECH, ITI, MC. Salary: Rs. 1961. Last Date: 2026-07-28. Ap...
+2026-07-01 20:29:34,971 - INFO - [SEO] 🔑 Keywords:  ['IOCL 1524 Apprentice Online Form 2026', 'IOCL 1524 Apprentice Online Form 2026 2026', 'IOCL Jobs', 'Jobs in India', 'GRADUATE, DIPLOMA, 10TH, B.TECH, ITI, MCA Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-07-01 20:29:36,024 - INFO - [SEO] ✅ Patched SEO metadata for job 6a452b5654223cb8c7d9c276
+2026-07-01 20:29:36,027 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /iocl-1524-apprentice-online-form-2026
+2026-07-01 20:29:36,028 - INFO - [SEO] 🔍 Extracted keywords: ['10th Pass Jobs', 'Government Jobs in India', 'Govt Jobs India', 'IOCL 1524 Apprentice Online Form 2026', 'IOCL 1524 Apprentice Online Form 2026 2026', 'IOCL 1524 Apprentice Online Form 2026 India', 'IOCL 1524 Apprentice Online Form 2026 Recruitment 2026', 'IOCL Jobs', 'IOCL Recruitment 2026', 'Jobs in India']
+2026-07-01 20:29:36,039 - INFO - [PING] 📡 Pinging search engines at 2026-07-01 20:29:36...
+2026-07-01 20:29:36,576 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-07-01 20:29:36,811 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-07-01 20:29:36,812 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-07-01 20:56:50,011 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-01 20:56:50,023 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-01 20:56:54,540 - INFO - [HEALTH] ─── Results: 7/7 checks passed (4.5s) ───
+2026-07-01 20:56:54,541 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-07-01 20:56:54,541 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-07-01 20:56:54,542 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-07-01 20:56:54,542 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-07-01 20:56:54,542 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-07-01 20:56:54,543 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-07-01 20:56:54,543 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-07-01 20:56:54,543 - INFO - [HEALTH] ✅ All checks passed!
+2026-07-01 20:56:54,543 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-01 20:56:55,773 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-07-01 21:14:45,855 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'UPSC Advt No. 07/2026 Various Posts Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-01 21:14:46,082 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'NIACL 550 Apprentice Online Form 2026' - Reason: Banned keyword detected in 'jobDescription'
+2026-07-01 21:14:47,130 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 184 (GovtJobsAlert: 29, LinkedIn: 31, Government Scrapers: 62, WeWorkRemotely: 60, Other Private: 2)
+2026-07-01 21:14:55,590 - INFO - [SEO] 🚀 Starting SEO pipeline for: SBI 1,500 PO Online form 2026
+2026-07-01 21:14:55,591 - INFO - [SEO] Using rule-based fallback for 'SBI 1,500 PO Online form 2026'
+2026-07-01 21:14:55,592 - INFO - [SEO] 📝 metaTitle: SBI 1,500 PO Online form 2026 2026 – 4500 Posts | Apply Online
+2026-07-01 21:14:55,592 - INFO - [SEO] 📝 metaDesc:  Apply for SBI 1,500 PO Online form 2026 2026. Eligibility: GRADUATION, B.TECH. Salary: Rs. 48480. Last Date: 2026-07-08. Apply online at NextJobPost.
+2026-07-01 21:14:55,592 - INFO - [SEO] 🔑 Keywords:  ['SBI 1,500 PO Online form 2026', 'SBI 1,500 PO Online form 2026 2026', 'SBI Jobs', 'Jobs in India', 'GRADUATION, B.TECH Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-07-01 21:14:57,431 - INFO - [SEO] ✅ Patched SEO metadata for job 6a4535f754223cb8c7d9c5cd
+2026-07-01 21:14:57,432 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /sbi-1500-po-online-form-2026-recruitment-2026
+2026-07-01 21:14:57,433 - INFO - [SEO] 🔍 Extracted keywords: ['BTech Jobs', 'Government Jobs in India', 'Govt Jobs India', 'Jobs in India', 'SBI 1,500 PO Online form 2026', 'SBI 1,500 PO Online form 2026 2026', 'SBI 1,500 PO Online form 2026 India', 'SBI 1,500 PO Online form 2026 Recruitment 2026', 'SBI Jobs', 'SBI Recruitment 2026']
+2026-07-01 21:14:57,438 - INFO - [PING] 📡 Pinging search engines at 2026-07-01 21:14:57...
+2026-07-01 21:14:58,130 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-07-01 21:14:58,371 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-07-01 21:14:58,372 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-07-01 21:26:55,015 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-01 21:26:55,029 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-01 21:26:58,609 - INFO - [HEALTH] ─── Results: 7/7 checks passed (3.6s) ───
+2026-07-01 21:26:58,609 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-07-01 21:26:58,610 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-07-01 21:26:58,610 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-07-01 21:26:58,610 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-07-01 21:26:58,610 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-07-01 21:26:58,610 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-07-01 21:26:58,610 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-07-01 21:26:58,610 - INFO - [HEALTH] ✅ All checks passed!
+2026-07-01 21:26:58,610 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-01 21:26:59,287 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-07-01 21:57:00,304 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-01 21:57:00,319 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-01 21:57:05,339 - INFO - [HEALTH] ─── Results: 7/7 checks passed (5.0s) ───
+2026-07-01 21:57:05,339 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-07-01 21:57:05,339 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-07-01 21:57:05,339 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-07-01 21:57:05,339 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-07-01 21:57:05,339 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-07-01 21:57:05,339 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-07-01 21:57:05,339 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-07-01 21:57:05,339 - INFO - [HEALTH] ✅ All checks passed!
+2026-07-01 21:57:05,339 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-01 21:57:05,969 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-07-01 22:00:08,276 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'AIIMS CRE 5 Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-01 22:00:09,743 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'IBPS SO Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-01 22:00:25,921 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 178 ()
+2026-07-01 22:02:15,373 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-07-01 22:02:17,344 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'SSC ASO Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-01 22:02:18,866 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'HPCL 116 Officers Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-01 22:02:19,969 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Bank of India 779 Credit Officer Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-01 22:02:21,574 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'UPSC Drug Inspector Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-01 22:02:22,159 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Indian Army SSC Tech 68th Online Form 2026 (Short Notice)' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-01 22:02:39,715 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 165 ()
+2026-07-01 22:02:50,061 - INFO - [SEO] 🚀 Starting SEO pipeline for: EIL Associate Engineer Online Form 2026
+2026-07-01 22:02:50,061 - INFO - [SEO] Using rule-based fallback for 'EIL Associate Engineer Online Form 2026'
+2026-07-01 22:02:50,062 - INFO - [SEO] 📝 metaTitle: EIL Associate Engineer Online Form 2026 2026 | Apply Now
+2026-07-01 22:02:50,062 - INFO - [SEO] 📝 metaDesc:  Apply for EIL Associate Engineer Online Form 2026 2026. Eligibility: B.SC, DEGREE, HSC, B.TECH, POST GRADUATI. Salary: Rs. 72,000. Last Date: 2026-07-07...
+2026-07-01 22:02:50,063 - INFO - [SEO] 🔑 Keywords:  ['EIL Associate Engineer Online Form 2026', 'EIL Associate Engineer Online Form 2026 2026', 'EIL Jobs', 'Jobs in India', 'B.SC, DEGREE, HSC, B.TECH, POST GRADUATION Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-07-01 22:02:52,286 - INFO - [SEO] ✅ Patched SEO metadata for job 6a45413154223cb8c7d9c8d0
+2026-07-01 22:02:52,287 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /eil-associate-engineer-online-form-2026-recruitment-2026
+2026-07-01 22:02:52,287 - INFO - [SEO] 🔍 Extracted keywords: ['BTech Jobs', 'EIL Associate Engineer Online Form 2026', 'EIL Associate Engineer Online Form 2026 2026', 'EIL Associate Engineer Online Form 2026 India', 'EIL Associate Engineer Online Form 2026 Recruitment 2026', 'EIL Jobs', 'EIL Recruitment 2026', 'Government Jobs in India', 'Govt Jobs India', 'Jobs in India']
+2026-07-01 22:02:52,289 - INFO - [PING] 📡 Pinging search engines at 2026-07-01 22:02:52...
+2026-07-01 22:02:52,909 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-07-01 22:02:53,231 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-07-01 22:02:53,232 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-07-01 22:27:00,340 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-01 22:27:00,356 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-01 22:27:04,847 - INFO - [HEALTH] ─── Results: 7/7 checks passed (4.5s) ───
+2026-07-01 22:27:04,848 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-07-01 22:27:04,848 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-07-01 22:27:04,848 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-07-01 22:27:04,848 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-07-01 22:27:04,849 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-07-01 22:27:04,849 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-07-01 22:27:04,849 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-07-01 22:27:04,849 - INFO - [HEALTH] ✅ All checks passed!
+2026-07-01 22:27:04,849 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-01 22:27:05,813 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-07-01 22:48:01,622 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 166 (GovtJobsAlert: 29, Government Scrapers: 53, LinkedIn: 22, WeWorkRemotely: 60, Other Private: 2)
+2026-07-01 22:48:15,299 - INFO - [SEO] 🚀 Starting SEO pipeline for: Data Analyst
+2026-07-01 22:48:15,300 - INFO - [SEO] Using rule-based fallback for 'Data Analyst'
+2026-07-01 22:48:15,302 - INFO - [SEO] 📝 metaTitle: Data Analyst 2026 | Apply Online
+2026-07-01 22:48:15,302 - INFO - [SEO] 📝 metaDesc:  Apply for Data Analyst 2026. Eligibility: be. Salary: Best in Industry. Apply online at NextJobPost. Check eligibility & apply now. Check eligibility & ...
+2026-07-01 22:48:15,302 - INFO - [SEO] 🔑 Keywords:  ['Data Analyst', 'Data Analyst 2026', 'Precision AQ Jobs', 'be Jobs', 'Private Jobs', 'Jobs Apply Online']
+2026-07-01 22:48:15,932 - INFO - [SEO] ✅ Patched SEO metadata for job 6a454bd754223cb8c7d9cad7
+2026-07-01 22:48:15,935 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /precision-aq-data-analyst-hiring-2026
+2026-07-01 22:48:15,937 - INFO - [SEO] 🔍 Extracted keywords: ['Data Analyst', 'Data Analyst 2026', 'Data Analyst Recruitment 2026', 'Jobs Apply Online 2026', 'Precision AQ Jobs', 'Precision AQ Recruitment 2026', 'Private Jobs India']
+2026-07-01 22:48:15,949 - INFO - [PING] 📡 Pinging search engines at 2026-07-01 22:48:15...
+2026-07-01 22:48:16,763 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-07-01 22:48:17,404 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-07-01 22:48:17,407 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-07-01 22:57:09,670 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-01 22:57:09,686 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-01 22:57:09,732 - WARNING - [HEALTH] Could not check for jobs missing SEO: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-01 22:57:09,735 - INFO - [HEALTH] ─── Results: 0/7 checks passed (0.0s) ───
+2026-07-01 22:57:09,735 - INFO - [HEALTH]   • sitemap: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 22:57:09,735 - INFO - [HEALTH]   • robots.txt: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 22:57:09,735 - INFO - [HEALTH]   • sitemap-jobs: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 22:57:09,735 - INFO - [HEALTH]   • sitemap-results: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 22:57:09,735 - INFO - [HEALTH]   • sitemap-admitcards: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 22:57:09,735 - INFO - [HEALTH]   • sitemap-pages: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-01 22:57:09,735 - INFO - [HEALTH]   • job_pages: ❌ API Error: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-01 22:57:09,735 - WARNING - [HEALTH] ⚠️  7 check(s) FAILED — see above for details
+2026-07-01 22:57:09,735 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-01 22:57:09,743 - WARNING - [SEO-LOGGER] Could not post log for 'health_checker': Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 08:18:35,113 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-02 08:18:35,116 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-02 08:18:35,577 - WARNING - [HEALTH] Could not check for jobs missing SEO: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-02 08:18:35,579 - INFO - [HEALTH] ─── Results: 0/7 checks passed (0.5s) ───
+2026-07-02 08:18:35,580 - INFO - [HEALTH]   • sitemap: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 08:18:35,580 - INFO - [HEALTH]   • robots.txt: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 08:18:35,580 - INFO - [HEALTH]   • sitemap-jobs: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 08:18:35,580 - INFO - [HEALTH]   • sitemap-results: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 08:18:35,580 - INFO - [HEALTH]   • sitemap-admitcards: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 08:18:35,580 - INFO - [HEALTH]   • sitemap-pages: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 08:18:35,580 - INFO - [HEALTH]   • job_pages: ❌ API Error: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-02 08:18:35,580 - WARNING - [HEALTH] ⚠️  7 check(s) FAILED — see above for details
+2026-07-02 08:18:35,581 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-02 08:18:55,719 - WARNING - [SEO-LOGGER] Could not post log for 'health_checker': Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 08:20:15,778 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 150 (GovtJobsAlert: 39, Government Scrapers: 52, LinkedIn: 30, WeWorkRemotely: 26, Other Private: 3)
+2026-07-02 08:20:28,563 - INFO - [SEO] 🚀 Starting SEO pipeline for: Indian Navy Agniveer (Apprentice) Online Form 2026
+2026-07-02 08:20:28,565 - INFO - [SEO] Using rule-based fallback for 'Indian Navy Agniveer (Apprentice) Online Form 2026'
+2026-07-02 08:20:28,567 - INFO - [SEO] 📝 metaTitle: Indian Navy Agniveer (Apprentice) Online Form 2026 | Apply Now
+2026-07-02 08:20:28,567 - INFO - [SEO] 📝 metaDesc:  Apply for Indian Navy Agniveer (Apprentice) Online Form 2026 2026. Eligibility: 10TH, DIPLOMA, MASTER. Salary: As per notification. Last Date: 2026-07-0...
+2026-07-02 08:20:28,568 - INFO - [SEO] 🔑 Keywords:  ['Indian Navy Agniveer (Apprentice) Online Form 2026', 'Indian Navy Agniveer (Apprentice) Online Form 2026 2026', 'Indian Jobs', 'Jobs in India', '10TH, DIPLOMA, MASTER Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-07-02 08:20:30,126 - INFO - [SEO] ✅ Patched SEO metadata for job 6a45159654223cb8c7d9bb3b
+2026-07-02 08:20:30,129 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /indian-navy-agniveer-apprentice-recruitment-2026-for-012027-and-022027-batches-stipend-up-to-indian-rupee40000-last-date-extended-to-05-july-2026
+2026-07-02 08:20:30,130 - INFO - [SEO] 🔍 Extracted keywords: ['10th Pass Jobs', 'Government Jobs in India', 'Govt Jobs India', 'Indian Jobs', 'Indian Navy Agniveer (Apprentice) Online Form 2026', 'Indian Navy Agniveer (Apprentice) Online Form 2026 2026', 'Indian Navy Agniveer (Apprentice) Online Form 2026 India', 'Indian Navy Agniveer (Apprentice) Online Form 2026 Recruitment 2026', 'Indian Recruitment 2026', 'Jobs in India']
+2026-07-02 08:20:30,135 - INFO - 🔄 [SCHEDULER] All jobs in batch were duplicates or skipped. Fetching next batch immediately...
+2026-07-02 08:20:30,597 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Aadhaar Supervisor/Operator Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-02 08:20:33,097 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 148 (GovtJobsAlert: 39, Government Scrapers: 50, LinkedIn: 30, WeWorkRemotely: 26, Other Private: 3)
+2026-07-02 08:20:43,314 - INFO - [SEO] 🚀 Starting SEO pipeline for: RCFL Various Posts Online Form 2026
+2026-07-02 08:20:43,314 - INFO - [SEO] Using rule-based fallback for 'RCFL Various Posts Online Form 2026'
+2026-07-02 08:20:43,314 - INFO - [SEO] 📝 metaTitle: RCFL Various Posts Online Form 2026 2026 | Apply Now
+2026-07-02 08:20:43,314 - INFO - [SEO] 📝 metaDesc:  Apply for RCFL Various Posts Online Form 2026 2026. Eligibility: MBBS, GRADUATION, PH.D, MASTER, B.TECH, . Salary: As per notification. Last Date: 2026-...
+2026-07-02 08:20:43,314 - INFO - [SEO] 🔑 Keywords:  ['RCFL Various Posts Online Form 2026', 'RCFL Various Posts Online Form 2026 2026', 'RCFL Jobs', 'Jobs in India', 'MBBS, GRADUATION, PH.D, MASTER, B.TECH, DIPLOMA Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-07-02 08:20:43,845 - INFO - [SEO] ✅ Patched SEO metadata for job 6a45d20354223cb8c7d9cbaa
+2026-07-02 08:20:43,847 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /rcfl-various-posts-online-form-2026-recruitment-2026
+2026-07-02 08:20:43,847 - INFO - [SEO] 🔍 Extracted keywords: ['BTech Jobs', 'Government Jobs in India', 'Govt Jobs India', 'Jobs in India', 'RCFL Jobs', 'RCFL Recruitment 2026', 'RCFL Various Posts Online Form 2026', 'RCFL Various Posts Online Form 2026 2026', 'RCFL Various Posts Online Form 2026 India', 'RCFL Various Posts Online Form 2026 Recruitment 2026']
+2026-07-02 08:20:43,853 - INFO - [PING] 📡 Pinging search engines at 2026-07-02 08:20:43...
+2026-07-02 08:20:44,394 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-07-02 08:20:44,666 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-07-02 08:20:44,669 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-07-02 08:48:37,668 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-02 08:48:37,689 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-02 08:48:41,095 - INFO - [HEALTH] ─── Results: 7/7 checks passed (3.4s) ───
+2026-07-02 08:48:41,096 - INFO - [HEALTH]   • sitemap: ✅ OK
+2026-07-02 08:48:41,096 - INFO - [HEALTH]   • robots.txt: ✅ OK
+2026-07-02 08:48:41,096 - INFO - [HEALTH]   • sitemap-jobs: ✅ OK
+2026-07-02 08:48:41,096 - INFO - [HEALTH]   • sitemap-results: ✅ OK
+2026-07-02 08:48:41,097 - INFO - [HEALTH]   • sitemap-admitcards: ✅ OK
+2026-07-02 08:48:41,097 - INFO - [HEALTH]   • sitemap-pages: ✅ OK
+2026-07-02 08:48:41,097 - INFO - [HEALTH]   • job_pages: ✅ 5/5 pages have meta tags
+2026-07-02 08:48:41,097 - INFO - [HEALTH] ✅ All checks passed!
+2026-07-02 08:48:41,097 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-02 08:48:41,848 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-07-02 09:27:48,413 - INFO - [SCHEDULER] Running periodic SEO health check...
+2026-07-02 09:27:48,415 - INFO - [HEALTH] ───────────── SEO Health Check Starting ─────────────
+2026-07-02 09:27:48,425 - WARNING - [HEALTH] Could not check for jobs missing SEO: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-02 09:27:48,425 - INFO - [HEALTH] ─── Results: 0/7 checks passed (0.0s) ───
+2026-07-02 09:27:48,426 - INFO - [HEALTH]   • sitemap: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 09:27:48,426 - INFO - [HEALTH]   • robots.txt: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 09:27:48,426 - INFO - [HEALTH]   • sitemap-jobs: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 09:27:48,426 - INFO - [HEALTH]   • sitemap-results: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 09:27:48,426 - INFO - [HEALTH]   • sitemap-admitcards: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 09:27:48,426 - INFO - [HEALTH]   • sitemap-pages: ❌ ERROR: Cannot connect to host nextjobpost.in:443 ssl:default [getaddrinfo failed]
+2026-07-02 09:27:48,426 - INFO - [HEALTH]   • job_pages: ❌ API Error: Cannot connect to host nextjobpost-backend.onrender.com:443 ssl:default [getaddrinfo failed]
+2026-07-02 09:27:48,426 - WARNING - [HEALTH] ⚠️  7 check(s) FAILED — see above for details
+2026-07-02 09:27:48,426 - INFO - [HEALTH] ──────────────────────────────────────────────────────
+2026-07-02 09:27:52,073 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'ISRO ISTRAC Various Vacancy Online form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-02 09:27:52,178 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'Territorial Army 130 INF BN (TA) ECO KUMAON Rally 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-02 09:27:52,283 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'SSC SSA Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-02 09:27:52,398 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'SSC JSA LDC DoPT LDCE Online Form 2026' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-02 09:27:52,498 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'DSSSB Various Post Online Form 2026 (1979 Posts) - Apply Here' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-02 09:27:52,591 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'UPSSSC Cane Supervisor Form (1182 Posts)' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-02 09:27:52,718 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'SBI PO Online Form (1500 Posts)' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-02 09:27:52,815 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'RRB Technician Form 2026 (6565 Posts)' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-02 09:27:52,910 - INFO - 🚫 [SCHEDULER] Skipping invalid/expired job from queue: 'RRVUNL JE / Other Post Form (2005 Posts)' - Reason: Sarkari Result reference detected in 'jobDescription'
+2026-07-02 09:27:53,683 - INFO - 
+📤 [SCHEDULER] Dequeued 1 valid job(s) concurrently. Remaining in queue: 109 (GovtJobsAlert: 39, Government Scrapers: 43, LinkedIn: 24, Other Private: 2, WeWorkRemotely: 1)
+2026-07-02 09:27:54,723 - INFO - [SEO-LOGGER] Logged 'health_checker' -> success
+2026-07-02 09:28:06,152 - INFO - [SEO] 🚀 Starting SEO pipeline for: Insurance Company Jobs 2026 | Finance Govt Jobs | 1000+ Vacancies
+2026-07-02 09:28:06,153 - INFO - [SEO] Using rule-based fallback for 'Insurance Company Jobs 2026 | Finance Govt Jobs | 1000+ Vacancies'
+2026-07-02 09:28:06,157 - INFO - [SEO] 📝 metaTitle: Insurance Company Jobs 2026 | Finance Govt Jo 2026 | Apply Now
+2026-07-02 09:28:06,157 - INFO - [SEO] 📝 metaDesc:  Apply for Insurance Company Jobs 2026 | Finance Govt Jobs | 1000+ Vacancies 2026. Eligibility: 10TH, DEGREE. Salary: Pay Matrix Level 7. Last Date: 2026...
+2026-07-02 09:28:06,157 - INFO - [SEO] 🔑 Keywords:  ['Insurance Company Jobs 2026 | Finance Govt Jobs | 1000+ Vacancies', 'Insurance Company Jobs 2026 | Finance Govt Jobs | 1000+ Vacancies 2026', 'Finance Govt Jobs Jobs', 'Jobs in India', '10TH, DEGREE Jobs', 'Govt Jobs India', 'Sarkari Naukri']
+2026-07-02 09:28:07,267 - INFO - [SEO] ✅ Patched SEO metadata for job 6a45e1ce54223cb8c7d9ce02
+2026-07-02 09:28:07,270 - INFO - [SEO] 🏗️  Built 4 JSON-LD schemas for /insurance-company-jobs-2026-or-finance-govt-jobs-or-1000-vacancies
+2026-07-02 09:28:07,273 - INFO - [SEO] 🔍 Extracted keywords: ['10th Pass Jobs', 'Finance Govt Jobs Jobs', 'Finance Govt Jobs Recruitment 2026', 'Government Jobs in India', 'Govt Jobs India', 'Insurance Company Jobs 2026 | Finance Govt Jobs | 1000+ Vacancies', 'Insurance Company Jobs 2026 | Finance Govt Jobs | 1000+ Vacancies 2026', 'Insurance Company Jobs 2026 | Finance Govt Jobs | 1000+ Vacancies India', 'Insurance Company Jobs 2026 | Finance Govt Jobs | 1000+ Vacancies Recruitment 2026', 'Jobs in India']
+2026-07-02 09:28:07,284 - INFO - [PING] 📡 Pinging search engines at 2026-07-02 09:28:07...
+2026-07-02 09:28:07,790 - INFO - [PING] ⚠️ Google: HTTP 404
+2026-07-02 09:28:08,072 - INFO - [PING] ⚠️ Bing: HTTP 410
+2026-07-02 09:28:08,073 - INFO - [PING] ✅ 0/2 engines pinged successfully
