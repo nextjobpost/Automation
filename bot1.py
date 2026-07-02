@@ -335,7 +335,7 @@ def clean_raw_text(val, is_html=False):
                 txt = re.sub(phrase, '', txt)
                 
             # Names
-            for name in competitor_domains_simple:
+            for name in competitor_domains_simple + ['sarkari result', 'sarkariresults', 'govt jobs alert', 'free job alert']:
                 txt = re.sub(r'(?i)\b' + name + r'\b', '', txt)
                 
             # Numbered lists stripping
@@ -376,7 +376,7 @@ def clean_raw_text(val, is_html=False):
         for phrase in phrases_to_remove:
             cleaned = re.sub(phrase, '', cleaned)
             
-        for name in competitor_domains_simple:
+        for name in competitor_domains_simple + ['sarkari result', 'sarkariresults', 'govt jobs alert', 'free job alert']:
             cleaned = re.sub(r'(?i)\b' + name + r'\b', '', cleaned)
             
         cleaned = re.sub(r'\b\d+\.\s*(?:\.|:|-)*\s+', '', cleaned)
@@ -924,13 +924,9 @@ def is_valid_job(job):
     Validates the job details. If any required information is missing, not specified, 
     not disclosed, or not mentioned, we fill in a default or guess to ensure we do not skip.
     """
-    # 🚫 Sarkari Result Rejection Filter
+    # Banned Keywords Filter
     for field in ["title", "company", "applyLink", "sourceWebsite", "sourceUrl", "jobDescription"]:
         val = str(job.get(field, "")).lower()
-        if "sarkariresult" in val or "sarkari result" in val:
-            return False, f"Sarkari Result reference detected in '{field}'"
-            
-        # 🚫 Banned Keywords Filter
         if any(kw in val for kw in ["pdlink", "pd link", "top company", "certification"]):
             return False, f"Banned keyword detected in '{field}'"
 
