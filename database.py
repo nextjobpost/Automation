@@ -30,6 +30,27 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
+def send_request(method, endpoint, **kwargs):
+    """Sends HTTP request to the API, falling back to production if local fails."""
+    kwargs.setdefault("timeout", 15)
+    kwargs.setdefault("headers", HEADERS)
+    url = f"{QUEUE_API_URL}{endpoint}"
+    try:
+        if method.upper() == "POST":
+            return requests.post(url, **kwargs)
+        else:
+            return requests.get(url, **kwargs)
+    except Exception as e:
+        if "onrender.com" in QUEUE_API_URL:
+            raise e
+        # Fallback URL
+        prod_queue_url = "https://nextjobpost-backend.onrender.com/api/queue"
+        fallback_url = f"{prod_queue_url}{endpoint}"
+        if method.upper() == "POST":
+            return requests.post(fallback_url, **kwargs)
+        else:
+            return requests.get(fallback_url, **kwargs)
+
 def get_connection():
     # Return None as we don't connect to SQLite for queue/seen jobs anymore.
     # Keep function signature for backward compatibility.
@@ -48,7 +69,7 @@ def add_job_to_queue(job_dict, job_hash, image_path="", is_government=False, ret
         "isGovernment": bool(is_government)
     }
     try:
-        resp = requests.post(f"{QUEUE_API_URL}/add", json=payload, headers=HEADERS, timeout=15)
+        resp = send_request("POST", "/add", json=payload)
         if resp.status_code == 200:
             return resp.json().get("created", False)
     except Exception as e:
@@ -58,7 +79,7 @@ def add_job_to_queue(job_dict, job_hash, image_path="", is_government=False, ret
 def get_jobs_batch(limit=1):
     """Atomically retrieves and deletes up to `limit` jobs from MongoDB queue."""
     try:
-        resp = requests.post(f"{QUEUE_API_URL}/batch", json={"limit": limit}, headers=HEADERS, timeout=15)
+        resp = send_request("POST", "/batch", json={"limit": limit})
         if resp.status_code == 200:
             jobs = resp.json().get("data", [])
             for j in jobs:
@@ -79,7 +100,7 @@ def return_job_to_queue(job_row):
         "retries": job_row.get("retries", 0)
     }
     try:
-        resp = requests.post(f"{QUEUE_API_URL}/return", json=payload, headers=HEADERS, timeout=15)
+        resp = send_request("POST", "/return", json=payload)
         return resp.status_code == 200
     except Exception as e:
         print(f"Error returning job to MongoDB queue: {e}")
@@ -92,7 +113,7 @@ def add_to_failed_queue(job_row, error_msg):
         "errorMessage": error_msg
     }
     try:
-        resp = requests.post(f"{QUEUE_API_URL}/failed", json=payload, headers=HEADERS, timeout=15)
+        resp = send_request("POST", "/failed", json=payload)
         return resp.status_code == 200
     except Exception as e:
         print(f"Error adding to failed queue in MongoDB: {e}")
@@ -100,7 +121,7 @@ def add_to_failed_queue(job_row, error_msg):
 
 def get_queue_size():
     try:
-        resp = requests.get(f"{QUEUE_API_URL}/size", headers=HEADERS, timeout=15)
+        resp = send_request("GET", "/size")
         if resp.status_code == 200:
             return resp.json().get("size", 0)
     except Exception as e:
@@ -109,13 +130,13 @@ def get_queue_size():
 
 def mark_job_seen(job_hash):
     try:
-        requests.post(f"{QUEUE_API_URL}/seen/mark", json={"jobHash": job_hash}, headers=HEADERS, timeout=15)
+        send_request("POST", "/seen/mark", json={"jobHash": job_hash})
     except Exception as e:
         print(f"Error marking job seen: {e}")
 
 def is_job_seen(job_hash):
     try:
-        resp = requests.get(f"{QUEUE_API_URL}/seen/{job_hash}", headers=HEADERS, timeout=15)
+        resp = send_request("GET", f"/seen/{job_hash}")
         if resp.status_code == 200:
             return resp.json().get("seen", False)
     except Exception as e:
@@ -124,7 +145,7 @@ def is_job_seen(job_hash):
 
 def get_all_seen_hashes():
     try:
-        resp = requests.get(f"{QUEUE_API_URL}/seen/all", headers=HEADERS, timeout=15)
+        resp = send_request("GET", "/seen/all")
         if resp.status_code == 200:
             return set(resp.json().get("data", []))
     except Exception as e:
@@ -139,7 +160,7 @@ def preload_seen_jobs(hash_list):
 def count_linkedin_govt_posts_last_24h():
     """Returns the number of government jobs posted to LinkedIn in the last 24 hours."""
     try:
-        resp = requests.get(f"{QUEUE_API_URL}/linkedin-limit", headers=HEADERS, timeout=15)
+        resp = send_request("GET", "/linkedin-limit")
         if resp.status_code == 200:
             return resp.json().get("count", 0)
     except Exception as e:
@@ -149,14 +170,14 @@ def count_linkedin_govt_posts_last_24h():
 def log_linkedin_govt_post():
     """Logs a new government job post to LinkedIn to track daily limits."""
     try:
-        requests.post(f"{QUEUE_API_URL}/linkedin-limit/log", json={}, headers=HEADERS, timeout=15)
+        send_request("POST", "/linkedin-limit/log", json={})
     except Exception as e:
         print(f"Error logging linkedin govt post: {e}")
 
 def get_queue_breakdown():
     """Returns a dictionary showing count of jobs in queue grouped by source/website."""
     try:
-        resp = requests.get(f"{QUEUE_API_URL}/breakdown", headers=HEADERS, timeout=15)
+        resp = send_request("GET", "/breakdown")
         if resp.status_code == 200:
             return resp.json().get("data", {})
     except Exception as e:

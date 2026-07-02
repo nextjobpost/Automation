@@ -626,7 +626,8 @@ def process_private_job(title, detail_url, site_name, recent_jobs, provided_html
     is_internship = any(kw in title_lower or kw in content_lower for kw in ["intern", "internship"])
     is_remote = any(kw in title_lower or kw in content_lower for kw in ["remote", "work from home", "wfh"])
     
-    if site_name != "Adzuna API" and not (is_internship or is_remote):
+    by_pass_check = ["Adzuna API", "LinkedIn Official", "WeWorkRemotely", "Internshala"]
+    if site_name not in by_pass_check and not (is_internship or is_remote):
         logging.info(f"  ⏭️ Skipping: Not an internship or remote role ('{raw_title[:40]}...')")
         return False
 
