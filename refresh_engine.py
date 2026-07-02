@@ -162,7 +162,7 @@ def calculate_matches(jobs: list, state: str = None, qual: str = None, cat: str 
 async def refresh_programmatic_seo_database():
     """Reads customProgrammaticContent.json, updates counts & timestamps, and writes it back."""
     if not os.path.exists(CLIENT_JSON_PATH):
-        logging.warning(f"[REFRESH] Programmatic JSON not found at: {CLIENT_JSON_PATH}. Skipping.")
+        logging.info(f"[REFRESH] Programmatic JSON not found at: {CLIENT_JSON_PATH}. Skipping (this is normal in standalone cloud bot deployments).")
         return
         
     try:

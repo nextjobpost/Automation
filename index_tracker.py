@@ -130,7 +130,7 @@ def inspect_url_via_gsc(service, url: str) -> dict:
             "inspectionUrl": url,
             "siteUrl": GSC_SITE_URL
         }
-        res = service.urlInspection().index().inspect(requestBody=request_body).execute()
+        res = service.urlInspection().index().inspect(body=request_body).execute()
         result = res.get("inspectionResult", {})
         index_status_result = result.get("indexStatusResult", {})
         verdict = index_status_result.get("verdict", "NEUTRAL")
