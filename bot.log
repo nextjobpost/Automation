@@ -3312,3 +3312,4 @@ ConnectionError: Connection to Telegram failed 5 time(s)
 2026-07-02 09:28:07,790 - INFO - [PING] ⚠️ Google: HTTP 404
 2026-07-02 09:28:08,072 - INFO - [PING] ⚠️ Bing: HTTP 410
 2026-07-02 09:28:08,073 - INFO - [PING] ✅ 0/2 engines pinged successfully
+2026-07-03 11:51:08,926 - INFO - [PING] 📡 Pinging search engines at 2026-07-03 11:51:08...

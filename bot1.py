@@ -147,6 +147,10 @@ if not API_TOKEN or API_TOKEN == OLD_TOKEN:
 LINKEDIN_ACCESS_TOKEN = os.getenv("LINKEDIN_ACCESS_TOKEN", "")
 LINKEDIN_PERSON_URN   = os.getenv("LINKEDIN_PERSON_URN", "")  # e.g. urn:li:person:XXXXX
 
+# Facebook Page Credentials
+FACEBOOK_PAGE_ID      = os.getenv("FACEBOOK_PAGE_ID", "")
+FACEBOOK_ACCESS_TOKEN = os.getenv("FACEBOOK_ACCESS_TOKEN", "")
+
 # Test Mode
 TEST_MODE = os.getenv("TEST_MODE", "False").lower() in ("true", "1", "yes")
 TEST_OUTPUT_DIR = "test_output"
@@ -1625,10 +1629,11 @@ def get_action_label(job):
         return "Download Syllabus", "Download"
     return "Apply Here", "Apply"
 
-def build_post(job, slug, linkedin_url=None):
+def build_post(job, slug, linkedin_url=None, facebook_url=None):
     """Build a rich, fully-featured Telegram post with maximum engagement."""
     action_label, _ = get_action_label(job)
     linkedin_line = f"💼 **LinkedIn Post:** {linkedin_url}\n" if linkedin_url else f"💼 **LinkedIn:**      https://www.linkedin.com/in/next-job-post-199b5b371\n"
+    facebook_line = f"👥 **Facebook Post:** {facebook_url}\n" if facebook_url else ""
     job_url    = f"{SITE_BASE_URL}/{slug}"
     title      = strip_html(job.get('title', 'Job Opening'))
     company    = strip_html(job.get('company', 'Top Company'))
@@ -1710,6 +1715,7 @@ def build_post(job, slug, linkedin_url=None):
             f"📢 **Next Job Post** — Your daily job alert hub\n"
             f"🌐 More Jobs:  {SITE_BASE_URL}\n"
             f"{linkedin_line}"
+            f"{facebook_line}"
             f"👉 **Join Channel:** https://t.me/nextjobpost\n"
         )
     else:
@@ -1746,6 +1752,7 @@ def build_post(job, slug, linkedin_url=None):
             f"📢 **Next Job Post** — Your daily job alert hub\n"
             f"🌐 More Jobs:  {SITE_BASE_URL}\n"
             f"{linkedin_line}"
+            f"{facebook_line}"
             f"👉 **Join Channel:** https://t.me/nextjobpost\n"
         )
 
@@ -2161,6 +2168,56 @@ async def post_to_linkedin(session, job, slug):
         return False
 
 
+async def post_to_facebook(session, job, slug):
+    """Post the job details and image to the Facebook Page using Facebook Graph API."""
+    if not FACEBOOK_PAGE_ID or not FACEBOOK_ACCESS_TOKEN:
+        print("⚠️ Facebook Page credentials missing in .env — skipping Facebook post.")
+        return None
+
+    post_text = build_linkedin_post(job, slug)
+
+    # Strictly check that the generated Facebook post does not contain any forbidden/placeholder terms
+    forbidden_terms = ["not mentioned", "not specified", "not disclosed", "confidential", "hiring company"]
+    if any(term in post_text.lower() for term in forbidden_terms):
+        print(f"🚫 [ABORT] Generated Facebook post contains placeholder terms. Skipping Facebook post.")
+        return None
+
+    image_url = job.get("image", "")
+    
+    try:
+        if image_url:
+            # Publish as a photo post with a caption (gives better reach/CTR)
+            url = f"https://graph.facebook.com/v20.0/{FACEBOOK_PAGE_ID}/photos"
+            payload = {
+                "url": image_url,
+                "caption": post_text,
+                "access_token": FACEBOOK_ACCESS_TOKEN
+            }
+        else:
+            # Publish as a standard feed post with a link preview
+            url = f"https://graph.facebook.com/v20.0/{FACEBOOK_PAGE_ID}/feed"
+            payload = {
+                "message": post_text,
+                "link": f"{SITE_BASE_URL}/{slug}",
+                "access_token": FACEBOOK_ACCESS_TOKEN
+            }
+
+        async with session.post(url, data=payload, timeout=30) as resp:
+            if resp.status in (200, 201):
+                data = await resp.json()
+                post_id = data.get("id") or data.get("post_id", "unknown")
+                fb_url = f"https://www.facebook.com/{post_id}"
+                print(f"✅ Facebook Posted successfully! URL: {fb_url}")
+                return fb_url
+            else:
+                text = await resp.text()
+                print(f"⚠️ Facebook post failed [{resp.status}]: {text[:400]}")
+                return None
+    except Exception as e:
+        print(f"❌ Facebook post error: {e}")
+        return None
+
+
 # =========================
 # HANDLER
 # =========================
@@ -2331,9 +2388,23 @@ async def process_and_post_job(job_data):
                 else:
                     print("❌ LinkedIn Posting failed.")
 
+            # 3.5. Facebook Post
+            facebook_url = None
+            if FACEBOOK_PAGE_ID and FACEBOOK_ACCESS_TOKEN:
+                if TEST_MODE:
+                    print("🧪 [TEST_MODE] Mocking Facebook Post...")
+                    facebook_url = f"https://www.facebook.com/mock_post_{h}"
+                else:
+                    facebook_url = await post_to_facebook(session, job, slug)
+                    
+                if facebook_url:
+                    print("✔ Facebook Posted.")
+                else:
+                    print("❌ Facebook Posting failed.")
+
             # 4. Telegram Post (WITH IMAGE LINK PREVIEW AT THE TOP)
             print("📢 Posting to Telegram channel as a unified message with image preview...")
-            post = build_post(job, slug, linkedin_url=linkedin_url)
+            post = build_post(job, slug, linkedin_url=linkedin_url, facebook_url=facebook_url)
 
             # Strictly check that the generated Telegram post does not contain any forbidden/placeholder terms
             forbidden_terms = ["not mentioned", "not specified", "not disclosed", "confidential", "hiring company"]

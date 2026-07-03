@@ -38190,3 +38190,418 @@
 2026-07-02 09:56:39,502 - INFO -   🚀 [Freshersworld] Technical Lead In Ahmedabad For For A Client Of Teamlease Digital
 2026-07-02 09:56:42,228 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Lead In Ahmedabad For For A Cl...')
 2026-07-02 09:56:43,786 - INFO -   🚀 [Freshersworld] Technical Lead In Ahmedabad For Ntt Data Business Solutions Private Li
+2026-07-02 10:38:54,594 - INFO - ==================================================
+2026-07-02 10:38:54,594 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-07-02 10:38:54,594 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-07-02 10:38:54,594 - INFO - ==================================================
+2026-07-02 10:38:58,678 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-07-02 10:39:03,180 - INFO -    ✔ Preloaded 150 live jobs.
+2026-07-02 10:39:03,180 - INFO - 
+================================================
+2026-07-02 10:39:03,181 - INFO - 🌐 Scraping: LinkedIn Official
+2026-07-02 10:39:03,181 - INFO - ================================================
+2026-07-02 10:39:03,963 - INFO - Found 10 listings from LinkedIn Official.
+2026-07-02 10:39:08,027 - INFO -   🚀 [LinkedIn Official] Frontend Developers
+2026-07-02 10:39:17,414 - WARNING -   ⚠️ Already in queue or failed to add: Frontend Developers
+2026-07-02 10:39:22,993 - INFO -   🚀 [LinkedIn Official] Software Engineer - Front End
+2026-07-02 10:39:32,547 - WARNING -   ⚠️ Already in queue or failed to add: Software Engineer - Front End
+2026-07-02 10:39:38,120 - INFO -   🚀 [LinkedIn Official] Front-End Developer
+2026-07-02 10:39:47,133 - INFO - ==================================================
+2026-07-02 10:39:47,134 - INFO - 💼 NextJobPost — Private Jobs Scraper v2 (Internships & Remote ONLY)
+2026-07-02 10:39:47,134 - INFO -    Sources: LinkedIn Official, Adzuna API, Internshala, WeWorkRemotely, Freshersworld, WorkAtAStartup
+2026-07-02 10:39:47,134 - INFO - ==================================================
+2026-07-02 10:39:47,743 - WARNING -   ⚠️ Already in queue or failed to add: Front-End Developer
+2026-07-02 10:39:51,209 - INFO - 
+📥 Preloading recent jobs from backend for deduplication...
+2026-07-02 10:39:53,320 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-07-02 10:39:55,621 - INFO -    ✔ Preloaded 150 live jobs.
+2026-07-02 10:39:55,622 - INFO - 
+================================================
+2026-07-02 10:39:55,622 - INFO - 🌐 Scraping: LinkedIn Official
+2026-07-02 10:39:55,622 - INFO - ================================================
+2026-07-02 10:39:56,902 - INFO - Found 10 listings from LinkedIn Official.
+2026-07-02 10:40:02,020 - INFO -   🚀 [LinkedIn Official] Backend Developer (Golang)
+2026-07-02 10:40:02,344 - WARNING -   ⚠️ Already in queue or failed to add: Frontend Developer
+2026-07-02 10:40:07,904 - INFO -   🚀 [LinkedIn Official] Frontend Developer
+2026-07-02 10:40:13,344 - INFO -   📥 Queued private job from LinkedIn Official: Backend Developer (Golang)
+2026-07-02 10:40:17,712 - WARNING -   ⚠️ Already in queue or failed to add: Frontend Developer
+2026-07-02 10:40:23,292 - INFO -   🚀 [LinkedIn Official] UI Engineer (Outbound/Selfservice)
+2026-07-02 10:40:32,387 - WARNING -   ⚠️ Already in queue or failed to add: UI Engineer (Outbound/Selfservice)
+2026-07-02 10:40:37,976 - INFO -   🚀 [LinkedIn Official] Custom Software Engineer
+2026-07-02 10:40:47,195 - WARNING -   ⚠️ Already in queue or failed to add: Custom Software Engineer
+2026-07-02 10:40:52,790 - INFO -   🚀 [LinkedIn Official] Software Engineer  - React JS
+2026-07-02 10:40:53,738 - INFO -   ⚠️ Already on website: 'Software Engineer  - React JS'. Skipping.
+2026-07-02 10:41:07,481 - INFO -   🚀 [LinkedIn Official] Fronted Developer
+2026-07-02 10:41:13,821 - INFO -   🚀 [LinkedIn Official] Backend Developer
+2026-07-02 10:41:16,996 - WARNING -   ⚠️ Already in queue or failed to add: Fronted Developer
+2026-07-02 10:41:22,606 - INFO -   🚀 [LinkedIn Official] Javascript Developer - Remote Work | REF#296488
+2026-07-02 10:41:23,837 - INFO -   ⚠️ Already on website: 'Javascript Developer - Remote Work | REF#296488'. Skipping.
+2026-07-02 10:41:25,085 - INFO -   📥 Queued private job from LinkedIn Official: Backend Developer
+2026-07-02 10:41:33,477 - INFO - ✅ LinkedIn Official: Queued 0 new private jobs.
+2026-07-02 10:41:33,478 - INFO - 
+================================================
+2026-07-02 10:41:33,478 - INFO - 🌐 Scraping: Adzuna API
+2026-07-02 10:41:33,479 - INFO - ================================================
+2026-07-02 10:41:33,479 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-07-02 10:41:33,480 - INFO - Found 0 listings from Adzuna API.
+2026-07-02 10:41:33,480 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-07-02 10:41:33,480 - INFO - 
+================================================
+2026-07-02 10:41:33,480 - INFO - 🌐 Scraping: Internshala
+2026-07-02 10:41:33,480 - INFO - ================================================
+2026-07-02 10:41:36,801 - INFO - Found 0 listings from Internshala.
+2026-07-02 10:41:36,801 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-07-02 10:41:36,801 - INFO - 
+================================================
+2026-07-02 10:41:36,801 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-07-02 10:41:36,801 - INFO - ================================================
+2026-07-02 10:41:38,359 - INFO - Found 77 listings from WeWorkRemotely.
+2026-07-02 10:41:42,113 - INFO - ✅ LinkedIn Official: Queued 2 new private jobs.
+2026-07-02 10:41:42,113 - INFO - 
+================================================
+2026-07-02 10:41:42,114 - INFO - 🌐 Scraping: Adzuna API
+2026-07-02 10:41:42,114 - INFO - ================================================
+2026-07-02 10:41:42,114 - WARNING - Missing ADZUNA_APP_ID or ADZUNA_APP_KEY in environment. Skipping Adzuna.
+2026-07-02 10:41:42,115 - INFO - Found 0 listings from Adzuna API.
+2026-07-02 10:41:42,116 - INFO - ✅ Adzuna API: Queued 0 new private jobs.
+2026-07-02 10:41:42,116 - INFO - 
+================================================
+2026-07-02 10:41:42,116 - INFO - 🌐 Scraping: Internshala
+2026-07-02 10:41:42,116 - INFO - ================================================
+2026-07-02 10:41:42,420 - INFO -   🚀 [WeWorkRemotely] Senior Web Developer (WordPress & Shopify)
+2026-07-02 10:41:45,485 - INFO - Found 0 listings from Internshala.
+2026-07-02 10:41:45,485 - INFO - ✅ Internshala: Queued 0 new private jobs.
+2026-07-02 10:41:45,485 - INFO - 
+================================================
+2026-07-02 10:41:45,485 - INFO - 🌐 Scraping: WeWorkRemotely
+2026-07-02 10:41:45,485 - INFO - ================================================
+2026-07-02 10:41:46,855 - INFO - Found 77 listings from WeWorkRemotely.
+2026-07-02 10:41:51,182 - WARNING -   ⚠️ Already in queue or failed to add: Senior Web Developer (WordPress & Shopify)
+2026-07-02 10:41:56,775 - INFO -   🚀 [WeWorkRemotely] Full-Stack Web App Developer Saas (Mid-Senior)
+2026-07-02 10:42:05,619 - WARNING -   ⚠️ Already in queue or failed to add: Full-Stack Web App Developer Saas (Mid-Senior)
+2026-07-02 10:42:11,209 - INFO -   🚀 [WeWorkRemotely] GoHighLevel Expert (Remote)
+2026-07-02 10:42:19,893 - WARNING -   ⚠️ Already in queue or failed to add: GoHighLevel Expert (Remote)
+2026-07-02 10:42:25,475 - INFO -   🚀 [WeWorkRemotely] GxP Instrument Systems Engineer- Norwood, MA
+2026-07-02 10:42:34,139 - WARNING -   ⚠️ Already in queue or failed to add: GxP Instrument Systems Engineer- Norwood, MA
+2026-07-02 10:42:39,754 - INFO -   🚀 [WeWorkRemotely] Facilities Maintenance Coordinator - Tonawanda, NY
+2026-07-02 10:42:48,943 - WARNING -   ⚠️ Already in queue or failed to add: Facilities Maintenance Coordinator - Tonawanda, NY
+2026-07-02 10:42:54,510 - INFO -   🚀 [WeWorkRemotely] Senior Frontend Web Developer
+2026-07-02 10:43:03,240 - WARNING -   ⚠️ Already in queue or failed to add: Senior Frontend Web Developer
+2026-07-02 10:43:08,823 - INFO -   🚀 [WeWorkRemotely] Electrical Engineer - Tonawanda, NY
+2026-07-02 10:43:09,351 - INFO -   ⚠️ Already on website: 'Electrical Engineer - Tonawanda, NY'. Skipping.
+2026-07-02 10:43:23,083 - INFO -   🚀 [WeWorkRemotely] Web Developer
+2026-07-02 10:43:31,794 - WARNING -   ⚠️ Already in queue or failed to add: Web Developer
+2026-07-02 10:43:37,372 - INFO -   🚀 [WeWorkRemotely] Senior Independent AI Engineer / Architect
+2026-07-02 10:43:46,134 - WARNING -   ⚠️ Already in queue or failed to add: Senior Independent AI Engineer / Architect
+2026-07-02 10:43:51,700 - INFO -   🚀 [WeWorkRemotely] Senior Independent Software Developer ($90-$170/hr)
+2026-07-02 10:44:00,503 - WARNING -   ⚠️ Already in queue or failed to add: Senior Independent Software Developer ($90-$170/hr)
+2026-07-02 10:44:06,089 - INFO -   🚀 [WeWorkRemotely] Founding Engineer
+2026-07-02 10:44:14,960 - WARNING -   ⚠️ Already in queue or failed to add: Founding Engineer
+2026-07-02 10:44:20,531 - INFO -   🚀 [WeWorkRemotely] Support Engineer - SQL & Web Applications (Remote - Mexico Only)
+2026-07-02 10:44:29,552 - WARNING -   ⚠️ Already in queue or failed to add: Support Engineer - SQL & Web Applications (Remote - Mexico Only)
+2026-07-02 10:44:35,138 - INFO -   🚀 [WeWorkRemotely] Senior Software Development Engineer in Test II - Automation
+2026-07-02 10:44:43,991 - WARNING -   ⚠️ Already in queue or failed to add: Senior Software Development Engineer in Test II - Automation
+2026-07-02 10:44:49,574 - INFO -   🚀 [WeWorkRemotely] Web Applications Developer - Sacramento, CA
+2026-07-02 10:44:58,980 - WARNING -   ⚠️ Already in queue or failed to add: Web Applications Developer - Sacramento, CA
+2026-07-02 10:45:04,582 - INFO -   🚀 [WeWorkRemotely] Manager - Business Development (Remote - FullTime)
+2026-07-02 10:45:13,386 - WARNING -   ⚠️ Already in queue or failed to add: Manager - Business Development (Remote - FullTime)
+2026-07-02 10:45:18,973 - INFO -   🚀 [WeWorkRemotely] Senior Shopify Web Developer
+2026-07-02 10:45:27,669 - WARNING -   ⚠️ Already in queue or failed to add: Senior Shopify Web Developer
+2026-07-02 10:45:33,274 - INFO -   🚀 [WeWorkRemotely] Front End Web Developer, WFH
+2026-07-02 10:45:42,060 - WARNING -   ⚠️ Already in queue or failed to add: Front End Web Developer, WFH
+2026-07-02 10:45:47,666 - INFO -   🚀 [WeWorkRemotely] Technical Advisor - Training & Quality (M/W/D)
+2026-07-02 10:45:56,327 - WARNING -   ⚠️ Already in queue or failed to add: Technical Advisor - Training & Quality (M/W/D)
+2026-07-02 10:46:01,909 - INFO -   🚀 [WeWorkRemotely] Web Development Manager (Marketing & Webflow)
+2026-07-02 10:46:10,659 - WARNING -   ⚠️ Already in queue or failed to add: Web Development Manager (Marketing & Webflow)
+2026-07-02 10:46:16,267 - INFO -   🚀 [WeWorkRemotely] Senior Linux System Engineer (M/W/D)
+2026-07-02 10:46:25,001 - WARNING -   ⚠️ Already in queue or failed to add: Senior Linux System Engineer (M/W/D)
+2026-07-02 10:46:30,598 - INFO -   🚀 [WeWorkRemotely] Full-Stack Developer (Node.js) | Website Builder | Based in Poland
+2026-07-02 10:46:31,163 - INFO -   ⚠️ Already on website: 'Full-Stack Developer (Node.js) | Website Builder | Based in Poland'. Skipping.
+2026-07-02 10:46:44,896 - INFO -   🚀 [WeWorkRemotely] Senior Lead Software Engineer II
+2026-07-02 10:46:54,036 - WARNING -   ⚠️ Already in queue or failed to add: Senior Lead Software Engineer II
+2026-07-02 10:46:59,617 - INFO -   🚀 [WeWorkRemotely] Full-Stack JavaScript Engineer (Remote - LATAM or Europe)
+2026-07-02 10:47:00,418 - INFO -   ⚠️ Already on website: 'Full-Stack JavaScript Engineer (Remote - LATAM or Europe)'. Skipping.
+2026-07-02 10:47:14,167 - INFO -   🚀 [WeWorkRemotely] Senior React Full-stack Developer
+2026-07-02 10:47:23,088 - WARNING -   ⚠️ Already in queue or failed to add: Senior React Full-stack Developer
+2026-07-02 10:47:28,690 - INFO -   🚀 [WeWorkRemotely] Senior AI Engineer / Architect
+2026-07-02 10:47:37,465 - WARNING -   ⚠️ Already in queue or failed to add: Senior AI Engineer / Architect
+2026-07-02 10:47:43,053 - INFO -   🚀 [WeWorkRemotely] (fluent German & English) L1 Customer Support Consultant (EU Remote)
+2026-07-02 10:47:52,643 - WARNING -   ⚠️ Already in queue or failed to add: (fluent German & English) L1 Customer Support Consultant (EU Remote)
+2026-07-02 10:47:58,225 - INFO -   🚀 [WeWorkRemotely] (fluent German & English) L1 Customer Support Consultant (EU Remote)
+2026-07-02 10:48:07,083 - WARNING -   ⚠️ Already in queue or failed to add: (fluent German & English) L1 Customer Support Consultant (EU Remote)
+2026-07-02 10:48:12,675 - INFO -   🚀 [WeWorkRemotely] (Native Finnish) Customer Support Consultant (remotely)
+2026-07-02 10:48:21,667 - WARNING -   ⚠️ Already in queue or failed to add: (Native Finnish) Customer Support Consultant (remotely)
+2026-07-02 10:48:27,230 - INFO -   🚀 [WeWorkRemotely] (Native Danish) Customer Support Consultant (remotely)
+2026-07-02 10:48:36,114 - WARNING -   ⚠️ Already in queue or failed to add: (Native Danish) Customer Support Consultant (remotely)
+2026-07-02 10:48:41,700 - INFO -   🚀 [WeWorkRemotely] (Native Swedish) Customer Support Consultant (remotely)
+2026-07-02 10:48:50,511 - WARNING -   ⚠️ Already in queue or failed to add: (Native Swedish) Customer Support Consultant (remotely)
+2026-07-02 10:48:56,105 - INFO -   🚀 [WeWorkRemotely] Product Marketing - Agents
+2026-07-02 10:48:57,011 - INFO -   ⚠️ Already on website: 'Product Marketing - Agents'. Skipping.
+2026-07-02 10:49:10,749 - INFO -   🚀 [WeWorkRemotely] Product Merchandising Manager
+2026-07-02 10:49:19,559 - WARNING -   ⚠️ Already in queue or failed to add: Product Merchandising Manager
+2026-07-02 10:49:25,144 - INFO -   🚀 [WeWorkRemotely] Product / Technical Project Manager (100% Remote, Worldwide)
+2026-07-02 10:49:34,036 - WARNING -   ⚠️ Already in queue or failed to add: Product / Technical Project Manager (100% Remote, Worldwide)
+2026-07-02 10:49:39,605 - INFO -   🚀 [WeWorkRemotely] Staff Product Designer
+2026-07-02 10:49:48,496 - WARNING -   ⚠️ Already in queue or failed to add: Staff Product Designer
+2026-07-02 10:49:48,655 - INFO - ✅ WeWorkRemotely: Queued 0 new private jobs.
+2026-07-02 10:49:48,668 - INFO - 
+================================================
+2026-07-02 10:49:48,669 - INFO - 🌐 Scraping: Freshersworld
+2026-07-02 10:49:48,669 - INFO - ================================================
+2026-07-02 10:49:54,089 - INFO -   🚀 [WeWorkRemotely] Staff Product Manager - Gamified Experiences
+2026-07-02 10:49:54,832 - INFO -   ⚠️ Already on website: 'Staff Product Manager - Gamified Experiences'. Skipping.
+2026-07-02 10:50:04,140 - INFO - Found 58 listings from Freshersworld.
+2026-07-02 10:50:08,577 - INFO -   🚀 [WeWorkRemotely] Product Manager / QA Analyst (Full-Time Remote Contractor)
+2026-07-02 10:50:08,838 - INFO -   🚀 [Freshersworld] Hardware And Networks Other In Valsad For Kyndryl Solutions Private Li
+2026-07-02 10:50:11,835 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Hardware And Networks Other In Valsad Fo...')
+2026-07-02 10:50:17,586 - WARNING -   ⚠️ Already in queue or failed to add: Product Manager / QA Analyst (Full-Time Remote Contractor)
+2026-07-02 10:50:23,176 - INFO -   🚀 [WeWorkRemotely] Lead Full-stack Developer (Full-Time Remote Contractor)
+2026-07-02 10:50:24,235 - INFO -   🚀 [Freshersworld] Desktop Engineer In Bengaluru For Wipro Limited
+2026-07-02 10:50:27,216 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Bengaluru For Wipro ...')
+2026-07-02 10:50:32,048 - WARNING -   ⚠️ Already in queue or failed to add: Lead Full-stack Developer (Full-Time Remote Contractor)
+2026-07-02 10:50:33,411 - INFO -   🚀 [Freshersworld] It Executive In Bharuch For Kyndryl Solutions Private Limited
+2026-07-02 10:50:36,351 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Executive In Bharuch For Kyndryl Solu...')
+2026-07-02 10:50:37,625 - INFO -   🚀 [WeWorkRemotely] Product Manager, Mapping and Weather Visualization
+2026-07-02 10:50:42,552 - INFO -   🚀 [Freshersworld] Business Analyst In Ahmedabad For Adani Green Energy Limited
+2026-07-02 10:50:45,923 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Analyst In Ahmedabad For Adani ...')
+2026-07-02 10:50:46,572 - WARNING -   ⚠️ Already in queue or failed to add: Product Manager, Mapping and Weather Visualization
+2026-07-02 10:50:52,111 - INFO -   🚀 [Freshersworld] It Project Management Jobs Opening In Magiva Technologies Private Limi
+2026-07-02 10:50:52,177 - INFO -   🚀 [WeWorkRemotely] Developer Product Marketing Lead
+2026-07-02 10:50:55,078 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Project Management Jobs Opening In Ma...')
+2026-07-02 10:51:01,035 - WARNING -   ⚠️ Already in queue or failed to add: Developer Product Marketing Lead
+2026-07-02 10:51:01,256 - INFO -   🚀 [Freshersworld] Technical Support Voice  Blended In Hyderabad For Goldman Sachs Servic
+2026-07-02 10:51:04,238 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Support Voice  Blended In Hyde...')
+2026-07-02 10:51:06,621 - INFO -   🚀 [WeWorkRemotely] (Senior) Product Manager B2B (d/w/m*)
+2026-07-02 10:51:15,652 - WARNING -   ⚠️ Already in queue or failed to add: (Senior) Product Manager B2B (d/w/m*)
+2026-07-02 10:51:17,576 - INFO -   🚀 [Freshersworld] It Asset Management In Gautam Buddha Nagar For For A Client Of Teamlea
+2026-07-02 10:51:20,996 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Asset Management In Gautam Buddha Nag...')
+2026-07-02 10:51:21,239 - INFO -   🚀 [WeWorkRemotely] Full-Stack Developer (React + AWS)
+2026-07-02 10:51:27,611 - INFO -   🚀 [Freshersworld] Desktop Engineer In Gautam Buddha Nagar For For A Client Of Teamlease 
+2026-07-02 10:51:30,138 - WARNING -   ⚠️ Already in queue or failed to add: Full-Stack Developer (React + AWS)
+2026-07-02 10:51:30,761 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Gautam Buddha Nagar ...')
+2026-07-02 10:51:35,722 - INFO -   🚀 [WeWorkRemotely] Intermediate Full Stack Developer
+2026-07-02 10:51:36,949 - INFO -   🚀 [Freshersworld] Associate  Consultant In Bengaluru For For A Client Of Teamlease Digit
+2026-07-02 10:51:40,999 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Associate  Consultant In Bengaluru For F...')
+2026-07-02 10:51:44,572 - WARNING -   ⚠️ Already in queue or failed to add: Intermediate Full Stack Developer
+2026-07-02 10:51:47,203 - INFO -   🚀 [Freshersworld] It Asset Management In Gautam Buddha Nagar For For A Client Of Teamlea
+2026-07-02 10:51:50,177 - INFO -   🚀 [WeWorkRemotely] Full Stack Developer
+2026-07-02 10:51:50,543 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Asset Management In Gautam Buddha Nag...')
+2026-07-02 10:51:56,702 - INFO -   🚀 [Freshersworld] Technical Support Non Voice In Gautam Buddha Nagar For Kyndryl Solutio
+2026-07-02 10:51:59,117 - WARNING -   ⚠️ Already in queue or failed to add: Full Stack Developer
+2026-07-02 10:52:01,458 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Support Non Voice In Gautam Bu...')
+2026-07-02 10:52:04,718 - INFO -   🚀 [WeWorkRemotely] Sr. Director, Product Management - 11051
+2026-07-02 10:52:05,566 - INFO -   ⚠️ Already on website: 'Sr. Director, Product Management - 11051'. Skipping.
+2026-07-02 10:52:07,709 - INFO -   🚀 [Freshersworld] Application Developer In Hyderabad For Mindzkube Services Private Limi
+2026-07-02 10:52:11,185 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Application Developer In Hyderabad For M...')
+2026-07-02 10:52:17,377 - INFO -   🚀 [Freshersworld] Bi Developer In Mumbai For Edelweiss Asset Management Limited
+2026-07-02 10:52:19,322 - INFO -   🚀 [WeWorkRemotely] Open Source Design Engineer
+2026-07-02 10:52:21,936 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Bi Developer In Mumbai For Edelweiss Ass...')
+2026-07-02 10:52:28,130 - INFO -   🚀 [Freshersworld] Software Trainer Jobs Opening In Refinement Software Solutions Pvt Ltd
+2026-07-02 10:52:28,275 - WARNING -   ⚠️ Already in queue or failed to add: Open Source Design Engineer
+2026-07-02 10:52:31,388 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Trainer Jobs Opening In Refinem...')
+2026-07-02 10:52:33,859 - INFO -   🚀 [WeWorkRemotely] Product Marketing Specialist
+2026-07-02 10:52:38,050 - INFO -   🚀 [Freshersworld] Software Developer Jobs Opening In Igonix Technologies At Pondicherry
+2026-07-02 10:52:41,237 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer Jobs Opening In Igoni...')
+2026-07-02 10:52:42,793 - WARNING -   ⚠️ Already in queue or failed to add: Product Marketing Specialist
+2026-07-02 10:52:47,911 - INFO -   🚀 [Freshersworld] Software Engineerprogrammer In Bengaluru For Mindzkube Services Privat
+2026-07-02 10:52:48,370 - INFO -   🚀 [WeWorkRemotely] Product Translation Reviewer (Mandarin - English)
+2026-07-02 10:52:49,088 - INFO -   ⚠️ Already on website: 'Product Translation Reviewer (Mandarin - English)'. Skipping.
+2026-07-02 10:52:50,782 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineerprogrammer In Bengaluru...')
+2026-07-02 10:52:56,965 - INFO -   🚀 [Freshersworld] Software Tester Jobs Opening In Sree Vinayaga Infotech At Adyar Anna N
+2026-07-02 10:52:59,858 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Tester Jobs Opening In Sree Vin...')
+2026-07-02 10:53:02,834 - INFO -   🚀 [WeWorkRemotely] DevOps Engineer
+2026-07-02 10:53:06,528 - INFO -   🚀 [Freshersworld] Software Engineer Jobs Opening In Nivoryx Systems Pvt Ltd At Dwarka Na
+2026-07-02 10:53:09,707 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer Jobs Opening In Nivory...')
+2026-07-02 10:53:11,770 - WARNING -   ⚠️ Already in queue or failed to add: DevOps Engineer
+2026-07-02 10:53:15,894 - INFO -   🚀 [Freshersworld] Design Engineer In Bengaluru For For A Client Of Teamlease Digital
+2026-07-02 10:53:17,375 - INFO -   🚀 [WeWorkRemotely] Staff Product Manager - Conversations
+2026-07-02 10:53:18,145 - INFO -   ⚠️ Already on website: 'Staff Product Manager - Conversations'. Skipping.
+2026-07-02 10:53:18,943 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Design Engineer In Bengaluru For For A C...')
+2026-07-02 10:53:25,578 - INFO -   🚀 [Freshersworld] Assistant Professor In Elecrical Engineering Jobs Opening In Newtons I
+2026-07-02 10:53:28,663 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor In Elecrical Enginee...')
+2026-07-02 10:53:31,888 - INFO -   🚀 [WeWorkRemotely] Product Solution Engineer - Mobile App
+2026-07-02 10:53:32,632 - INFO -   ⚠️ Already on website: 'Product Solution Engineer - Mobile App'. Skipping.
+2026-07-02 10:53:34,810 - INFO -   🚀 [Freshersworld] Fresher Mechanical Engineer Jobs Opening In Arun Engineering At Ambatt
+2026-07-02 10:53:37,447 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Fresher Mechanical Engineer Jobs Opening...')
+2026-07-02 10:53:43,634 - INFO -   🚀 [Freshersworld] Water Filter Technician Jobs Opening In Integrated Engineering At Kuka
+2026-07-02 10:53:46,366 - INFO -   🚀 [WeWorkRemotely] Product Solutions Engineer - Creator Platform
+2026-07-02 10:53:46,835 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Water Filter Technician Jobs Opening In ...')
+2026-07-02 10:53:47,482 - INFO -   ⚠️ Already on website: 'Product Solutions Engineer - Creator Platform'. Skipping.
+2026-07-02 10:53:53,531 - INFO -   🚀 [Freshersworld] Engineering Other In Bengaluru For Quest Global Engineering Pvt Ltd
+2026-07-02 10:53:56,747 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Engineering Other In Bengaluru For Quest...')
+2026-07-02 10:54:01,223 - INFO -   🚀 [WeWorkRemotely] Technical AI Product Manager
+2026-07-02 10:54:02,970 - INFO -   🚀 [Freshersworld] Assistant Professor Jobs Opening In Newtons Institute Of Engineering A
+2026-07-02 10:54:06,190 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Jobs Opening In Newt...')
+2026-07-02 10:54:10,154 - WARNING -   ⚠️ Already in queue or failed to add: Technical AI Product Manager
+2026-07-02 10:54:12,387 - INFO -   🚀 [Freshersworld] Assistant Professor Jobs Opening In Newtons Institute Of Engineering A
+2026-07-02 10:54:15,560 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Jobs Opening In Newt...')
+2026-07-02 10:54:15,732 - INFO -   🚀 [WeWorkRemotely] Senior Full-Stack Engineer - Agentic-First
+2026-07-02 10:54:16,485 - INFO -   ⚠️ Already on website: 'Senior Full-Stack Engineer - Agentic-First'. Skipping.
+2026-07-02 10:54:21,793 - INFO -   🚀 [Freshersworld] Assistant Professor Jobs Opening In Newtons Institute Of Engineering A
+2026-07-02 10:54:25,125 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Jobs Opening In Newt...')
+2026-07-02 10:54:30,234 - INFO -   🚀 [WeWorkRemotely] Senior React Native Developer
+2026-07-02 10:54:31,286 - INFO -   🚀 [Freshersworld] Assistant Professor Jobs Opening In Newtons Institute Of Engineering A
+2026-07-02 10:54:34,411 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Jobs Opening In Newt...')
+2026-07-02 10:54:39,051 - WARNING -   ⚠️ Already in queue or failed to add: Senior React Native Developer
+2026-07-02 10:54:40,606 - INFO -   🚀 [Freshersworld] Associate  Consultant In Bengaluru For Quest Global Engineering Pvt Lt
+2026-07-02 10:54:43,605 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Associate  Consultant In Bengaluru For Q...')
+2026-07-02 10:54:44,664 - INFO -   🚀 [WeWorkRemotely] Freelance Full-Stack Web App Developer
+2026-07-02 10:54:50,336 - INFO -   🚀 [Freshersworld] Assistant Professor Eee Jobs Opening In Newtons Institute Of Engineeri
+2026-07-02 10:54:53,592 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Eee Jobs Opening In ...')
+2026-07-02 10:54:53,913 - WARNING -   ⚠️ Already in queue or failed to add: Freelance Full-Stack Web App Developer
+2026-07-02 10:54:59,514 - INFO -   🚀 [WeWorkRemotely] Intern-Web Application Penetration Tester
+2026-07-02 10:54:59,783 - INFO -   🚀 [Freshersworld] Assistant Professor Jobs Opening In Newtons Institute Of Engineering A
+2026-07-02 10:55:02,909 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Jobs Opening In Newt...')
+2026-07-02 10:55:08,368 - WARNING -   ⚠️ Already in queue or failed to add: Intern-Web Application Penetration Tester
+2026-07-02 10:55:09,126 - INFO -   🚀 [Freshersworld] Assistant Professor Jobs Opening In Newtons Institute Of Engineering A
+2026-07-02 10:55:12,201 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Jobs Opening In Newt...')
+2026-07-02 10:55:13,964 - INFO -   🚀 [WeWorkRemotely] Security Architect II
+2026-07-02 10:55:18,389 - INFO -   🚀 [Freshersworld] Assistant Professor Jobs Opening In Newtons Institute Of Engineering A
+2026-07-02 10:55:21,058 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Jobs Opening In Newt...')
+2026-07-02 10:55:23,028 - WARNING -   ⚠️ Already in queue or failed to add: Security Architect II
+2026-07-02 10:55:27,252 - INFO -   🚀 [Freshersworld] Assistant Professor Cse Jobs Opening In Newtons Institute Of Engineeri
+2026-07-02 10:55:28,641 - INFO -   🚀 [WeWorkRemotely] Senior Fullstack Developer (Python)
+2026-07-02 10:55:30,387 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Cse Jobs Opening In ...')
+2026-07-02 10:55:36,633 - INFO -   🚀 [Freshersworld] Assistant Professor Ece Jobs Opening In Newtons Institute Of Engineeri
+2026-07-02 10:55:37,791 - WARNING -   ⚠️ Already in queue or failed to add: Senior Fullstack Developer (Python)
+2026-07-02 10:55:39,858 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Ece Jobs Opening In ...')
+2026-07-02 10:55:43,382 - INFO -   🚀 [WeWorkRemotely] Senior Full Stack Engineer
+2026-07-02 10:55:46,080 - INFO -   🚀 [Freshersworld] Assistant Professor Jobs Opening In Newtons Institute Of Engineering A
+2026-07-02 10:55:49,770 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Jobs Opening In Newt...')
+2026-07-02 10:55:52,313 - WARNING -   ⚠️ Already in queue or failed to add: Senior Full Stack Engineer
+2026-07-02 10:55:55,959 - INFO -   🚀 [Freshersworld] Assistant Professor Jobs Opening In Newtons Institute Of Engineering A
+2026-07-02 10:55:57,918 - INFO -   🚀 [WeWorkRemotely] Senior QA Engineer
+2026-07-02 10:55:58,966 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Assistant Professor Jobs Opening In Newt...')
+2026-07-02 10:56:05,147 - INFO -   🚀 [Freshersworld] Head Hardware Engineering In Pakyong For Kyndryl Solutions Private Lim
+2026-07-02 10:56:06,844 - WARNING -   ⚠️ Already in queue or failed to add: Senior QA Engineer
+2026-07-02 10:56:08,319 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Head Hardware Engineering In Pakyong For...')
+2026-07-02 10:56:12,446 - INFO -   🚀 [WeWorkRemotely] Senior Software Engineer II
+2026-07-02 10:56:14,511 - INFO -   🚀 [Freshersworld] Engineering Other In Bengaluru For For A Client Of Teamlease Digital
+2026-07-02 10:56:17,645 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Engineering Other In Bengaluru For For A...')
+2026-07-02 10:56:21,355 - WARNING -   ⚠️ Already in queue or failed to add: Senior Software Engineer II
+2026-07-02 10:56:23,870 - INFO -   🚀 [Freshersworld] Software Developer Jobs Opening In Kizzy Consulting Pvt Ltd At Panchku
+2026-07-02 10:56:26,947 - INFO -   🚀 [WeWorkRemotely] Software engineer
+2026-07-02 10:56:27,041 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer Jobs Opening In Kizzy...')
+2026-07-02 10:56:33,221 - INFO -   🚀 [Freshersworld] Sap Cloud Developer Trainee Jobs Opening In Crossover It Consulting Se
+2026-07-02 10:56:35,815 - WARNING -   ⚠️ Already in queue or failed to add: Software engineer
+2026-07-02 10:56:36,186 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sap Cloud Developer Trainee Jobs Opening...')
+2026-07-02 10:56:41,400 - INFO -   🚀 [WeWorkRemotely] Senior Software Engineer
+2026-07-02 10:56:42,380 - INFO -   🚀 [Freshersworld] Placement Executive Jobs Opening In Shanti Business School Ahmedabad A
+2026-07-02 10:56:45,226 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Placement Executive Jobs Opening In Shan...')
+2026-07-02 10:56:50,211 - WARNING -   ⚠️ Already in queue or failed to add: Senior Software Engineer
+2026-07-02 10:56:51,927 - INFO -   🚀 [Freshersworld] Admin And Hr Executive Jobs Opening In Ranvi Technologies At Ameerpet 
+2026-07-02 10:56:54,988 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Admin And Hr Executive Jobs Opening In R...')
+2026-07-02 10:56:55,794 - INFO -   🚀 [WeWorkRemotely] Senior Shopify Developer (Remote + Flexible)
+2026-07-02 10:57:01,624 - INFO -   🚀 [Freshersworld] Admin Executive Logistic Company Jobs Opening In Rkv Cargo Movers Pvt 
+2026-07-02 10:57:04,828 - WARNING -   ⚠️ Already in queue or failed to add: Senior Shopify Developer (Remote + Flexible)
+2026-07-02 10:57:04,895 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Admin Executive Logistic Company Jobs Op...')
+2026-07-02 10:57:10,431 - INFO -   🚀 [WeWorkRemotely] Senior Web Developer
+2026-07-02 10:57:11,065 - INFO -   🚀 [Freshersworld] Sap Ecc Jobs Opening In Company Name Confidential At Gurgaon
+2026-07-02 10:57:13,979 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sap Ecc Jobs Opening In Company Name Con...')
+2026-07-02 10:57:19,176 - WARNING -   ⚠️ Already in queue or failed to add: Senior Web Developer
+2026-07-02 10:57:20,153 - INFO -   🚀 [Freshersworld] Sap Ecc Jobs Opening In Client Of Teamlease At Delhi
+2026-07-02 10:57:23,455 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Sap Ecc Jobs Opening In Client Of Teamle...')
+2026-07-02 10:57:24,757 - INFO -   🚀 [WeWorkRemotely] Web Development Intern
+2026-07-02 10:57:33,391 - WARNING -   ⚠️ Already in queue or failed to add: Web Development Intern
+2026-07-02 10:57:35,791 - INFO -   🚀 [Freshersworld] Technical Training Support Jobs Opening In Techciti Technologies At Ba
+2026-07-02 10:57:38,979 - INFO -   🚀 [WeWorkRemotely] Web Developer & AI Specialist
+2026-07-02 10:57:39,046 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Training Support Jobs Opening ...')
+2026-07-02 10:57:45,227 - INFO -   🚀 [Freshersworld] Digital Marketing Executive Jobs Opening In Client Of Teamlease At Che
+2026-07-02 10:57:47,720 - WARNING -   ⚠️ Already in queue or failed to add: Web Developer & AI Specialist
+2026-07-02 10:57:48,853 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Digital Marketing Executive Jobs Opening...')
+2026-07-02 10:57:53,303 - INFO -   🚀 [WeWorkRemotely] Web Developer (BigCommerce Experience Required)
+2026-07-02 10:57:55,045 - INFO -   🚀 [Freshersworld] Technical Support Jobs Opening In Spraxa Solutions Pvt Ltd At Ashok Vi
+2026-07-02 10:57:58,650 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Support Jobs Opening In Spraxa...')
+2026-07-02 10:58:02,059 - WARNING -   ⚠️ Already in queue or failed to add: Web Developer (BigCommerce Experience Required)
+2026-07-02 10:58:04,886 - INFO -   🚀 [Freshersworld] Database Server Admin Jobs Opening In Magiva Technologies Private Limi
+2026-07-02 10:58:07,636 - INFO -   🚀 [WeWorkRemotely] Web Developer (Remote)
+2026-07-02 10:58:08,211 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Database Server Admin Jobs Opening In Ma...')
+2026-07-02 10:58:14,390 - INFO -   🚀 [Freshersworld] Exim Executive Jobs Opening In Cascade Star India Pvt Ltd At Andheri E
+2026-07-02 10:58:16,704 - WARNING -   ⚠️ Already in queue or failed to add: Web Developer (Remote)
+2026-07-02 10:58:17,043 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Exim Executive Jobs Opening In Cascade S...')
+2026-07-02 10:58:22,295 - INFO -   🚀 [WeWorkRemotely] Full Stack Web Developer ⏤ Remote Contractor
+2026-07-02 10:58:23,693 - INFO -   🚀 [Freshersworld] Rpa Developers In Bengaluru For Biogen Capability Center India Private
+2026-07-02 10:58:26,879 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Rpa Developers In Bengaluru For Biogen C...')
+2026-07-02 10:58:31,143 - WARNING -   ⚠️ Already in queue or failed to add: Full Stack Web Developer ⏤ Remote Contractor
+2026-07-02 10:58:33,519 - INFO -   🚀 [Freshersworld] Technical Lead In Ahmedabad For For A Client Of Teamlease Digital
+2026-07-02 10:58:36,449 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Lead In Ahmedabad For For A Cl...')
+2026-07-02 10:58:36,731 - INFO -   🚀 [WeWorkRemotely] PHP Web Developer
+2026-07-02 10:58:42,646 - INFO -   🚀 [Freshersworld] Technical Lead In Ahmedabad For Ntt Data Business Solutions Private Li
+2026-07-02 10:58:45,485 - WARNING -   ⚠️ Already in queue or failed to add: PHP Web Developer
+2026-07-02 10:58:45,945 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Lead In Ahmedabad For Ntt Data...')
+2026-07-02 10:58:51,082 - INFO -   🚀 [WeWorkRemotely] E-commerce Web Developer (Next.js / Node.js experience is required)
+2026-07-02 10:58:52,151 - INFO -   🚀 [Freshersworld] Technical Lead In Ahmedabad For For A Client Of Teamlease Digital
+2026-07-02 10:58:55,636 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Lead In Ahmedabad For For A Cl...')
+2026-07-02 10:58:59,810 - WARNING -   ⚠️ Already in queue or failed to add: E-commerce Web Developer (Next.js / Node.js experience is required)
+2026-07-02 10:59:01,840 - INFO -   🚀 [Freshersworld] Inside Sales Executive Jobs Opening In Client Of Cassius Technologies 
+2026-07-02 10:59:05,315 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Inside Sales Executive Jobs Opening In C...')
+2026-07-02 10:59:05,425 - INFO -   🚀 [WeWorkRemotely] Request for Proposals: Website Developer
+2026-07-02 10:59:06,829 - INFO - ✅ Freshersworld: Queued 0 new private jobs.
+2026-07-02 10:59:06,829 - INFO - 
+================================================
+2026-07-02 10:59:06,830 - INFO - 🌐 Scraping: WorkAtAStartup
+2026-07-02 10:59:06,831 - INFO - ================================================
+2026-07-02 10:59:09,391 - WARNING - WorkAtAStartup 404
+2026-07-02 10:59:09,396 - INFO - Found 0 listings from WorkAtAStartup.
+2026-07-02 10:59:09,397 - INFO - ✅ WorkAtAStartup: Queued 0 new private jobs.
+2026-07-02 10:59:09,398 - INFO - 
+✅ All private job sources processed. Total Queued: 2/10000
+2026-07-02 10:59:14,170 - WARNING -   ⚠️ Already in queue or failed to add: Request for Proposals: Website Developer
+2026-07-02 10:59:19,772 - INFO -   🚀 [WeWorkRemotely] Staff Software Engineer (Magic Containers)
+2026-07-02 10:59:28,679 - WARNING -   ⚠️ Already in queue or failed to add: Staff Software Engineer (Magic Containers)
+2026-07-02 10:59:34,269 - INFO -   🚀 [WeWorkRemotely] Full Stack AI Engineer
+2026-07-02 10:59:42,980 - WARNING -   ⚠️ Already in queue or failed to add: Full Stack AI Engineer
+2026-07-02 10:59:48,548 - INFO -   🚀 [WeWorkRemotely] AI Research Engineer
+2026-07-02 10:59:57,391 - WARNING -   ⚠️ Already in queue or failed to add: AI Research Engineer
+2026-07-02 11:00:02,990 - INFO -   🚀 [WeWorkRemotely] Senior Software Engineer - Backend/Python - USA Only (100% Remote)
+2026-07-02 11:00:03,582 - INFO -   ⚠️ Already on website: 'Senior Software Engineer - Backend/Python - USA Only (100% Remote)'. Skipping.
+2026-07-02 11:00:13,218 - INFO - ✅ WeWorkRemotely: Queued 0 new private jobs.
+2026-07-02 11:00:13,218 - INFO - 
+================================================
+2026-07-02 11:00:13,219 - INFO - 🌐 Scraping: Freshersworld
+2026-07-02 11:00:13,219 - INFO - ================================================
+2026-07-02 11:00:27,203 - INFO - Found 57 listings from Freshersworld.
+2026-07-02 11:00:31,286 - INFO -   🚀 [Freshersworld] Hardware And Networks Other In Valsad For Kyndryl Solutions Private Li
+2026-07-02 11:00:34,515 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Hardware And Networks Other In Valsad Fo...')
+2026-07-02 11:00:40,094 - INFO -   🚀 [Freshersworld] It Sales Executive Jobs Opening In Mithi Software Technologies Pvt Ltd
+2026-07-02 11:00:51,407 - WARNING -   ⚠️ Already in queue or failed to add: It Sales Executive Jobs Opening In Mithi Software Technologies Pvt Ltd At Baner Pune
+2026-07-02 11:00:56,982 - INFO -   🚀 [Freshersworld] Desktop Engineer In Bengaluru For Wipro Limited
+2026-07-02 11:01:00,819 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Bengaluru For Wipro ...')
+2026-07-02 11:01:06,384 - INFO -   🚀 [Freshersworld] It Project Management Jobs Opening In Magiva Technologies Private Limi
+2026-07-02 11:01:12,920 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Project Management Jobs Opening In Ma...')
+2026-07-02 11:01:18,494 - INFO -   🚀 [Freshersworld] It Executive In Bharuch For Kyndryl Solutions Private Limited
+2026-07-02 11:01:21,464 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Executive In Bharuch For Kyndryl Solu...')
+2026-07-02 11:01:27,043 - INFO -   🚀 [Freshersworld] Business Analyst In Ahmedabad For Adani Green Energy Limited
+2026-07-02 11:01:29,862 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Business Analyst In Ahmedabad For Adani ...')
+2026-07-02 11:01:35,452 - INFO -   🚀 [Freshersworld] Technical Support Voice  Blended In Hyderabad For Goldman Sachs Servic
+2026-07-02 11:01:38,844 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Support Voice  Blended In Hyde...')
+2026-07-02 11:01:44,459 - INFO -   🚀 [Freshersworld] It Sales Executive Jobs Opening In Skyyvera Recruitment At Baner Pune
+2026-07-02 11:01:55,775 - WARNING -   ⚠️ Already in queue or failed to add: It Sales Executive Jobs Opening In Skyyvera Recruitment At Baner Pune
+2026-07-02 11:02:01,376 - INFO -   🚀 [Freshersworld] It Asset Management In Gautam Buddha Nagar For For A Client Of Teamlea
+2026-07-02 11:02:04,432 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Asset Management In Gautam Buddha Nag...')
+2026-07-02 11:02:10,001 - INFO -   🚀 [Freshersworld] Desktop Engineer In Gautam Buddha Nagar For For A Client Of Teamlease 
+2026-07-02 11:02:12,941 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Desktop Engineer In Gautam Buddha Nagar ...')
+2026-07-02 11:02:18,543 - INFO -   🚀 [Freshersworld] Technical Support Non Voice In Gautam Buddha Nagar For Kyndryl Solutio
+2026-07-02 11:02:21,568 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Technical Support Non Voice In Gautam Bu...')
+2026-07-02 11:02:27,150 - INFO -   🚀 [Freshersworld] Associate  Consultant In Bengaluru For For A Client Of Teamlease Digit
+2026-07-02 11:02:30,215 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Associate  Consultant In Bengaluru For F...')
+2026-07-02 11:02:35,804 - INFO -   🚀 [Freshersworld] It Asset Management In Gautam Buddha Nagar For For A Client Of Teamlea
+2026-07-02 11:02:38,930 - INFO -   ⏭️ Skipping: Not an internship or remote role ('It Asset Management In Gautam Buddha Nag...')
+2026-07-02 11:02:44,496 - INFO -   🚀 [Freshersworld] Software Trainer Jobs Opening In Refinement Software Solutions Pvt Ltd
+2026-07-02 11:02:47,604 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Trainer Jobs Opening In Refinem...')
+2026-07-02 11:02:53,203 - INFO -   🚀 [Freshersworld] Application Developer In Hyderabad For Mindzkube Services Private Limi
+2026-07-02 11:02:56,239 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Application Developer In Hyderabad For M...')
+2026-07-02 11:03:01,824 - INFO -   🚀 [Freshersworld] Bi Developer In Mumbai For Edelweiss Asset Management Limited
+2026-07-02 11:03:04,697 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Bi Developer In Mumbai For Edelweiss Ass...')
+2026-07-02 11:03:10,272 - INFO -   🚀 [Freshersworld] Software Developer Jobs Opening In Igonix Technologies At Pondicherry
+2026-07-02 11:03:13,643 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer Jobs Opening In Igoni...')
+2026-07-02 11:03:19,240 - INFO -   🚀 [Freshersworld] Software Engineer Jobs Opening In Karnataka Information Solution At El
+2026-07-02 11:03:22,158 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineer Jobs Opening In Karnat...')
+2026-07-02 11:03:27,741 - INFO -   🚀 [Freshersworld] Software Engineerprogrammer In Bengaluru For Mindzkube Services Privat
+2026-07-02 11:03:30,548 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Engineerprogrammer In Bengaluru...')
+2026-07-02 11:03:36,137 - INFO -   🚀 [Freshersworld] Software Developer Jobs Opening In Kizzy Consulting Pvt Ltd At Panchku
+2026-07-02 11:03:38,590 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Software Developer Jobs Opening In Kizzy...')
+2026-07-02 11:03:44,176 - INFO -   🚀 [Freshersworld] Design Engineer In Bengaluru For For A Client Of Teamlease Digital
+2026-07-02 11:03:46,792 - INFO -   ⏭️ Skipping: Not an internship or remote role ('Design Engineer In Bengaluru For For A C...')
+2026-07-02 11:03:52,362 - INFO -   🚀 [Freshersworld] Assistant Professor In Elecrical Engineering Jobs Opening In Newtons I
