@@ -87,17 +87,15 @@ except ImportError:
     SEO_LOGGER_ENABLED = False
     logging.warning("seo_logger.py not found — automation log reporting disabled")
 
-# Force UTF-8 encoding for stdout and stderr to prevent UnicodeEncodeErrors on Windows
-if sys.stdout.encoding != 'utf-8':
-    try:
-        sys.stdout.reconfigure(encoding='utf-8', errors='replace') # type: ignore
-    except AttributeError:
-        pass
-if sys.stderr.encoding != 'utf-8':
-    try:
-        sys.stderr.reconfigure(encoding='utf-8', errors='replace') # type: ignore
-    except AttributeError:
-        pass
+# Force UTF-8 encoding and line-buffering for stdout and stderr to prevent Unicode errors and show logs in real-time in cloud environments
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace', line_buffering=True)
+except (AttributeError, TypeError):
+    pass
+try:
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace', line_buffering=True)
+except (AttributeError, TypeError):
+    pass
 
 
 # =========================
