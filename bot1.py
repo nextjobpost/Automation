@@ -1322,43 +1322,62 @@ def generate_poster(title, company, location, salary, output_path, is_govt=False
     draw.rounded_rectangle([(badge_x, 28), (badge_x + badge_w, 62)], radius=6, fill=accent_color)
     draw.text((badge_x + 16, 30), badge_text, fill=(10, 10, 10), font=font_badge)
 
-    # ── Company name ──────────────────────────────────────────────────────────
-    company_display = company.upper()[:40]
-    cw = text_w(company_display, font_company)
-    draw.text(((width - cw) // 2, 82), company_display, fill=light_gray, font=font_company)
-
-    # ── Decorative horizontal divider ─────────────────────────────────────────
-    line_w = 500
-    lx = (width - line_w) // 2
-    draw.line([(lx, 126), (lx + line_w, 126)], fill=accent_color, width=2)
-
-    # ── Job title (multi-line, centered) ─────────────────────────────────────
-    title_lines = wrap_text(title, font_title, 1060)
-    y_title = 150
-    for line in title_lines[:2]:  # Max 2 lines
-        lw = text_w(line, font_title)
-        draw.text(((width - lw) // 2, y_title), line, fill=white, font=font_title)
-        y_title += 72
-
-    # ── Meta details row ──────────────────────────────────────────────────────
-    y_meta = y_title + 20
+    # ── Prepare meta items (WITHOUT emojis to prevent broken glyph boxes) ──────
     meta_items = []
     if location and location.lower() not in ("not mentioned", ""):
-        meta_items.append(f"📍 {location[:30]}")
+        meta_items.append(f"LOC: {location.upper()[:25]}")
     if salary and salary.lower() not in ("not mentioned", "best in industry", ""):
-        meta_items.append(f"💰 {salary[:25]}")
+        meta_items.append(f"SALARY: {salary.upper()[:22]}")
     if vacancies and vacancies.lower() not in ("not mentioned", "various vacancies", ""):
-        meta_items.append(f"📋 {vacancies[:20]} Posts")
+        meta_items.append(f"POSTS: {vacancies.upper()[:15]}")
     if last_date and last_date.lower() not in ("not mentioned", ""):
-        meta_items.append(f"⏰ Last: {last_date[:12]}")
+        # Clean date format if possible
+        clean_date = last_date.split('T')[0] if 'T' in last_date else last_date
+        meta_items.append(f"DEADLINE: {clean_date.upper()[:12]}")
 
+    meta_str = ""
     if meta_items:
         meta_str = "    |    ".join(meta_items[:3])
         mw = text_w(meta_str, font_meta)
-        # Keep within bounds
         if mw > width - 80:
             meta_str = "    |    ".join(meta_items[:2])
-            mw = text_w(meta_str, font_meta)
+
+    # ── Wrap title and calculate layout heights ────────────────────────────────
+    title_lines = wrap_text(title, font_title, 1060)
+    title_line_count = min(len(title_lines), 2)
+    title_height = title_line_count * 68
+
+    # Heights: company (38) + spacing (16) + divider (2) + spacing (24) + title + spacing (24) + meta (32)
+    content_height = 38 + 16 + 2 + 24 + title_height
+    if meta_str:
+        content_height += 24 + 32
+
+    # Center block vertically in the available middle space (between y=70 and y=520)
+    available_h = 520 - 70
+    start_y = 70 + (available_h - content_height) // 2
+
+    # ── Draw 1: Company name ──────────────────────────────────────────────────
+    company_display = company.upper()[:40]
+    cw = text_w(company_display, font_company)
+    draw.text(((width - cw) // 2, start_y), company_display, fill=light_gray, font=font_company)
+
+    # ── Draw 2: Decorative horizontal divider line ────────────────────────────
+    line_w = 400
+    lx = (width - line_w) // 2
+    divider_y = start_y + 38 + 16
+    draw.line([(lx, divider_y), (lx + line_w, divider_y)], fill=accent_color, width=2)
+
+    # ── Draw 3: Job title (multi-line, centered) ─────────────────────────────
+    y_title = divider_y + 2 + 24
+    for line in title_lines[:title_line_count]:
+        lw = text_w(line, font_title)
+        draw.text(((width - lw) // 2, y_title), line, fill=white, font=font_title)
+        y_title += 68
+
+    # ── Draw 4: Meta details row ──────────────────────────────────────────────
+    if meta_str:
+        y_meta = y_title + 12
+        mw = text_w(meta_str, font_meta)
         draw.text(((width - mw) // 2, y_meta), meta_str, fill=accent_color, font=font_meta)
 
     # ── Bottom divider ────────────────────────────────────────────────────────
@@ -1375,6 +1394,7 @@ def generate_poster(title, company, location, salary, output_path, is_govt=False
 
     # ── Save ──────────────────────────────────────────────────────────────────
     img.save(output_path, "JPEG", quality=88, optimize=True)
+
 
 
 def render_text_block(job, width=1200, padding=40):
