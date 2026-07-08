@@ -36,15 +36,17 @@ if not API_TOKEN or API_TOKEN == OLD_TOKEN:
 
 API_KEY = os.getenv("API_KEY", "")  # Google Gemini API key
 
-# ── Gemini client (reuse from bot1 if possible, else create here) ─────────────
+# ── Gemini client ─────────────────────────────────────────────────────────────
 _client_gemini = None
 
 def _get_gemini_client():
+    """Initialize and return the Gemini AI client using the configured API key."""
     global _client_gemini
     if _client_gemini is None and API_KEY:
         try:
             from google import genai  # type: ignore
-            _client_gemini = None  # Disabled Gemini Integration
+            _client_gemini = genai.Client(api_key=API_KEY)
+            logging.info("[SEO] ✅ Gemini AI client initialized successfully")
         except Exception as e:
             logging.warning(f"[SEO] Could not init Gemini client: {e}")
     return _client_gemini
@@ -56,14 +58,22 @@ def _get_gemini_client():
 
 async def generate_seo_for_job(job: dict) -> dict:
     """
-    Uses Google Gemini to generate:
-      - metaTitle       (65-char high-CTR title)
-      - metaDescription (150-155 char description)
-      - seoKeywords     (list of 6-8 keywords)
-      - faqs            (list of 5 {q, a} dicts)
-      - shortSummary    (20-word OG preview — improves on existing if present)
+    Uses Google Gemini to generate a FULL CAREER GUIDE for each job page.
+    Generates:
+      - metaTitle          (65-char SEO title)
+      - metaDescription    (150-155 char meta description)
+      - seoKeywords        (6-8 SEO keywords)
+      - faqs               (6 detailed Q&A pairs)
+      - shortSummary       (20-word OG preview)
+      - introduction       (200-word original intro — what is this role?)
+      - whyApply           (150-word salary/perk analysis — is it worth applying?)
+      - companyAnalysis    (150-word background on the recruiting organization)
+      - selectionProcess   (200-word stage-by-stage selection guide)
+      - preparationTips    (200-word study strategy with books/topics)
+      - applicationSteps  (numbered step-by-step application walkthrough)
+      - salaryBreakdown    (in-hand salary, DA, HRA, gross breakdown text)
+      - commonMistakes     (list of 5 specific mistakes to avoid)
 
-    Returns a dict of just the generated SEO fields.
     Falls back to rule-based generation if Gemini is unavailable.
     """
     client = _get_gemini_client()
@@ -77,6 +87,8 @@ async def generate_seo_for_job(job: dict) -> dict:
     post_type = job.get("postType", "Job")
     last_date = job.get("lastDate", "")
     is_govt = job.get("isGovernment", False)
+    skills = job.get("skills", [])
+    experience = job.get("experience", "")
     slug = job.get("slug", "")
 
     year = datetime.now().year
@@ -92,38 +104,63 @@ async def generate_seo_for_job(job: dict) -> dict:
         except Exception:
             pass
 
+    skills_str = ", ".join(skills[:8]) if skills else "General aptitude"
+    job_category = "Government / Public Sector" if is_govt else "Private Sector / IT"
+
     # ── Try AI first ──────────────────────────────────────────────────────────
     if client:
-        prompt = f"""
-You are an expert SEO specialist for an Indian government & private job portal called NextJobPost.
+        prompt = f"""You are a senior career counsellor and content editor at NextJobPost.in — India's trusted job notification platform.
 
-Generate SEO metadata for this job posting. Return ONLY a raw JSON object (no markdown).
+Your task: Write ORIGINAL, EXPERT-LEVEL career guide content for this job listing. This is NOT a summary or rewrite of the notification. You are writing independent editorial content that helps Indian job seekers understand whether to apply, how to prepare, and what to expect.
 
-Job Details:
+Job Details (use as data source only, do not copy verbatim):
 - Title: {title}
-- Company: {company}
+- Employer / Company: {company}
+- Job Category: {job_category}
 - Location: {location}
 - Education Required: {education}
-- Vacancies: {vacancies}
-- Salary: {salary}
+- Experience Required: {experience or 'Freshers welcome'}
+- Skills Required: {skills_str}
+- Total Vacancies: {vacancies or 'As per official notification'}
+- Salary / Pay Scale: {salary or 'As per government pay matrix'}
+- Application Last Date: {last_date_str or 'Refer to official notification'}
 - Post Type: {post_type}
-- Last Date: {last_date_str}
-- Is Government Job: {is_govt}
 - Year: {year}
 
-Generate:
-1. "metaTitle": A compelling, keyword-rich SEO title. Max 65 characters. Include year ({year}) and action word like "Apply Now", "Recruitment", "Vacancy". Example: "SSC CGL Recruitment {year} – 14582 Vacancies | Apply Now"
-2. "metaDescription": A 148-155 character description. Include eligibility, last date if available, and a call to action. No competitor names.
-3. "seoKeywords": Array of 6-8 keywords. Include: job title keyword, state keyword if location exists, qualification keyword, department keyword, year. Example: ["SSC CGL 2026", "SSC Jobs", "SSC CGL Vacancy 2026", "Govt Jobs India"]
-4. "faqs": Array of exactly 5 objects with "q" and "a" keys. Questions should be what job seekers actually search for (eligibility, salary, last date, how to apply, selection process). Each answer max 80 words.
-5. "shortSummary": A professional 18-22 word summary for Open Graph preview. No emojis. Example: "Apply for SSC CGL Recruitment {year}. Check eligibility, vacancies, salary, and last date to apply online."
+Generate a JSON object with these EXACT keys. All content must be ORIGINAL editorial writing — not copied from the notification:
 
-Rules:
-- NEVER include competitor websites (sarkariresult.com, freejobalert.com, etc.)
-- Keep all content specific to this job posting
-- Use Indian English
-- metaTitle MUST be under 65 characters
-- metaDescription MUST be 148-155 characters exactly
+1. "metaTitle": SEO title under 65 chars with year and action verb. Eg: "{title[:35]} {year} – Apply Now"
+
+2. "metaDescription": 148-155 chars. Include eligibility, salary, last date if known. End with CTA. No competitor names.
+
+3. "seoKeywords": Array of 7 keywords including title, year, location, qualification, organization.
+
+4. "shortSummary": 20-word OG preview summary. Professional tone. No emojis.
+
+5. "introduction": ORIGINAL 220-word editorial introduction. Cover: What is this role about? Who should apply? What makes this opportunity notable in {year}? Why is {company} a good employer? Write for a {education} graduate looking to build their career. Do NOT copy the notification — write in your own editorial voice.
+
+6. "whyApply": ORIGINAL 160-word analysis of "Is this job worth applying for?". Discuss: salary competitiveness vs. market rate, job security, work culture if known, career ceiling, work-life balance for this role type, who should prioritize this application. Be honest and balanced.
+
+7. "companyAnalysis": ORIGINAL 150-word background section on {company}. Cover: What does this organization do? Size, scope, government or private, notable achievements, why it's a respected employer in India. If {company} is a government body, describe its ministry and function.
+
+8. "selectionProcess": ORIGINAL 200-word explanation of the selection process stages for {post_type} at {company}. Cover: typical stages (written exam, interview, document verification, medical), what each stage tests, qualifying marks, and how to approach each stage strategically.
+
+9. "preparationTips": ORIGINAL 200-word preparation strategy. Cover: key subjects to study, recommended study books (with author names), daily study schedule suggestion, important topics that historically carry high marks, online resources. Be specific to {title} and {education}.
+
+10. "applicationSteps": ORIGINAL numbered step-by-step guide (7 steps) for how to apply. Be specific: visit official portal → register → fill form → upload documents → pay fee → submit → download confirmation. Include tips for each step.
+
+11. "salaryBreakdown": ORIGINAL 120-word salary analysis. Break down: basic pay, Dearness Allowance (DA), House Rent Allowance (HRA), Transport Allowance, gross monthly take-home, and annual CTC estimate. If salary is {salary}, calculate estimated in-hand amount. Compare to private sector equivalent.
+
+12. "commonMistakes": Array of exactly 5 strings. Each string is a specific, actionable mistake to avoid when applying for {title}. Be specific — not generic advice.
+
+13. "faqs": Array of exactly 6 objects with "q" and "a" keys. Q should be actual search queries. A should be 60-80 word expert answers. Cover: eligibility, salary, last date, selection process, preparation, how to apply.
+
+IMPORTANT RULES:
+- NEVER mention competitor websites
+- NEVER copy text verbatim from the job notification above
+- Write in clear, helpful Indian English
+- All word count estimates are approximate — focus on quality
+- Return ONLY valid JSON, no markdown fences
 """
         candidates = [
             "gemini-2.5-flash-lite",
@@ -170,11 +207,24 @@ def _validate_seo_fields(data: dict, job: dict) -> dict:
     if not isinstance(faqs, list):
         faqs = []
     clean_faqs = []
-    for faq in faqs[:5]:
+    for faq in faqs[:6]:
         if isinstance(faq, dict) and faq.get("q") and faq.get("a"):
             clean_faqs.append({"q": str(faq["q"]).strip(), "a": str(faq["a"]).strip()})
 
     short_summary = str(data.get("shortSummary", "")).strip()[:200]
+
+    # Rich career guide fields
+    introduction = str(data.get("introduction", "")).strip()
+    why_apply = str(data.get("whyApply", "")).strip()
+    company_analysis = str(data.get("companyAnalysis", "")).strip()
+    selection_process = str(data.get("selectionProcess", "")).strip()
+    preparation_tips = str(data.get("preparationTips", "")).strip()
+    application_steps = str(data.get("applicationSteps", "")).strip()
+    salary_breakdown = str(data.get("salaryBreakdown", "")).strip()
+    common_mistakes = data.get("commonMistakes", [])
+    if not isinstance(common_mistakes, list):
+        common_mistakes = []
+    common_mistakes = [str(m).strip() for m in common_mistakes[:5] if m]
 
     # Fallback to rule-based if critical fields are empty
     if not meta_title or not meta_desc:
@@ -188,6 +238,15 @@ def _validate_seo_fields(data: dict, job: dict) -> dict:
         "seoKeywords": keywords,
         "faqs": clean_faqs,
         "shortSummary": short_summary,
+        # Rich editorial content
+        "introduction": introduction,
+        "whyApply": why_apply,
+        "companyAnalysis": company_analysis,
+        "selectionProcess": selection_process,
+        "preparationTips": preparation_tips,
+        "applicationSteps": application_steps,
+        "salaryBreakdown": salary_breakdown,
+        "commonMistakes": common_mistakes,
     }
 
 
@@ -296,7 +355,7 @@ def _rule_based_seo(job: dict) -> dict:
 async def patch_seo_metadata(job_id: str, seo_data: dict, session: aiohttp.ClientSession = None) -> bool:
     """
     Patches a published job with the generated SEO fields via PUT /api/jobs/:id.
-    Uses the admin JWT token from API_TOKEN env var.
+    Sends both standard SEO fields and rich career guide content.
     Returns True on success.
     """
     if not job_id or not API_TOKEN:
@@ -309,17 +368,46 @@ async def patch_seo_metadata(job_id: str, seo_data: dict, session: aiohttp.Clien
         "Authorization": f"Bearer {API_TOKEN}",
     }
 
-    # Only send fields the API knows about
+    # Build payload from all available SEO and rich content fields
     payload = {}
+
+    # Standard SEO fields
     if seo_data.get("metaTitle"):
         payload["metaTitle"] = seo_data["metaTitle"]
     if seo_data.get("metaDescription"):
         payload["metaDescription"] = seo_data["metaDescription"]
-    # shortSummary maps to `description` in the Job model
     if seo_data.get("shortSummary"):
         payload["description"] = seo_data["shortSummary"]
     if seo_data.get("jobDescription"):
         payload["jobDescription"] = seo_data["jobDescription"]
+
+    # Rich career guide fields — stored as aboutCompany, whyJoin, howToApply, finalThoughts
+    # Maps our generated keys to existing Job model fields for backward compatibility
+    if seo_data.get("introduction"):
+        # Combine introduction + whyApply into a structured jobDescription prefix
+        rich_intro = seo_data["introduction"]
+        if seo_data.get("whyApply"):
+            rich_intro += f"\n\n<h3>Is This Job Worth Applying For?</h3>\n{seo_data['whyApply']}"
+        if seo_data.get("selectionProcess"):
+            rich_intro += f"\n\n<h3>Selection Process</h3>\n{seo_data['selectionProcess']}"
+        if seo_data.get("preparationTips"):
+            rich_intro += f"\n\n<h3>Preparation Strategy</h3>\n{seo_data['preparationTips']}"
+        if seo_data.get("salaryBreakdown"):
+            rich_intro += f"\n\n<h3>Salary Breakdown</h3>\n{seo_data['salaryBreakdown']}"
+        if not payload.get("jobDescription"):  # Only set if not already set by internal linker
+            payload["jobDescription"] = rich_intro
+
+    if seo_data.get("companyAnalysis"):
+        payload["aboutCompany"] = seo_data["companyAnalysis"]
+
+    if seo_data.get("applicationSteps"):
+        payload["howToApply"] = seo_data["applicationSteps"]
+
+    if seo_data.get("commonMistakes") and isinstance(seo_data["commonMistakes"], list):
+        mistakes_text = "Common mistakes to avoid:\n" + "\n".join(
+            f"{i+1}. {m}" for i, m in enumerate(seo_data["commonMistakes"])
+        )
+        payload["finalThoughts"] = mistakes_text
 
     if not payload:
         return False
@@ -332,7 +420,8 @@ async def patch_seo_metadata(job_id: str, seo_data: dict, session: aiohttp.Clien
     try:
         async with session.put(patch_url, json=payload, headers=headers, timeout=20) as res:
             if res.status in (200, 201):
-                logging.info(f"[SEO] ✅ Patched SEO metadata for job {job_id}")
+                rich_fields = sum(1 for k in ['aboutCompany', 'howToApply', 'finalThoughts', 'jobDescription'] if payload.get(k))
+                logging.info(f"[SEO] ✅ Patched job {job_id} — {len(payload)} fields updated ({rich_fields} rich content fields)")
                 return True
             else:
                 body = await res.text()
@@ -441,14 +530,19 @@ def build_breadcrumb_schema(job: dict, slug: str) -> dict:
     # Choose category
     if post_type == "Result":
         cat_name, cat_path = "Results", "/results"
+        job_url = f"{SITE_BASE_URL}/{slug}"
     elif post_type == "Admit Card":
         cat_name, cat_path = "Admit Cards", "/admit-cards"
+        job_url = f"{SITE_BASE_URL}/{slug}"
     elif post_type == "Answer Key":
         cat_name, cat_path = "Answer Keys", "/answer-keys"
+        job_url = f"{SITE_BASE_URL}/{slug}"
     elif is_govt:
         cat_name, cat_path = "Govt Jobs", "/govt-jobs"
+        job_url = f"{SITE_BASE_URL}/government-jobs/{slug}"
     else:
         cat_name, cat_path = "Jobs", "/private-jobs"
+        job_url = f"{SITE_BASE_URL}/careers/{slug}"
 
     return {
         "@context": "https://schema.org",
@@ -456,9 +550,10 @@ def build_breadcrumb_schema(job: dict, slug: str) -> dict:
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE_BASE_URL},
             {"@type": "ListItem", "position": 2, "name": cat_name, "item": f"{SITE_BASE_URL}{cat_path}"},
-            {"@type": "ListItem", "position": 3, "name": title, "item": f"{SITE_BASE_URL}/{slug}"},
+            {"@type": "ListItem", "position": 3, "name": title, "item": job_url},
         ],
     }
+
 
 
 def build_organization_schema() -> dict:

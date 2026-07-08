@@ -1255,79 +1255,126 @@ def wrap_text(text, font, max_width):
         lines.append(" ".join(current_line))
     return lines
 
-def generate_poster(title, company, location, salary, output_path):
-    """Generates a professional 1200x630 job poster dynamically with Pillow."""
+def generate_poster(title, company, location, salary, output_path, is_govt=False, vacancies="", last_date=""):
+    """Generates a premium 1200x630 job poster with modern design using Pillow."""
     width, height = 1200, 630
-    
-    # 1. Create a dark blue background
-    base_grad = Image.new("RGB", (2, 2))
-    base_grad.putpixel((0, 0), (14, 25, 45))  # Dark Blue
-    base_grad.putpixel((1, 0), (20, 35, 60))  
-    base_grad.putpixel((0, 1), (10, 20, 40))  
-    base_grad.putpixel((1, 1), (15, 28, 50))  
-    
-    img = base_grad.resize((width, height), Image.Resampling.BILINEAR)
+
+    # ── Color palette based on job type ─────────────────────────────────────
+    if is_govt:
+        accent_color = (234, 179, 8)      # Gold/Amber for govt jobs
+        accent_dark  = (161, 118, 0)
+        bg_top       = (10, 18, 35)
+        bg_bottom    = (18, 30, 55)
+        badge_text   = "GOVERNMENT JOB"
+    elif any(tech in (title + company).lower() for tech in ['software', 'developer', 'engineer', 'data', 'it ', 'tech', 'python', 'java', 'react', 'node']):
+        accent_color = (99, 102, 241)     # Indigo for tech jobs
+        accent_dark  = (67, 56, 202)
+        bg_top       = (10, 10, 28)
+        bg_bottom    = (20, 18, 48)
+        badge_text   = "TECH / IT JOB"
+    else:
+        accent_color = (16, 185, 129)     # Emerald for private/other jobs
+        accent_dark  = (4, 120, 87)
+        bg_top       = (8, 20, 22)
+        bg_bottom    = (12, 35, 38)
+        badge_text   = "PRIVATE JOB"
+
+    # ── Create gradient background ────────────────────────────────────────────
+    img = Image.new("RGB", (width, height))
     draw = ImageDraw.Draw(img)
-    
-    # Load fonts
+    for y in range(height):
+        ratio = y / height
+        r = int(bg_top[0] + (bg_bottom[0] - bg_top[0]) * ratio)
+        g = int(bg_top[1] + (bg_bottom[1] - bg_top[1]) * ratio)
+        b = int(bg_top[2] + (bg_bottom[2] - bg_top[2]) * ratio)
+        draw.line([(0, y), (width, y)], fill=(r, g, b))
+
+    # ── Top accent stripe ─────────────────────────────────────────────────────
+    draw.rectangle([(0, 0), (width, 8)], fill=accent_color)
+
+    # ── Bottom accent stripe ──────────────────────────────────────────────────
+    draw.rectangle([(0, height - 8), (width, height)], fill=accent_color)
+
+    # ── Left side vertical accent bar ────────────────────────────────────────
+    draw.rectangle([(0, 0), (6, height)], fill=accent_dark)
+
+    # ── Load fonts ────────────────────────────────────────────────────────────
     try:
-        font_company = ImageFont.truetype(FONT_PATH, 28)
-        font_title = ImageFont.truetype(FONT_PATH, 64)
-        font_meta = ImageFont.truetype(FONT_PATH, 32)
-        font_footer = ImageFont.truetype(FONT_PATH, 24)
-    except Exception as e:
-        print(f"⚠️ Error loading font, using default: {e}")
-        font_company = font_title = font_meta = font_footer = ImageFont.load_default()
-        
-    orange_color = (245, 158, 11) # Amber 500
-    white_color = (255, 255, 255)
-    light_gray = (209, 213, 219)
-    
-    def get_text_width(text, font):
+        font_badge   = ImageFont.truetype(FONT_PATH, 22)
+        font_company = ImageFont.truetype(FONT_PATH, 32)
+        font_title   = ImageFont.truetype(FONT_PATH, 58)
+        font_meta    = ImageFont.truetype(FONT_PATH, 28)
+        font_footer  = ImageFont.truetype(FONT_PATH, 26)
+        font_domain  = ImageFont.truetype(FONT_PATH, 30)
+    except Exception:
+        font_badge = font_company = font_title = font_meta = font_footer = font_domain = ImageFont.load_default()
+
+    def text_w(text, font):
         return font.getbbox(text)[2] - font.getbbox(text)[0]
-        
-    # Top Line
-    line_width = 400
-    line_x0 = (width - line_width) // 2
-    draw.line([(line_x0, 120), (line_x0 + line_width, 120)], fill=orange_color, width=3)
-    
-    # Company Name
-    company_text = company.upper()
-    cw = get_text_width(company_text, font_company)
-    draw.text(((width - cw) // 2, 140), company_text, fill=white_color, font=font_company)
-    
-    # Job Title (with wrapping)
-    wrapped_title = wrap_text(title, font_title, 1000)
-    y_offset = 220
-    for line in wrapped_title:
-        lw = get_text_width(line, font_title)
-        draw.text(((width - lw) // 2, y_offset), line, fill=white_color, font=font_title)
-        y_offset += 80
-        
-    # Meta details (Location/Salary)
-    y_offset += 20
-    meta_text = []
-    if location and location.lower() != "not mentioned":
-        meta_text.append(f"{location}")
-    if salary and salary.lower() != "not mentioned":
-        meta_text.append(f"{salary}")
-        
-    if meta_text:
-        meta_str = " | ".join(meta_text)
-        mw = get_text_width(meta_str, font_meta)
-        draw.text(((width - mw) // 2, y_offset), meta_str, fill=orange_color, font=font_meta)
-        y_offset += 60
-        
-    # Bottom Line
-    draw.line([(line_x0, y_offset + 30), (line_x0 + line_width, y_offset + 30)], fill=orange_color, width=3)
-    
-    # Footer
-    footer_text = "nextjobpost.in"
-    fw = get_text_width(footer_text, font_footer)
-    draw.text(((width - fw) // 2, y_offset + 60), footer_text, fill=light_gray, font=font_footer)
-    
-    # Save Image
-    img.save(output_path, "JPEG", quality=85, optimize=True)
+
+    white      = (255, 255, 255)
+    light_gray = (200, 210, 220)
+    muted_gray = (130, 145, 160)
+
+    # ── Job type badge (top center) ───────────────────────────────────────────
+    badge_w = text_w(badge_text, font_badge) + 32
+    badge_x = (width - badge_w) // 2
+    draw.rounded_rectangle([(badge_x, 28), (badge_x + badge_w, 62)], radius=6, fill=accent_color)
+    draw.text((badge_x + 16, 30), badge_text, fill=(10, 10, 10), font=font_badge)
+
+    # ── Company name ──────────────────────────────────────────────────────────
+    company_display = company.upper()[:40]
+    cw = text_w(company_display, font_company)
+    draw.text(((width - cw) // 2, 82), company_display, fill=light_gray, font=font_company)
+
+    # ── Decorative horizontal divider ─────────────────────────────────────────
+    line_w = 500
+    lx = (width - line_w) // 2
+    draw.line([(lx, 126), (lx + line_w, 126)], fill=accent_color, width=2)
+
+    # ── Job title (multi-line, centered) ─────────────────────────────────────
+    title_lines = wrap_text(title, font_title, 1060)
+    y_title = 150
+    for line in title_lines[:2]:  # Max 2 lines
+        lw = text_w(line, font_title)
+        draw.text(((width - lw) // 2, y_title), line, fill=white, font=font_title)
+        y_title += 72
+
+    # ── Meta details row ──────────────────────────────────────────────────────
+    y_meta = y_title + 20
+    meta_items = []
+    if location and location.lower() not in ("not mentioned", ""):
+        meta_items.append(f"📍 {location[:30]}")
+    if salary and salary.lower() not in ("not mentioned", "best in industry", ""):
+        meta_items.append(f"💰 {salary[:25]}")
+    if vacancies and vacancies.lower() not in ("not mentioned", "various vacancies", ""):
+        meta_items.append(f"📋 {vacancies[:20]} Posts")
+    if last_date and last_date.lower() not in ("not mentioned", ""):
+        meta_items.append(f"⏰ Last: {last_date[:12]}")
+
+    if meta_items:
+        meta_str = "    |    ".join(meta_items[:3])
+        mw = text_w(meta_str, font_meta)
+        # Keep within bounds
+        if mw > width - 80:
+            meta_str = "    |    ".join(meta_items[:2])
+            mw = text_w(meta_str, font_meta)
+        draw.text(((width - mw) // 2, y_meta), meta_str, fill=accent_color, font=font_meta)
+
+    # ── Bottom divider ────────────────────────────────────────────────────────
+    draw.line([(lx, height - 90), (lx + line_w, height - 90)], fill=accent_dark, width=1)
+
+    # ── Branding footer ───────────────────────────────────────────────────────
+    brand = "nextjobpost.in"
+    bw = text_w(brand, font_domain)
+    draw.text(((width - bw) // 2, height - 72), brand, fill=accent_color, font=font_domain)
+
+    tagline = "India's Trusted Job Notification Platform"
+    tw = text_w(tagline, font_footer)
+    draw.text(((width - tw) // 2, height - 42), tagline, fill=muted_gray, font=font_footer)
+
+    # ── Save ──────────────────────────────────────────────────────────────────
+    img.save(output_path, "JPEG", quality=88, optimize=True)
 
 
 def render_text_block(job, width=1200, padding=40):
