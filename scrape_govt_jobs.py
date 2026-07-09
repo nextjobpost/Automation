@@ -557,6 +557,22 @@ def scrape_category(category_path, post_type_default, recent_jobs):
             
         # Clean URL
         href = href.strip()
+        raw_href = href
+        
+        # Determine Post Type badge early so we can suffix the URL uniqueness
+        badge_elem = card.find(class_="gja-badge")
+        post_type = badge_elem.text.strip() if badge_elem else post_type_default
+        
+        post_type_lower = post_type.lower()
+        if "admit card" in post_type_lower:
+            href += "#admit-card"
+        elif "result" in post_type_lower:
+            href += "#result"
+        elif "answer key" in post_type_lower:
+            href += "#answer-key"
+        elif "syllabus" in post_type_lower:
+            href += "#syllabus"
+            
         job_hash = hashlib.md5(href.encode()).hexdigest()
         
         if database.is_job_seen(job_hash):
@@ -565,18 +581,14 @@ def scrape_category(category_path, post_type_default, recent_jobs):
         title_elem = card.find(class_="gja-card-title")
         raw_title = title_elem.text.strip() if title_elem else "Notification Details"
         
-        # Determine Post Type badge
-        badge_elem = card.find(class_="gja-badge")
-        post_type = badge_elem.text.strip() if badge_elem else post_type_default
-        
         print(f"\n🚀 New Listing Found: {raw_title}")
-        print(f"🔗 Detail URL: {href}")
+        print(f"🔗 Detail URL: {raw_href} (Unique: {href})")
         
-        # 1. Fetch detail page
+        # 1. Fetch detail page using raw URL
         try:
-            detail_resp = requests.get(href, headers=headers, timeout=15)
+            detail_resp = requests.get(raw_href, headers=headers, timeout=15)
             if detail_resp.status_code != 200:
-                print(f"⚠️ Failed to fetch detail page: {href} (Status: {detail_resp.status_code})")
+                print(f"⚠️ Failed to fetch detail page: {raw_href} (Status: {detail_resp.status_code})")
                 continue
         except Exception as e:
             print(f"⚠️ Error fetching detail page: {e}")
