@@ -38,7 +38,7 @@ load_dotenv(override=True)
 
 # ── Config ────────────────────────────────────────────────────────────────────
 SITE_BASE_URL = os.getenv("SITE_BASE_URL", "https://nextjobpost.in")
-API_URL = os.getenv("API_URL", "https://nextjobpost-backend.onrender.com/api/jobs")
+API_URL = os.getenv("API_URL", "https://nextjobpost-backend-bblz.onrender.com/api/jobs")
 API_TOKEN = os.getenv("API_TOKEN", "")
 DB_PATH = os.getenv("DATA_DIR", ".") + "/automation.db"
 REPORT_OUTPUT = os.getenv("SEO_REPORT_OUTPUT", "weekly_seo_report.html")

@@ -201,7 +201,7 @@ TARGET_CHANNEL = os.getenv("TELEGRAM_CHANNEL", "@nextjobpost")
 
 # Detect environment to set appropriate default API url
 IS_PRODUCTION = os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RENDER") or os.getenv("PORT") is not None
-DEFAULT_API_URL = "https://nextjobpost-backend.onrender.com/api/jobs" if IS_PRODUCTION else "http://localhost:4000/api/jobs"
+DEFAULT_API_URL = "https://nextjobpost-backend-bblz.onrender.com/api/jobs" if IS_PRODUCTION else "http://localhost:4000/api/jobs"
 
 API_URL = os.getenv("API_URL", DEFAULT_API_URL)
 SITE_BASE_URL = os.getenv("SITE_BASE_URL", "https://nextjobpost.in")

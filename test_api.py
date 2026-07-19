@@ -31,7 +31,7 @@ NEW_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZjFhM2I0YzllOGE3ZD
 if not API_TOKEN or API_TOKEN == OLD_TOKEN:
     API_TOKEN = NEW_TOKEN
 
-req = urllib.request.Request("https://nextjobpost-backend.onrender.com/api/jobs", method="POST")
+req = urllib.request.Request("https://nextjobpost-backend-bblz.onrender.com/api/jobs", method="POST")
 req.add_header("Content-Type", "application/json")
 req.add_header("Authorization", f"Bearer {API_TOKEN}")
 

@@ -27,8 +27,8 @@ if sys.stdout.encoding != 'utf-8':
 load_dotenv(override=True)
 
 # ── Config ───────────────────────────────────────────────────────────────
-API_URL   = os.getenv("API_URL",   "https://nextjobpost-backend.onrender.com/api/jobs")
-ADMIN_URL = os.getenv("ADMIN_URL", "https://nextjobpost-backend.onrender.com/api/admin/login")
+API_URL   = os.getenv("API_URL",   "https://nextjobpost-backend-bblz.onrender.com/api/jobs")
+ADMIN_URL = os.getenv("ADMIN_URL", "https://nextjobpost-backend-bblz.onrender.com/api/admin/login")
 API_TOKEN = os.getenv("API_TOKEN",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
     ".eyJpZCI6IjY1ZjFhM2I0YzllOGE3ZDZlNWY0YzNiMiIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODAxOTU0NDB9"

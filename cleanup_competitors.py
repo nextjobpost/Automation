@@ -5,7 +5,7 @@ import re
 import sys
 
 # Set up backend API URL
-API_URL = os.getenv("API_URL", "https://nextjobpost-backend.onrender.com/api/jobs")
+API_URL = os.getenv("API_URL", "https://nextjobpost-backend-bblz.onrender.com/api/jobs")
 API_TOKEN = os.getenv("API_TOKEN", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZjFhM2I0YzllOGE3ZDZlNWY0YzNiMiIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODAxOTU0NDB9.QVqxcZLumH_FOjPG2xgvlCoVfSuzJVd-4uEHe8UI7ok")
 
 def clean_raw_text(val, is_html=False):

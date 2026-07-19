@@ -12,7 +12,7 @@ DB_PATH = os.path.join(DATA_DIR, "automation.db")
 
 # Detect environment to determine the backend base url
 IS_PRODUCTION = os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RENDER") or os.getenv("PORT") is not None
-DEFAULT_JOBS_URL = "https://nextjobpost-backend.onrender.com/api/jobs" if IS_PRODUCTION else "http://localhost:4000/api/jobs"
+DEFAULT_JOBS_URL = "https://nextjobpost-backend-bblz.onrender.com/api/jobs" if IS_PRODUCTION else "http://localhost:4000/api/jobs"
 JOBS_URL = os.getenv("API_URL", DEFAULT_JOBS_URL)
 
 # Expose base URL for /api/queue
@@ -44,7 +44,7 @@ def send_request(method, endpoint, **kwargs):
         if "onrender.com" in QUEUE_API_URL:
             raise e
         # Fallback URL
-        prod_queue_url = "https://nextjobpost-backend.onrender.com/api/queue"
+        prod_queue_url = "https://nextjobpost-backend-bblz.onrender.com/api/queue"
         fallback_url = f"{prod_queue_url}{endpoint}"
         if method.upper() == "POST":
             return requests.post(fallback_url, **kwargs)

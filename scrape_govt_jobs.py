@@ -47,11 +47,11 @@ def validate_config():
     
     api_url = os.getenv("API_URL")
     if not api_url:
-        api_url = "https://nextjobpost-backend.onrender.com/api/jobs" if is_prod else "http://localhost:4000/api/jobs"
+        api_url = "https://nextjobpost-backend-bblz.onrender.com/api/jobs" if is_prod else "http://localhost:4000/api/jobs"
         
     admin_url = os.getenv("ADMIN_URL")
     if not admin_url:
-        admin_url = "https://nextjobpost-backend.onrender.com/api/admin/login" if is_prod else "http://localhost:4000/api/admin/login"
+        admin_url = "https://nextjobpost-backend-bblz.onrender.com/api/admin/login" if is_prod else "http://localhost:4000/api/admin/login"
         
     api_token = os.getenv("API_TOKEN")
     old_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZjFhM2I0YzllOGE3ZDZlNWY0YzNiMiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.ts-o1us7bsOOJunK2dL4HNmz1ONh3tywCLj0D079k4M"
@@ -473,7 +473,7 @@ def fetch_recent_jobs():
         print(f"⚠️ Failed to fetch recent jobs from backend ({API_URL}): {e}")
         # Fallback to production API if localhost failed
         if "localhost" in API_URL:
-            prod_url = "https://nextjobpost-backend.onrender.com/api/jobs"
+            prod_url = "https://nextjobpost-backend-bblz.onrender.com/api/jobs"
             print(f"🔄 Attempting fallback to production API: {prod_url}")
             try:
                 r = requests.get(f"{prod_url}?limit=150&status=all", headers=headers, timeout=15)

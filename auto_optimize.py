@@ -29,7 +29,7 @@ if sys.stderr.encoding != 'utf-8':
 
 # ── Config ────────────────────────────────────────────────────────────────────
 DB_PATH = os.getenv("DATA_DIR", ".") + "/automation.db"
-API_URL = os.getenv("API_URL", "https://nextjobpost-backend.onrender.com/api/jobs")
+API_URL = os.getenv("API_URL", "https://nextjobpost-backend-bblz.onrender.com/api/jobs")
 API_TOKEN = os.getenv("API_TOKEN", "")
 API_KEY = os.getenv("API_KEY", "")
 
